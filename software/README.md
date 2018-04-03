@@ -1,16 +1,401 @@
 # Literate Visualization Software
 
 _Litvis_ as a framework for interpreting markdown documents can have multiple implementations in various programming languages.
-The first working instance of litvis software has been developed using [TypeScript](https://www.typescriptlang.org/), a typed superset of JavaScript.
-This implementation is available in [gicentre/mume-with-litvis](https://github.com/gicentre/mume-with-litvis) repo.
-In future, it is planned to publish litvis source code as a set of small [npm](https://www.npmjs.com/) modules, which will ease its re-use in different environments.
+A reference implementation of litvis has been developed using [TypeScript](https://www.typescriptlang.org/), a typed superset of JavaScript.
+This open-source software can be found in [gicentre/mume-with-litvis](https://github.com/gicentre/mume-with-litvis) GitHub repository.
+There is a plan to also publish litvis as a set of small [npm](https://www.npmjs.com/) modules, which will ease its re-use in different environments.
 
-The easiest way to get litvis up and running is to install an Atom package available at https://atom.io/packages/markdown-preview-enhanced-with-litvis. Its source code and setup instructions can be found in [gicentre/markdown-preview-enhanced-with-litvis](https://github.com/gicentre/markdown-preview-enhanced-with-litvis).
+The easiest way to try litvis is to install an Atom package available at https://atom.io/packages/markdown-preview-enhanced-with-litvis. Its source code and setup instructions can be found in [gicentre/markdown-preview-enhanced-with-litvis](https://github.com/gicentre/markdown-preview-enhanced-with-litvis).
 
-Alternatively, you can try a Visual Studio Code extension available at https://marketplace.visualstudio.com/items?itemName=gicentre.markdown-preview-enhanced-with-litvis.
+Alternatively, you can install a Visual Studio Code extension available at https://marketplace.visualstudio.com/items?itemName=gicentre.markdown-preview-enhanced-with-litvis.
 The instructions and the source code are shared in [gicentre/vscode-markdown-preview-enhanced-with-litvis](https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis).
 
-<!-- *   brief summary of _litvis_ software
-*   _litvis_ installation
-*   _litvis_ user guide
--->
+## litvis concepts
+
+A litvis document is a markdown file that uses a number of additional non-standard features.
+The syntax is compatible with [CommonMark](http://commonmark.org/) specification, which makes litvis documents partially renderable in non-litvis environments such as on GitHub.
+In addition, any existing markdown document can be ‘upgraded’ to a litvis document with ease just by using one of the added concepts.
+
+A description of litvis concepts provided below should help you with getting started with litvis.
+
+### Literate code blocks
+
+_Delimits a block of literate code, which is evaluated in real time_
+
+#### Syntax
+
+````md
+```elm {...attributes}
+
+```
+````
+
+#### Description
+
+Just as any other fenced code block in markdown a litvis code block is surrounded with three backticks (` ``` `).
+Language reference `elm` should immediately follow backticks (spaces after the opening ` ```` ` are not allowed).
+The arguments that determine the behaviour of the block should be placed into `{}` and should not contain line breaks.
+
+`...attributes` are whitespace-separated tags or key-value pairs, e.g. `tag1 key1=value1 key2=[value21, value22] tag2`. The following syntactic rules apply:
+
+*   A tag is a synonym to `key=true` (e.g. adding `v=true` is the same as `v`).
+
+*   No spacing is allowed around `=`.
+
+*   Square brackets indicate an array of values.
+    The values are separated by commas.
+    If commas, whitespace or semicolons are a part of a value, the should be escaped by backslash (e.g.`\,`).
+
+*   It is allowed to surround the values with quotes (`"`, `'` and `` ` ``) in order for them to contain spaces and other control characters, e.g. `=`, `[ ]` or `( )`.
+    A quote can be also placed into a quoted value if it is a different symbol or if it is escaped with `\`, e.g. `key1="It's a different symbol" key2='It\'s escaped'`.
+    Quotes are useful in _schema label_ attributes, about which you will find below.
+
+*   Values can be surrounded by round brackets.
+    This works similarly to quotes and allows for nesting round brackets, e.g. `z=(function (x, y))`.
+    However, unlike quotes, outer round brackets are not cropped during parsing and remain in the value.
+    Surrounding attribute values with brackets can be useful in triple hat references (see below).
+
+Literate code blocks support the following attributes:
+
+*   `l` (or `literate`) is an indicator of a literate code block, which differentiates it from a standard code listing.
+    By default, any Elm declaration is accessible in other literate code blocks within the document.
+    If `l=hidden`, the code is still evaluated but its source is not displayed in the rendered output.
+    This is useful for setup code such as import statements and cases when the implementation is not central to the narrative.
+
+-   `v` (or `visualize`) indicates that the code block is expected to render some output at this point in the document.
+    The format of this output is determined by the contents of a symbol or an expression to render.
+    At the moment only vega specs are supported (type `Spec` from `gicentre/elm-vega` package).
+    If no value is assigned to `v`, the last symbol defined in the code block is used.
+
+*   `r` (or `raw`) works similarly to `v` and indicates that the code block is expected to print raw values of listed expressions.
+    Elm’s `toString` function is used to generate the output.
+    This can be useful for debugging or exporting vega specs.
+    If no value is assigned to `r`, the last symbol defined in the code block is used.
+
+*   `j` (or `json`) works just like `r`/`raw` except that the value gets parsed as JSON and formatted.
+
+*   `context` is an attribute that enables code isolation within one document. Code blocks in different contexts work in parallel and do not share any imports or symbol declarations.
+    All blocks belong to an implicit `default` context if the attribute is not defined.
+    Contexts are evaluated independently, which reduces the spread of Elm compile errors.
+    When a problem does not allow the code to run or a `v`/`r`/`j` expression to evaluate, other independent contexts (if any) are not affected.
+
+*   `id` assigns an identifier to a code block so that it could be referenced in other code blocks (see `follows`).
+
+*   `follows` can be used in the first code block of a new context to branch off from an existing context.
+    This makes the definitions and imports _above_ the block shared between the two contexts.
+    The attribute may also refer to an `id` of a specific block when it is necessary to hand-pick a specific forking point.
+
+*   `i` (or `isolated`) is a shorthand tag for assigning a random context name to a single block.
+    This attribute does not expect a value.
+
+*   `s` (or `siding`) is a shorthand for `isolated follows=default`.
+    This attribute does not expect a value.
+
+*   `interactive` (or `interactive=true`) makes visualised specs interactive if _grammar of interaction_ is used within the specs.
+
+The order of `l`, `v`, `r` or `j` in attributes determines the order of rendering.
+
+Defining `l` to make the code block literate is not necessary if `v`, `r` or `j` are already given (this implies `l=hidden`).
+
+#### Examples
+
+Common ‘header’ to set up code blocks:
+
+````md
+```elm {l=hidden}
+import VegaLite exposing (..)
+```
+````
+
+Simple renderable spec:
+
+````md
+```elm {l v}
+mySpec : Spec
+mySpec =
+let
+    data =
+        dataFromColumns []
+            << dataColumn "a" (Strings [ "C", "C", "D", "D", "E", "E" ])
+            << dataColumn "b" (Numbers [ 2, 7, 1, 2, 6, 8 ])
+
+    enc =
+        encoding
+            << position X [ PName "a", PmType Nominal ]
+            << position Y [ PName "b", PmType Quantitative, PAggregate Mean ]
+in
+    toVegaLite [ data [], enc [], mark Bar [] ]
+```
+````
+
+Branching:
+
+````md
+```elm {l=hidden id=imports}
+import VegaLite exposing (..)
+```
+
+...text and code blocks...
+
+```elm {l v siding follows=imports}
+mySpec : Spec
+mySpec = ...
+```
+````
+
+### Triple hat references
+
+_Renders symbols from literate code blocks in any part of the markdown narrative_
+
+#### Syntax
+
+`^^^elm {...attributes}^^^`
+
+#### Description
+
+Triple hat references allow for inline rendering or repeated calls to the same rendering within a document.
+They use the same attribute syntax as literate code blocks and recognise the following keys:
+
+*   `v` (or `visualize`) indicates what symbols and expressions to render.
+    In the most common scenario the value is a single Elm constant, e.g. `v=spec1`.
+    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+
+*   `r` (or `raw`) indicates what symbols and expressions to output without formatting.
+    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+
+*   `j` (or `json`) indicates what symbols and expressions to output as formatted JSONs.
+    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+
+*   `context` is an optional attribute to specify which code block context to refer to.
+    `default` context is assumed if the attribute is not defined.
+
+*   `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
+
+The order of `v`, `r` and `j` determines the order of the output.
+It is considered a good practice to avoid multiple output formats and specs in a triple hat reference as this helps control spacing in output.
+
+#### Examples
+
+Rendering of a single spec:
+
+`^^^elm v=mySpec^^^`
+
+Rendering of a parameterised spec:
+
+`^^^elm v=(myParamSpec ("hello", "world"))^^^`
+
+Rendering of a sequence of specs:
+
+`^^^elm v=[mySpec, anotherSpec, (myParamSpec ("hello", "world"))]^^^`
+
+Rendering of a spec from context `experiment`:
+
+`^^^elm v=mySpec context=experiment^^^`
+
+Raw output:
+
+`^^^elm r=mySpec^^^`
+
+### Branching narratives
+
+_Splits a litvis narrative between multiple documents (markdown files), which enables branching_
+
+#### Syntax
+
+```md
+---
+follows: path/to/another/document[.md]
+---
+```
+
+#### Description
+
+Narrative branching is achieved by starting a document with a reference to an upstream document in [markdown frontmatter](https://jekyllrb.com/docs/frontmatter/) (property `follows`).
+Frontmatter is expected to start and end with `---` and use `yaml` syntax.
+Using relative paths and excluding file extension (`.md` or `.markdown`) is considered a good practice.
+
+A document that does not mention any other litvis document in its frontmatter is a _root document_ in a narrative.
+Narrative branching is achieved by mentioning an upstream document in more than one document (so that it has several _followers_).
+Circular links between documents are not allowed and cancel the evaluation of literate code blocks in all affected documents.
+
+When a given document is evaluated, a joint litvis environment is composed by evaluating a chain of upstream documents.
+Thus, upstream code block contexts and ids as well as Elm imports and symbols become available in the current document’s code blocks and triple hat references.
+However, it is not allowed to reference a symbol from a downstream document to avoid ambiguity when branching.
+
+Elm errors in code blocks propagate to all documents downstream but not vice versa.
+
+The documents forming a single narrative are allowed to be stored in different directories.
+In this case, the urls inside vega specs (such as links to data files) are assumed to be relative to the _root document_.
+
+#### Examples
+
+`root.md`
+
+````md
+```elm {l}
+displayBranch : String -> String
+displayBranch name = "Branch " ++ name
+```
+````
+
+`experiments/a.md`
+
+```md
+---
+follows: ../root
+---
+
+We are in ^^^elm r=(displayBranch "a")^^^!
+```
+
+`experiments/b.md`
+
+```md
+---
+follows: ../Root
+---
+
+We are in ^^^elm r=(displayBranch "b")^^^!
+```
+
+### Elm configuration
+
+_Plays the role of `elm-package.json` to configure Elm compiler_
+
+#### Syntax
+
+```md
+---
+elm:
+  dependencies:
+    vendor/package-with-specific-version: "4.0.2"
+    vendor/package-with-feature-version: "4.0"
+    vendor/package-with-major-version: "4"
+    vendor/latest-package: latest
+    vendor/package-to-exclude: false
+  source-directories:
+    - path/to/directory
+    - path/to/another/directory
+---
+```
+
+#### Description
+
+Parameter `dependencies` determines what third-party Elm packages to install.
+Users are encouraged to specify package versions when known as this may prevent errors if the library’s API changes.
+Package versions should be put in quotes to avoid their misinterpretation by the yaml parser, which does not distinguish between numeric values such as `4` and `4.0`.
+To refer to the latest available version of an Elm package, keyword `latest` should be used.
+In this case the latest version will be automatically picked every time litvis cache is cleared.
+Specifying system packages such as `elm-lang/core` or `elm-lang/html` is not necessary.
+
+When a narrative is spread between multiple litvis documents, Elm dependencies can be specified not only in the root document.
+When a downstream document declares a set of Elm dependencies, they are merged with the ones mentioned upstream, yet not affecting the behaviour of the upstream documents.
+
+In rare cases, a package used in an upstream document needs to be excluded in a branch in favour of a local Elm module (for example, to test a new development version of a library).
+In this case, `false` as package version should be used.
+
+Parameter `source-directories` configures Elm to ‘see’ modules in the local filesystem.
+This may be useful when debugging a copy of a package before publishing it.
+When `source-directories` are not specified, no local Elm modules are imported from the filesystem, even if they are in the same directory as the litvis document.
+The paths are expected to be relevant to the current litvis document and are joined together in multi-document narratives.
+However, unlike for `dependencies` it is not possible to exclude a directory that has been listed under `source-directories` in an upstream document.
+
+All parameters are optional and are expected to be found in markdown frontmatter under property `elm`.
+Other fields from `elm-package.json` may be added in future to support more use cases.
+
+#### Example
+
+`root.md`
+
+```md
+---
+elm:
+  dependencies:
+    kuon/elm-hsluv: "1.0.1"
+    gicentre/elm-vega: "1.0.4"
+---
+```
+
+`localCopyOfElmVega.md`
+
+```md
+---
+follows: root
+elm:
+  dependencies:
+    gicentre/elm-vega: false
+    source-directories:
+    - ~/dev/local-copy-of-elm-vega
+---
+```
+
+`colorExperiments.md`
+
+```md
+---
+follows: root
+elm:
+  dependencies:
+    eskimoblood/elm-color-extra: 5.0.0
+---
+```
+
+### Narrative Schemas
+
+_Signal the purpose of a part of a narrative_
+
+#### Syntax
+
+```md
+---
+narrative-schemas:
+- some-schema[.yml|yaml]
+- another-schema[.yml|yaml]
+- ...
+---
+```
+
+`{( singleLabel ...attributes )}`
+
+`{( pairedLabel ...attributes |}content{| pairedLabel )}`
+
+#### Description
+
+Unlike the HTML tags that could also be utilised, narrative schema labels starting with `{(` and `{|` remain visible in non-litvis markdown previews such as GitHub.
+This also help distinguish them from non-semantic HTML tags that are sometimes added to markdown files.
+
+To specify what schemas a document is expected to follow, frontmatter parameter `narrative-schemas` is used.
+A schema that does not support configuration is mentioned as `schema-name: ~`.
+Otherwise, the options are listed as a yaml sub-tree.
+
+Downstream documents are allowed to override previously defined `narrative-schemas`, similarly to how this is done for `elm` → `dependencies`.
+
+Schema definitions determine how the schema labels are rendered.
+Unknown (or misspelled) labels are printed ‘as is’ and the known labels can be converted into HTML elements or hidden.
+Hidden labels are useful when their only purpose is to validate the structure of the narrative.
+
+#### Examples
+
+Incomplete narrative (single custom label called `todo`):
+
+```md
+We conclude that {( todo )}
+```
+
+Semantically linked paired label:
+
+```md
+{( question |}
+
+Ultimate Question of Life, the Universe, and Everything
+
+{| question )}
+
+{( answer |}42{| answer )}
+```
+
+A label with attributes:
+
+```md
+{( comment author="alex" |}It'd be interesting to replace hue with brightness{| comment )}
+```
