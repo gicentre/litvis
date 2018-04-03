@@ -24,10 +24,9 @@ A litvis code block with attribute `visualize` (or `v`) automatically renders th
 ## Code referencing across blocks
 
 By default, litvis code blocks share the same execution context, which means that an Elm symbol defined in one block and can be referenced in another block.
+It is not necessary to maintain the order of blocks to make referencing work.
 
 ![codereferencingcodeblocks](https://user-images.githubusercontent.com/608862/38144058-2711026c-343b-11e8-9eb5-080ea07d582c.gif)
-
-It is not necessary to maintain the order of blocks to make referencing work.
 
 ## Code referencing with triple hat notation
 
