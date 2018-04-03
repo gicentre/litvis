@@ -10,7 +10,7 @@ The easiest way to try litvis is to install an Atom package available at https:/
 Alternatively, you can install a Visual Studio Code extension available at https://marketplace.visualstudio.com/items?itemName=gicentre.markdown-preview-enhanced-with-litvis.
 The instructions and the source code are shared in [gicentre/vscode-markdown-preview-enhanced-with-litvis](https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis).
 
-## litvis concepts
+## Litvis concepts
 
 A litvis document is a markdown file that uses a number of additional non-standard features.
 The syntax is compatible with [CommonMark](http://commonmark.org/) specification, which makes litvis documents partially renderable in non-litvis environments such as on GitHub.
@@ -399,3 +399,11 @@ A label with attributes:
 ```md
 {( comment author="alex" |}It'd be interesting to replace hue with brightness{| comment )}
 ```
+
+## Getting started with litvis
+
+1.  Install [Atom package](https://atom.io/packages/markdown-preview-enhanced-with-litvis)
+
+2.  Create a new markdown file and open its preview
+
+3.  Copy any of the [examples](https://github.com/gicentre/litvis/tree/master/examples) or type your own litvis-flavoured markdown
