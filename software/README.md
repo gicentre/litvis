@@ -325,7 +325,7 @@ elm:
   dependencies:
     gicentre/elm-vega: false
     source-directories:
-    - ~/dev/local-copy-of-elm-vega
+      - ~/dev/local-copy-of-elm-vega
 ---
 ```
 
@@ -349,9 +349,9 @@ _Signal the purpose of a part of a narrative_
 ```md
 ---
 narrative-schemas:
-- some-schema[.yml|yaml]
-- another-schema[.yml|yaml]
-- ...
+  - some-schema[.yml|yaml]
+  - another-schema[.yml|yaml]
+  - ...
 ---
 ```
 
@@ -359,20 +359,57 @@ narrative-schemas:
 
 `{( pairedLabel ...attributes |}content{| pairedLabel )}`
 
+```yml
+# some-schema.yml
+dependencies:
+  - schema-to-compose[.yml|yaml]
+  - ...
+
+labels:
+  - name: labelName
+    single:
+      htmlTemplate: ...handlebar template
+    paired:
+      htmlTemplate: ...handlebar template
+  - name: otherLabel
+    aliasFor: labelNameThatDemandsAShortcut
+  - ...
+
+rules:
+  - description: ...
+    selector:
+      label: labelName
+      ...
+    ...rule definition
+
+styling:
+  css: ...multi-line string with CSS rules
+```
+
 #### Description
+
+A litvis narrative can be linked to a set of YAML files, which define _labels_, _rules_ and _styling_.
+These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema.
+The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design.
+This can be thought of as form of scaffolding to assist in the process of design exposition.
+Schemas can be also used to validate litvis documents.
 
 Unlike the HTML tags that could also be utilised, narrative schema labels starting with `{(` and `{|` remain visible in non-litvis markdown previews such as GitHub.
 This also help distinguish them from non-semantic HTML tags that are sometimes added to markdown files.
 
-To specify what schemas a document is expected to follow, frontmatter parameter `narrative-schemas` is used.
-A schema that does not support configuration is mentioned as `schema-name: ~`.
-Otherwise, the options are listed as a yaml sub-tree.
-
-Downstream documents are allowed to override previously defined `narrative-schemas`, similarly to how this is done for `elm` → `dependencies`.
-
-Schema definitions determine how the schema labels are rendered.
+Schema definitions determine how the labels are rendered.
 Unknown (or misspelled) labels are printed ‘as is’ and the known labels can be converted into HTML elements or hidden.
 Hidden labels are useful when their only purpose is to validate the structure of the narrative.
+In order to convert labels into a rendered HTML, [Handlebars](https://handlebarsjs.com/) templating language is used.
+The templates defined in `labels` → `[i]` → `single|paired` → `htmlTemplate` can mention label attributes or `children`.
+
+To specify what schemas a document is expected to follow, frontmatter parameter `narrative-schemas` is used.
+Multiple schemas can be referred and thus composed together.
+In turn, each narrative schema can depend on other schemas, which makes it easy to re-use narrative representation and validation.
+
+Downstream litvis documents are not allowed to override previously defined `narrative-schemas` – only the schemas defined in the root document are taken into account.
+
+Unlike with `follows` for narrative branching, cyclic references in narrative schemas are not considered as fatal errors and are simply ignored.
 
 #### Examples
 
@@ -400,10 +437,12 @@ A label with attributes:
 {( comment author="alex" |}It'd be interesting to replace hue with brightness{| comment )}
 ```
 
+Examples of schema yamls can be found in [schemas](../schemas) directory.
+
 ## Getting started with litvis
 
 1.  Install [Atom package](https://atom.io/packages/markdown-preview-enhanced-with-litvis)
 
 2.  Create a new markdown file and open its preview
 
-3.  Copy any of the [examples](https://github.com/gicentre/litvis/tree/master/examples) or type your own litvis-flavoured markdown
+3.  Copy any of the [examples](../examples) or type your own litvis-flavoured markdown
