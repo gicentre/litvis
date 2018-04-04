@@ -386,7 +386,9 @@ crossFilter =
         [ repeat [ ColumnFields [ "hour", "delay", "distance" ] ]
         , specification <|
             asSpec
-                [ dataFromUrl "https://vega.github.io/vega-lite/data/flights-2k.json" [ Parse [ ( "date", FoDate "%Y/%m/%d %H:%M" ) ] ]
+                [ width 170
+                , height 150
+                , dataFromUrl "https://vega.github.io/vega-lite/data/flights-2k.json" [ Parse [ ( "date", FoDate "%Y/%m/%d %H:%M" ) ] ]
                 , hourTrans []
                 , layer
                     [ asSpec [ mark Bar [], totalEnc [] ]

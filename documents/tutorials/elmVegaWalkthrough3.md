@@ -329,7 +329,7 @@ Here, for example is exactly the same specification but with `newYork-weather` g
 ```elm {l}
 newYorkData : Data
 newYorkData =
-    dataFromUrl "data/newYork-weather.csv" [ Parse [ ( "Date", FoDate "%Y/%m/%d" ) ] ]
+    dataFromUrl "https://gicentre.github.io/data/newYork-weather.csv" []
 ```
 
 ^^^elm {v=(dashboard newYorkData)}^^^
