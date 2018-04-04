@@ -92,7 +92,7 @@ globe =
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/graticule.json" [ TopojsonMesh "graticule" ]
+                    ++ [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
                        , mark Geoshape [ MStroke "black", MFilled False, MStrokeWidth 0.1 ]
                        ]
                 )
@@ -100,7 +100,7 @@ globe =
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                    ++ [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
                        , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                        ]
                 )
@@ -108,7 +108,7 @@ globe =
         circleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/topoJson1.json" [ TopojsonMesh "myRegion" ]
+                    ++ [ dataFromUrl (path "topoJson1.json") [ TopojsonMesh "myRegion" ]
                        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.3 ]
                        ]
                 )
@@ -144,7 +144,16 @@ Again, we see the 5 coordinate pairs representing the points along the region's 
 GeoJson files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
 But for the moment let's just stick with the simple polygon.
 
-To display the file, simply load it as any normal data file and encode it with the `Geoshape` mark:
+To display the file, simply load it as any normal data file and encode it with the `Geoshape` mark.
+
+To keep things flexible, we'll define a `path` function in Elm pointing to the base directory where all data are stored.
+You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+
+```elm {l}
+path : String -> String
+path fileName =
+    "https://gicentre.github.io/data/geoTutorials/" ++ fileName
+```
 
 ```elm {s l v}
 geo : Spec
@@ -152,7 +161,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/geoJson1.json" []
+        , dataFromUrl (path "geoJson1.json") []
         , projection [ PType Orthographic ]
         , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
         ]
@@ -192,7 +201,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson1.json" [ TopojsonMesh "myRegion" ]
+        , dataFromUrl (path "topoJson1.json") [ TopojsonMesh "myRegion" ]
         , projection [ PType Orthographic ]
         , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
         ]
@@ -207,7 +216,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson2.json" [ TopojsonFeature "myRegions" ]
+        , dataFromUrl (path "topoJson2.json") [ TopojsonFeature "myRegions" ]
         , projection [ PType Orthographic ]
         , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
         ]
@@ -316,7 +325,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson3.json" [ TopojsonFeature "myRegions" ]
+        , dataFromUrl (path "topoJson3.json") [ TopojsonFeature "myRegions" ]
         , projection [ PType Orthographic ]
         , encoding (color [ MName "id", MmType Nominal ] [])
         , mark Geoshape []
@@ -370,7 +379,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson4.json" [ TopojsonFeature "myRegions" ]
+        , dataFromUrl (path "topoJson4.json") [ TopojsonFeature "myRegions" ]
         , projection [ PType Orthographic ]
         , encoding (color [ MName "properties.myPopulationCount", MmType Quantitative ] [])
         , mark Geoshape []
@@ -447,7 +456,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson5.json" [ TopojsonFeature "myRegions" ]
+        , dataFromUrl (path "topoJson5.json") [ TopojsonFeature "myRegions" ]
         , projection [ PType Orthographic ]
         , encoding (color [ MName "properties.myRegionName", MmType Nominal ] [])
         , mark Geoshape []
@@ -524,7 +533,7 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl "data/topoJson6.json" [ TopojsonFeature "myRegions" ]
+        , dataFromUrl (path "topoJson6.json") [ TopojsonFeature "myRegions" ]
         , projection [ PType Orthographic ]
         , encoding (color [ MName "properties.myRegionName", MmType Nominal ] [])
         , mark Geoshape []

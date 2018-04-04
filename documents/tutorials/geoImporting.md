@@ -52,6 +52,15 @@ npm install -g shapefile ndjson-cli topojson d3-geo-centroid
 The `-g` option ensures the installed packages are available globally from any directory.
 The `gdal` package will be used for the the map projection work; `shapefile` for the conversion from shapefile to `geoJson`; `ndjson-cli` splits json files into separate lines to ease processing; `topojson` does the conversion to topoJson and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.
 
+To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored.
+You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+
+```elm {l}
+path : String -> String
+path fileName =
+    "https://gicentre.github.io/data/geoTutorials/" ++ fileName
+```
+
 ## 1. Reproject the shapefile to use longitude/latitude with WGS84
 
 _If your data already use longitude/latitude with WGS84, you can skip this step._
@@ -167,7 +176,7 @@ boroughs =
         [ width 600
         , height 400
         , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl "data/londonBoroughs.json" [ TopojsonFeature "boroughs" ]
+        , dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
         , mark Geoshape []
         , encoding (color [ MName "id", MmType Nominal ] [])
         ]
@@ -245,7 +254,7 @@ boroughs =
         [ width 600
         , height 400
         , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl "data/londonBoroughs.json" [ TopojsonFeature "boroughs" ]
+        , dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
         , mark Geoshape [ MStroke "white", MStrokeWidth 2 ]
         , encoding (color [ MName "id", MmType Nominal, MScale boroughColors ] [])
         ]
@@ -304,7 +313,7 @@ boroughsCustom w h =
 
         polySpec =
             asSpec
-                [ dataFromUrl "data/londonBoroughs.json" [ TopojsonFeature "boroughs" ]
+                [ dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
                 , mark Geoshape [ MStroke "white", MStrokeWidth (2 * w / 700) ]
                 , polyEnc []
                 ]
@@ -322,7 +331,7 @@ boroughsCustom w h =
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl "data/londonCentroids.json" [], trans [], mark Text [], labelEnc [] ]
+            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], mark Text [], labelEnc [] ]
     in
     toVegaLite
         [ width w
@@ -364,7 +373,7 @@ tubeLines =
     toVegaLite
         [ width 700
         , height 400
-        , dataFromUrl "data/londonTubeLines.json" [ TopojsonFeature "line" ]
+        , dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
         , mark Geoshape [ MFilled False ]
         , encoding (color [ MName "id", MmType Nominal ] [])
         ]
@@ -408,7 +417,7 @@ tubeLines =
         [ width 700
         , height 500
         , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl "data/londonTubeLines.json" [ TopojsonFeature "line" ]
+        , dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
         , mark Geoshape [ MFilled False, MStrokeWidth 2 ]
         , enc []
         ]
@@ -422,7 +431,7 @@ tubeLines =
     let
         polySpec =
             asSpec
-                [ dataFromUrl "data/londonBoroughs.json" [ TopojsonFeature "boroughs" ]
+                [ dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
                 , mark Geoshape [ MStroke "white", MStrokeWidth 2 ]
                 , encoding (color [ MString "#eee" ] [])
                 ]
@@ -440,7 +449,7 @@ tubeLines =
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl "data/londonCentroids.json" [], trans [], mark Text [], labelEnc [] ]
+            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], mark Text [], labelEnc [] ]
 
         tubeEnc =
             encoding
@@ -453,7 +462,7 @@ tubeLines =
 
         routeSpec =
             asSpec
-                [ dataFromUrl "data/londonTubeLines.json" [ TopojsonFeature "line" ]
+                [ dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
                 , mark Geoshape [ MFilled False, MStrokeWidth 2 ]
                 , tubeEnc []
                 ]

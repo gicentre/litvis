@@ -38,6 +38,15 @@ npm install -g  ndjson-cli topojson d3-geo
 
 For details of what `d3-geo` provides, see the [d3-geo documentation](https://github.com/d3/d3-geo).
 
+To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored.
+You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+
+```elm {l}
+path : String -> String
+path fileName =
+    "https://gicentre.github.io/data/geoTutorials/" ++ fileName
+```
+
 ## 1. Generate a graticule file
 
 The lines of longitude (running north-south from pole to pole) and the latitude (running east-west) form a grid or _graticule_ that we can use to view the globe as it is projected onto a 2d plane.
@@ -61,14 +70,14 @@ graticule =
         graticuleSpec =
             asSpec
                 [ projection [ PType Equirectangular ]
-                , dataFromUrl "data/graticule.json" [ TopojsonMesh "graticule" ]
+                , dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
                 , mark Geoshape [ MStroke "black", MStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
                 [ projection [ PType Equirectangular ]
-                , dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                , dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
                 , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                 ]
     in
@@ -96,14 +105,14 @@ graticule =
         graticuleSpec =
             asSpec
                 [ projection [ PType Equirectangular ]
-                , dataFromUrl "data/graticule30.json" [ TopojsonMesh "graticule" ]
+                , dataFromUrl (path "graticule30.json") [ TopojsonMesh "graticule" ]
                 , mark Geoshape [ MStroke "black", MStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
                 [ projection [ PType Equirectangular ]
-                , dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                , dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
                 , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                 ]
     in
@@ -149,7 +158,7 @@ paris projName proj =
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/graticule.json" [ TopojsonMesh "graticule" ]
+                    ++ [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
                        , mark Geoshape [ MStroke "black", MFilled False, MStrokeWidth 0.1 ]
                        ]
                 )
@@ -157,7 +166,7 @@ paris projName proj =
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                    ++ [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
                        , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                        ]
                 )
@@ -165,7 +174,7 @@ paris projName proj =
         circleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/paris.json" [ TopojsonFeature "parisCircle" ]
+                    ++ [ dataFromUrl (path "paris.json") [ TopojsonFeature "parisCircle" ]
                        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.3 ]
                        ]
                 )
@@ -254,7 +263,7 @@ tissotMap =
 
         graticuleSpec =
             asSpec
-                [ dataFromUrl "data/graticule.json" [ TopojsonMesh "graticule" ]
+                [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
                 , proj
                 , mark Geoshape [ MStroke "black", MStrokeWidth 0.2 ]
                 ]
@@ -268,7 +277,7 @@ tissotMap =
 
         countrySpec =
             asSpec
-                [ dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
                 , proj
                 , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                 ]
