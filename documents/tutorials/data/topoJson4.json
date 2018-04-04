@@ -1,0 +1,30 @@
+{
+  "type": "Topology",
+  "objects": {
+    "myRegions": {
+      "type": "GeometryCollection",
+      "geometries": [{
+        "type": "Polygon",
+        "properties": {
+            "myRegionName": "southern region",
+            "myPopulationCount": 27000,
+            "centroid": [0.5, 48.5]
+          },
+        "arcs": [ [0, 1] ]
+      }, {
+        "type": "Polygon",
+        "properties": {
+            "myRegionName": "northern region",
+            "myPopulationCount": 18000,
+            "centroid": [0.5, 55.5]
+          },
+        "arcs": [ [-1, 2] ]
+      }]
+    }
+  },
+  "arcs": [
+    [ [-3, 52], [4, 52] ],
+    [ [ 4, 52], [ 4, 45], [-3, 45], [-3, 52] ],
+    [ [-3, 52], [-3, 59], [ 4, 59], [ 4, 52] ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "Topology",
+  "objects": {
+    "myRegions": {
+      "type": "GeometryCollection",
+      "geometries": [{
+        "type": "Polygon",
+        "arcs": [ [0, 1] ],
+        "id" : "southern region"
+      }, {
+        "type": "Polygon",
+        "arcs": [ [-1, 2] ],
+        "id" : "northern region"
+      }]
+    }
+  },
+  "arcs": [
+    [
+      [-3, 52],
+      [4, 52]
+    ],
+    [
+      [4, 52],
+      [4, 45],
+      [-3, 45],
+      [-3, 52]
+    ],
+    [
+      [-3, 52],
+      [-3, 59],
+      [4, 59],
+      [4, 52]
+    ]
+  ]
+}

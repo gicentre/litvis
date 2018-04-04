@@ -1,0 +1,15 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [-3, 52],
+        [ 4, 52],
+        [ 4, 45],
+        [-3, 45],
+        [-3, 52]
+      ]
+    ]
+  }
+}

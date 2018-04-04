@@ -1,0 +1,23 @@
+{
+  "type": "Topology",
+  "objects": {
+    "myRegions": {
+      "type": "GeometryCollection",
+      "geometries": [{
+        "type": "Polygon",
+        "arcs": [ [0, 1] ],
+        "properties": { "myRegionName": "southern region" }
+      }, {
+        "type": "Polygon",
+        "arcs": [ [-1, 2], [3] ],
+        "properties": { "myRegionName": "northern region" }
+      }]
+    }
+  },
+  "arcs": [
+    [ [-3, 52], [4, 52] ],
+    [ [4, 52], [4, 45], [-3, 45], [-3, 52] ],
+    [ [-3, 52], [-3, 59], [4, 59], [4, 52] ],
+    [ [-6, 58], [-4, 58], [-4, 56], [-6, 56], [-6, 58] ]
+  ]
+}
