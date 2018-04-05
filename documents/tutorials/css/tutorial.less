@@ -13,6 +13,18 @@
     font-family: "Fjalla One", serif;
   }
 
+  h2 {
+    font-size: 1.8 * @fSize;
+  }
+  h3 {
+    font-size: 1.2 * @fSize;
+  }
+  h4,
+  h5,
+  h6 {
+    font-size: 1 * @fSize;
+  }
+
   code,
   pre {
     background-color: #fff;
@@ -22,4 +34,20 @@
     border: solid 1px #ccc;
     border-radius: 8px;
   }
+
+  div[data-role="litvisOutput"] > span {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 0.9 * @fSize;
+    display: block;
+    margin-bottom: 0.75em;
+    border-style: none none none solid;
+    border-width: 1px;
+    border-color: #ccc;
+    padding-left: 0.5em;
+  }
+
+  // div[data-role="litvisOutput"] > span::before {
+  //   content: "> ";
+  // }
 }
