@@ -9,31 +9,17 @@ elm:
 
 @import "css/tutorial.less"
 
+1.  [Introduction](elmIntroduction1.md)
+2.  **Functions, functions, functions**
+3.  [Types and pattern matching](elmIntroduction3.md)
+4.  [Lists and list processing](elmIntroduction4.md)
+5.  [Elm and elm-vega](elmIntroduction5.md)
+
 ---
-
-# An Introduction to Elm
-
-This tutorial introduces the Elm programming language and briefly covers some basics of functional programming for use with the litvis environment.
-
-_You can edit the example elm code in these tutorial pages to experiment with the ideas introduced._
-
-## What is Elm?
-
-[Elm](http://elm-lang.org) is a declarative statically typed pure functional programming language that is transpiled into JavaScript.
-Or in English, it is a programming language where:
-
-*   you desribe what you want to do by creating _expressions_ ("declarative") rather than provide instructions on how to do something;
-*   data and expressions are placed into 'types' and once categorised in this way, cannot change type ("statically typed");
-*   code is organised into functions that evaluate an expression to produce some value ("pure functional");
-*   before elm code is executed, it is translated into JavaScript so can run in browsers and related technologies like litvis ("transpiled").
-
-Elm in combination with the library [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) is the language you will be using in litvis to create visualization specifications.
-But you can also use it to perform a range of other tasks to enrich your litvis documents.
-The basics covered below should provide you with the background to use code effectively in your litvis documents.
 
 ## Functions, functions, functions
 
-Code is organised into _functions_ that evaluate expressions to produce some value.
+Elm code is organised into _functions_ that evaluate expressions to produce some value.
 You declare a function by giving it a name of your choice in 'lowerCamelCase' and some expression that provides a value.
 In litvis you must also give every function a _type annotation_ that describes the types of value that the function handles.
 
@@ -314,4 +300,8 @@ answer =
     isEven 240
 ```
 
-The `<<` operator is used commonly with elm-vega specifications to combine mutliple channel encodings, so it is worth trying to understand.
+The `<<` operator is used commonly with elm-vega specifications to combine mutliple channel encodings (see the last chapter of this tutorial)
+
+---
+
+_Next >>_ [Types and pattern matching](elmIntroduction3.md)
