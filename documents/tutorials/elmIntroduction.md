@@ -15,7 +15,7 @@ elm:
 
 This tutorial introduces the Elm programming language and briefly covers some basics of functional programming for use with the litvis environment.
 
-_You can edit the example elm code below to experiment with the ideas introduced in the tutorial_
+_You can edit the example elm code in these tutorial pages to experiment with the ideas introduced._
 
 ## What is Elm?
 
@@ -160,8 +160,8 @@ always3 n =
     double n |> multiply 5 |> divide n |> add -7
 
 
-magicTrick : Int
-magicTrick =
+partyTrick : Int
+partyTrick =
     always3 146470
 ```
 
@@ -175,6 +175,22 @@ always3 n =
 
 Often it is clearer to use the pipe operator to chain a sequence of functions together in the natural order we would process them.
 A variation of this is used commonly in elm-vega when creating visualization specifications (see _functional composition_ below for more details).
+
+### Anonymous Functions
+
+Sometimes it is a little cumbersome to create a new named function with its own type annotation, especially if that function is simple or is to be used only once.
+A more compact alternative is to create an anonymous function (sometime referred to as _lambda expressions_).
+
+Here's a named function that contains an anonymous function for finding the square a number:
+
+```elm {l raw siding}
+result : Int
+result =
+    (\x -> x * x) 32
+```
+
+Anonymous functions are enclosed in brackets with their parameters named after a `\` symbol (representing the Greek letter λ) and the returned value after an `->` arrow.
+One of the main uses of anonymous functions is when _folding_ and _mapping_ lists of items (see later tutorial chapter).
 
 ### Partial application and currying
 
