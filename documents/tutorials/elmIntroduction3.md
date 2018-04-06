@@ -226,7 +226,8 @@ output =
 Similar to `Maybe`, [Result](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Result) also has two constructor values and is used for representing the result of actions that may or may not be successful.
 Successful results are wrapped in the `Ok` tag, just like `Just` and unsuccessful results are represented by an `Err` tag that can contain some arbitrary value to be used in error handling.
 
-Here is an adaptation of our safe square root function using `Result` instead of `Maybe`:
+Here is an adaptation of our safe square root function using `Result` instead of `Maybe`.
+Note that in the type annotation of `Result` we have to specify the types used by both the `Err` and `Ok` constructors (here, `String` for errors and `Float` for successful calculations):
 
 ```elm {l}
 resultSqrt : Float -> Result String Float
