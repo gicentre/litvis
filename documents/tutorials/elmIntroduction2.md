@@ -18,8 +18,12 @@ elm:
 ## Functions, functions, functions
 
 Elm code is organised into _functions_ that evaluate expressions to produce some value.
+Almost everything in an Elm program will be a function.
+Elm doesn't use 'variables' common in many other languages.
+Instead, you create simple named functions that return a value.
+
 You declare a function by giving it a name of your choice in 'lowerCamelCase' and some expression that provides a value.
-In litvis you must also give every function a _type annotation_ that describes the types of value that the function handles.
+In litvis you must give every top-level function a _type annotation_ that describes the types of value that the function handles.
 
 Here are some examples
 
@@ -46,7 +50,7 @@ showPicture =
 
 The first line of each of these function declarations is a type annotation with the name of the function to the left of the colon and the type of value returned by the function on the right.
 
-You can think of these as equivalent to variable declarations in other languages, except that in Elm all values are _immutable_ – once `magicLetter` has been assigned the value `'g'` it cannot be assigned any other value within the lifetime of the program.
+Unlike 'variables', in Elm all values are _immutable_ – once `magicLetter` has been assigned the value `'g'` it cannot be assigned any other value within the lifetime of the program.
 
 You may be wondering how we can write useful programs if all assignments are immutable.
 The answer is that we can also provide _parameters_ to functions that allow the returned values to be customised depending on the parameter values.
@@ -159,6 +163,26 @@ always3 n =
 
 Often it is clearer to use the pipe operator to chain a sequence of functions together in the natural order we would process them.
 A variation of this is used commonly in elm-vega when creating visualization specifications (see _functional composition_ below for more details).
+
+### Scoping expressions with 'let'
+
+By default once a function has been declared, it is available to any other parts of your program.
+In a litvis document that means any non-isolated code block within the document including any upstream branches connected with `follows`.
+Sometimes a function may only have relevance within a small section of your code, so it is helpful to be able to limit its scope.
+This is done by delcaring a function with `let..in` within the body of another function.
+Any function declared in this way is only usable within the function in which it was declared.
+
+```elm {l raw siding}
+result : Int
+result =
+    let
+        square x =
+            x * x
+    in
+    square 32
+```
+
+Unlike top-level function definitions, locally scoped functions do not need to have a type annotation (although this always remains an option).
 
 ### Anonymous Functions
 

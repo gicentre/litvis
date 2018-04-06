@@ -33,7 +33,7 @@ Or in English, it is a programming language where:
 
 Elm in combination with the library [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) is the language you will be using in litvis to create visualization specifications.
 But you can also use it to perform a range of other tasks to enrich your litvis documents.
-The basics covered below should provide you with the background to use code effectively in your litvis documents.
+The basics covered in this set of tutorials should provide you with the background to use code effectively in your litvis documents.
 
 ---
 
