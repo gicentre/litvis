@@ -14,7 +14,7 @@ id: "litvis"
 
 # Lists and list processing
 
-Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records) and [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array), but the most common approach and one used extensively in elm-vega is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
+Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Tuple), but the most common approach and one used extensively in elm-vega is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
 
 Lists comprise items of the same type and are immutable once created.
 They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
@@ -148,10 +148,10 @@ If the intermediate steps of a folding operation need to be stored, `scanl` and 
 
 Here for example is a the generation of a triangular number sequence:
 
-```elm {l siding}
+```elm {l siding }
 triList : Int -> List Int
 triList upper =
-    List.range 2 upper |> List.scanl (\_ b -> b + 1) 0
+    List.range 2 upper |> List.scanl (\a b -> a + b) 1
 ```
 
 Or in 'point-free' style using functional composition:
