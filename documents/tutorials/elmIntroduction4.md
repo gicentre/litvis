@@ -163,16 +163,40 @@ triList =
 ```
 
 ```elm {l raw}
-output : List Int
-output =
+triOutput : List Int
+triOutput =
     triList 20
 ```
 
-^^^elm {raw=output}^^^
+^^^elm {raw=triOutput}^^^
 
 ### Transforming list contents with map
 
-_TODO_
+The final commonly used function with lists we will consider here is the [map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map) function, which is used to apply some transforming function to each item in a list.
+
+For example, here's a mapping that doubles every number in a list:
+
+```elm {l siding}
+doubler : List Int -> List Int
+doubler xs =
+    List.map (\x -> x * 2) xs
+```
+
+Or the same function in point-free style using the infix version of `(*)`:
+
+```elm {l}
+doubler : List Int -> List Int
+doubler =
+    List.map ((*) 2)
+```
+
+```elm {l}
+doublerOutput : List Int
+doublerOutput =
+    List.range 1 10 |> doubler
+```
+
+^^^elm {raw=doublerOutput}^^^
 
 ---
 
