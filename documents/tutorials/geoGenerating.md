@@ -5,16 +5,13 @@ elm:
         gicentre/elm-vega: latest
 ---
 
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300|Fjalla+One" rel="stylesheet">
-
 @import "css/tutorial.less"
 
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
 
-_This is one of a series of 'geo' tutorials for use with litvis.
-The others are linked below._
+_This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [Geospatial File Formats](geoFormats.md)
 2.  **Generating Global Map Projection Geo Files**

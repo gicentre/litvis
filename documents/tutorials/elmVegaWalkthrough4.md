@@ -3,7 +3,6 @@ follows: 'elmVegaWalkthrough3'
 id : litvis
 ---
 
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300|Fjalla+One" rel="stylesheet">
 @import "css/tutorial.less"
 
 1.  [Introduction](elmVegaWalkthrough1.md)

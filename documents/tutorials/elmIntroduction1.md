@@ -5,8 +5,6 @@ elm:
         gicentre/elm-vega: latest
 ---
 
-<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300|Fjalla+One" rel="stylesheet">
-
 @import "css/tutorial.less"
 
 1.  **Introduction**
