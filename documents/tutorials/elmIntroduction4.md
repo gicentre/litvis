@@ -1,4 +1,6 @@
 ---
+narrative-schemas:
+    - schemas/tutorial
 id: "litvis"
 ---
 
@@ -273,6 +275,13 @@ smoothOutput =
 ```
 
 ^^^elm {raw=smoothOutput}^^^
+{(question |}
+
+1.  How would you express the `smooth` function in point-free style?
+
+2.  The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
+
+{|question )}
 
 ---
 

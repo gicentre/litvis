@@ -34,8 +34,8 @@ Suppose you wish to create some functions that deal with the days of the week.
 You could represent each day with the `String` type (`"Monday"`, `"Tuesday"` etc.), but this is vulnerable to hard-to-spot errors if somewhere in your program you misspell one of the days, or you forget whether you are using full names or abbreviations (`"Tue"` or`"Tues"` or `"Tuesday"`?).
 
 Instead, you can create your own types that restrict values to a named set of options known as _constuctors_.
-This has the advantage of bringing the Elm compiler along to help spot mistakes, as any inconsistent naming will be flagged as an error.
-The types, called _union types_ (also known as algebraic data types or ADTs) are similar, but more powerful, than `enum` types available in some other languages.
+This has the advantage of marshalling the Elm compiler to help spot mistakes, as any inconsistent naming will be flagged as an error.
+The types, called _union types_ (also known as algebraic data types or ADTs) are similar, but more powerful, than 'enum' types available in some other languages.
 
 Here is how you might create a day of the week union type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that types and constructors must start with an upper case letter:
 
@@ -132,7 +132,7 @@ activity =
     diary Friday
 ```
 
-The `_` symbol is used to indicate a default 'else' if none of the previous cases are matched.
+The `_` symbol is a wildcard and acts as a default 'else' if none of the previous cases are matched.
 
 ## Tagged union types
 
@@ -168,7 +168,7 @@ report =
 ```
 
 In the example above the `Course` type has two constructors, one of which is tagged with an `Int` meaning that to specify it we have to both name it (`Assessed`) and provide an integer value (representing the number of credits associated with the course).
-There is no requirement for a type's constructors to share the same tags.
+As in this example, there is no requirement for a type's constructors to share the same tags or tag types.
 
 When we pattern match tagged types with `case ... of` we need to give a name to the tag so we can do something with its value.
 In the example above we called that name `credits` so we could handle it in building a string describing the course assessment.
@@ -179,7 +179,7 @@ Elm has a few tagged union types builtin that are handy for representing uncerta
 
 ### Maybe
 
-The [Maybe](http://package.elm-lang.org/packages/elm-lang/core/latest/Maybe) type is used to represent values that may or not exist, providing a more robust alternative to the `null` value common in other languages.
+The [Maybe](http://package.elm-lang.org/packages/elm-lang/core/latest/Maybe) type is used to represent values that may or may not exist, providing a more robust alternative to the `null` value common in other languages.
 It has two constructors: `Just a` for storing a value of any type or `Nothing` to represent the absence of a valid value.
 
 For example, suppose we wished to have a square root function that was only applied to non-negative numbers:
@@ -194,7 +194,7 @@ safeSqrt x =
 ```
 
 If a non-negative number is provided, the function calcualtes its square root and wraps it in a `Just`.
-Negative values will always result in `Nothing` being returned.
+Negative values will always result in the `Nothing` constructor being returned.
 We can handle both situations with some pattern matching:
 
 ```elm {l siding raw}

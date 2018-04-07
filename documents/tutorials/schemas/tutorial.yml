@@ -1,0 +1,21 @@
+labels:
+  - name: question
+    paired:
+      htmlTemplate: <div class="question">{{children}}</div>
+
+
+# rules:
+#   - description: Question content cannot be blank
+#     selector:
+#       label: question
+#     children:
+#       minimumTrimmedTextLength: 1
+
+
+styling:
+   css: |
+    .question {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: #f3f3f3;
+    }
