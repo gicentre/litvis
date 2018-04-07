@@ -15,6 +15,8 @@ id: "litvis"
 ## Functions, functions, functions
 
 Elm code is organised into _functions_ that evaluate expressions to produce some value.
+Those functions may have some input in the form or _parameters_ and they will always return some output.
+Functions never change existing values and their returned value is always the only thing they return. In other words functions in Elm never have any _side effects_.
 Almost everything in an Elm program will be a function.
 Elm doesn't use 'variables' common in many other languages.
 Instead, you create simple named functions that return a value.
@@ -71,6 +73,24 @@ mySum =
 Notice how the type annotation for `add` contains three types separated by `->` arrows.
 The first two refer to the types of two parameters and the last one the type of value returned.
 Note also that unlike some other languages, the parameters are simply separated by spaces with no brackets or commas used.
+
+Even operators such as `+`, `-`, `*` are functions.
+In their common form, as used in the example above, they are known as _infix operators_ because they sit in an expression with one parameter to the operator's left and one to the right.
+By placing such operators inside brackets they become _prefix operators_ with their parameters following the operator just like your own functions.
+The following functions are equivalent to each other:
+
+```elm {l raw}
+subtractInfix : Float
+subtractInfix =
+    150 - 13
+
+
+subtractPrefix : Float
+subtractPrefix =
+    (-) 150 13
+```
+
+We will see a use for the prefix operator form later on when we consider [list processing](elmIntroduction4.md) in a later chapter.
 
 The expressions evaluated in a function can contain a mix of operators and other functions:
 
@@ -137,7 +157,7 @@ Consider the coding coding of the following party trick:
 > Now divide it by the number you first thought of.
 > And finally, subtract seven from the number and write it down._
 >
-> _The number written on the paper is ... 3_
+> _The number written on the paper is ... 3. Ta dah!_
 
 ```elm {l raw siding}
 always3 : Int -> Int
@@ -150,7 +170,7 @@ partyTrick =
     always3 146470
 ```
 
-The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation and is therefore more difficult to read:
+The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing on the 'wrong' order when read left to right, and is therefore more difficult to read:
 
 ```elm {l raw siding}
 always3 : Int -> Int
@@ -163,11 +183,11 @@ A variation of this is used commonly in elm-vega when creating visualization spe
 
 ### Scoping expressions with 'let'
 
-By default once a function has been declared, it is available to any other parts of your program.
+By default, once a function has been declared it is available to any other parts of your program.
 In a litvis document that means any non-isolated code block within the document including any upstream branches connected with `follows`.
 Sometimes a function may only have relevance within a small section of your code, so it is helpful to be able to limit its scope.
 This is done by delcaring a function with `let..in` within the body of another function.
-Any function declared in this way is only usable within the function in which it was declared.
+Any function declared in this way is only usable within the expression following the `in`.
 
 ```elm {l raw siding}
 result : Int
@@ -194,8 +214,8 @@ result =
     (\x -> x * x) 32
 ```
 
-Anonymous functions are enclosed in brackets with their parameters named after a `\` symbol (representing the Greek letter λ) and the returned value after an `->` arrow.
-One of the main uses of anonymous functions is when _folding_ and _mapping_ lists of items (see later tutorial chapter).
+Anonymous functions are enclosed in brackets with their parameters named after a `\` symbol (representing lambda, the Greek letter λ) and the returned value after an `->` arrow.
+One of the main uses of anonymous functions is when _folding_ and _mapping_ lists of items (see [lists and list processing](elmIntroduction4.md)).
 
 ### Partial application and currying
 
@@ -243,7 +263,7 @@ Consider the type annotation of `multiply`:
 multiply : Int -> Int -> Int
 ```
 
-This returns a function that if given an `Int` will return a new function that itslef requires an `Int` as a parameter, equivalent to
+This returns a function that if given just a single `Int` will return a new function that itself requires an `Int` as a parameter, equivalent to
 
 ```elm
 multiply : Int -> (Int -> Int)
@@ -252,6 +272,8 @@ multiply : Int -> (Int -> Int)
 And if an integer is provided to _that_ function, it will return a simple `Int` (which is what `myResult` did above).
 
 This process of sequentially processing partially applied functions is known as [currying](https://en.wikipedia.org/wiki/Currying) and helps to explain why the symbol `->` is used to separate parameters and the returned value in a type annotation.
+
+A function with four parameters is actually a function with just one parameter that returns a function with three parameters, which is itself a function with one parameter that returns a function with two parameters, which is itself another function with one parameter that returns a function with one parameter that evaluates an expression to return a value. Phew! Reading the `->` arrows is probably simpler!
 
 ### Functional Composition
 
@@ -297,6 +319,8 @@ answer =
     combined 10
 ```
 
+This alternative form of function defintion is an example of _point-free style_ where we don't specify the parameter (storing the number to be cubed and have 6 added) but instead define another function that will have that parameter.
+
 The general rule for the functional composition operator `>>` is
 
 `g(f(x))` is equivalent to `(f >> g) (x)`
@@ -319,7 +343,7 @@ answer =
     isEven 240
 ```
 
-The `<<` operator is used commonly with elm-vega specifications to combine mutliple channel encodings (see the last chapter of this tutorial)
+The `<<` operator is used commonly with elm-vega specifications to combine mutliple channel encodings (see the [last chapter](elmIntroduction5.md) of this tutorial).
 
 ---
 
