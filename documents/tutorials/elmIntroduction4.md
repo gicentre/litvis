@@ -27,7 +27,7 @@ ages =
 
 names : List String
 names =
-    [ "John", "Paul", "Ringo", "George" ]
+    [ "John", "Paul", "George", "Ringo" ]
 
 
 mySequence : List Int
@@ -72,6 +72,9 @@ newNames =
 
 ^^^elm{raw=[newNames]}^^^
 
+Here we have created a new list by adding 'Pete' to a reversed copy of the previous list of names and then creating a reversed copy of that new list.
+The effect of which is to add 'Pete' to the end of the original list.
+
 ### Processing lists with recursion
 
 The cons operator is particularly useful when pattern matching as it allows us to name the head and tail of a list (if it has any contents) and do something with each of them.
@@ -102,8 +105,8 @@ Folding (sometimes referred to as 'reducing') lists can be used as an alternativ
 The result of the processing might be another list or some reduced representation (such as the sum or concatenated value).
 Folds can proceed from left to right with [List.foldl](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldl) (most efficient) or right to left with [List.foldr](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldr).
 
-The general form is `(a → b → b) b List a` where `a` is the type of element in the source list and `b` is the type of the resulting fold.
-The first parameter is a reducing function which itself takes parameters representing the source and result types and returns a result.
+The general form is `(a -> b -> b) b List a` where `a` is the type of element in the source list and `b` is the type of the resulting fold.
+The first parameter `(a -> b -> b)` is a reducing function which itself takes parameters representing the source and result types and returns an evaluated result.
 
 For example, to create a function to calculate the sum of a list of numbers:
 
@@ -113,7 +116,7 @@ sum list =
     List.foldl (\a b -> a + b) 0 list
 ```
 
-Because in Elm operators are also functions, we can produce a more compact version by replacing the anonymous function `\a b -> a + b` with the infix function `(+)`
+Because in Elm operators are also functions, we can produce a more compact version by replacing the anonymous function `\a b -> a + b` with its point-free prefix function `(+)`
 
 ```elm {l raw siding}
 sum : List number -> number
@@ -136,13 +139,15 @@ rev list =
 ```
 
 By convention, as with all functions, if a parameter of the reducing function is not actually used, it is given the name `_` rather than, say, `a` or `b`.
-For example this fold calculates the length of a list so doesn’t actually need to do anything with the value first parameter (elements of the list to fold):
+For example this fold calculates the length of a list so doesn’t actually need to do anything with the value of the first parameter (elements of the list to fold):
 
 ```elm {l siding}
 len : List a -> Int
 len list =
     List.foldl (\_ b -> b + 1) 0 list
 ```
+
+Folding is often used in place of the iterating constructions such as loops seen in other languages.
 
 If the intermediate steps of a folding operation need to be stored, `scanl` and `scanr` can be used in place of `foldl` and `foldr`.
 
@@ -154,7 +159,7 @@ triList upper =
     List.range 2 upper |> List.scanl (\a b -> a + b) 1
 ```
 
-Or in 'point-free' style using functional composition:
+Or in point-free style using functional composition:
 
 ```elm {l}
 triList : Int -> List Int
@@ -172,7 +177,7 @@ triOutput =
 
 ### Transforming list contents with map
 
-The final commonly used function with lists we will consider here is the [map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map) function, which is used to apply some transforming function to each item in a list.
+The final commonly used function with lists we will consider here is [map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map), which is used to apply some transforming function to each item in a list.
 
 For example, here's a mapping that doubles every number in a list:
 
@@ -197,6 +202,77 @@ doublerOutput =
 ```
 
 ^^^elm {raw=doublerOutput}^^^
+
+### Using tuples to compare adjacent list items
+
+Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list).
+Sometimes though you may wish to perform actions that depend on adjacent list items.
+For example, you could incease the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller.
+
+To help do this, we can transform a list of numbers into a list of _tuples_.
+A tuple is an ordered sequence of values, indicated in Elm by comma separated values enclosed in brackets.
+Unlike a list, a tuple does not have to contain elements all of the same type.
+The following are all valid tuples:
+
+```elm {l siding}
+myPair : ( Int, Int )
+myPair =
+    ( 5, 75 )
+
+
+myTriplet : ( Float, Float, Float )
+myTriplet =
+    ( 1.4, 75, 2.9 )
+
+
+person : ( String, Int )
+person =
+    ( "Ada Lovelace", 1815 )
+```
+
+We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List#map2) that creates a new list based on the transformation of two other lists.
+If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple operator `(,)`:
+
+```elm {l}
+neighbours : List a -> List ( a, a )
+neighbours items =
+    List.map2 (,) items (List.tail items |> Maybe.withDefault [])
+```
+
+```elm {l}
+neighbourOutput : List ( Int, Int )
+neighbourOutput =
+    neighbours [ 1, 2, 3, 4, 5 ]
+```
+
+^^^elm {raw=neighbourOutput}^^^
+
+Notice that the new list is one shorter than the original because the last item in the original list has no value following it so cannot be transformed into a tuple.
+
+The final stage is to proces this list of tuples to perform our 'add one if smaller than next or subtract one if larger':
+
+```elm {l}
+smooth : List Int -> List Int
+smooth items =
+    let
+        equalise ( a, b ) =
+            if a > b then
+                a - 1
+            else if a < b then
+                a + 1
+            else
+                a
+    in
+    neighbours items |> List.map equalise
+```
+
+```elm {l}
+smoothOutput : List Int
+smoothOutput =
+    smooth [ 1, 10, 1, 10, 1, 10 ]
+```
+
+^^^elm {raw=smoothOutput}^^^
 
 ---
 
