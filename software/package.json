@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "format:check": "prettier-check --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
+    "format": "prettier --write --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
+    "prebootstrap": "npm install",
+    "postinstall": "lerna bootstrap"
+  },
+  "devDependencies": {
+    "lerna": "^2.10.1",
+    "prettier": "^1.12.0",
+    "prettier-check": "^2.0.0"
+  }
+}
