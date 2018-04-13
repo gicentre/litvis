@@ -1,6 +1,6 @@
 {
   "name": "block-attributes",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Parses and stringifies code block attributes in markdown files",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,7 +18,6 @@
     "lint": "tsc --project . --noEmit && tslint --project ."
   },
   "dependencies": {
-    "html-entities": "^1.2.1",
     "lodash.snakecase": "^4.1.1"
   },
   "devDependencies": {
