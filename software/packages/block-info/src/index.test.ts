@@ -10,17 +10,17 @@ const testCasesForParseBlockInfo: Array<{
       "js cmd=true",
       "js {cmd=true}",
       "js  {  cmd=true  }  ",
-      "js{cmd=True}"
-    ]
+      "js{cmd=True}",
+    ],
   },
   {
     info: { language: "hello", attributes: {} },
-    raw: ["hello", " hello ", "hello {}", "hello {   }"]
+    raw: ["hello", " hello ", "hello {}", "hello {   }"],
   },
   {
     info: { language: undefined, attributes: { just: "attribute" } },
-    raw: [" {just=attribute}"]
-  }
+    raw: [" {just=attribute}"],
+  },
 ];
 
 const testCasesForNormalizeCodeBlockInfo: Array<{
@@ -29,26 +29,26 @@ const testCasesForNormalizeCodeBlockInfo: Array<{
 }> = [
   {
     infos: [{}],
-    normalizedInfo: { language: "", attributes: {} }
+    normalizedInfo: { language: "", attributes: {} },
   },
   {
     infos: [
       { language: "js", attributes: { cmd: true } },
       { language: "js", attributes: { Cmd: true } },
-      { language: "js", attributes: { CMD: true } }
+      { language: "js", attributes: { CMD: true } },
     ],
-    normalizedInfo: { language: "js", attributes: { cmd: true } }
+    normalizedInfo: { language: "js", attributes: { cmd: true } },
   },
   {
     infos: [{ language: "vega" }, { language: "VEGA", attributes: {} }],
-    normalizedInfo: { language: "vega", attributes: {} }
-  }
+    normalizedInfo: { language: "vega", attributes: {} },
+  },
 ];
 
 describe("lib/block-info", () => {
   testCasesForParseBlockInfo.map(({ raw, info }) => {
     const arrayOfTexts = typeof raw === "string" ? [raw] : raw;
-    arrayOfTexts.map(text => {
+    arrayOfTexts.map((text) => {
       it(`parseBlockInfo() correctly parses ${text}`, () => {
         const result: object = parseBlockInfo(text);
         expect(result).toEqual(info);
@@ -57,9 +57,9 @@ describe("lib/block-info", () => {
   });
 
   testCasesForNormalizeCodeBlockInfo.map(({ infos, normalizedInfo }) => {
-    infos.map(info => {
+    infos.map((info) => {
       it(`normalizeCodeBlockInfo() correctly normalizes ${JSON.stringify(
-        info
+        info,
       )}`, () => {
         const result: object = normalizeBlockInfo(info as BlockInfo);
         expect(result).toEqual(normalizedInfo);

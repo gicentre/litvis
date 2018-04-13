@@ -6,7 +6,8 @@
     "format:check": "prettier-check --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
     "format": "prettier --write --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
     "prebootstrap": "npm install",
-    "postinstall": "lerna bootstrap"
+    "postinstall": "lerna bootstrap",
+    "release": "lerna run lint && lerna run test && lerna run build && lerna publish"
   },
   "devDependencies": {
     "lerna": "^2.10.1",

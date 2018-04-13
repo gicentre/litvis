@@ -1,4 +1,4 @@
-export interface Attributes {
+export interface BlockAttributes {
   [key: string]: any;
 }
 

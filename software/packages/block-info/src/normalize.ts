@@ -10,7 +10,7 @@ export default function(blockInfo: BlockInfo): BlockInfo {
   ) {
     return {
       language: normalizedLanguage,
-      attributes: normalizedAttributes
+      attributes: normalizedAttributes,
     };
   }
   return blockInfo;
