@@ -1,7 +1,7 @@
 {
-  "name": "block-attributes",
-  "version": "0.1.2",
-  "description": "Parses and stringifies code block attributes in markdown files",
+  "name": "narrative-schemas",
+  "version": "0.0.0",
+  "description": "Implements loading and validation of litvis narrative schemas",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "keywords": [],
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
+    "@types/lodash": "^4.14.106",
     "@types/vfile": "^2.2.2",
     "@types/yamljs": "^0.2.30",
     "jest": "^22.4.3",
