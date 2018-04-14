@@ -1,0 +1,37 @@
+{
+  "name": "block-attributes",
+  "version": "0.1.2",
+  "description": "Parses and stringifies code block attributes in markdown files",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gicentre/litvis.git"
+  },
+  "scripts": {
+    "test": "jest --no-coverage",
+    "test:coverage": "jest",
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "lint": "tsc --project . --noEmit && tslint --project ."
+  },
+  "dependencies": {
+    "jsonschema": "^1.2.4",
+    "lodash": "^4.17.5",
+    "to-vfile": "^2.2.0",
+    "vfile": "^2.3.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/vfile": "^2.2.2",
+    "@types/yamljs": "^0.2.30",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.2",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "typescript": "^2.8.1"
+  }
+}
