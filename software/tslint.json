@@ -4,8 +4,7 @@
   "rules": {
     "interface-name": [true, "never-prefix"],
     "no-string-literal": false,
-    "object-literal-sort-keys": false,
-    "prefer-for-of": false,
-    "no-eval": false
+    "no-implicit-dependencies": true,
+    "object-literal-sort-keys": false
   }
 }

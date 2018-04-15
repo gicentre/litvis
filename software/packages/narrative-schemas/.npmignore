@@ -1,0 +1,7 @@
+*
+!schema.json
+!schema.js
+!dist/**/*
+dist/**/*.test.*
+!package.json
+!README.md

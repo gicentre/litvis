@@ -1,4 +1,6 @@
+// tslint:disable-next-line:no-implicit-dependencies
 import { Text } from "unist";
+// tslint:disable-next-line:no-implicit-dependencies
 import { NodeWithPosition, VFile } from "vfile";
 
 export interface ElmSymbol {

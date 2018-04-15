@@ -2,3 +2,10 @@
 elm-stuff
 # elm-repl generated files
 repl-temp-*
+
+# node-related files
+node_modules
+dist
+yarn-error.log
+lerna-debug.log
+software/packages/*/package-lock.json
