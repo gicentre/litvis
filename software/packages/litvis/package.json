@@ -1,0 +1,31 @@
+{
+  "name": "block-attributes",
+  "version": "0.1.2",
+  "description": "Literate Visualization, http://litvis.org/",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gicentre/litvis.git"
+  },
+  "scripts": {
+    "test": "jest --no-coverage",
+    "test:coverage": "jest",
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "lint": "tsc --project . --noEmit && tslint --project ."
+  },
+  "dependencies": {
+    "literate-elm": "^0.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.2",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "typescript": "^2.8.1"
+  }
+}
