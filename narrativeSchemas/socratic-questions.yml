@@ -1,0 +1,49 @@
+dependencies:
+  - dialogue
+
+labels:
+  - name: question
+    aliasFor: voiceA
+  - name: answer
+    aliasFor: voiceB
+
+rules:
+  - description: Question “What are you trying to achieve with this visualization?” should be before “Why have you chosen this data source and sample?”
+    selector:
+      label: voiceA
+      trimmedContent: "What are you trying to achieve with this visualization?"
+    before:
+      selector:
+        label: voiceA
+        trimmedContent: "Why have you chosen this data source and sample?"
+
+  - description: Question “Why have you chosen this data source and sample?” should be before “Why have you made these visual mark design choices?”
+    selector:
+      label: voiceA
+      trimmedContent: "Why have you chosen this data source and sample?"
+    before:
+      selector:
+        label: voiceA
+        trimmedContent: "Why have you made these visual mark design choices?"
+
+  - description: Question “Why have you made these visual mark design choices?” should be before “To what extent does your visualization meet your original objectives?”
+    selector:
+      label: voiceA
+      trimmedContent: "To what extent does your visualization meet your original objectives?"
+    before:
+      selector:
+        label: voiceA
+
+styling:
+  css: |
+    .voiceA {  
+      font-style: italic; 
+      font-size: 110%;
+      border-top:solid 1px #999;
+      margin-top: 3em;
+      padding-top:1em;
+    }
+    
+    .voiceB {
+      font-style: normal;
+    }

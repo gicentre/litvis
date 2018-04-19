@@ -1,0 +1,16 @@
+dependencies:
+  - dialogue
+
+labels:
+  - name: achilles
+    aliasFor: voiceA
+  - name: tortoise
+    aliasFor: voiceB
+
+styling:
+  css: |
+    .voiceA {
+    }
+
+    .voiceB {
+    }
