@@ -4,7 +4,7 @@ elm:
   dependencies:
     gicentre/elm-vega: latest
 narrative-schemas:
-  - ../schemas/idiom.yml
+  - ../narrative-schemas/idiom.yml
 ---
 
 ```elm {l=hidden}

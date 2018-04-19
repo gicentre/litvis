@@ -427,7 +427,7 @@ A label with attributes:
 {( comment author="alex" |}It'd be interesting to replace hue with brightness{| comment )}
 ```
 
-Examples of schema yamls can be found in [schemas](../schemas) directory.
+Examples of schema yamls can be found in [narrative-schemas](../narrative-schemas) directory.
 
 ## Getting started with litvis
 
