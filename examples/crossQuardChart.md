@@ -10,6 +10,7 @@ narrative-schemas:
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
+
 @import "css/robotoStyle.less"
 
 # CrossQuad Charts

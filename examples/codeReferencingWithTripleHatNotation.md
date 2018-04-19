@@ -4,7 +4,7 @@ elm:
     gicentre/elm-vega: latest
 ---
 
-Teaser 
+Teaser
 
 ^^^elm v=barChart^^^
 

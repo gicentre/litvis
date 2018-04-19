@@ -16,7 +16,6 @@ _Delimits a block of literate code, which is evaluated in real time_
 
 ````markdown
 ```elm {...attributes}
-
 ```
 ````
 
@@ -103,17 +102,17 @@ Simple renderable spec:
 ```elm {l v}
 mySpec : Spec
 mySpec =
-let
-    data =
-        dataFromColumns []
-            << dataColumn "a" (Strings [ "C", "C", "D", "D", "E", "E" ])
-            << dataColumn "b" (Numbers [ 2, 7, 1, 2, 6, 8 ])
+    let
+        data =
+            dataFromColumns []
+                << dataColumn "a" (Strings [ "C", "C", "D", "D", "E", "E" ])
+                << dataColumn "b" (Numbers [ 2, 7, 1, 2, 6, 8 ])
 
-    enc =
-        encoding
-            << position X [ PName "a", PmType Nominal ]
-            << position Y [ PName "b", PmType Quantitative, PAggregate Mean ]
-in
+        enc =
+            encoding
+                << position X [ PName "a", PmType Nominal ]
+                << position Y [ PName "b", PmType Quantitative, PAggregate Mean ]
+    in
     toVegaLite [ data [], enc [], mark Bar [] ]
 ```
 ````
@@ -224,7 +223,8 @@ In this case, the urls inside vega specs (such as links to data files) are assum
 ````markdown
 ```elm {l}
 displayBranch : String -> String
-displayBranch name = "Branch " ++ name
+displayBranch name =
+    "Branch " ++ name
 ```
 ````
 
