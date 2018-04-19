@@ -14,7 +14,7 @@ _Delimits a block of literate code, which is evaluated in real time_
 
 #### Syntax
 
-````md
+````markdown
 ```elm {...attributes}
 
 ```
@@ -91,7 +91,7 @@ Defining `l` to make the code block literate is not necessary if `v`, `r` or `j`
 
 Common ‘header’ to set up code blocks:
 
-````md
+````markdown
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
@@ -99,7 +99,7 @@ import VegaLite exposing (..)
 
 Simple renderable spec:
 
-````md
+````markdown
 ```elm {l v}
 mySpec : Spec
 mySpec =
@@ -120,7 +120,7 @@ in
 
 Branching:
 
-````md
+````markdown
 ```elm {l=hidden id=imports}
 import VegaLite exposing (..)
 ```
@@ -192,7 +192,7 @@ _Splits a litvis narrative between multiple documents (markdown files), which en
 
 #### Syntax
 
-```md
+```markdown
 ---
 follows: path/to/another/document[.md]
 ---
@@ -221,7 +221,7 @@ In this case, the urls inside vega specs (such as links to data files) are assum
 
 `root.md`
 
-````md
+````markdown
 ```elm {l}
 displayBranch : String -> String
 displayBranch name = "Branch " ++ name
@@ -230,7 +230,7 @@ displayBranch name = "Branch " ++ name
 
 `experiments/a.md`
 
-```md
+```markdown
 ---
 follows: ../root
 ---
@@ -240,7 +240,7 @@ We are in ^^^elm r=(displayBranch "a")^^^!
 
 `experiments/b.md`
 
-```md
+```markdown
 ---
 follows: ../Root
 ---
@@ -254,7 +254,7 @@ _Plays the role of `elm-package.json` to configure Elm compiler_
 
 #### Syntax
 
-```md
+```markdown
 ---
 elm:
   dependencies:
@@ -297,7 +297,7 @@ Other fields from `elm-package.json` may be added in future to support more use 
 
 `root.md`
 
-```md
+```markdown
 ---
 elm:
   dependencies:
@@ -308,7 +308,7 @@ elm:
 
 `localCopyOfElmVega.md`
 
-```md
+```markdown
 ---
 follows: root
 elm:
@@ -321,7 +321,7 @@ elm:
 
 `colorExperiments.md`
 
-```md
+```markdown
 ---
 follows: root
 elm:
@@ -336,7 +336,7 @@ _Signal the purpose of a part of a narrative_
 
 #### Syntax
 
-```md
+```markdown
 ---
 narrative-schemas:
   - some-schema[.yml|yaml]
@@ -405,13 +405,13 @@ Unlike with `follows` for narrative branching, cyclic references in narrative sc
 
 Incomplete narrative (single custom label called `todo`):
 
-```md
+```markdown
 We conclude that {( todo )}
 ```
 
 Semantically linked paired label:
 
-```md
+```markdown
 {( question |}
 
 Ultimate Question of Life, the Universe, and Everything
@@ -423,7 +423,7 @@ Ultimate Question of Life, the Universe, and Everything
 
 A label with attributes:
 
-```md
+```markdown
 {( comment author="alex" |}It'd be interesting to replace hue with brightness{| comment )}
 ```
 
