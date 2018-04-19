@@ -1,0 +1,52 @@
+#litvis {
+  @fSize: 10.5pt;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: @fSize;
+  line-height: 1.45;
+  text-align: justify;
+  color : #333;
+  padding-left: 10%;
+  padding-right: 15%;
+
+  @media print {
+    transform:  scale(1.0);
+    @fSize: 9.5pt;
+    font-size: @fSize;
+    h1 { font-size: @fSize*1.5;}
+    h2,h3,h4,h5,h6 { font-size: @fSize*1.1;}
+    svg {transform:  scale(0.9)}
+  }
+
+  code,pre {
+    background: rgba(255, 255, 255, 0);
+
+    font-family: 'Iosevka', monospace;
+    page-break-inside: auto;
+  }
+
+  code {
+    padding-left:0;
+    border-radius: 1px;
+    background: #f8f8f8;}
+
+  pre {
+    background: #fff;
+    border-radius: 0;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  h1,h2,h3,h4,h5,h6 {
+    font-size: @fSize*1.1;
+    font-weight: 500;
+    padding-top:1em;
+  }
+
+  h1 { font-size: @fSize*1.5;}
+
+  h2 {
+    border-top:solid 1px #999;
+    margin-top: 3em;
+  }
+}
