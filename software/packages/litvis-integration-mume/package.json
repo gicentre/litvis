@@ -1,0 +1,44 @@
+{
+  "private": true,
+  "name": "litvis-integration-mume",
+  "version": "0.0.0",
+  "description": "Enables litvis functionality in mume and markdown-preview-enhanced",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "keywords": [
+    "literate-programming",
+    "lp",
+    "litvis",
+    "elm",
+    "mume",
+    "markdown"
+  ],
+  "author": "",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "test": "jest --no-coverage",
+    "test:coverage": "jest",
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "lint": "tsc --project . --noEmit && tslint --project ."
+  },
+  "dependencies": {
+    "@types/markdown-it": "0.0.4",
+    "@types/vfile": "^2.2.2",
+    "block-attributes": "^0.1.0",
+    "block-info": "^0.1.0",
+    "html-entities": "^1.2.1",
+    "lru-cache": "^4.1.2",
+    "markdown-it": "^8.4.1",
+    "to-vfile": "^2.2.0",
+    "vfile": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.7",
+    "@types/html-entities": "^1.2.16",
+    "@types/lru-cache": "^4.1.0",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "typescript": "^2.8.1"
+  }
+}
