@@ -1,0 +1,34 @@
+#litvis {
+  @body-font: 'Crimson';
+  @code-font: 'Iosevka';
+  @font-size--small: 11px;
+  font-family: @body-font, sans-serif;
+
+  code, pre {
+    font-family: @code-font;
+  }
+
+  @media print {
+    font-size: @font-size--small;
+    padding: 8em;
+
+  }
+
+  .question {
+    background: #eee;
+    padding: 0.5em;
+    border-radius: 8px 8px 0 0;
+    font-weight: normal;
+  }
+
+  .answer {
+    background: #f6f6f6;
+    margin-top: -2em;
+    padding-top: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-bottom: 1em;
+    border-radius: 0 0 8px 8px;
+  }
+
+}

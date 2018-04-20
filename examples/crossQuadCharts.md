@@ -11,7 +11,7 @@ narrative-schemas:
 import VegaLite exposing (..)
 ```
 
-@import "css/robotoStyle.less"
+@import "assets/robotoStyle.less"
 
 # CrossQuad Charts
 

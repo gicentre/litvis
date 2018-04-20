@@ -6,20 +6,20 @@ labels:
     paired:
       htmlTemplate: <div class="voiceB">{{children}}</div>
 
-rules:
-  - description: Dialogue should alternate between voices.
-    selector:
-      label: voiceA
-    notFollowedBy:
-      selector:
-         label: voiceA
-
-  - description: Dialogue should alternate between voices.
-    selector:
-      label: voiceB
-    notFollowedBy:
-      selector:
-         label: voiceB
+# rules:
+#   - description: Dialogue should alternate between voices.
+#     selector:
+#       label: voiceA
+#     notFollowedBy:
+#       selector:
+#          label: voiceA
+# 
+#   - description: Dialogue should alternate between voices.
+#     selector:
+#       label: voiceB
+#     notFollowedBy:
+#       selector:
+#          label: voiceB
 
 styling:
   css: |

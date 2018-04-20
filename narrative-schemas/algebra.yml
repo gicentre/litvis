@@ -26,60 +26,60 @@ rules:
       label: invariance
     minimumOccurrences: 1
 
-  - description: each description of possible invariance should be followed by an assessment of it.
-    selector:
-      label: invariance
-    followedBy:
-      selector:
-        label: invarianceAssessment
-      notAfter:
-        label: invariance
-
-  - description: assessment cannot be blank
-    selector:
-      label: invarianceAssessment
-    children:
-      minimumTrimmedLength: 1
+  # - description: each description of possible invariance should be followed by an assessment of it.
+  #   selector:
+  #     label: invariance
+  #   followedBy:
+  #     selector:
+  #       label: invarianceAssessment
+  #     notAfter:
+  #       label: invariance
+  # 
+  # - description: assessment cannot be blank
+  #   selector:
+  #     label: invarianceAssessment
+  #   children:
+  #     minimumTrimmedLength: 1
 
   - description: Kindlmann and Scheidegger's principle of unambiguous data depiction.
     selector:
       label: unambiguity
     minimumOccurrences: 1
 
-  - description: each description of possible data depiction ambiguity should be followed by an assessment of it.
-    selector:
-      label: unambiguity
-    followedBy:
-      selector:
-        label: unambiguityAssessment
-      notAfter:
-        label: unambiguity
-
-  - description: assessment cannot be blank
-    selector:
-      label: unambiguityAssessment
-    children:
-      minimumTrimmedLength: 1
+  # - description: each description of possible data depiction ambiguity should be followed by an assessment of it.
+  #   selector:
+  #     label: unambiguity
+  #   followedBy:
+  #     selector:
+  #       label: unambiguityAssessment
+  #     notAfter:
+  #       label: unambiguity
+  # 
+  # - description: assessment cannot be blank
+  #   selector:
+  #     label: unambiguityAssessment
+  #   children:
+  #     minimumTrimmedLength: 1
 
   - description: Kindlmann and Scheidegger's principle of visual-data correspondence.
     selector:
       label: correspondence
     minimumOccurrences: 1
 
-  - description: each description of visual-data correspondence should be followed by an assessment of it.
-    selector:
-      label: correspondence
-    followedBy:
-      selector:
-        label: correspondenceAssessment
-      notAfter:
-        label: correspondence
-
-  - description: assessment cannot be blank
-    selector:
-      label: correspondenceAssessment
-    children:
-      minimumTrimmedLength: 1
+  # - description: each description of visual-data correspondence should be followed by an assessment of it.
+  #   selector:
+  #     label: correspondence
+  #   followedBy:
+  #     selector:
+  #       label: correspondenceAssessment
+  #     notAfter:
+  #       label: correspondence
+  # 
+  # - description: assessment cannot be blank
+  #   selector:
+  #     label: correspondenceAssessment
+  #   children:
+  #     minimumTrimmedLength: 1
 
 styling:
    css: |

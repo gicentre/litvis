@@ -5,9 +5,9 @@ elm:
          gicentre/elm-vega: latest
 ---
 
-@import "css/robotoStyle.less"
+@import "assets/robotoStyle.less"
 
-## Eclipse Mapping
+## Lunar Eclipse Mapping
 
 There will be a lunar eclipse in the 27th of July, 2018.
 
@@ -66,7 +66,7 @@ eclipse proj lonRotate latRotate showLabels =
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/world-110m.json" [ TopojsonFeature "countries1" ]
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ TopojsonFeature "countries1" ]
                        , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
                        ]
                 )
@@ -78,7 +78,7 @@ eclipse proj lonRotate latRotate showLabels =
             in
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/eclipse.json" [ TopojsonFeature "eclipse" ]
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ TopojsonFeature "eclipse" ]
                        , trans []
                        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.1 ]
                        ]
