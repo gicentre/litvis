@@ -15,7 +15,7 @@ Attribute `raw` (or `r`) is the simplest way to see the result.
 
 ![helloworld](https://user-images.githubusercontent.com/608862/38144403-735c2894-343c-11e8-983a-39487fbb116e.gif)
 
-> [examples/helloWorld.md](examples/helloWorld.md)
+> [examples/features/helloWorld.md](examples/features/helloWorld.md)
 
 ## Simple litvis chart
 
@@ -23,7 +23,7 @@ A litvis code block with attribute `visualize` (or `v`) automatically renders th
 
 ![simplechart](https://user-images.githubusercontent.com/608862/38144167-940f5eea-343b-11e8-82d8-96737615febc.gif)
 
-> [examples/simpleChart.md](examples/simpleChart.md)
+> [examples/features/simpleChart.md](examples/features/simpleChart.md)
 
 ## Code referencing across blocks
 
@@ -32,7 +32,7 @@ It is not necessary to maintain the order of blocks to make referencing work.
 
 ![codereferencingcodeblocks](https://user-images.githubusercontent.com/608862/38144058-2711026c-343b-11e8-9eb5-080ea07d582c.gif)
 
-> [examples/codeReferencingAcrossBlocks.md](examples/codeReferencingAcrossBlocks.md)
+> [examples/features/codeReferencingAcrossBlocks.md](examples/features/codeReferencingAcrossBlocks.md)
 
 ## Code referencing with triple hat notation
 
@@ -40,7 +40,7 @@ Symbols from Elm code blocks can be referenced in any part of the markdown using
 
 ![codereferencingtriplehat](https://user-images.githubusercontent.com/608862/38144584-41c5891e-343d-11e8-81c7-a9c0150e409b.gif)
 
-> [examples/codeReferencingWithTripleHatNotation.md](examples/codeReferencingWithTripleHatNotation.md)
+> [examples/features/codeReferencingWithTripleHatNotation.md](examples/features/codeReferencingWithTripleHatNotation.md)
 
 ## Code referencing with parameters
 
@@ -49,7 +49,7 @@ Triple hat references accept parametrized function calls, which makes it easy to
 
 ![codereferencingparams](https://user-images.githubusercontent.com/608862/38144395-6e1230ae-343c-11e8-8d45-510ae0c5d161.gif)
 
-> [examples/codeReferencingWithParameters.md](examples/codeReferencingWithParameters.md)
+> [examples/features/codeReferencingWithParameters.md](examples/features/codeReferencingWithParameters.md)
 
 ## Debugging `vega-lite` specs
 
@@ -58,7 +58,7 @@ These attributes follow the same ordering rules as `l` and `v`.
 
 ![debuggingvegalite](https://user-images.githubusercontent.com/608862/38144689-de039e56-343d-11e8-9a42-05726e2f87b4.gif)
 
-> [examples/debuggingVegaLite.md](examples/debuggingVegaLite.md)
+> [examples/features/debuggingVegaLite.md](examples/features/debuggingVegaLite.md)
 
 ## Interaction
 
@@ -67,7 +67,7 @@ User input controls can be added to the document, if desired.
 
 ![interaction](https://user-images.githubusercontent.com/608862/38144556-178c98e0-343d-11e8-9c98-1e247ff48581.gif)
 
-> [examples/interaction.md](examples/interaction.md)
+> [examples/features/interaction.md](examples/features/interaction.md)
 
 ### Mutliple execution contexts
 
@@ -79,7 +79,7 @@ This keyword makes previously defined symbols in `default` context available wit
 
 ![codesidings](https://user-images.githubusercontent.com/608862/38163354-8faa3c9e-34ea-11e8-84d3-d12747238b6d.gif)
 
-> [examples/codeSidings.md](examples/codeSidings.md)
+> [examples/features/codeSidings.md](examples/features/codeSidings.md)
 
 ### Branching narratives
 
@@ -89,9 +89,9 @@ Each branch in a tree can represent alternative potentially competing designs ea
 
 ![branchingnarratives](https://user-images.githubusercontent.com/608862/38163350-84ecde10-34ea-11e8-900c-ec8f4ad46ef0.gif)
 
-> [examples/branching/root.md](examples/branching/root.md)  
-> [examples/branching/branchA.md](examples/branching/branchA.md)  
-> [examples/branching/branchB.md](examples/branching/branchB.md)
+> [examples/features/branching/root.md](examples/features/branching/root.md)  
+> [examples/features/branching/branchA.md](examples/features/branching/branchA.md)  
+> [examples/features/branching/branchB.md](examples/features/branching/branchB.md)
 
 ### Narrative schemas
 
