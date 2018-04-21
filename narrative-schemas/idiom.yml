@@ -1,0 +1,50 @@
+labels:
+  - name: aim
+    paired:
+      htmlTemplate: <div class="aim"><fieldset><legend>Aim</legend>{{children}}</fieldset></div>
+  - name: description
+    paired:
+      htmlTemplate: <div class="description"><fieldset><legend>Description</legend>{{children}}</fieldset></div>
+  - name: architypes
+    paired:
+      htmlTemplate: <div class="architypes"><fieldset><legend>Architypes</legend>{{children}}</fieldset></div>
+  - name: limitations
+    paired:
+      htmlTemplate: <div class="limitations"><fieldset><legend>Limitations</legend>{{children}}</fieldset></div>
+
+rules:
+  - description: Narrative must always contain just one set of aims.
+    selector:
+      label: aim
+    minimumOccurrences: 1
+    maximumOccurrences: 1
+
+  - description: Narrative must always contain just one description of the idiom.
+    selector:
+      label: description
+    minimumOccurrences: 1
+    maximumOccurrences: 1
+
+  - description: Narrative must always contain at least one set of limitations.
+    selector:
+      label: limitations
+    minimumOccurrences: 1
+
+styling:
+   css: |
+    fieldset {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    legend {
+      font-size:0.9em; font-style: italic;
+    }
+
+    .aim fieldset {
+      background: #f3f3f3;
+    }
+
+    .aim,.description,.architypes,.limitations {
+      margin-top: 1em;
+      margin-bottom: 2em;
+    }

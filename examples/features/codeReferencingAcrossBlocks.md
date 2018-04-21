@@ -4,13 +4,13 @@ elm:
     gicentre/elm-vega: latest
 ---
 
-```elm {l}
+```elm {l=hidden}
 import VegaLite exposing (..)
 ```
 
 # Simple litvis chart
 
-```elm {l v}
+```elm {l=hidden}
 barChart : Spec
 barChart =
     let
@@ -20,8 +20,14 @@ barChart =
 
         enc =
             encoding
-                << position Y [ PName "Horsepower", PmType Quantitative ]
-                << position X [ PmType Quantitative, PAggregate Count ]
+                << position X [ PName "Horsepower", PmType Quantitative ]
+                << position Y [ PmType Quantitative, PAggregate Count ]
     in
     toVegaLite [ data, enc [], mark Bar [] ]
+```
+
+```elm {v}
+barChartCopy : Spec
+barChartCopy =
+    barChart
 ```
