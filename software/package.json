@@ -2,16 +2,23 @@
   "private": true,
   "scripts": {
     "build": "lerna run build",
+    "build:watch": "lerna run --parallel build:watch",
+    "clean": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
+    "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
     "test": "lerna run test",
     "format:check": "prettier-check --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
     "format": "prettier --write --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
-    "prebootstrap": "npm install",
-    "postinstall": "lerna bootstrap",
     "release": "lerna run lint && lerna run test && lerna run build && lerna publish"
   },
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/@types/**"]
+  },
+  "dependencies": {},
   "devDependencies": {
-    "lerna": "^2.10.1",
-    "prettier": "^1.12.0",
-    "prettier-check": "^2.0.0"
+    "lerna": "^2.10.2",
+    "prettier": "^1.12.1",
+    "prettier-check": "^2.0.0",
+    "rimraf": "^2.6.2"
   }
 }
