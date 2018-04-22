@@ -4,8 +4,8 @@ elm-stuff
 repl-temp-*
 
 # node-related files
-node_modules
+coverage
 dist
-yarn-error.log
 lerna-debug.log
-software/packages/*/package-lock.json
+node_modules
+yarn-error.log

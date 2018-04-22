@@ -15,3 +15,47 @@ There is ongoing work on refactoring [gicentre/mume-with-litvis](https://github.
 This will make it easier to use litvis features in other environments, not only in [Atom](https://atom.io/packages/markdown-preview-enhanced-with-litvis) or [VSCode](https://marketplace.visualstudio.com/items?itemName=gicentre.markdown-preview-enhanced-with-litvis).
 
 Feel free to contact the authors if you would like to join!
+
+## Development
+
+Litvis code is organised in a form of a _monorepo_ and relies on [`yarn` workspaces](https://yarnpkg.com/lang/en/docs/workspaces/) for package management.
+It also uses `lerna`
+
+Before getting started, make sure you have the latest `node` and the latest `yarn` installed on your machine.
+
+```bash
+node --version
+## >= 9.11
+yarn --version
+## >= 1.6.0
+```
+
+### Installing dependencies
+
+```bash
+yarn
+```
+
+### Quality control
+
+#### linting
+
+```bash
+yarn lint
+```
+
+#### testing
+
+```bash
+yarn test
+```
+
+### Build packages
+
+```bash
+## once
+yarn build
+
+## continuously
+yarn build:watch
+```
