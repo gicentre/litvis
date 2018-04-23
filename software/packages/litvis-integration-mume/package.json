@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "litvis-integration-mume",
   "version": "0.0.0",
   "description": "Enables litvis functionality in mume and markdown-preview-enhanced",
