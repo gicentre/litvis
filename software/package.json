@@ -1,14 +1,19 @@
 {
   "private": true,
   "scripts": {
-    "build": "lerna run build",
-    "build:watch": "lerna run --parallel build:watch",
-    "clean": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
+    "build": "yarn clean:dist && lerna run build",
+    "build-and-qa": "yarn build && yarn qa",
+    "build:watch": "lerna run build; lerna run --parallel build:watch",
+    "clean": "yarn clean:dist && rimraf packages/*/coverage packages/*/yarn-error.log yarn-error.log lerna-debug.log",
+    "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
+    "format:check": "prettier-check --ignore-path ../.gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
+    "format": "prettier --write --ignore-path ../.gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
+    "lint": "lerna run lint",
+    "qa": "yarn lint && yarn format:check && yarn test",
+    "release": "yarn build-and-qa && lerna publish",
     "test": "lerna run test",
-    "format:check": "prettier-check --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
-    "format": "prettier --write --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
-    "release": "lerna run lint && lerna run test && lerna run build && lerna publish"
+    "test:coverage": "lerna run test"
   },
   "workspaces": {
     "packages": ["packages/*"],
