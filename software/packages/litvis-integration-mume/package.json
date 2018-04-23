@@ -16,11 +16,11 @@
   "author": "",
   "license": "BSD-3-Clause",
   "scripts": {
-    "test": "jest --no-coverage",
-    "test:coverage": "jest",
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project ."
+    "lint": "tsc --project . --noEmit && tslint --project .",
+    "test": "jest --no-coverage",
+    "test:coverage": "jest"
   },
   "dependencies": {
     "block-attributes": "^0.1.0",

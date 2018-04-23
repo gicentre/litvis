@@ -11,11 +11,11 @@
     "url": "git+https://github.com/gicentre/litvis.git"
   },
   "scripts": {
-    "test": "jest --no-coverage",
-    "test:coverage": "jest",
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project ."
+    "lint": "tsc --project . --noEmit && tslint --project .",
+    "test": "jest --no-coverage",
+    "test:coverage": "jest"
   },
   "dependencies": {
     "literate-elm": "^0.1.1"
