@@ -44,7 +44,6 @@ Symbols from Elm code blocks can be referenced in any part of the markdown using
 
 ## Code referencing with parameters
 
-
 Triple hat references accept parametrized function calls, which makes it easy to combine text with graphics and produce families of related graphics. This means that small multiples and sparklines are straightforward.
 
 ![codereferencingparams](https://user-images.githubusercontent.com/608862/38144395-6e1230ae-343c-11e8-8d45-510ae0c5d161.gif)
@@ -104,7 +103,7 @@ Schemas can be used to validate litvis documents.
 ![narrativeschemas](https://user-images.githubusercontent.com/608862/38163859-d69bc4da-34f2-11e8-984d-786118f3100b.gif)
 
 > [examples/crossQuardChart.md](examples/crossQuardChart.md)  
-> [schemas/idiom.yml](schemas/idiom.yml)  
+> [schemas/idiom.yml](schemas/idiom.yml)
 
 ## Linting
 
@@ -124,5 +123,4 @@ Formatting keeps litvis files in a readable and maintainable state, which eases 
 
 ![formatting1000](https://user-images.githubusercontent.com/608862/38144144-84de604c-343b-11e8-8ffd-f210e2f991ae.gif)
 
-> [examples/lunarEclipse.md](examples/lunarEclipse.md)  
-
+> [examples/lunarEclipse.md](examples/lunarEclipse.md)

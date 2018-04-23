@@ -18,31 +18,30 @@ The principles are outlined here forming a type of manifesto and the questions a
 3.  **Examine power and aspire to empowerment.** Acknowlege communities of users as a source of knowledge not just a recipient of an interface.
 4.  **Consider context.**. Consider how diverse contexts situate knowledge and avoid excluding context through data homogenisation.
 5.  **Legitimise embodiment and affect.** Recognise that experience derives from sensation and emotion.
-6.  **Make labour visible.** Recognise and expose those who have laboured to generate data and visualization through provenance rhetoric. 
+6.  **Make labour visible.** Recognise and expose those who have laboured to generate data and visualization through provenance rhetoric.
 
-* * *
+---
 
+{( binProcess |} Process response here. {| binProcess )}
 
-{( binProcess |}  Process response here.  {| binProcess )}
+{( binOutput |} Output response here. {| binOutput )}
 
-{( binOutput |}  Output response here.  {| binOutput )}
+{( pluProcess |} Process response here. {| pluProcess )}
 
-{( pluProcess |}  Process response here.  {| pluProcess )}
+{( pluOutput |} Output response here. {| pluOutput )}
 
-{( pluOutput |}  Output response here.  {| pluOutput )}
+{( powProcess |} Process response here. {| powProcess )}
 
-{( powProcess |}  Process response here.  {| powProcess )}
+{( powOutput |} Output response here. {| powOutput )}
 
-{( powOutput |}  Output response here.  {| powOutput )}
+{( conProcess |} Process response here. {| conProcess )}
 
-{( conProcess |}  Process response here.  {| conProcess )}
+{( conOutput |} Output response here. {| conOutput )}
 
-{( conOutput |}  Output response here.  {| conOutput )}
+{( affProcess |} Process response here. {| affProcess )}
 
-{( affProcess |}  Process response here.  {| affProcess )}
+{( affOutput |} Output response here. {| affOutput )}
 
-{( affOutput |}  Output response here.  {| affOutput )}
+{( labProcess |} Process response here. {| labProcess )}
 
-{( labProcess |}  Process response here.  {| labProcess )}
-
-{( labOutput |}  Output response here.  {| labOutput )}
+{( labOutput |} Output response here. {| labOutput )}
