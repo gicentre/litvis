@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "Parses and normalizes code block info in markdown files",
   "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "keywords": [],
   "license": "BSD-3-Clause",
   "repository": {

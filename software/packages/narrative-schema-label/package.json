@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Narrative schema label parsing and printing",
   "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "keywords": [],
   "license": "BSD-3-Clause",
   "repository": {
