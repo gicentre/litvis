@@ -92,11 +92,3 @@ export interface OutputExpressionWithFile extends OutputExpression {
     // value?: any;
   };
 }
-
-export import ProcessedLitvisContextStatus = ProgramResultStatus;
-
-export interface ProcessedLitvisContext {
-  name: string;
-  status: ProcessedLitvisContextStatus;
-  evaluatedOutputExpressions: OutputExpression[];
-}

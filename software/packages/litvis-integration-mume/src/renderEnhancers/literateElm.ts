@@ -1,25 +1,24 @@
+import { BlockInfo } from "block-info";
 import * as cheerio from "cheerio";
-import * as _ from "lodash";
-import { Cache } from "lru-cache";
-import * as hash from "object-hash";
-
-import { BlockInfo } from "../../lib/block-info";
-import {
-  OutputExpression,
-  ProcessedLitvisContext,
-  ProcessedLitvisContextStatus,
-} from "../../lib/litvis";
+import { parse as parseElmStringRepresentation } from "elm-string-representation";
+import { Html5Entities } from "html-entities";
 import {
   AttributeDerivatives,
   BlockOutputFormat,
   extractAttributeDerivatives,
+  LitvisNarrative,
+  OutputExpression,
   OutputFormat,
+  ProcessedLitvisContext,
+  ProcessedLitvisContextStatus,
   resolveExpressions,
-} from "../../lib/litvis/attribute-derivatives";
-import parseElmStringRepresentation from "../../lib/litvis/elm/parse-elm-string-representation";
-import { LitvisNarrative } from "../../lib/litvis/narrative";
-import { escapeString } from "../../utility";
-import { LitvisEnhancerCache } from "./types";
+} from "litvis";
+import * as _ from "lodash";
+import { Cache } from "lru-cache";
+import * as hash from "object-hash";
+import { LitvisEnhancerCache } from "../types";
+
+const escapeString = new Html5Entities().encode;
 
 export default async function enhance(
   $: CheerioStatic,

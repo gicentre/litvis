@@ -1,14 +1,14 @@
-import * as _ from "lodash";
-import * as visit from "unist-util-visit";
-import { LitvisNarrative } from ".";
-import { CodeBlockWithFile, ProcessedLitvisContext } from "..";
-import { Cache } from "../cache";
 import {
   ensureEnvironment,
   EnvironmentStatus,
   ProgramResult,
   runProgram,
 } from "literate-elm";
+import * as _ from "lodash";
+import * as visit from "unist-util-visit";
+import { Cache } from "../types";
+import { LitvisNarrative, ProcessedLitvisContext } from "../types";
+import { CodeBlockWithFile } from "../types";
 
 export default async (
   narrative: LitvisNarrative,

@@ -1,11 +1,11 @@
 import * as _ from "lodash";
 import * as visit from "unist-util-visit";
-import { LitvisDocument } from ".";
+import { resolveExpressions } from "../attributeDerivatives";
 import {
   AttributeDerivatives,
   BlockOutputFormat,
-  resolveExpressions,
-} from "../attribute-derivatives";
+  LitvisDocument,
+} from "../types";
 
 function visitCodeBlock(ast, vFile) {
   return visit(ast, "code", (codeBlockNode, index, parent) => {

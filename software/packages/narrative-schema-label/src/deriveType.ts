@@ -1,6 +1,6 @@
-import { LabelType, LabelFence } from "./types";
+import { LabelFence, LabelType } from "./types";
 
-export const deriveType = (start: string, end: string): LabelType => {
+export default (start: string, end: string): LabelType => {
   if (start === LabelFence.START && end === LabelFence.END) {
     return LabelType.SINGLE;
   }

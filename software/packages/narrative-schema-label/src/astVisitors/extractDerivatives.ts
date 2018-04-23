@@ -1,10 +1,10 @@
+import { parseBlockInfo } from "block-info";
 import * as _ from "lodash";
 import * as visit from "unist-util-visit";
-import { parseBlockInfo } from "../../block-info/index";
-import { LitvisDocument } from "../document";
-import { LabelType } from "../narrative-schema";
+import { VFile } from "vfile";
+import { LabelType } from "../types";
 
-function visitNarrativeSchemaLabel(ast, vFile: LitvisDocument) {
+export default (ast, vFile: VFile<any>) => {
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
     const parsedInfo = parseBlockInfo(labelNode.data.info);
     const labelName = parsedInfo.language;
@@ -44,16 +44,16 @@ function visitNarrativeSchemaLabel(ast, vFile: LitvisDocument) {
       return;
     }
   });
-}
+};
 
-export default function() {
-  return function transformer(ast, vFile, next) {
-    visitNarrativeSchemaLabel(ast, vFile);
+// export default function() {
+//   return function transformer(ast, vFile, next) {
+//     visitNarrativeSchemaLabel(ast, vFile);
 
-    if (typeof next === "function") {
-      return next(null, ast, vFile);
-    }
+//     if (typeof next === "function") {
+//       return next(null, ast, vFile);
+//     }
 
-    return ast;
-  };
-}
+//     return ast;
+//   };
+// }

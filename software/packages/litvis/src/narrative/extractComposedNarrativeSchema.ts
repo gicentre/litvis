@@ -1,8 +1,7 @@
 import * as _ from "lodash";
+import { loadComposedNarrativeSchema } from "narrative-schema";
 import * as vfile from "vfile";
-import { LitvisNarrative } from ".";
-import { LitvisDocument } from "../document";
-import { loadComposedNarrativeSchema } from "../narrative-schema";
+import { LitvisDocument, LitvisNarrative } from "../types";
 
 export default async (
   narrative: LitvisNarrative,

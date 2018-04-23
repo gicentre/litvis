@@ -3,9 +3,8 @@ import * as _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import * as vfile from "vfile";
-import { LitvisNarrative } from ".";
-import { Cache } from "../cache";
-import { LitvisDocument, parse as parseDocument } from "../document";
+import { parse as parseDocument } from "../document";
+import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
 const MAX_CHAIN_LENGTH = 10;
 

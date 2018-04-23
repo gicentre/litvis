@@ -1,7 +1,7 @@
+import { parseBlockInfo } from "block-info";
 import * as visit from "unist-util-visit";
-import { LitvisDocument } from ".";
-import { parseBlockInfo } from "../../block-info/index";
-import { extractAttributeDerivatives } from "../attribute-derivatives";
+import { extractAttributeDerivatives } from "../attributeDerivatives";
+import { LitvisDocument } from "../types";
 
 function visitCodeBlock(ast, vFile) {
   return visit(ast, "code", (codeBlockNode) => {

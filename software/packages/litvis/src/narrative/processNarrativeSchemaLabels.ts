@@ -1,13 +1,12 @@
 import * as _ from "lodash";
+import {
+  LabelType,
+  visitAndExtractDerivatives,
+  visitAndExtractHtml,
+} from "narrative-schema-label";
 import * as unified from "unified";
 import * as select from "unist-util-select";
-
-import { LitvisNarrative } from ".";
-import { LabelType } from "../narrative-schema";
-import {
-  extractNarrativeSchemaLabelDerivatives,
-  extractNarrativeSchemaLabelHtml,
-} from "../narrative-schema-label";
+import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
   const lastFile = _.last(narrative.files);
@@ -17,8 +16,14 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
 
   for (const file of narrative.files) {
     const engine = unified()
-      .use(extractNarrativeSchemaLabelDerivatives)
-      .use(extractNarrativeSchemaLabelHtml(narrative.composedNarrativeSchema));
+      .use(visitAndExtractDerivatives)
+      .use((ast, file2) =>
+        visitAndExtractHtml(
+          ast,
+          file2,
+          _.keyBy(narrative.composedNarrativeSchema.labels, "name"),
+        ),
+      );
     // .use(remark2rehype)
     // .use(html)
     // .use(compileNarrativeSchemaLabel);

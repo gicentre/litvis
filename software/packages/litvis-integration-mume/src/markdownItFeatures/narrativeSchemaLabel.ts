@@ -1,7 +1,9 @@
 import { parseBlockInfo } from "block-info";
+import { Html5Entities } from "html-entities";
 import { MarkdownIt } from "markdown-it";
-import { deriveLabelType } from "narrative-schemas";
-import { escapeString } from "../../utility";
+import { deriveLabelType, LabelFence } from "narrative-schema-label";
+
+const escapeString = new Html5Entities().encode;
 
 const openTagLength = 2;
 const closeTagLength = 2;
@@ -14,8 +16,8 @@ export default (md: MarkdownIt) => {
     (state, silent) => {
       const startPos = state.pos;
       if (
-        !state.src.startsWith("{(", startPos) &&
-        !state.src.startsWith("{|", startPos)
+        !state.src.startsWith(LabelFence.START, startPos) &&
+        !state.src.startsWith(LabelFence.START_CLOSING, startPos)
       ) {
         return false;
       }
@@ -23,7 +25,10 @@ export default (md: MarkdownIt) => {
       let endPos = -1;
       let i = startPos + openTagLength;
       while (i < state.src.length) {
-        if (state.src.startsWith("|}", i) || state.src.startsWith(")}", i)) {
+        if (
+          state.src.startsWith(LabelFence.END, i) ||
+          state.src.startsWith(LabelFence.END_OPENING, i)
+        ) {
           endPos = i;
           break;
         } else if (state.src[i] === "\\") {

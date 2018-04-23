@@ -1,18 +1,14 @@
-import * as _ from "lodash";
+// import * as _ from "lodash";
 import * as visit from "unist-util-visit";
-import { LitvisDocument } from "../document";
-import {
-  ComposedNarrativeSchema,
-  LabelType,
-  LabelWithOrigin,
-} from "../narrative-schema";
-import renderHtmlTemplate from "./render-html-template";
+import { VFile } from "vfile";
+import renderHtmlTemplate from "../renderHtmlTemplate";
+import { LabelDefinition, LabelType } from "../types";
 
-function visitNarrativeSchemaLabel(
+export default (
   ast,
-  vFile: LitvisDocument,
-  labelsByName: { [name: string]: LabelWithOrigin },
-) {
+  vFile: VFile<any>,
+  labelDefinitionsByName: { [name: string]: LabelDefinition },
+) => {
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
     if (labelNode.data.syntaxError) {
       return;
@@ -22,7 +18,7 @@ function visitNarrativeSchemaLabel(
     const labelName = labelNode.data.labelName;
     const labelAttributes = labelNode.data.labelAttributes;
 
-    const label = labelsByName[labelName];
+    const label = labelDefinitionsByName[labelName];
     if (!label) {
       vFile.message(
         `Label ${labelName} cannot be used because it does not exist in the linked narrative schemas or is not valid.`,
@@ -84,20 +80,4 @@ function visitNarrativeSchemaLabel(
       );
     }
   });
-}
-
-export default (composedNarrativeSchema: ComposedNarrativeSchema) => () => {
-  const labelsByName = _.keyBy(
-    composedNarrativeSchema.labels,
-    (label) => label.name,
-  );
-  return function transformer(ast, vFile, next) {
-    visitNarrativeSchemaLabel(ast, vFile, labelsByName);
-
-    if (typeof next === "function") {
-      return next(null, ast, vFile);
-    }
-
-    return ast;
-  };
 };
