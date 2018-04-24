@@ -1,4 +1,4 @@
-import { parseBlockInfo } from "block-info";
+import { parse as parseBlockInfo } from "block-info";
 import * as visit from "unist-util-visit";
 import { extractAttributeDerivatives } from "../attributeDerivatives";
 import { LitvisDocument } from "../types";

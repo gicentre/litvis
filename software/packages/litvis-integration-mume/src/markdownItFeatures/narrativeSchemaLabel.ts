@@ -1,4 +1,4 @@
-import { parseBlockInfo } from "block-info";
+import { parse as parseBlockInfo } from "block-info";
 import { Html5Entities } from "html-entities";
 import { MarkdownIt } from "markdown-it";
 import { deriveLabelType, LabelFence } from "narrative-schema-label";

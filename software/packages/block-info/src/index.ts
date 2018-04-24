@@ -6,5 +6,5 @@ export interface BlockInfo {
   language: string;
 }
 
-export { default as normalizeBlockInfo } from "./normalize";
-export { default as parseBlockInfo } from "./parse";
+export { default as normalize } from "./normalize";
+export { default as parse } from "./parse";
