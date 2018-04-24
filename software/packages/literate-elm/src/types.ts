@@ -1,7 +1,5 @@
 // tslint:disable-next-line:no-implicit-dependencies
-import { Text } from "unist";
-// tslint:disable-next-line:no-implicit-dependencies
-import { NodeWithPosition, VFile } from "vfile";
+import { Position } from "unist";
 
 export interface ElmSymbol {
   name: string;
@@ -9,7 +7,7 @@ export interface ElmSymbol {
 }
 
 export interface Dependencies {
-  [key: string]: string;
+  [packageName: string]: string;
 }
 
 export interface EnvironmentSpec {
@@ -55,40 +53,59 @@ export interface Environment {
 
 export interface Program {
   environment: Environment;
-  codeBlocks: CodeBlockWithFile[];
-  outputExpressions: OutputExpressionWithFile[];
+  codeNodes: CodeNode[];
+  expressionNodes: ExpressionNode[];
 }
 
 export enum ProgramResultStatus {
-  SUCCESS = "success",
+  SUCCEEDED = "succeeded",
+  FAILED = "fail",
+}
+
+export enum MessageSeverity {
   ERROR = "error",
+  WARNING = "warning",
+  INFO = "info",
 }
 
-export interface ProgramResult {
+export interface Message {
+  text: string;
+  position: Position;
+  fileIndex: number;
+  severity: MessageSeverity;
+  node: CodeNode | ExpressionNode | null;
+}
+
+export interface SucceededProgramResult {
   program: Program;
-  status: ProgramResultStatus;
-  evaluatedOutputExpressions: OutputExpressionWithFile[];
+  status: ProgramResultStatus.SUCCEEDED;
+  messages: Message[];
+  evaluatedExpressions: EvaluatedExpression[];
+  debugLog: string;
 }
 
-export interface CodeBlockWithFile extends Text {
-  data: {
-    file: VFile<any>;
-  };
+export interface FailedProgramResult {
+  program: Program;
+  status: ProgramResultStatus.FAILED;
+  messages: Message[];
 }
 
-export interface OutputExpression extends NodeWithPosition {
-  data: {
-    text: string;
-    stringRepresentation?: string;
-    // value?: any;
-  };
+export type ProgramResult = SucceededProgramResult | FailedProgramResult;
+
+export interface CodeNode {
+  text: string;
+  position: Position;
+  fileIndex?: number;
 }
 
-export interface OutputExpressionWithFile extends OutputExpression {
-  data: {
-    file: VFile<any>;
-    text: string;
-    stringRepresentation?: string;
-    // value?: any;
-  };
+export interface ExpressionNode {
+  text: string;
+  position: Position;
+  fileIndex?: number;
+}
+
+export interface EvaluatedExpression {
+  node: ExpressionNode;
+  value: any;
+  valueStringRepresentation: string;
 }

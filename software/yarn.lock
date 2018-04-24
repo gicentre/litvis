@@ -4029,9 +4029,9 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
 
-sleep-promise@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/sleep-promise/-/sleep-promise-5.1.0.tgz#ece7f83de2955d149c6f3f6555ff9b5c78f25961"
+sleep-promise@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/sleep-promise/-/sleep-promise-6.0.0.tgz#a80b4c3c26ed553c73c9db7234bc0304f7d42d4a"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
