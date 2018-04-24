@@ -125,7 +125,7 @@ ${outputSymbolName} =
         outputSymbolName,
       );
     } catch (stderr) {
-      const linesInStdout = (stderr || "").split("\n");
+      const linesInStdout = (stderr.message || "").split("\n");
       let elmErrors;
       _.findLast(linesInStdout, (line) => {
         try {

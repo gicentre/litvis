@@ -1,9 +1,6 @@
 import * as _ from "lodash";
-import {
-  LabelType,
-  visitAndExtractDerivatives,
-  visitAndExtractHtml,
-} from "narrative-schema-label";
+import generateNarrativeSchemaPlugin from "narrative-schema";
+import { LabelType } from "narrative-schema-label";
 import * as unified from "unified";
 import * as select from "unist-util-select";
 import { LitvisNarrative } from "../types";
@@ -14,16 +11,12 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
     return;
   }
 
+  const narrativeSchemaPlugin = generateNarrativeSchemaPlugin(
+    narrative.composedNarrativeSchema,
+  );
+
   for (const file of narrative.files) {
-    const engine = unified()
-      .use(visitAndExtractDerivatives)
-      .use((ast, file2) =>
-        visitAndExtractHtml(
-          ast,
-          file2,
-          _.keyBy(narrative.composedNarrativeSchema.labels, "name"),
-        ),
-      );
+    const engine = unified().use(narrativeSchemaPlugin);
     // .use(remark2rehype)
     // .use(html)
     // .use(compileNarrativeSchemaLabel);
