@@ -20,8 +20,12 @@
     "test": "jest --no-coverage",
     "test:coverage": "jest"
   },
+  "dependencies": {
+    "lru-cache": "^4.1.2"
+  },
   "devDependencies": {
     "@types/jest": "^22.2.3",
+    "@types/lru-cache": "^4.1.0",
     "jest": "^22.4.3",
     "ts-jest": "^22.4.4",
     "tslint": "^5.9.1",

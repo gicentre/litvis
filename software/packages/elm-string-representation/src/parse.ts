@@ -1,6 +1,8 @@
 /**
  * Parses Elm string representation into a corresponding JS value.
  *
+ * It is recommended to use parseUsingCache() instead as it is using LRU cache.
+ *
  * Examples:
  * * '' -> null
  * * '42' -> 42
@@ -10,8 +12,10 @@
  *
  * Array detection and conversion works recursively.
  */
-
 export default (text: string): any => {
+  if (typeof text !== "string") {
+    throw new Error(`Expected text to be string, "${typeof text}" given`);
+  }
   if (!text.length) {
     return null;
   }
@@ -22,7 +26,17 @@ export default (text: string): any => {
       .replace(/ = False/g, " = false")
       .replace(/([$a-zA-Z_0-9]+)\s=\s/g, '"$1": ');
   }
-  return recursivelyConvertApplicableObjectsToArrays(JSON.parse(patchedInput));
+  try {
+    return recursivelyConvertApplicableObjectsToArrays(
+      JSON.parse(patchedInput),
+    );
+  } catch (e) {
+    throw new Error(
+      `Could not parse "${
+        text.length <= 20 ? text : `${text.substring(0, 15)}...`
+      }" as JSON`,
+    );
+  }
 };
 
 /**
