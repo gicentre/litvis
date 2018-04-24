@@ -8,7 +8,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
   const dependencies = {};
   const sourceDirectories: string[] = [];
   const checkDirectoryPromises = [];
-  _.forEach(narrative.files, (file) => {
+  _.forEach(narrative.documents, (file) => {
     _.forEach(
       file.data.litvisElmDependencies,
       (packageVersion, packageName) => {

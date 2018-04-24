@@ -7,7 +7,7 @@ export default async (
   narrative: LitvisNarrative,
   filesInMemory: Array<vfile.VFile<{}>> = [],
 ): Promise<void> => {
-  _.forEach(narrative.files, (file: LitvisDocument, fileIndex) => {
+  _.forEach(narrative.documents, (file: LitvisDocument, fileIndex) => {
     const narrativeSchemas = file.data.litvisNarrativeSchemas;
     if (fileIndex !== 0 && _.isArray(narrativeSchemas)) {
       file.message(
@@ -19,8 +19,8 @@ export default async (
     }
   });
   narrative.composedNarrativeSchema = await loadComposedNarrativeSchema(
-    narrative.files[0].data.litvisNarrativeSchemas,
-    [narrative.files[0]],
+    narrative.documents[0].data.litvisNarrativeSchemas,
+    [narrative.documents[0]],
     [],
     filesInMemory,
   );

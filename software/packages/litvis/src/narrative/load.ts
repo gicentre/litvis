@@ -14,12 +14,12 @@ export default async (
   cache: Cache,
 ): Promise<LitvisNarrative> => {
   // build a chain of files [0]: root,
-  const files: LitvisDocument[] = [];
+  const documents: LitvisDocument[] = [];
   let currentFilePath = filePath;
   try {
     do {
-      if (files.length === MAX_CHAIN_LENGTH) {
-        files[files.length - 1].fail(
+      if (documents.length === MAX_CHAIN_LENGTH) {
+        documents[documents.length - 1].fail(
           `Too many documents to follow. Please reorganise your narrative by chaining maximum ${MAX_CHAIN_LENGTH} documents.`,
           null,
           "litvis:cross-document",
@@ -30,13 +30,13 @@ export default async (
         filesInMemory,
         (f: LitvisDocument) => f.path === currentFilePath,
       );
-      const file: LitvisDocument = fileInMemory
+      const document: LitvisDocument = fileInMemory
         ? vfile(fileInMemory)
         : await readVFile(currentFilePath, "utf8");
-      files.unshift(file);
-      await parseDocument(file);
-      currentFilePath = file.data.litvisFollows
-        ? resolve(file.dirname, file.data.litvisFollows)
+      documents.unshift(document);
+      await parseDocument(document);
+      currentFilePath = document.data.litvisFollows
+        ? resolve(document.dirname, document.data.litvisFollows)
         : null;
       if (currentFilePath) {
         if (!currentFilePath.match(/\.md$/i)) {
@@ -46,34 +46,36 @@ export default async (
         try {
           fileStat = await stat(currentFilePath);
         } catch (e) {
-          file.fail(
-            `Document to follow ‘${file.data.litvisFollows}’ does not exist`,
+          document.fail(
+            `Document to follow ‘${
+              document.data.litvisFollows
+            }’ does not exist`,
             null,
             "litvis:cross-document",
           );
         }
         if (!fileStat.isFile()) {
-          file.fail(
-            `Document to follow ‘${file.data.litvisFollows}’ is not a file`,
+          document.fail(
+            `Document to follow ‘${document.data.litvisFollows}’ is not a file`,
             null,
             "litvis:cross-document",
           );
         }
-        if (currentFilePath === file.path) {
-          files[files.length - 1].fail(
+        if (currentFilePath === document.path) {
+          documents[documents.length - 1].fail(
             `Litvis document cannot follow itself.`,
             null,
             "litvis:cross-document",
           );
         }
         const sameFileInChain = _.find(
-          files,
+          documents,
           (f) => f.path === currentFilePath,
         );
         if (sameFileInChain) {
-          const fileNames = _.reverse(_.map(files, (f) => f.path));
+          const fileNames = _.reverse(_.map(documents, (f) => f.path));
           fileNames.push(currentFilePath);
-          files[files.length - 1].fail(
+          documents[documents.length - 1].fail(
             `Documents are not allowed to follow each other in a cycle ${fileNames.join(
               " → ",
             )} .`,
@@ -88,13 +90,13 @@ export default async (
     // if the first file does not exist
     if (!e.location /* not a VFileMessage */) {
       try {
-        files[files.length - 1].fail(e.message);
+        documents[documents.length - 1].fail(e.message);
       } catch (e2) {
         // this try/catch is just needed to block throwing in .fail()
       }
     }
   }
   return {
-    files,
+    documents,
   };
 };

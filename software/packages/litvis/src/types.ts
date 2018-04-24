@@ -1,8 +1,4 @@
-import {
-  EnvironmentSpec,
-  OutputExpression,
-  ProgramResultStatus,
-} from "literate-elm";
+import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
 // tslint:disable-next-line:no-implicit-dependencies
 import { Node, Text } from "unist";
@@ -12,7 +8,6 @@ import { VFile } from "vfile";
 export { Node } from "unist";
 export { VFileBase } from "vfile";
 export import ProcessedLitvisContextStatus = ProgramResultStatus;
-export { OutputExpression } from "literate-elm";
 
 export enum OutputFormat {
   /** raw */
@@ -59,22 +54,48 @@ export type LitvisDocument = VFile<{
 }>;
 
 export interface LitvisNarrative {
-  files: LitvisDocument[];
+  documents: LitvisDocument[];
   elmEnvironmentSpecForLastFile?: EnvironmentSpec;
   contexts?: ProcessedLitvisContext[];
   composedNarrativeSchema?: ComposedNarrativeSchema;
 }
 
-export interface ProcessedLitvisContext {
+export interface SucceededLitvisContext {
   name: string;
-  status: ProcessedLitvisContextStatus;
-  evaluatedOutputExpressions: OutputExpression[];
+  status: ProcessedLitvisContextStatus.SUCCEEDED;
+  evaluatedOutputExpressions: EvaluatedOutputExpression[];
 }
 
-export interface CodeBlockWithFile extends Text {
+export interface FailedLitvisContext {
+  name: string;
+  status: ProcessedLitvisContextStatus.FAILED;
+}
+
+export type ProcessedLitvisContext =
+  | SucceededLitvisContext
+  | FailedLitvisContext;
+
+export interface CodeBlock extends Text {
   data: {
-    file: LitvisDocument;
     litvisAttributeDerivatives: AttributeDerivatives;
+  };
+}
+
+export interface OutputExpression extends Text {
+  data: {
+    text: string;
+    outputFormat: OutputFormat;
+    contextName: string;
+  };
+}
+
+export interface EvaluatedOutputExpression extends Text {
+  data: {
+    text: string;
+    outputFormat: OutputFormat;
+    contextName: string;
+    value: any;
+    valueStringRepresentation: string;
   };
 }
 

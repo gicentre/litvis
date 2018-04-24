@@ -29,7 +29,7 @@ export default async function enhance(
   );
 
   const vFilesToReport = [
-    ...processedNarrative.files,
+    ...processedNarrative.documents,
     ...processedNarrative.composedNarrativeSchema.components,
   ];
   updateLintingReport(vFilesToReport);

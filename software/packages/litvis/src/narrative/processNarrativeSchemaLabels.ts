@@ -6,7 +6,7 @@ import * as select from "unist-util-select";
 import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
-  const lastFile = _.last(narrative.files);
+  const lastFile = _.last(narrative.documents);
   if (!lastFile) {
     return;
   }
@@ -15,7 +15,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
     narrative.composedNarrativeSchema,
   );
 
-  for (const file of narrative.files) {
+  for (const file of narrative.documents) {
     const engine = unified().use(narrativeSchemaPlugin);
     // .use(remark2rehype)
     // .use(html)
@@ -26,7 +26,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
   }
   const combinedAst = {
     type: "parent",
-    children: _.map(narrative.files, (file) => file.data.root),
+    children: _.map(narrative.documents, (file) => file.data.root),
   };
 
   for (const rule of narrative.composedNarrativeSchema.rules) {
