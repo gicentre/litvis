@@ -5,6 +5,7 @@ import { VFile } from "vfile";
 import { LitvisEnhancerCache } from "../types";
 import enhanceWithLitvisLiterateElm from "./literateElm";
 import enhanceWithLitvisNarrativeSchemas from "./narrativeSchemas";
+import enhanceWithLitvisVegaBlockKeywords from "./vegaBlockKeywords";
 
 // export * from "../types";
 
@@ -42,4 +43,5 @@ export default async function enhance(
 
   await enhanceWithLitvisNarrativeSchemas($, processedNarrative, cache);
   await enhanceWithLitvisLiterateElm($, processedNarrative, cache);
+  await enhanceWithLitvisVegaBlockKeywords($, processedNarrative, cache);
 }

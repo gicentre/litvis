@@ -8,7 +8,7 @@ function visitCodeBlock(ast, vFile) {
     if (!codeBlockNode.data) {
       codeBlockNode.data = {};
     }
-    const parsedInfo = parseBlockInfo(codeBlockNode.lang);
+    const parsedInfo = parseBlockInfo(codeBlockNode.lang || "");
     const normalizedLanguage = (parsedInfo.language || "").trim().toLowerCase();
     if (normalizedLanguage === "elm") {
       const attributeDerivatives = extractAttributeDerivatives(
