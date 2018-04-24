@@ -124,6 +124,23 @@ const testCases: Array<{
     stringified: 'quotes=["h\'e\\"r`e", "etc."] hello="world"',
   },
   {
+    attributes: { message: "(hello world)", ok: true },
+    raw: ["message=(hello world) ok"],
+    stringified: 'message="(hello world)" ok=true',
+  },
+  {
+    attributes: { message: "(hello (world)!)", ok: true },
+    raw: ["message=(hello (world)!) ok"],
+    stringified: 'message="(hello (world)!)" ok=true',
+  },
+  {
+    attributes: {
+      messages: ["(hello world)", "hello world", "(hello (world)!)"],
+      ok: true,
+    },
+    raw: ['messages=[(hello world), "hello world", (hello (world)!)] ok'],
+  },
+  {
     attributes: {
       nested: ["something", ["something", "else"], "etc."],
       hello: "world",
