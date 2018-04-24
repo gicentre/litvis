@@ -202,26 +202,28 @@ export default async function enhance(
             ),
           );
           break;
-        case OutputFormat.V:
+        case OutputFormat.V: {
+          const vegaOrVegaLiteJson = getElmValue(
+            evaluatedOutputExpression.data.stringRepresentation,
+            cache.elmValueByStringRepresentation,
+          );
+          const language =
+            _.get(vegaOrVegaLiteJson, "$schema", "")
+              .toLowerCase()
+              .indexOf("lite") !== -1
+              ? "vega-lite"
+              : "vega";
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
-            language: "vega-lite",
+            language,
             attributes: {
               interactive: interactive === true,
               style: "display: inline-block",
             },
           };
-          $result.text(
-            JSON.stringify(
-              getElmValue(
-                evaluatedOutputExpression.data.stringRepresentation,
-                cache.elmValueByStringRepresentation,
-              ),
-              null,
-              2,
-            ),
-          );
+          $result.text(JSON.stringify(vegaOrVegaLiteJson, null, 2));
           break;
+        }
       }
 
       // because serializing/deserializing data attributes works inconsistently
