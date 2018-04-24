@@ -177,6 +177,12 @@ export default async function enhance(
       ) {
         throw new Error(`Could not evaluate expression ${expressionText}`);
       }
+      if (
+        outputFormat !== OutputFormat.R &&
+        evaluatedOutputExpression.data.value instanceof Error
+      ) {
+        throw new Error(`Could not parse value of ${expressionText}`);
+      }
       let $result: Cheerio;
       let resultNormalizedInfo = null;
       switch (outputFormat) {

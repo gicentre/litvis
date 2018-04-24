@@ -229,13 +229,13 @@ export default async (
       const document = narrative.documents[message.fileIndex];
       switch (message.severity) {
         case MessageSeverity.INFO: {
-          document.info(message.text, message.position, "litvis:literate-elm");
+          document.info(message.text, message.position, "literate-elm:compile");
         }
         case MessageSeverity.WARNING: {
           document.message(
             message.text,
             message.position,
-            "litvis:literate-elm",
+            "literate-elm:compile",
           );
         }
         default: {
@@ -243,7 +243,7 @@ export default async (
             document.fail(
               message.text,
               message.position,
-              "litvis:literate-elm",
+              "literate-elm:compile",
             );
           } catch (e) {
             // no need for action - just preventing .fail() from throwing further
@@ -264,6 +264,14 @@ export default async (
           };
           return processedContext;
         } else {
+          const debugLog = literateElmProgramResult.debugLog;
+          if (debugLog) {
+            lastDocument.info(
+              `Debug.log results in context "${contextName}":\n${debugLog}`,
+              null,
+              "literate-elm:debug-log",
+            );
+          }
           const evaluatedOutputExpressions: EvaluatedOutputExpression[] = _.map(
             context.wrappedOutputExpressions,
             (wrappedOutputExpression, i) => {
@@ -297,6 +305,7 @@ export default async (
             name: contextName,
             status: literateElmProgramResult.status,
             evaluatedOutputExpressions,
+            debugLog,
           };
           return processedContext;
         }

@@ -34,7 +34,7 @@ export default (text: string): any => {
     throw new Error(
       `Could not parse "${
         text.length <= 20 ? text : `${text.substring(0, 15)}...`
-      }" as JSON`,
+      }"`,
     );
   }
 };
