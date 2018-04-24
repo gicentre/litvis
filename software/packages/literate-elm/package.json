@@ -1,6 +1,6 @@
 {
   "name": "literate-elm",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Runs literate Elm code blocks and calculates Elm expressions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
     "test:coverage": "jest"
   },
   "dependencies": {
-    "elm-string-representation": "^1.0.1",
+    "elm-string-representation": "^1.0.2",
     "execa": "^0.10.0",
     "fs-extra": "^5.0.0",
     "lodash": "^4.17.5",
