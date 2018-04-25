@@ -316,8 +316,6 @@ dashboard data =
         ]
 ```
 
-> _**Note**: There is a [bug](https://github.com/vega/vega-lite/issues/3595) in Vega-Lite that is currently preventing the dashboard from rendering._ > _While this has been fixed it has not yet been rolled out into the latest release._ > _As soon as it has, this code should render the dashboard correctly._
-
 ^^^elm {v=(dashboard seattleData)}^^^
 
 There is nothing new in this example – we have simply assembled a range of views with the composition operators.
