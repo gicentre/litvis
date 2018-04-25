@@ -1,9 +1,3 @@
-import { Text } from "unist";
-import { NodeWithPosition } from "vfile";
-import { AttributeDerivatives, OutputFormat } from "./attribute-derivatives";
-import { Cache } from "./cache";
-import { LitvisDocument } from "./document";
-import { ProgramResultStatus } from "./elm";
 import {
   extractComposedNarrativeSchema,
   extractElmEnvironmentSpec,
@@ -11,7 +5,8 @@ import {
   processElmContexts,
   processNarrativeSchemaLabels,
 } from "./narrative";
-import { LitvisNarrative } from "./narrative";
+import { Cache } from "./types";
+import { LitvisDocument, LitvisNarrative } from "./types";
 
 export async function loadAndProcessLitvisNarrative(
   filePath,
@@ -25,3 +20,10 @@ export async function loadAndProcessLitvisNarrative(
   await processNarrativeSchemaLabels(narrative);
   return narrative;
 }
+
+export {
+  extractAttributeDerivatives,
+  resolveExpressions,
+} from "./attributeDerivatives";
+export { initCache } from "./cache";
+export * from "./types";

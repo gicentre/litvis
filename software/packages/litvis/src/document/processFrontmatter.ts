@@ -1,6 +1,6 @@
 import { safeLoad } from "js-yaml";
 import * as _ from "lodash";
-import { LitvisDocument } from ".";
+import { LitvisDocument } from "../types";
 
 function visitFrontmatter(ast, vFile: LitvisDocument) {
   const frontmatterNode = ast.children[0];

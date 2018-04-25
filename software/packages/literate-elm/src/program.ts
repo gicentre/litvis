@@ -1,120 +1,127 @@
+import { parseUsingCache } from "elm-string-representation";
 import { remove, writeFile } from "fs-extra";
 import * as _ from "lodash";
 import * as hash from "object-hash";
 import { resolve } from "path";
 import { runElm } from "./tools";
 import {
-  // CodeBlockWithFile,
-  // Environment,
-  // OutputExpressionWithFile,
+  CodeNode,
+  EvaluatedExpression,
+  ExpressionNode,
+  Message,
+  MessageSeverity,
   Program,
   ProgramResult,
   ProgramResultStatus,
 } from "./types";
 
-enum CodeChunkType {
+enum ChunkType {
   AUXILIARY,
-  CODE_BLOCK,
-  OUTPUT_SYMBOL,
+  CODE_NODE,
+  EXPRESSION_TEXT,
 }
 
-interface CodeChunk {
-  type: CodeChunkType;
-  ref?: any;
+interface AbstractChunk {
   text: string;
-  offsetX?: number;
   offsetY?: number;
 }
+
+interface AuxiliaryChunk extends AbstractChunk {
+  type: ChunkType.AUXILIARY;
+}
+
+interface CodeNodeChunk extends AbstractChunk {
+  type: ChunkType.CODE_NODE;
+  ref: CodeNode;
+}
+
+interface ExpressionTextChunk extends AbstractChunk {
+  type: ChunkType.EXPRESSION_TEXT;
+  ref: ExpressionNode[];
+}
+
+type Chunk = AuxiliaryChunk | CodeNodeChunk | ExpressionTextChunk;
 
 export async function runProgram(program: Program): Promise<ProgramResult> {
   const outputSymbolName = "literateElmOutputSymbol";
 
-  // generate module contents
-  const codeChunks: CodeChunk[] = [];
+  // generate Elm module contents
+  const chunks: Chunk[] = [];
 
-  program.codeBlocks.forEach((codeBlock, i) => {
-    codeChunks.push({
-      type: CodeChunkType.CODE_BLOCK,
-      ref: codeBlock,
-      text: `-------- literate-elm code block ${i}\n${codeBlock.value}`,
+  _.forEach(program.codeNodes, (codeNode, i) => {
+    chunks.push({
+      type: ChunkType.CODE_NODE,
+      ref: codeNode,
+      text: `-------- literate-elm code ${i}\n${codeNode.text}`,
     });
   });
 
-  const outputExpressionsGroupedByText = {};
-  program.outputExpressions.forEach((outputExpression, i) => {
-    let group = outputExpressionsGroupedByText[outputExpression.data.text];
-    if (!group) {
-      group = [];
-      outputExpressionsGroupedByText[outputExpression.data.text] = group;
-    }
-    group.push(outputExpression);
-  });
-
-  const orderedOutputExpressionTexts = _.sortBy(
-    _.keys(outputExpressionsGroupedByText),
+  const expressionNodesGroupedByText = _.groupBy(
+    program.expressionNodes,
+    (expressionNode: ExpressionNode) => expressionNode.text,
   );
+  const orderedExpressionTexts = _.sortBy(_.keys(expressionNodesGroupedByText));
 
-  codeChunks.push({
-    type: CodeChunkType.AUXILIARY,
+  chunks.push({
+    type: ChunkType.AUXILIARY,
     text: `-------- literate-elm output
 ${outputSymbolName} : String
 ${outputSymbolName} =
-    encode 0 <|
-        object
+    Json.Encode.encode 0 <|
+        Json.Encode.object
             [`,
   });
-  _.forEach(orderedOutputExpressionTexts, (text, i) => {
-    codeChunks.push({
-      type: CodeChunkType.OUTPUT_SYMBOL,
-      ref: outputExpressionsGroupedByText[text],
+  _.forEach(orderedExpressionTexts, (text, i) => {
+    chunks.push({
+      type: ChunkType.EXPRESSION_TEXT,
+      ref: expressionNodesGroupedByText[text],
       text: `-------- literate-elm output expression ${text}
         ${i > 0 ? "," : " "} ("${text.replace(
         /"/g,
         '\\"',
-      )}", string <| toString <| ${text})`,
-      offsetY: 2,
+      )}", Json.Encode.string <| toString <| ${text})`,
     });
   });
 
-  codeChunks.push({
-    type: CodeChunkType.AUXILIARY,
+  chunks.push({
+    type: ChunkType.AUXILIARY,
     text: `-------- literate-elm output end\n            ]\n`,
   });
 
-  const programId = hash(codeChunks);
+  const programId = hash(chunks);
 
   // only import Json.Encode if not done so in user code
-  const containsJsonEncodeImport = _.some(codeChunks, (codeChunk) =>
-    `\n${codeChunk.text}`.match(/\n\s*import Json\.Encode exposing/),
+  const containsJsonEncodeImport = _.some(chunks, (codeChunk) =>
+    `\n${codeChunk.text}`.match(/\n\s*import\s+Json\.Encode/),
   );
   if (!containsJsonEncodeImport) {
-    codeChunks.unshift({
-      type: CodeChunkType.AUXILIARY,
-      text: `import Json.Encode exposing (..)`,
+    chunks.unshift({
+      type: ChunkType.AUXILIARY,
+      text: `import Json.Encode`,
     });
   }
 
-  //
   const moduleName = `Main${programId}`;
   const modulePath = resolve(
     program.environment.workingDirectory,
     `${moduleName}.elm`,
   );
 
-  codeChunks.unshift({
-    type: CodeChunkType.AUXILIARY,
+  chunks.unshift({
+    type: ChunkType.AUXILIARY,
     text: `module ${moduleName} exposing (..)`,
   });
 
   // measure vertical offset for each code chunk to map errors later
   let offsetY = 0;
-  codeChunks.forEach((codeChunk) => {
-    const lineCount = (codeChunk.text.match(/\n/g) || []).length + 1;
-    codeChunk.offsetY = offsetY;
+  _.forEach(chunks, (chunk) => {
+    const lineCount = (chunk.text.match(/\n/g) || []).length + 1;
+    chunk.offsetY = offsetY;
     offsetY += lineCount;
   });
 
-  const codeToRun = codeChunks.map(({ text }) => text).join("\n");
+  const codeToRun = chunks.map(({ text }) => text).join("\n");
+  const messages: Message[] = [];
   try {
     let runElmStdout;
     await writeFile(modulePath, codeToRun, "utf8");
@@ -124,8 +131,8 @@ ${outputSymbolName} =
         modulePath,
         outputSymbolName,
       );
-    } catch (stderr) {
-      const linesInStdout = (stderr || "").split("\n");
+    } catch (e) {
+      const linesInStdout = (e.message || "").split("\n");
       let elmErrors;
       _.findLast(linesInStdout, (line) => {
         try {
@@ -136,127 +143,133 @@ ${outputSymbolName} =
         }
       });
       if (!elmErrors || !_.isArray(elmErrors)) {
-        throw new Error(stderr);
+        throw e;
       }
-
       _.forEach(elmErrors, (elmError) => {
-        const currentCodeChunk =
-          codeChunks[
+        const currentChunk =
+          chunks[
             _.findIndex(
-              codeChunks,
-              (codeChunk) =>
-                codeChunk.offsetY + 1 >
+              chunks,
+              (chunk) =>
+                chunk.offsetY + 1 >
                 _.get(elmError, ["region", "start", "line"], 0),
             ) - 1
           ];
-        try {
-          if (currentCodeChunk.type === CodeChunkType.CODE_BLOCK) {
-            currentCodeChunk.ref.data.file.fail(
-              `${elmError.overview || ""}${
-                elmError.details
-                  ? `. ${elmError.details.replace(/\s+/g, " ")}`
-                  : ""
-              }`,
-              {
-                start: {
-                  line:
-                    _.get(elmError, ["region", "start", "line"], 0) -
-                    currentCodeChunk.offsetY -
-                    1 +
-                    currentCodeChunk.ref.position.start.line,
-                  column:
-                    _.get(elmError, ["region", "start", "column"], 0) -
-                    1 +
-                    currentCodeChunk.ref.position.start.column,
-                },
-                end: {
-                  line:
-                    _.get(elmError, ["region", "end", "line"], 0) -
-                    currentCodeChunk.offsetY -
-                    1 +
-                    currentCodeChunk.ref.position.start.line,
-                  column:
-                    _.get(elmError, ["region", "end", "column"], 0) -
-                    1 +
-                    currentCodeChunk.ref.position.start.column,
-                },
-              },
-              "litvis:elm-code-block",
-            );
-          } else if (currentCodeChunk.type === CodeChunkType.OUTPUT_SYMBOL) {
-            const outputExpressions = currentCodeChunk.ref;
-            _.forEach(outputExpressions, (outputExpression) => {
-              outputExpression.data.file.fail(
-                `${elmError.overview || ""}${
-                  elmError.details
-                    ? `. ${elmError.details.replace(/\s+/g, " ")}`
-                    : ""
-                }`,
-                outputExpression.position,
-                "litvis:elm-output-expression",
-              );
+        if (currentChunk.type === ChunkType.CODE_NODE) {
+          const position = {
+            start: {
+              line:
+                _.get(elmError, ["region", "start", "line"], 0) -
+                currentChunk.offsetY -
+                1 +
+                currentChunk.ref.position.start.line,
+              column:
+                _.get(elmError, ["region", "start", "column"], 0) -
+                1 +
+                currentChunk.ref.position.start.column,
+            },
+            end: {
+              line:
+                _.get(elmError, ["region", "end", "line"], 0) -
+                currentChunk.offsetY -
+                1 +
+                currentChunk.ref.position.start.line,
+              column:
+                _.get(elmError, ["region", "end", "column"], 0) -
+                1 +
+                currentChunk.ref.position.start.column,
+            },
+          };
+          messages.push({
+            text: `${elmError.overview || ""}${
+              elmError.details
+                ? `. ${elmError.details.replace(/\s+/g, " ")}`
+                : ""
+            }`,
+            position,
+            severity: MessageSeverity.ERROR,
+            fileIndex: currentChunk.ref.fileIndex || 0,
+            node: currentChunk.ref,
+          });
+        } else if (currentChunk.type === ChunkType.EXPRESSION_TEXT) {
+          const messageText = `${elmError.overview || ""}${
+            elmError.details ? `. ${elmError.details.replace(/\s+/g, " ")}` : ""
+          }`;
+          const expressionNodes = currentChunk.ref;
+          _.forEach(expressionNodes, (expressionNode) => {
+            messages.push({
+              text: messageText,
+              position: expressionNode.position,
+              fileIndex: expressionNode.fileIndex || 0,
+              severity: MessageSeverity.ERROR,
+              node: expressionNode,
             });
-          } else {
-            throw new Error(elmError);
-          }
-        } catch (e) {
-          if (!e.location /* not a VFileMessage */) {
-            throw e;
-          }
+          });
+        } else {
+          throw new Error(
+            elmError.overview || elmError.details || JSON.stringify(elmError),
+          );
         }
       });
-      // TODO: map error positions and add them to messages
-      // throw new Error();
+      return {
+        program,
+        status: ProgramResultStatus.FAILED,
+        messages,
+      };
     }
 
     // create a map for expression string representations from elm output
     // only parse the last non-empty row in stdout not to include Debug.log output
     const outputRows = (runElmStdout || "").split("\n");
     const output = outputRows[outputRows.length - 2];
-    const evaluatedOutputExpressionMap = JSON.parse(output || "{}");
+    const debugLog = outputRows
+      .slice(0, outputRows.length - 2)
+      .join("\n")
+      .replace(/This is output from elm to the console.: /g, "")
+      .trim();
+    const evaluatedExpressionTextMap = JSON.parse(output || "{}");
 
-    const evaluatedOutputExpressions = program.outputExpressions.map(
-      (outputExpression) => {
-        const stringRepresentation =
-          evaluatedOutputExpressionMap[outputExpression.data.text];
-        // let value;
-        // try {
-        //   value = parseElmStringRepresentation(stringRepresentation);
-        // } catch (e) {
-        //   outputExpression.data.file.message(
-        //     `‘${outputExpression.data.text}’: ${e.message}`,
-        //     outputExpression,
-        //   );
-        // }
+    const evaluatedExpressions = program.expressionNodes.map(
+      (expressionNode): EvaluatedExpression => {
+        const valueStringRepresentation =
+          evaluatedExpressionTextMap[expressionNode.text];
+        let value;
+        try {
+          value = parseUsingCache(valueStringRepresentation);
+        } catch (e) {
+          value = e;
+        }
         return {
-          ...outputExpression,
-          data: {
-            ...outputExpression.data,
-            stringRepresentation,
-            // value,
-          },
+          node: expressionNode,
+          value,
+          valueStringRepresentation,
         };
       },
     );
     return {
       program,
-      status: ProgramResultStatus.SUCCESS,
-      evaluatedOutputExpressions,
+      status: ProgramResultStatus.SUCCEEDED,
+      messages,
+      evaluatedExpressions,
+      debugLog,
     };
   } catch (e) {
-    if (!e.location /* not a VFileMessage */) {
-      try {
-        (
-          _.last(program.codeBlocks) || _.last(program.outputExpressions)
-        ).data.file.fail(e.message || e);
-      } catch (e2) {
-        // try/catch only prevents fail from throwing further
-      }
-    }
+    messages.push({
+      text: e.message,
+      position: { start: { line: 1, column: 1 }, end: { line: 1, column: 1 } },
+      severity: MessageSeverity.ERROR,
+      fileIndex: Math.max(
+        ..._.map(
+          [...program.codeNodes, ...program.expressionNodes],
+          (node) => node.fileIndex || 0,
+        ),
+      ),
+      node: null,
+    });
     return {
       program,
-      status: ProgramResultStatus.ERROR,
-      evaluatedOutputExpressions: [],
+      status: ProgramResultStatus.FAILED,
+      messages,
     };
   } finally {
     await remove(modulePath);

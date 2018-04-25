@@ -5,6 +5,7 @@
     "sourceMap": true,
     "declaration": true,
     "lib": ["es6"],
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "preserveWatchOutput": true
   }
 }

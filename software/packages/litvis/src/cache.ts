@@ -1,7 +1,4 @@
-export interface Cache {
-  a?: string;
-  literateElmDirectory: string;
-}
+import { Cache } from "./types";
 
 export function initCache(): Cache {
   return {

@@ -1,14 +1,14 @@
 import { statSync } from "fs";
 import * as _ from "lodash";
 import { resolve } from "path";
-import { LitvisNarrative } from ".";
+import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
   // resolve litvisElmDependencies and litvisElmSourceDirectories
   const dependencies = {};
   const sourceDirectories: string[] = [];
   const checkDirectoryPromises = [];
-  _.forEach(narrative.files, (file) => {
+  _.forEach(narrative.documents, (file) => {
     _.forEach(
       file.data.litvisElmDependencies,
       (packageVersion, packageName) => {

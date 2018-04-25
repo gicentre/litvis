@@ -1,0 +1,35 @@
+{
+  "name": "elm-string-representation",
+  "version": "1.0.2",
+  "description": "Parses Elm string representation for data",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "elm",
+    "parse"
+  ],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gicentre/litvis.git"
+  },
+  "scripts": {
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "lint": "tsc --project . --noEmit && tslint --project .",
+    "test": "jest --no-coverage",
+    "test:coverage": "jest"
+  },
+  "dependencies": {
+    "lru-cache": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/lru-cache": "^4.1.0",
+    "jest": "^22.4.3",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "typescript": "^2.8.3"
+  }
+}

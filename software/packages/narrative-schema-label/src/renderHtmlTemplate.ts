@@ -1,7 +1,7 @@
+import { BlockAttributes } from "block-attributes";
 import * as cheerio from "cheerio";
 import * as Handlebars from "handlebars";
-import { Attributes } from "../../attributes";
-import { LabelType } from "../narrative-schema";
+import { LabelType } from "./types";
 
 const FAKE_CHILDREN_CONTENTS = "__FAKE_CHILDREN__";
 
@@ -9,7 +9,7 @@ export default (
   htmlTemplate,
   labelName: string,
   labelType: LabelType,
-  labelAttributes: Attributes,
+  labelAttributes: BlockAttributes,
 ) => {
   const rawRenderedTemplate = Handlebars.compile(htmlTemplate)({
     ...labelAttributes,

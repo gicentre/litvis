@@ -1,26 +1,12 @@
+import { findNarrativeSchemaLabel } from "narrative-schema-label";
 import * as frontmatter from "remark-frontmatter";
 import * as remarkParse from "remark-parse";
 import * as unified from "unified";
-import { Node } from "unist";
-import { VFile } from "vfile";
-import { findNarrativeSchemaLabel } from "../narrative-schema-label";
-import extractAttributeDerivatives from "./extract-attribute-derivatives";
-import extractOutputItems from "./extract-output-items";
-import findTripleHatReference from "./find-triple-hat-reference";
-import processFrontmatter from "./process-frontmatter";
-
-export { VFileBase } from "vfile";
-export { Node } from "unist";
-export type LitvisDocument = VFile<{
-  data: {
-    root: Node;
-    litvisFollows?: string;
-    litvisElmDependencies?: { [packageName: string]: string | false };
-    litvisElmSourceDirectories?: string[];
-    litvisNarrativeSchemas?: string[];
-    renderedHtml?: string;
-  };
-}>;
+import { LitvisDocument } from "../types";
+import extractAttributeDerivatives from "./extractAttributeDerivatives";
+import extractOutputItems from "./extractOutputItems";
+import findTripleHatReference from "./findTripleHatReference";
+import processFrontmatter from "./processFrontmatter";
 
 export const engine = unified()
   .use(remarkParse)

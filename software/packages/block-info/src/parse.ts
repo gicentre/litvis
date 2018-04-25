@@ -1,4 +1,4 @@
-import { parseBlockAttributes } from "block-attributes";
+import { parse as parseBlockAttributes } from "block-attributes";
 import { BlockInfo } from ".";
 
 export default function(raw: string = ""): BlockInfo {

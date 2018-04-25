@@ -1,9 +1,9 @@
 {
   "name": "narrative-schema-label",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Narrative schema label parsing and printing",
   "main": "dist/index.js",
-  "types": "./dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "keywords": [],
   "license": "BSD-3-Clause",
   "repository": {
@@ -11,21 +11,30 @@
     "url": "git+https://github.com/gicentre/litvis.git"
   },
   "scripts": {
-    "test": "jest --no-coverage",
-    "test:coverage": "jest",
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project ."
+    "lint": "tsc --project . --noEmit && tslint --project .",
+    "test": "jest --no-coverage",
+    "test:coverage": "jest"
+  },
+  "dependencies": {
+    "block-attributes": "^0.2.0",
+    "block-info": "^0.2.0",
+    "cheerio": "0.15.0",
+    "handlebars": "^4.0.11",
+    "html-entities": "^1.2.1",
+    "lodash": "^4.17.5",
+    "unist-util-visit": "^1.3.0",
+    "vfile": "^2.3.0"
   },
   "devDependencies": {
+    "@types/html-entities": "^1.2.16",
     "@types/jest": "^22.2.3",
+    "@types/vfile": "^2.2.2",
     "jest": "^22.4.3",
     "ts-jest": "^22.4.4",
     "tslint": "^5.9.1",
     "tslint-config-prettier": "^1.12.0",
     "typescript": "^2.8.3"
-  },
-  "dependencies": {
-    "unist-util-visit": "^1.3.0"
   }
 }

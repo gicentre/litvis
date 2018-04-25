@@ -36,8 +36,8 @@ export async function runElm(
   projectDirectory: string,
   modulePath: string,
   outputSymbolName: string,
-) {
-  return await execa(
+): Promise<string> {
+  return (await execa(
     "run-elm",
     [
       "--report=json",
@@ -53,6 +53,6 @@ export async function runElm(
       localDir: __dirname,
       stripEof: false,
     },
-  );
+  )).stdout;
   // TODO: return meaningful error when elm-run is not installed
 }

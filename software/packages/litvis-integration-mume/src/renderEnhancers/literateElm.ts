@@ -1,25 +1,22 @@
+import { BlockInfo } from "block-info";
 import * as cheerio from "cheerio";
-import * as _ from "lodash";
-import { Cache } from "lru-cache";
-import * as hash from "object-hash";
-
-import { BlockInfo } from "../../lib/block-info";
-import {
-  OutputExpression,
-  ProcessedLitvisContext,
-  ProcessedLitvisContextStatus,
-} from "../../lib/litvis";
+import { Html5Entities } from "html-entities";
 import {
   AttributeDerivatives,
   BlockOutputFormat,
+  EvaluatedOutputExpression,
   extractAttributeDerivatives,
+  LitvisNarrative,
   OutputFormat,
+  ProcessedLitvisContext,
+  ProcessedLitvisContextStatus,
   resolveExpressions,
-} from "../../lib/litvis/attribute-derivatives";
-import parseElmStringRepresentation from "../../lib/litvis/elm/parse-elm-string-representation";
-import { LitvisNarrative } from "../../lib/litvis/narrative";
-import { escapeString } from "../../utility";
-import { LitvisEnhancerCache } from "./types";
+} from "litvis";
+import * as _ from "lodash";
+import * as hash from "object-hash";
+import { LitvisEnhancerCache } from "../types";
+
+const escapeString = new Html5Entities().encode;
 
 export default async function enhance(
   $: CheerioStatic,
@@ -149,7 +146,9 @@ export default async function enhance(
       contextName,
       outputFormat,
       expressionText,
-      path: processedNarrative.files[processedNarrative.files.length - 1].path,
+      path:
+        processedNarrative.documents[processedNarrative.documents.length - 1]
+          .path,
     });
     const context = contextsByMumeContextName[
       contextName
@@ -159,13 +158,13 @@ export default async function enhance(
       if (!context) {
         throw new Error(`Non-existing context ${contextName}`);
       }
-      if (context.status !== ProcessedLitvisContextStatus.SUCCESS) {
+      if (context.status !== ProcessedLitvisContextStatus.SUCCEEDED) {
         throw new Error(
           `Code execution in context ${contextName} was not successful`,
         );
       }
       // TODO: find() is expensive, consider optimizing by indexing
-      const evaluatedOutputExpression: OutputExpression = _.find(
+      const evaluatedOutputExpression: EvaluatedOutputExpression = _.find(
         context.evaluatedOutputExpressions,
         (oe) => oe.data.text === expressionText,
       );
@@ -173,16 +172,23 @@ export default async function enhance(
         throw new Error(`Could not find expression ${expressionText}`);
       }
       if (
-        typeof evaluatedOutputExpression.data.stringRepresentation !== "string"
+        typeof evaluatedOutputExpression.data.valueStringRepresentation !==
+        "string"
       ) {
         throw new Error(`Could not evaluate expression ${expressionText}`);
+      }
+      if (
+        outputFormat !== OutputFormat.R &&
+        evaluatedOutputExpression.data.value instanceof Error
+      ) {
+        throw new Error(`Could not parse value of ${expressionText}`);
       }
       let $result: Cheerio;
       let resultNormalizedInfo = null;
       switch (outputFormat) {
         case OutputFormat.R:
           $result = $("<span/>").text(
-            evaluatedOutputExpression.data.stringRepresentation,
+            evaluatedOutputExpression.data.valueStringRepresentation,
           );
           break;
         case OutputFormat.J:
@@ -193,36 +199,28 @@ export default async function enhance(
           };
 
           $result.text(
-            JSON.stringify(
-              getElmValue(
-                evaluatedOutputExpression.data.stringRepresentation,
-                cache.elmValueByStringRepresentation,
-              ),
-              null,
-              2,
-            ),
+            JSON.stringify(evaluatedOutputExpression.data.value, null, 2),
           );
           break;
-        case OutputFormat.V:
+        case OutputFormat.V: {
+          const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
+          const language =
+            _.get(vegaOrVegaLiteJson, "$schema", "")
+              .toLowerCase()
+              .indexOf("lite") !== -1
+              ? "vega-lite"
+              : "vega";
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
-            language: "vega-lite",
+            language,
             attributes: {
               interactive: interactive === true,
               style: "display: inline-block",
             },
           };
-          $result.text(
-            JSON.stringify(
-              getElmValue(
-                evaluatedOutputExpression.data.stringRepresentation,
-                cache.elmValueByStringRepresentation,
-              ),
-              null,
-              2,
-            ),
-          );
+          $result.text(JSON.stringify(vegaOrVegaLiteJson, null, 2));
           break;
+        }
       }
 
       // because serializing/deserializing data attributes works inconsistently
@@ -323,25 +321,6 @@ function generateArrayOf$outputItems(
     );
     return $outputItem;
   });
-}
-
-function getElmValue(
-  stringRepresentation: string,
-  cache: Cache<string, object | Error>,
-) {
-  let valueInCache = cache.get(stringRepresentation);
-  if (typeof valueInCache === "undefined") {
-    try {
-      valueInCache = parseElmStringRepresentation(stringRepresentation);
-    } catch (e) {
-      valueInCache = e;
-    }
-    cache.set(stringRepresentation, valueInCache);
-  }
-  if (valueInCache instanceof Error) {
-    throw valueInCache;
-  }
-  return valueInCache;
 }
 
 const mapAutogeneratedContextNames = (

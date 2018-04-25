@@ -1,6 +1,8 @@
+import { parse as parseBlockInfo } from "block-info";
+import { Html5Entities } from "html-entities";
 import { MarkdownIt } from "markdown-it";
-import { parseBlockInfo } from "../../lib/block-info/index";
-import { escapeString } from "../../utility";
+
+const escapeString = new Html5Entities().encode;
 
 const delimiters = [["^^^", "^^^"]];
 

@@ -1,16 +1,7 @@
+import { LabelDefinition } from "narrative-schema-label";
 import { VFile } from "vfile";
 
 export type Document = VFile<any>;
-
-export interface LabelKind {
-  htmlTemplate: string;
-}
-
-export interface LabelDefinition {
-  name: string;
-  single?: LabelKind;
-  paired?: LabelKind;
-}
 
 export interface LabelDefinitionWithOrigin extends LabelDefinition {
   origin: NarrativeSchema;

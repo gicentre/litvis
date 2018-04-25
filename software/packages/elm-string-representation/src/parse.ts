@@ -1,5 +1,7 @@
 /**
- * Parses Elm's string representation into a corresponding JS value.
+ * Parses Elm string representation into a corresponding JS value.
+ *
+ * It is recommended to use parseUsingCache() instead as it is using LRU cache.
  *
  * Examples:
  * * '' -> null
@@ -10,18 +12,31 @@
  *
  * Array detection and conversion works recursively.
  */
-export default (input: string): any => {
-  if (!input.length) {
+export default (text: string): any => {
+  if (typeof text !== "string") {
+    throw new Error(`Expected text to be string, "${typeof text}" given`);
+  }
+  if (!text.length) {
     return null;
   }
-  let patchedInput = input;
-  if (input.charAt(0) === "{") {
+  let patchedInput = text;
+  if (text.charAt(0) === "{") {
     patchedInput = patchedInput
       .replace(/ = True/g, " = true")
       .replace(/ = False/g, " = false")
       .replace(/([$a-zA-Z_0-9]+)\s=\s/g, '"$1": ');
   }
-  return recursivelyConvertApplicableObjectsToArrays(JSON.parse(patchedInput));
+  try {
+    return recursivelyConvertApplicableObjectsToArrays(
+      JSON.parse(patchedInput),
+    );
+  } catch (e) {
+    throw new Error(
+      `Could not parse "${
+        text.length <= 20 ? text : `${text.substring(0, 15)}...`
+      }"`,
+    );
+  }
 };
 
 /**
@@ -38,6 +53,7 @@ function recursivelyConvertApplicableObjectsToArrays(obj: object) {
   let childrenHaveChanged = false;
   const changedChildren = {};
   for (const key in obj) {
+    // istanbul ignore next
     if (obj.hasOwnProperty(key)) {
       const newChild = recursivelyConvertApplicableObjectsToArrays(obj[key]);
       if (newChild !== obj[key]) {
@@ -55,6 +71,7 @@ function recursivelyConvertApplicableObjectsToArrays(obj: object) {
   const arrayValues = [];
   let nextExpectedKey = 0;
   for (const key in resultingObject) {
+    // istanbul ignore next
     if (resultingObject.hasOwnProperty(key)) {
       // stop object scanning if the given key does not belong to a numeric sequence
       if (parseInt(key, 10) !== nextExpectedKey) {

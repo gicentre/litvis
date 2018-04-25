@@ -1,24 +1,22 @@
 import * as _ from "lodash";
+import generateNarrativeSchemaPlugin from "narrative-schema";
+import { LabelType } from "narrative-schema-label";
 import * as unified from "unified";
 import * as select from "unist-util-select";
-
-import { LitvisNarrative } from ".";
-import { LabelType } from "../narrative-schema";
-import {
-  extractNarrativeSchemaLabelDerivatives,
-  extractNarrativeSchemaLabelHtml,
-} from "../narrative-schema-label";
+import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
-  const lastFile = _.last(narrative.files);
+  const lastFile = _.last(narrative.documents);
   if (!lastFile) {
     return;
   }
 
-  for (const file of narrative.files) {
-    const engine = unified()
-      .use(extractNarrativeSchemaLabelDerivatives)
-      .use(extractNarrativeSchemaLabelHtml(narrative.composedNarrativeSchema));
+  const narrativeSchemaPlugin = generateNarrativeSchemaPlugin(
+    narrative.composedNarrativeSchema,
+  );
+
+  for (const file of narrative.documents) {
+    const engine = unified().use(narrativeSchemaPlugin);
     // .use(remark2rehype)
     // .use(html)
     // .use(compileNarrativeSchemaLabel);
@@ -28,7 +26,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
   }
   const combinedAst = {
     type: "parent",
-    children: _.map(narrative.files, (file) => file.data.root),
+    children: _.map(narrative.documents, (file) => file.data.root),
   };
 
   for (const rule of narrative.composedNarrativeSchema.rules) {

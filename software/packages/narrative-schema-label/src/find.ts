@@ -1,14 +1,12 @@
-import {
-  deriveType,
-  END,
-  END_OPENING,
-  START,
-  START_CLOSING,
-} from "../narrative-schema/label";
+import deriveType from "./deriveType";
+import { LabelFence } from "./types";
 
 function locator(value, fromIndex) {
-  const indexOfStart = value.indexOf(START, fromIndex);
-  const indexOfStartClosing = value.indexOf(START_CLOSING, fromIndex);
+  const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
+  const indexOfStartClosing = value.indexOf(
+    LabelFence.START_CLOSING,
+    fromIndex,
+  );
   if (indexOfStart > -1 && indexOfStartClosing > -1) {
     return Math.min(indexOfStart, indexOfStartClosing);
   }
@@ -17,7 +15,10 @@ function locator(value, fromIndex) {
 
 export default function plugin() {
   function inlineTokenizer(eat, value, silent) {
-    if (!value.startsWith(START) && !value.startsWith(START_CLOSING)) {
+    if (
+      !value.startsWith(LabelFence.START) &&
+      !value.startsWith(LabelFence.START_CLOSING)
+    ) {
       return;
     }
     const start = value.substring(0, 2);
@@ -35,7 +36,7 @@ export default function plugin() {
       character = value.charAt(index);
       const end = `${previous}${character}`;
 
-      if (end === END || end === END_OPENING) {
+      if (end === LabelFence.END || end === LabelFence.END_OPENING) {
         /* istanbul ignore if - never used (yet) */
         if (silent) {
           return true;

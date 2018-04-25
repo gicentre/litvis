@@ -1,10 +1,9 @@
 import * as _ from "lodash";
 
-import { BlockInfo } from "../../lib/block-info/index";
-import { LitvisNarrative } from "../../lib/litvis/narrative";
-import { renderHtmlTemplate } from "../../lib/litvis/narrative-schema-label";
-import { LabelType } from "../../lib/litvis/narrative-schema/types";
-import { LitvisEnhancerCache } from "./types";
+import { BlockInfo } from "block-info";
+import { LitvisNarrative } from "litvis";
+import { LabelType, renderHtmlTemplate } from "narrative-schema-label";
+import { LitvisEnhancerCache } from "../types";
 
 export default async function enhance(
   $: CheerioStatic,
