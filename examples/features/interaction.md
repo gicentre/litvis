@@ -8,7 +8,7 @@ elm:
 import VegaLite exposing (..)
 ```
 
-```elm {v}
+```elm {v interactive}
 interactive1 : Spec
 interactive1 =
     let
@@ -28,7 +28,7 @@ interactive1 =
     toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], mark Point [], sel [], enc [] ]
 ```
 
-```elm {v}
+```elm {v interactive}
 binding1 : Spec
 binding1 =
     let
