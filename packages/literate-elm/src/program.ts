@@ -221,7 +221,7 @@ ${outputSymbolName} =
     // create a map for expression string representations from elm output
     // only parse the last non-empty row in stdout not to include Debug.log output
     const outputRows = (runElmStdout || "").split("\n");
-    const output = outputRows[outputRows.length - 2];
+    const output = outputRows[outputRows.length - 1];
     const debugLog = outputRows
       .slice(0, outputRows.length - 2)
       .join("\n")

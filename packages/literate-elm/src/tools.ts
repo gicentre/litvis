@@ -1,3 +1,4 @@
+import executeRunElm from "@kachkaev/run-elm";
 import * as elmPlatform from "elm/platform";
 import * as execa from "execa";
 
@@ -38,24 +39,11 @@ export async function runElm(
   modulePath: string,
   outputSymbolName: string,
 ): Promise<string> {
-  return (await execa(
-    "run-elm",
-    [
-      "--report=json",
-      "--output-name",
-      outputSymbolName,
-      "--project-dir",
-      projectDirectory,
-      "--path-to-elm-make",
-      pathTo("elm-make"),
-      modulePath,
-    ],
-    {
-      maxBuffer: 1024 * 1024 * 100,
-      preferLocal: true,
-      localDir: __dirname,
-      stripEof: false,
-    },
-  )).stdout;
-  // TODO: return meaningful error when elm-run is not installed
+  const result = await executeRunElm(modulePath, {
+    reportFormat: "json",
+    outputName: outputSymbolName,
+    projectDir: projectDirectory,
+    pathToElmMake: pathTo("elm-make"),
+  });
+  return result;
 }
