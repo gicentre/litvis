@@ -152,7 +152,7 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         quadSpec =
             asSpec
-                [ mark Point [ MFilled True, MFillOpacity 1, MStroke "#fff", MStrokeWidth 0 ]
+                [ mark Point [ MFill "rgb(129,160,194)", MFillOpacity 1, MStroke "#fff", MStrokeWidth 0 ]
                 , quadEnc []
                 ]
 
