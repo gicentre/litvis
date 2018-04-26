@@ -1,6 +1,6 @@
 {
   "name": "narrative-schema",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Implements loading and validation of litvis narrative schemas",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
   "dependencies": {
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.5",
-    "narrative-schema-label": "^0.1.1",
+    "narrative-schema-label": "^0.1.2",
     "to-vfile": "^2.2.0",
     "vfile": "^2.3.0",
     "yamljs": "^0.3.0"

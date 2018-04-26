@@ -1,10 +1,10 @@
 import * as execa from "execa";
+import * as findUp from "find-up";
 
 export async function initializeElmPackage(projectDirectory: string) {
   const args = ["install", "--yes"];
-  await execa("elm-package", args, {
+  await execa(pathTo("elm-package"), args, {
     cwd: projectDirectory,
-    preferLocal: true,
     localDir: __dirname,
     stripEof: false,
   });
@@ -22,9 +22,8 @@ export async function installElmPackage(
     )}`;
     args.push(semver);
   }
-  await execa("elm-package", args, {
+  await execa(pathTo("elm-package"), args, {
     cwd: projectDirectory,
-    preferLocal: true,
     localDir: __dirname,
     stripEof: false,
   });
@@ -45,6 +44,8 @@ export async function runElm(
       outputSymbolName,
       "--project-dir",
       projectDirectory,
+      "--path-to-elm-make",
+      pathTo("elm-make"),
       modulePath,
     ],
     {
@@ -56,3 +57,13 @@ export async function runElm(
   )).stdout;
   // TODO: return meaningful error when elm-run is not installed
 }
+
+const pathByBinaryName: { [binaryName: string]: string } = {};
+const pathTo = (binaryName) => {
+  if (!pathByBinaryName[binaryName]) {
+    pathByBinaryName[binaryName] =
+      findUp.sync([`node_modules/.bin/${binaryName}`], { cwd: __dirname }) ||
+      binaryName;
+  }
+  return pathByBinaryName[binaryName];
+};
