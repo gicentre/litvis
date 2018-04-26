@@ -1,6 +1,5 @@
 import * as execa from "execa";
 import * as findUp from "find-up";
-import * as path from "path";
 
 export async function initializeElmPackage(projectDirectory: string) {
   const args = ["install", "--yes"];
@@ -59,13 +58,12 @@ export async function runElm(
   // TODO: return meaningful error when elm-run is not installed
 }
 
-let pathToBin: string;
+const pathByBinaryName: { [binaryName: string]: string } = {};
 const pathTo = (binaryName) => {
-  if (!pathToBin) {
-    pathToBin = findUp.sync([".bin", "node_modules"], { cwd: __dirname });
-    if (pathToBin.endsWith("node_modules")) {
-      pathToBin = path.resolve(pathToBin, ".bin");
-    }
+  if (!pathByBinaryName[binaryName]) {
+    pathByBinaryName[binaryName] =
+      findUp.sync([`node_modules/.bin/${binaryName}`], { cwd: __dirname }) ||
+      binaryName;
   }
-  return path.resolve(pathToBin, binaryName);
+  return pathByBinaryName[binaryName];
 };
