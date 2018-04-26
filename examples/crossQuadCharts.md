@@ -74,7 +74,7 @@ _a2,b1 association_
 
 ## Gender, Authorship and Language
 
-In Ben Blatt's book [Nabakov's Favourite Word is Mauve](http://www.simonandschuster.com/books/Nabokovs-Favorite-Word-Is-Mauve/Ben-Blatt/9781501105388) he analyses the words used to describe male and female characters in various collections of literature and whether they may also be related to the gender of the author.
+In Ben Blatt's book [Nabokov's Favourite Word is Mauve](http://www.simonandschuster.com/books/Nabokovs-Favorite-Word-Is-Mauve/Ben-Blatt/9781501105388) he analyses the words used to describe male and female characters in various collections of literature and whether they may also be related to the gender of the author.
 
 He constructs contingency quadCharts of the selected gender-associated verbs and how often they are applied to male characters (through the proxy of following the word 'he' or 'I' of a male protagonist) and female characters (following 'she' or 'I' of a female protagonist).
 
@@ -96,7 +96,7 @@ And for all genres of fiction sampled (Blatt, 2017, pp.56-57), noting that autho
 
 ## References
 
-Blatt, B. (2017) [Nabakov's Favourite Colour is Mauve](http://www.simonandschuster.com/books/Nabokovs-Favorite-Word-Is-Mauve/Ben-Blatt/9781501105388). Simon & Schuster. 271 pp. ISBN 978-1-4711-5283-2
+Blatt, B. (2017) [Nabokov's Favourite Colour is Mauve](http://www.simonandschuster.com/books/Nabokovs-Favorite-Word-Is-Mauve/Ben-Blatt/9781501105388). Simon & Schuster. 271 pp. ISBN 978-1-4711-5283-2
 
 ```elm {l=hidden}
 authorGenderChart : String -> Float -> Float -> Float -> Float -> Spec
