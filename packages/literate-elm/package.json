@@ -25,7 +25,7 @@
     "test:coverage": "jest"
   },
   "dependencies": {
-    "@kachkaev/run-elm": "^2.4.1",
+    "@kachkaev/run-elm": "^2.4.2",
     "elm": "^0.18.0",
     "elm-string-representation": "^1.1.0",
     "execa": "^0.10.0",

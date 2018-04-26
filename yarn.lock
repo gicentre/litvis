@@ -16,9 +16,9 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@kachkaev/run-elm@^2.4.1":
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.1.tgz#cd48080501e049c00d54c940d882cad91dc5fdc1"
+"@kachkaev/run-elm@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.2.tgz#dbfa2cb81c1f35c2e37d746740120e4a6cd4d19c"
   dependencies:
     babel-polyfill "^6.26.0"
     commander "^2.13.0"
