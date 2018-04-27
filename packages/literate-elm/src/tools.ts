@@ -1,12 +1,9 @@
 import executeRunElm from "@kachkaev/run-elm";
-import * as elmPlatform from "elm/platform";
 import * as execa from "execa";
-
-const pathTo = (binaryName) => elmPlatform.executablePaths[binaryName];
 
 export async function initializeElmPackage(projectDirectory: string) {
   const args = ["install", "--yes"];
-  await execa(pathTo("elm-package"), args, {
+  await execa("elm-package", args, {
     cwd: projectDirectory,
     localDir: __dirname,
     stripEof: false,
@@ -25,7 +22,7 @@ export async function installElmPackage(
     )}`;
     args.push(semver);
   }
-  await execa(pathTo("elm-package"), args, {
+  await execa("elm-package", args, {
     cwd: projectDirectory,
     localDir: __dirname,
     stripEof: false,
@@ -43,7 +40,6 @@ export async function runElm(
     reportFormat: "json",
     outputName: outputSymbolName,
     projectDir: projectDirectory,
-    pathToElmMake: pathTo("elm-make"),
   });
   return result;
 }
