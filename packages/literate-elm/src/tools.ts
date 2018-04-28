@@ -5,7 +5,6 @@ export async function initializeElmPackage(projectDirectory: string) {
   const args = ["install", "--yes"];
   await execa("elm-package", args, {
     cwd: projectDirectory,
-    localDir: __dirname,
     stripEof: false,
   });
 }
@@ -24,7 +23,6 @@ export async function installElmPackage(
   }
   await execa("elm-package", args, {
     cwd: projectDirectory,
-    localDir: __dirname,
     stripEof: false,
   });
   // TODO: return meaningful error when elm-package is not installed
