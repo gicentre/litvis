@@ -1,0 +1,38 @@
+{
+  "name": "data-with-position",
+  "version": "0.1.0",
+  "description": "Pseudo AST that contains data with its positions attached.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gicentre/litvis.git"
+  },
+  "scripts": {
+    "build": "tsc --project .",
+    "build:watch": "tsc --project . --watch",
+    "lint": "tsc --project . --noEmit && tslint --project .",
+    "test": "jest --no-coverage",
+    "test:coverage": "jest"
+  },
+  "dependencies": {
+    "lodash.isnull": "^3.0.0",
+    "lodash.isundefined": "^3.0.1",
+    "yaml-ast-parser": "^0.0.40"
+  },
+  "devDependencies": {
+    "@types/globby": "^6.1.0",
+    "@types/jest": "^22.2.3",
+    "@types/lodash": "^4.14.108",
+    "@types/node": "^10.0.0",
+    "globby": "^8.0.1",
+    "jest": "^22.4.3",
+    "lodash": "^4.17.10",
+    "ts-jest": "^22.4.4",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.12.0",
+    "typescript": "^2.8.3"
+  }
+}

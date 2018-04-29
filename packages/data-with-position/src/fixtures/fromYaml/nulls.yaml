@@ -1,0 +1,11 @@
+obj:
+  givenNull: null
+  givenNothing:
+  givenFalse: false
+  givenTrue: true
+arr:
+  - str
+  # -
+  - 1
+  - null
+  - false
