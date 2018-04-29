@@ -21,7 +21,7 @@ export default async (
       if (documents.length === MAX_CHAIN_LENGTH) {
         documents[documents.length - 1].fail(
           `Too many documents to follow. Please reorganise your narrative by chaining maximum ${MAX_CHAIN_LENGTH} documents.`,
-          undefined,
+          documents[documents.length - 1].data.litvisFollowsPosition,
           "litvis:cross-document",
         );
         break;
@@ -50,7 +50,7 @@ export default async (
             `Document to follow ‘${
               document.data.litvisFollowsPath
             }’ does not exist`,
-            undefined,
+            document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
@@ -59,14 +59,14 @@ export default async (
             `Document to follow ‘${
               document.data.litvisFollowsPath
             }’ is not a file`,
-            undefined,
+            document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
         if (currentFilePath === document.path) {
           documents[documents.length - 1].fail(
             `Litvis document cannot follow itself.`,
-            undefined,
+            document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
@@ -81,7 +81,7 @@ export default async (
             `Documents are not allowed to follow each other in a cycle ${fileNames.join(
               " → ",
             )} .`,
-            undefined,
+            documents[documents.length - 1].data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
