@@ -1,44 +1,31 @@
-import { LabelDefinition } from "narrative-schema-label";
-import { VFile } from "vfile";
-
-export type Document = VFile<any>;
-
-export interface LabelDefinitionWithOrigin extends LabelDefinition {
-  origin: NarrativeSchema;
-}
-
-export interface RuleDefinition {
-  description: string;
-  selector: {
-    label: string;
-  };
-  minimumOccurrences?: number;
-  maximumOccurrences?: number;
-}
-export interface RuleDefinitionWithOrigin extends RuleDefinition {
-  origin: NarrativeSchema;
-}
-
-export interface CssWithOrigin {
-  content: string;
-  origin: NarrativeSchema;
-}
+import {
+  LabelDefinition,
+  LabelDefinitionWithOrigin,
+} from "narrative-schema-label";
+import {
+  RuleDefinition,
+  RuleDefinitionWithOrigin,
+} from "narrative-schema-rule";
+import {
+  StylingDefinition,
+  StylingDefinitionWithOrigin,
+} from "narrative-schema-styling";
+import { VFileBase } from "vfile";
 
 export interface NarrativeSchemaData {
-  dependencies: string[];
   labels: LabelDefinition[];
   rules: RuleDefinition[];
-  css: string;
+  styling: StylingDefinition[];
 }
 
-export type NarrativeSchema = VFile<{
+export type NarrativeSchema<Document> = VFileBase<{
   data: NarrativeSchemaData;
-  dependencyOf?: NarrativeSchema | Document;
+  parents: Array<NarrativeSchema<Document> | Document>;
 }>;
 
-export interface ComposedNarrativeSchema {
-  components: NarrativeSchema[];
+export interface ComposedNarrativeSchema<Document> {
+  components: Array<NarrativeSchema<Document>>;
   labels: LabelDefinitionWithOrigin[];
   rules: RuleDefinitionWithOrigin[];
-  css: CssWithOrigin[];
+  styling: StylingDefinitionWithOrigin[];
 }

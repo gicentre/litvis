@@ -1,0 +1,16 @@
+export default (composedNarrativeSchema: ComposedNarrativeSchema) => () => {
+  const labelDefinitionsByName = _.keyBy(
+    composedNarrativeSchema.labels,
+    (label) => label.name,
+  );
+  return function transformer(ast, vFile, next) {
+    visitAndExtractDerivatives(ast, vFile);
+    visitAndExtractHtml(ast, vFile, labelDefinitionsByName);
+
+    if (typeof next === "function") {
+      return next(null, ast, vFile);
+    }
+
+    return ast;
+  };
+};
