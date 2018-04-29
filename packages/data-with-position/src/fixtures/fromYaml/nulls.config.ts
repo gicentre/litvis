@@ -29,6 +29,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 2, column: 3 },
         end: { line: 2, column: 18 },
       },
+      expectedKind: "null",
       expectedValue: null,
     },
     {
@@ -37,6 +38,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 3, column: 3 },
         end: { line: 3, column: 16 },
       },
+      expectedKind: "null",
       expectedValue: null,
     },
     {
@@ -45,6 +47,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 4, column: 3 },
         end: { line: 4, column: 20 },
       },
+      expectedKind: "boolean",
       expectedValue: false,
     },
     {
@@ -53,10 +56,12 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 5, column: 3 },
         end: { line: 5, column: 18 },
       },
+      expectedKind: "boolean",
       expectedValue: true,
     },
     {
       path: ["arr", 0],
+      expectedKind: "string",
       expectedValue: "str",
     },
     // {
@@ -65,10 +70,12 @@ const config: FromYamlTestCaseConfig = {
     // },
     {
       path: ["arr", 1],
+      expectedKind: "number",
       expectedValue: 1,
     },
     {
       path: ["arr", 2],
+      expectedKind: "null",
       expectedValue: null,
     },
     {

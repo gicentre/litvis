@@ -2,10 +2,13 @@ import * as fs from "fs";
 // tslint:disable-next-line:no-implicit-dependencies
 import * as globby from "globby";
 // tslint:disable-next-line:no-implicit-dependencies
+import * as kindOf from "kind-of";
+// tslint:disable-next-line:no-implicit-dependencies
 import * as _ from "lodash";
 import * as path from "path";
 import { FromYamlTestCaseConfig } from "./fixtures/types";
 import fromYaml from "./fromYaml";
+import getKind from "./getKind";
 import getPosition from "./getPosition";
 import getValue from "./getValue";
 
@@ -24,6 +27,17 @@ _.forEach(yamlPaths, (yamlPath) => {
         ? _.get(dataWithPosition, nodeDefinition.path)
         : dataWithPosition;
 
+      if (nodeDefinition.expectedKind) {
+        test(`path ${pathAsStr} has expected position`, () => {
+          expect(getKind(node)).toEqual(nodeDefinition.expectedKind);
+          expect(kindOf(getValue(node))).toEqual(getKind(node));
+        });
+      }
+
+      if (nodeDefinition.expectedKind === "undefined") {
+        return;
+      }
+
       test(`path ${pathAsStr} contains node`, () => {
         expect(node).toBeDefined();
       });
@@ -37,6 +51,34 @@ _.forEach(yamlPaths, (yamlPath) => {
           nodeDefinition.expectedObjectKeys
         }`, () => {
           expect(Object.keys(node)).toEqual(nodeDefinition.expectedObjectKeys);
+          let count = 0;
+          for (const key in node) {
+            if (node.hasOwnProperty(key)) {
+              expect(node[key]).toBeDefined();
+              count += 1;
+            }
+          }
+          expect(count).toEqual(nodeDefinition.expectedObjectKeys!.length);
+        });
+      }
+
+      if (Number.isFinite(nodeDefinition.expectedArrayLength!)) {
+        test(`path ${pathAsStr} has expected length`, () => {
+          expect(node.length).toEqual(nodeDefinition.expectedArrayLength);
+
+          let lastSeenIndex = -1;
+          for (const el of node) {
+            lastSeenIndex += 1;
+            expect(el).toEqual(node[lastSeenIndex]);
+          }
+          expect(lastSeenIndex).toEqual(
+            nodeDefinition.expectedArrayLength! - 1,
+          );
+
+          // tslint:disable-next-line:prefer-for-of
+          for (let i = 0; i < node.length; i += 1) {
+            expect(node[i]).toBeDefined();
+          }
         });
       }
 

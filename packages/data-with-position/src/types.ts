@@ -15,3 +15,12 @@ export interface Point {
 }
 
 export type DataWithPosition = any;
+
+export type Kind =
+  | "array"
+  | "boolean"
+  | "null"
+  | "number"
+  | "object"
+  | "string"
+  | "undefined";

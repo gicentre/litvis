@@ -1,9 +1,15 @@
-import positionKey from "./positionKey";
-import { DataWithPosition } from "./types";
+import { positionKey } from "./keys";
+import { DataWithPosition, Position } from "./types";
 
-export default (dataWithPosition: DataWithPosition): any => {
-  if (!dataWithPosition) {
-    return null;
+export default function(dataWithPosition: DataWithPosition): Position;
+export default function(dataWithPosition: undefined): undefined;
+
+export default function(
+  dataWithPosition?: DataWithPosition,
+): Position | undefined {
+  if (typeof dataWithPosition === "undefined") {
+    return undefined;
   }
+
   return dataWithPosition[positionKey];
-};
+}

@@ -5,6 +5,7 @@ const config: FromYamlTestCaseConfig = {
     {
       path: [],
       expectedObjectKeys: ["obj"],
+      expectedKind: "object",
       expectedPosition: {
         start: { line: 1, column: 1 },
         end: { line: 13, column: 1 },
@@ -17,6 +18,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 1, column: 1 },
         end: { line: 12, column: 11 },
       },
+      expectedKind: "object",
       expectedValue: {
         arr: [
           {
@@ -34,6 +36,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 11, column: 3 },
         end: { line: 11, column: 9 },
       },
+      expectedKind: "number",
       expectedValue: 1,
     },
     {
@@ -51,6 +54,7 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 3, column: 5 },
         end: { line: 11, column: 3 },
       },
+      expectedKind: "object",
     },
     {
       path: ["obj", "arr", 0, "nums"],
@@ -58,6 +62,8 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 3, column: 5 },
         end: { line: 7, column: 5 },
       },
+      expectedKind: "array",
+      expectedArrayLength: 3,
       expectedValue: [1, 2, 3],
     },
     {
@@ -66,7 +72,13 @@ const config: FromYamlTestCaseConfig = {
         start: { line: 7, column: 5 },
         end: { line: 11, column: 3 },
       },
+      expectedKind: "array",
+      expectedArrayLength: 3,
       expectedValue: ["1", "2", "3"],
+    },
+    {
+      path: ["non-existing"],
+      expectedKind: "undefined",
     },
   ],
 };

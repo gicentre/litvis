@@ -1,9 +1,10 @@
 import { DataWithPosition } from "./types";
 
 const getValue = (dataWithPosition: DataWithPosition): any => {
-  if (!dataWithPosition) {
+  if (typeof dataWithPosition === "undefined") {
     return undefined;
   }
+
   if (Array.isArray(dataWithPosition)) {
     return dataWithPosition.map((el) => getValue(el));
   }
@@ -12,6 +13,7 @@ const getValue = (dataWithPosition: DataWithPosition): any => {
   if (value instanceof Object) {
     const result = {};
     for (const key in dataWithPosition) {
+      // istanbul ignore next
       if (dataWithPosition.hasOwnProperty(key)) {
         result[key] = getValue(dataWithPosition[key]);
       }

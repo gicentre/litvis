@@ -4,7 +4,14 @@
   "description": "Pseudo AST that contains data with its positions attached.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [],
+  "keywords": [
+    "yaml",
+    "ast",
+    "parse",
+    "position",
+    "yaml-ast-parser",
+    "unist"
+  ],
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
@@ -19,7 +26,6 @@
   },
   "dependencies": {
     "lodash.isnull": "^3.0.0",
-    "lodash.isundefined": "^3.0.1",
     "yaml-ast-parser": "^0.0.40"
   },
   "devDependencies": {
@@ -29,6 +35,7 @@
     "@types/node": "^10.0.0",
     "globby": "^8.0.1",
     "jest": "^22.4.3",
+    "kind-of": "^6.0.2",
     "lodash": "^4.17.10",
     "ts-jest": "^22.4.4",
     "tslint": "^5.9.1",
