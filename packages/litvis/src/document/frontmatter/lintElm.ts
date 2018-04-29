@@ -1,4 +1,5 @@
 import { getPosition, getValue } from "data-with-position";
+import * as kindOf from "kind-of";
 import * as _ from "lodash";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
@@ -13,7 +14,7 @@ export default (dataWithPosition, document: LitvisDocument): void => {
       // ignore null value
     } else if (!_.isPlainObject(elm)) {
       document.message(
-        `‘elm’ has to be an object, ${typeof elm} given. Value ignored.`,
+        `‘elm’ has to be an object, ${kindOf(elm)} given. Value ignored.`,
         getPosition(dataWithPosition.elm),
         "litvis:frontmatter:elm:dependencies",
       );

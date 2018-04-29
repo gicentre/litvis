@@ -1,4 +1,5 @@
 import { getPosition, getValue } from "data-with-position";
+import * as kindOf from "kind-of";
 import * as _ from "lodash";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
@@ -30,7 +31,9 @@ export default (
     // do not do anything if elm dependencies are not defined
   } else if (!_.isPlainObject(dependencies)) {
     document.message(
-      `‘elm.dependencies’ has to be an object, ${typeof dependencies} given. Value ignored.`,
+      `‘elm.dependencies’ has to be an object, ${kindOf(
+        dependencies,
+      )} given. Value ignored.`,
       getPosition(dependenciesWithPosition),
       "litvis:frontmatter:elm:dependencies",
     );

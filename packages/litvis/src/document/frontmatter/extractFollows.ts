@@ -1,4 +1,5 @@
 import { getPosition, getValue } from "data-with-position";
+import * as kindOf from "kind-of";
 import * as _ from "lodash";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
@@ -19,7 +20,9 @@ export default (
       // ignore null value
     } else if (!_.isString(rawValue)) {
       document.message(
-        `‘follows’ has to be a string, ${typeof rawValue} given. Value ignored.`,
+        `‘follows’ has to be a string, ${kindOf(
+          rawValue,
+        )} given. Value ignored.`,
         position,
         "litvis:frontmatter-follows",
       );

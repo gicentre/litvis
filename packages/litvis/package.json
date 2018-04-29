@@ -25,6 +25,7 @@
     "fs-extra": "^5.0.0",
     "immer": "^1.2.1",
     "is-whitespace-character": "^1.0.2",
+    "kind-of": "^6.0.2",
     "literate-elm": "^0.3.5",
     "lodash": "^4.17.5",
     "narrative-schema": "^0.1.2",
