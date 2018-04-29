@@ -42,7 +42,7 @@ console.log(getValue(dataWithPosition.obj.arr[0].strs));
 console.log(getPosition(dataWithPosition.obj.str));
 // { start: { line: 12, column: 3 }, end: { line: 12, column: 11 } }
 
-console.log(getPosition(dataWithPosition.obj.arr.0));
+console.log(getPosition(dataWithPosition.obj.arr[0]));
 // { start: { line: 3, column: 5 }, end: { line: 11, column: 3 } }
 ```
 
