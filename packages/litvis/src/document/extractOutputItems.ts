@@ -5,7 +5,10 @@ import {
   AttributeDerivatives,
   BlockOutputFormat,
   LitvisDocument,
+  OutputExpression,
+  OutputFormat,
 } from "../types";
+import { Parent } from "../unistTypes";
 
 function visitCodeBlock(ast, vFile) {
   return visit(ast, "code", (codeBlockNode, index, parent) => {
@@ -19,8 +22,8 @@ function visitCodeBlock(ast, vFile) {
     }
     codeBlockNode.data.visitedByExtractOutputItems = true;
 
-    const nodesBefore = [];
-    const nodesAfter = [];
+    const nodesBefore: OutputExpression[] = [];
+    const nodesAfter: OutputExpression[] = [];
     let nodes = nodesBefore;
     const derivatives = resolveExpressions(
       codeBlockNode.data.litvisAttributeDerivatives,
@@ -33,22 +36,24 @@ function visitCodeBlock(ast, vFile) {
           nodes = nodesAfter;
           break;
         default:
-          const expressions =
-            derivatives.outputExpressionsByFormat[outputFormat];
+          const expressions = derivatives.outputExpressionsByFormat[
+            outputFormat
+          ]!;
           nodes.push(
             ...expressions.map((expression) => ({
               type: "outputExpression",
               position: codeBlockNode.position,
+              value: expression,
               data: {
                 text: expression,
-                outputFormat,
+                outputFormat: (outputFormat as any) as OutputFormat,
                 contextName: derivatives.contextName,
               },
             })),
           );
       }
     });
-    const resultingNodes = [];
+    const resultingNodes: Parent[] = [];
     if (nodesBefore.length) {
       resultingNodes.push({
         type: "outputExpressionGroup",
@@ -74,7 +79,7 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
     ) {
       return;
     }
-    const nodes = [];
+    const nodes: OutputExpression[] = [];
     const derivatives: AttributeDerivatives =
       tripleHatReferenceNode.data.litvisAttributeDerivatives;
     derivatives.outputFormats.forEach((outputFormat) => {
@@ -94,9 +99,10 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
               ...expressions.map((expression) => ({
                 type: "outputExpression",
                 position: tripleHatReferenceNode.position,
+                value: expression,
                 data: {
                   text: expression,
-                  outputFormat,
+                  outputFormat: (outputFormat as any) as OutputFormat,
                   contextName: derivatives.contextName,
                 },
               })),

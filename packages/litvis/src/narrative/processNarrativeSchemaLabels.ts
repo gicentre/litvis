@@ -7,7 +7,7 @@ import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
   const lastFile = _.last(narrative.documents);
-  if (!lastFile) {
+  if (!lastFile || !narrative.composedNarrativeSchema) {
     return;
   }
 
@@ -29,31 +29,31 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
     children: _.map(narrative.documents, (file) => file.data.root),
   };
 
-  for (const rule of narrative.composedNarrativeSchema.rules) {
+  for (const ruleDefinition of narrative.composedNarrativeSchema.rules) {
     const filteredNodes = _.filter(
       select(
         combinedAst,
-        `narrativeSchemaLabel[labelName=${rule.selector.label}]`,
+        `narrativeSchemaLabel[labelName=${ruleDefinition.selector.label}]`,
       ),
       (node) => (node as any).data.labelType !== LabelType.PAIRED_CLOSING,
     );
     try {
       if (
-        _.isFinite(rule.minimumOccurrences) &&
-        filteredNodes.length < rule.minimumOccurrences
+        _.isFinite(ruleDefinition.minimumOccurrences) &&
+        filteredNodes.length < ruleDefinition.minimumOccurrences!
       ) {
         throw new Error("minimumOccurrences");
       }
       if (
-        _.isFinite(rule.maximumOccurrences) &&
-        filteredNodes.length > rule.maximumOccurrences
+        _.isFinite(ruleDefinition.maximumOccurrences) &&
+        filteredNodes.length > ruleDefinition.maximumOccurrences!
       ) {
         throw new Error("maximumOccurrences");
       }
     } catch (e) {
       lastFile.message(
-        rule.description,
-        lastFile.data.root.position.end,
+        ruleDefinition.description,
+        lastFile.data.root.position!.end,
         "litvis:narrative-schema-rule",
       );
     }

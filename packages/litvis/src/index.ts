@@ -5,8 +5,9 @@ import {
   processElmContexts,
   processNarrativeSchemaLabels,
 } from "./narrative";
-import { Cache } from "./types";
-import { LitvisDocument, LitvisNarrative } from "./types";
+import { Cache, LitvisDocument, LitvisNarrative } from "./types";
+// @ts-ignore
+import { Node, Position, PseudoAstNode, VFileBase } from "./types";
 
 export async function loadAndProcessLitvisNarrative(
   filePath,

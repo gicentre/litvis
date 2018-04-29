@@ -104,7 +104,7 @@ function addOutputExpressions(
   type: OutputFormat,
   value,
 ) {
-  const expressionsToAdd = [];
+  const expressionsToAdd: string[] = [];
   if (value instanceof Array) {
     value.forEach((v) => {
       expressionsToAdd.push(normalizeExpression(v));

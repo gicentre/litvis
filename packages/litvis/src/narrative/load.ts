@@ -21,7 +21,7 @@ export default async (
       if (documents.length === MAX_CHAIN_LENGTH) {
         documents[documents.length - 1].fail(
           `Too many documents to follow. Please reorganise your narrative by chaining maximum ${MAX_CHAIN_LENGTH} documents.`,
-          null,
+          undefined,
           "litvis:cross-document",
         );
         break;
@@ -35,9 +35,9 @@ export default async (
         : await readVFile(currentFilePath, "utf8");
       documents.unshift(document);
       await parseDocument(document);
-      currentFilePath = document.data.litvisFollows
-        ? resolve(document.dirname, document.data.litvisFollows)
-        : null;
+      currentFilePath = document.data.litvisFollowsPath
+        ? resolve(document.dirname || "", document.data.litvisFollowsPath)
+        : "";
       if (currentFilePath) {
         if (!currentFilePath.match(/\.md$/i)) {
           currentFilePath = `${currentFilePath}.md`;
@@ -48,23 +48,25 @@ export default async (
         } catch (e) {
           document.fail(
             `Document to follow ‘${
-              document.data.litvisFollows
+              document.data.litvisFollowsPath
             }’ does not exist`,
-            null,
+            undefined,
             "litvis:cross-document",
           );
         }
         if (!fileStat.isFile()) {
           document.fail(
-            `Document to follow ‘${document.data.litvisFollows}’ is not a file`,
-            null,
+            `Document to follow ‘${
+              document.data.litvisFollowsPath
+            }’ is not a file`,
+            undefined,
             "litvis:cross-document",
           );
         }
         if (currentFilePath === document.path) {
           documents[documents.length - 1].fail(
             `Litvis document cannot follow itself.`,
-            null,
+            undefined,
             "litvis:cross-document",
           );
         }
@@ -79,7 +81,7 @@ export default async (
             `Documents are not allowed to follow each other in a cycle ${fileNames.join(
               " → ",
             )} .`,
-            null,
+            undefined,
             "litvis:cross-document",
           );
         }

@@ -1,11 +1,9 @@
 import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
-// tslint:disable-next-line:no-implicit-dependencies
-import { Node, Text } from "unist";
-import { VFile } from "vfile";
+import { VFileBase } from "vfile";
+import { Node, Position, Text } from "./unistTypes";
 
-// tslint:disable-next-line:no-implicit-dependencies
-export { Node } from "unist";
+export { Node, Position, Text } from "./unistTypes";
 export { VFileBase } from "vfile";
 export import ProcessedLitvisContextStatus = ProgramResultStatus;
 
@@ -42,13 +40,17 @@ export interface AttributeDerivatives {
   follows?: string;
 }
 
-export type LitvisDocument = VFile<{
+export type LitvisDocument = VFileBase<{
   data: {
     root: Node;
-    litvisFollows?: string;
-    litvisElmDependencies?: { [packageName: string]: string | false };
-    litvisElmSourceDirectories?: string[];
-    litvisNarrativeSchemas?: string[];
+    litvisFollowsPath?: string;
+    litvisFollowsPosition?: Position;
+    litvisElmDependencyVersions?: { [packageName: string]: string | false };
+    litvisElmDependencyPositions?: { [packageName: string]: Position };
+    litvisElmSourceDirectoryPaths?: string[];
+    litvisElmSourceDirectoryPositions?: Position[];
+    litvisNarrativeSchemaPseudoAstRootNode?: PseudoAstNode;
+    litvisNarrativeSchemaPseudoAstNodesWithPaths?: PseudoAstNode[];
     renderedHtml?: string;
   };
 }>;
@@ -103,4 +105,9 @@ export interface EvaluatedOutputExpression extends Text {
 export interface Cache {
   a?: string;
   literateElmDirectory: string;
+}
+
+export const loc = Symbol("pseudo-yaml-ast-loc");
+export interface PseudoAstNode {
+  [loc]?: Position;
 }

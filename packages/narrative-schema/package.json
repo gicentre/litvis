@@ -21,9 +21,9 @@
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.5",
     "narrative-schema-label": "^0.1.2",
+    "pseudo-yaml-ast": "^1.0.10",
     "to-vfile": "^2.2.0",
-    "vfile": "^2.3.0",
-    "yamljs": "^0.3.0"
+    "vfile": "^2.3.0"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",

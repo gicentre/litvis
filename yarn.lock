@@ -16,6 +16,14 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
+"@kachkaev/pseudo-yaml-ast@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@kachkaev/pseudo-yaml-ast/-/pseudo-yaml-ast-0.2.0.tgz#ba3564791c41484cca0686d4794b3fc1b4e27e73"
+  dependencies:
+    lodash.isnull "^3.0.0"
+    lodash.isundefined "^3.0.1"
+    yaml-ast-parser "0.0.40"
+
 "@kachkaev/run-elm@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.2.tgz#dbfa2cb81c1f35c2e37d746740120e4a6cd4d19c"
@@ -56,7 +64,7 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.106", "@types/lodash@^4.14.107":
+"@types/lodash@*", "@types/lodash@^4.14.106", "@types/lodash@^4.14.108":
   version "4.14.108"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.108.tgz#02656af3add2e5b3174f830862c47421c00ef817"
 
@@ -1852,6 +1860,10 @@ has-flag@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
 
+has-own-prop@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/has-own-prop/-/has-own-prop-1.0.1.tgz#4a5c1326a45146b836cadd4b79039b9e9476a4f9"
+
 has-unicode@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/has-unicode/-/has-unicode-2.0.1.tgz#e0e6fe6a28cf51138855e086d1691e771de2a8b9"
@@ -2646,7 +2658,7 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@^3.11.0, js-yaml@^3.7.0:
+js-yaml@^3.7.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.11.0.tgz#597c1a8bd57152f26d622ce4117851a51f5ebaef"
   dependencies:
@@ -2878,6 +2890,14 @@ locate-path@^2.0.0:
 lodash._reinterpolate@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
+
+lodash.isnull@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/lodash.isnull/-/lodash.isnull-3.0.0.tgz#fafbe59ea1dca27eed786534039dd84c2e07c56e"
+
+lodash.isundefined@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lodash.isundefined/-/lodash.isundefined-3.0.1.tgz#23ef3d9535565203a66cefd5b830f848911afb48"
 
 lodash.snakecase@^4.1.1:
   version "4.1.1"
@@ -3585,6 +3605,15 @@ private@^0.1.8:
 process-nextick-args@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
+
+pseudo-yaml-ast@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/pseudo-yaml-ast/-/pseudo-yaml-ast-1.0.10.tgz#950bb7c394911b1eb0668d356df1774043ff1b4f"
+  dependencies:
+    has-own-prop "^1.0.0"
+    lodash.isnull "^3.0.0"
+    lodash.isundefined "^3.0.1"
+    yaml-ast-parser "0.0.36"
 
 pseudomap@^1.0.2:
   version "1.0.2"
@@ -4840,6 +4869,14 @@ yallist@^2.1.2:
 yallist@^3.0.0, yallist@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.0.2.tgz#8452b4bb7e83c7c188d8041c1a837c773d6d8bb9"
+
+yaml-ast-parser@0.0.36:
+  version "0.0.36"
+  resolved "https://registry.yarnpkg.com/yaml-ast-parser/-/yaml-ast-parser-0.0.36.tgz#9dfdef461570253392af1941b127b9de699a089b"
+
+yaml-ast-parser@0.0.40:
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/yaml-ast-parser/-/yaml-ast-parser-0.0.40.tgz#08536d4e73d322b1c9ce207ab8dd70e04d20ae6e"
 
 yamljs@^0.3.0:
   version "0.3.0"

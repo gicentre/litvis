@@ -54,15 +54,15 @@ export default async (
   }
   try {
     const literateElmEnvironment = await ensureEnvironment(
-      narrative.elmEnvironmentSpecForLastFile,
+      narrative.elmEnvironmentSpecForLastFile!,
       cache.literateElmDirectory,
     );
 
     if (literateElmEnvironment.metadata.status !== EnvironmentStatus.READY) {
       try {
         lastDocument.fail(
-          literateElmEnvironment.metadata.errorMessage,
-          null,
+          literateElmEnvironment.metadata.errorMessage!,
+          undefined,
           "litvis:elm-environment",
         );
       } catch (e) {
@@ -180,7 +180,7 @@ export default async (
     });
 
     const literateElmProgramPromises: Array<Promise<ProgramResult>> = [];
-    const ranContextNames = [];
+    const ranContextNames: string[] = [];
     _.forEach(
       foundContextsByName,
       ({ wrappedCodeBlocks, wrappedOutputExpressions }, contextName) => {
@@ -188,7 +188,7 @@ export default async (
           wrappedCodeBlocks,
           (wrappedCodeBlock) => ({
             text: wrappedCodeBlock.subject.value,
-            position: wrappedCodeBlock.subject.position,
+            position: wrappedCodeBlock.subject.position!,
             fileIndex: wrappedCodeBlock.documentIndex,
           }),
         );
@@ -197,7 +197,7 @@ export default async (
           wrappedOutputExpressions,
           (wrappedOutputExpression) => ({
             text: wrappedOutputExpression.subject.data.text,
-            position: wrappedOutputExpression.subject.position,
+            position: wrappedOutputExpression.subject.position!,
             fileIndex: wrappedOutputExpression.documentIndex,
           }),
         );
@@ -268,7 +268,7 @@ export default async (
           if (debugLog) {
             lastDocument.info(
               `Debug.log results in context "${contextName}":\n${debugLog}`,
-              null,
+              undefined,
               "literate-elm:debug-log",
             );
           }
@@ -280,7 +280,7 @@ export default async (
               const evaluatedExpression = wrappedOutputExpression.subject as EvaluatedOutputExpression;
               const document =
                 narrative.documents[
-                  evaluatedExpressionInProgram.node.fileIndex
+                  evaluatedExpressionInProgram.node.fileIndex || 0
                 ];
 
               evaluatedExpression.data.value =

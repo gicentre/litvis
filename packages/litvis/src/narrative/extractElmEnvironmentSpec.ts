@@ -7,10 +7,10 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
   // resolve litvisElmDependencies and litvisElmSourceDirectories
   const dependencies = {};
   const sourceDirectories: string[] = [];
-  const checkDirectoryPromises = [];
+  const checkDirectoryPromises: Array<Promise<void>> = [];
   _.forEach(narrative.documents, (file) => {
     _.forEach(
-      file.data.litvisElmDependencies,
+      file.data.litvisElmDependencyVersions,
       (packageVersion, packageName) => {
         if (packageVersion === false) {
           if (dependencies[packageName]) {
@@ -18,7 +18,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
           } else {
             file.info(
               `‘elm.dependencies.${packageName}:’ setting ${packageVersion} to false is only necessary if this packaged is mentioned in upstream documents.`,
-              null,
+              undefined,
               "litvis:elm-dependencies",
             );
           }
@@ -28,23 +28,23 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
       },
     );
     const resolvedDirsInThisFile = _.map(
-      file.data.litvisElmSourceDirectories,
-      (dir: string) => resolve(file.dirname, dir),
+      file.data.litvisElmSourceDirectoryPaths,
+      (dir: string) => resolve(file.dirname || "", dir),
     );
     _.forEach(
-      file.data.litvisElmSourceDirectories,
+      file.data.litvisElmSourceDirectoryPaths,
       (dir: string, index: number) => {
         const resolvedDir = resolvedDirsInThisFile[index];
         if (_.indexOf(resolvedDirsInThisFile, resolvedDir) < index) {
           file.info(
             `‘elm.source-directories[${index}]:’ directory ${dir} is already mentioned above.`,
-            null,
+            undefined,
             "litvis:elm-source-directories",
           );
         } else if (_.includes(sourceDirectories, resolvedDir)) {
           file.info(
             `‘elm.source-directories[${index}]:’ directory ${dir} is already mentioned in an upstream file.`,
-            null,
+            undefined,
             "litvis:elm-source-directories",
           );
         } else {
@@ -60,7 +60,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
               } catch (e) {
                 file.info(
                   `‘elm.source-directories[${index}]:’ ${dir} is not an existing directory and is therefore ignored.`,
-                  null,
+                  undefined,
                   "litvis:elm-source-directories",
                 );
               }
