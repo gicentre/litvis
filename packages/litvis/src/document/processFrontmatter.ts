@@ -1,4 +1,4 @@
-import extractAst, { loc } from "@kachkaev/pseudo-yaml-ast";
+import { fromYaml } from "data-with-position";
 import { NodeWithPosition } from "vfile";
 import { LitvisDocument } from "../types";
 import extractElmDependencies from "./frontmatter/extractElmDependencies";
@@ -27,15 +27,15 @@ function visitFrontmatter(mdAst, document: LitvisDocument) {
   }
 
   // extract yaml pseudo ast
-  let yamlAst;
+  let dataWithPosition;
   try {
     const valueWithOffset =
       "\n".repeat(frontmatterNode.position.start.line) + frontmatterNode.value;
-    yamlAst = extractAst(valueWithOffset);
+    dataWithPosition = fromYaml(valueWithOffset);
     if (!frontmatterNode.data) {
       frontmatterNode.data = {};
     }
-    frontmatterNode.data.yamlAst = yamlAst;
+    frontmatterNode.data.dataWithPosition = dataWithPosition;
   } catch (e) {
     document.message(
       `Frontmatter is ignored because yaml could not be parsed: ${e.message}`,
@@ -45,33 +45,33 @@ function visitFrontmatter(mdAst, document: LitvisDocument) {
     return;
   }
 
-  lintElm(yamlAst, document);
+  lintElm(dataWithPosition, document);
 
   const {
     value: litvisFollows,
     position: litvisFollowsPosition,
-  } = extractFollows(yamlAst, document);
+  } = extractFollows(dataWithPosition, document);
   document.data.litvisFollowsPath = litvisFollows;
   document.data.litvisFollowsPosition = litvisFollowsPosition;
 
   const {
     versions: elmDependencyVersions,
     positions: elmDependencyPositions,
-  } = extractElmDependencies(yamlAst, document);
+  } = extractElmDependencies(dataWithPosition, document);
   document.data.litvisElmDependencyVersions = elmDependencyVersions;
   document.data.litvisElmDependencyPositions = elmDependencyPositions;
 
   const {
     paths: elmSourceDirectoryPaths,
     positions: elmSourceDirectoryPositions,
-  } = extractElmSourceDirectories(yamlAst, document);
+  } = extractElmSourceDirectories(dataWithPosition, document);
   document.data.litvisElmSourceDirectoryPaths = elmSourceDirectoryPaths;
   document.data.litvisElmSourceDirectoryPositions = elmSourceDirectoryPositions;
 
   const {
-    pseudoAstNodes: narrativeSchemaPseudoYamlAstNodes,
-  } = extractNarrativeSchemas(yamlAst, document);
-  document.data.litvisNarrativeSchemaPseudoAstNodesWithPaths = narrativeSchemaPseudoYamlAstNodes;
+    pathsWithPosition: narrativeSchemasWithPosition,
+  } = extractNarrativeSchemas(dataWithPosition, document);
+  document.data.litvisNarrativeSchemasWithPosition = narrativeSchemasWithPosition;
 }
 
 export default function() {

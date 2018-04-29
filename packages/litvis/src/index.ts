@@ -7,7 +7,7 @@ import {
 } from "./narrative";
 import { Cache, LitvisDocument, LitvisNarrative } from "./types";
 // @ts-ignore
-import { Node, Position, PseudoAstNode, VFileBase } from "./types";
+import { Node, Position, VFileBase } from "./types";
 
 export async function loadAndProcessLitvisNarrative(
   filePath,

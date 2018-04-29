@@ -18,10 +18,10 @@
     "test:coverage": "jest"
   },
   "dependencies": {
-    "@kachkaev/pseudo-yaml-ast": "^0.2.0",
     "@types/unist": "^1.0.0",
     "block-attributes": "^0.2.1",
     "block-info": "^0.2.1",
+    "data-with-position": "^0.1.0",
     "fs-extra": "^5.0.0",
     "immer": "^1.2.1",
     "is-whitespace-character": "^1.0.2",
@@ -39,7 +39,6 @@
     "vfile": "^2.3.0"
   },
   "devDependencies": {
-    "@kachkaev/pseudo-yaml-ast": "^0.1.0",
     "@types/jest": "^22.2.3",
     "@types/lodash": "^4.14.108",
     "@types/vfile": "^2.2.2",

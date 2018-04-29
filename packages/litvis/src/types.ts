@@ -1,3 +1,4 @@
+import { DataWithPosition } from "data-with-position";
 import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
 import { VFileBase } from "vfile";
@@ -49,8 +50,7 @@ export type LitvisDocument = VFileBase<{
     litvisElmDependencyPositions?: { [packageName: string]: Position };
     litvisElmSourceDirectoryPaths?: string[];
     litvisElmSourceDirectoryPositions?: Position[];
-    litvisNarrativeSchemaPseudoAstRootNode?: PseudoAstNode;
-    litvisNarrativeSchemaPseudoAstNodesWithPaths?: PseudoAstNode[];
+    litvisNarrativeSchemasWithPosition?: DataWithPosition;
     renderedHtml?: string;
   };
 }>;
@@ -105,9 +105,4 @@ export interface EvaluatedOutputExpression extends Text {
 export interface Cache {
   a?: string;
   literateElmDirectory: string;
-}
-
-export const loc = Symbol("pseudo-yaml-ast-loc");
-export interface PseudoAstNode {
-  [loc]?: Position;
 }

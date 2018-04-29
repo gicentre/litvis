@@ -1,8 +1,8 @@
+import { fromYaml, getPosition, getValue } from "data-with-position";
 import * as _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import * as vfile from "vfile";
-import * as yaml from "yamljs";
 import { Document } from "./types";
 
 import {
@@ -14,10 +14,9 @@ import {
   NarrativeSchemaData,
   RuleDefinitionWithOrigin,
 } from "./types";
-import validateSchema from "./validateSchema";
 
 const load = async (
-  dependentSchemaPaths,
+  dependentSchemaPathsWithPosition,
   parents: Array<Document | NarrativeSchema>,
   schemasAlreadyLoaded: NarrativeSchema[],
   filesInMemory: Array<vfile.VFileBase<{}>>,
@@ -26,9 +25,13 @@ const load = async (
   const rules: RuleDefinitionWithOrigin[] = [];
   const css: CssWithOrigin[] = [];
   const components: NarrativeSchema[] = [];
-  if (dependentSchemaPaths) {
-    for (const path of dependentSchemaPaths) {
-      const resolvedPath = await resolveNarrativeSchemaPath(path, parents[0]);
+  if (dependentSchemaPathsWithPosition) {
+    for (const pathWithPosition of dependentSchemaPathsWithPosition) {
+      const pathPosition = getPosition(pathWithPosition);
+      const resolvedPath = await resolveNarrativeSchemaPath(
+        getValue(pathWithPosition),
+        parents[0],
+      );
       let file: NarrativeSchema;
 
       // silently skip narrative schema loading if already done so
@@ -51,23 +54,25 @@ const load = async (
         components.push(file);
       } catch (e) {
         parents[0].message(
-          `Unable to load narrative schema dependency ${path}${traceParents(
+          `Unable to load narrative schema dependency ${pathWithPosition}${traceParents(
             parents,
           )}. Does this file ${resolvedPath} exist?`,
-          null,
+          pathPosition,
           "litvis:narrative-schema-load",
         );
       }
 
       // parse yaml
-      let rawData;
+      let dataWithPosition;
       try {
-        rawData = yaml.parse(file.contents.toString());
+        dataWithPosition = fromYaml(file.contents.toString());
       } catch (e) {
         try {
           file.fail(
-            `Unable to parse schema ${path}${traceParents(parents)}`,
-            null,
+            `Unable to parse schema ${pathWithPosition}${traceParents(
+              parents,
+            )}`,
+            undefined,
             "litvis:narrative-schema-parse",
           );
         } catch (e) {
@@ -76,26 +81,28 @@ const load = async (
         continue;
       }
 
+      const validationResult = {};
       // match file with schema
-      const validationResult = validateSchema(rawData);
-      if (validationResult.errors.length) {
-        for (const error of validationResult.errors) {
-          file.message(
-            `‘${error.property}’ ${error.message}`,
-            null,
-            "litvis:narrative-schema-validation",
-          );
-        }
-      }
+      // const validationResult = validateSchema(rawData);
+      // if (validationResult.errors.length) {
+      //   for (const error of validationResult.errors) {
+      //     file.message(
+      //       `‘${error.property}’ ${error.message}`,
+      //       null,
+      //       "litvis:narrative-schema-validation",
+      //     );
+      //   }
+      // }
 
-      if (!_.isPlainObject(rawData)) {
-        continue;
-      }
+      // const typeOfRoot = ast.valueOf();
+      // if (!_.isPlainObject(rawData)) {
+      //   continue;
+      // }
 
       // load dependencies
-      if (_.isArray(rawData.dependencies)) {
+      if (_.isArray(dataWithPosition.dependencies)) {
         const subComposedNarrativeSchema = await load(
-          rawData.dependencies,
+          dataWithPosition.dependencies,
           [file, ...parents],
           [...components, ...schemasAlreadyLoaded],
           filesInMemory,
@@ -110,7 +117,7 @@ const load = async (
       readListOfItems(
         "label",
         "name",
-        rawData.labels,
+        dataWithPosition.labels,
         labels,
         file,
         validationResult,
@@ -120,14 +127,14 @@ const load = async (
       readListOfItems(
         "rule",
         "description",
-        rawData.rules,
+        dataWithPosition.rules,
         rules,
         file,
         validationResult,
       );
 
       // read css
-      const cssContent = _.get(rawData, ["styling", "css"]);
+      const cssContent = _.get(dataWithPosition, ["styling", "css"]);
       if (_.isString(cssContent)) {
         file.data.css = cssContent;
         css.push({

@@ -18,6 +18,7 @@
     "test:coverage": "jest"
   },
   "dependencies": {
+    "data-with-position": "^0.1.0",
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.5",
     "narrative-schema-label": "^0.1.2",

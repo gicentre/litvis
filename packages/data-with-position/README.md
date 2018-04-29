@@ -25,21 +25,23 @@ const dataWithPosition = fromYaml(`obj:
   str: '1'
 `);
 
-console.log(getValue(obj.str));
+console.log(getValue(dataWithPosition.obj.str));
 // "1"
 
-console.log(getValue(obj.num));
+console.log(getValue(dataWithPosition.obj.num));
 // 1
 
-console.log(getValue(obj.arr[0].nums));
+console.log(getValue(dataWithPosition.obj.arr[0].nums));
 // [1, 2, 3]
 
-console.log(getValue(obj.arr[0].strs));
+console.log(getValue(dataWithPosition.obj.arr[0].strs));
 // ["1", "2", "3"]
 
-console.log(getPosition(obj.str));
+console.log(getPosition(dataWithPosition.obj.str));
 // { start: { line: 12, column: 3 }, end: { line: 12, column: 11 } }
 
-console.log(getPosition(obj.arr.0));
+console.log(getPosition(dataWithPosition.obj.arr.0));
 // { start: { line: 3, column: 5 }, end: { line: 11, column: 3 } }
 ```
+
+Rows and columns in position are 1-indexed for compatibility with [unist Position](https://github.com/syntax-tree/unist#position).

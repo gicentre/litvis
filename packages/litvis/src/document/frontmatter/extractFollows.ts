@@ -1,20 +1,20 @@
+import { getPosition, getValue } from "data-with-position";
 import * as _ from "lodash";
-import convertPseudoYamlAstLocToPosition from "../../convertPseudoYamlAstLocToPosition";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
-import { Node, Position, PseudoAstNode, VFileBase } from "../../types";
+import { Node, Position, VFileBase } from "../../types";
 
 export default (
-  pseudoYamlAst,
+  dataWithPosition,
   document: LitvisDocument,
 ): {
   value?: string;
   position?: Position;
 } => {
-  const pseudoYamlAstNode = pseudoYamlAst.follows;
-  if (!_.isUndefined(pseudoYamlAstNode)) {
-    const rawValue = pseudoYamlAstNode.valueOf();
-    const position = convertPseudoYamlAstLocToPosition(pseudoYamlAstNode);
+  const followsWithPosition = dataWithPosition.follows;
+  if (!_.isUndefined(followsWithPosition)) {
+    const rawValue = getValue(followsWithPosition);
+    const position = getPosition(followsWithPosition);
     if (_.isNull(rawValue)) {
       // ignore null value
     } else if (!_.isString(rawValue)) {
@@ -30,8 +30,8 @@ export default (
         "litvis:frontmatter-follows",
       );
     } else {
-      const value = rawValue.trim();
-      if (value !== rawValue) {
+      const normalizedValue = rawValue.trim();
+      if (normalizedValue !== rawValue) {
         document.info(
           `Surrounded spaces in ‘follows’ were trimmed.`,
           position,
@@ -39,7 +39,7 @@ export default (
         );
       }
       return {
-        value: rawValue.trim(),
+        value: normalizedValue,
         position,
       };
     }

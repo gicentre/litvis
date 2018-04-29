@@ -1,11 +1,11 @@
+import { getPosition, getValue } from "data-with-position";
 import * as _ from "lodash";
-import convertPseudoYamlAstLocToPosition from "../../convertPseudoYamlAstLocToPosition";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
-import { Node, Position, PseudoAstNode, VFileBase } from "../../types";
+import { Node, Position, VFileBase } from "../../types";
 
 export default (
-  pseudoYamlAst,
+  dataWithPosition,
   document: LitvisDocument,
 ): {
   versions: { [packageName: string]: string | false };
@@ -16,40 +16,43 @@ export default (
     positions: {},
   };
 
-  const pseudoAstNode = _.get(pseudoYamlAst, ["elm", "dependencies"]);
+  const dependenciesWithPosition = _.get(dataWithPosition, [
+    "elm",
+    "dependencies",
+  ]);
 
-  if (!pseudoAstNode) {
+  if (!dependenciesWithPosition) {
     return result;
   }
 
-  const pseudoAstNodeValue = pseudoAstNode.valueOf();
-  if (_.isUndefined(pseudoAstNodeValue) || _.isNull(pseudoAstNodeValue)) {
+  const dependencies = getValue(dependenciesWithPosition);
+  if (_.isUndefined(dependencies) || _.isNull(dependencies)) {
     // do not do anything if elm dependencies are not defined
-  } else if (!_.isPlainObject(pseudoAstNodeValue)) {
+  } else if (!_.isPlainObject(dependencies)) {
     document.message(
-      `‘elm.dependencies’ has to be an object, ${typeof pseudoAstNodeValue} given. Value ignored.`,
-      convertPseudoYamlAstLocToPosition(pseudoAstNode),
+      `‘elm.dependencies’ has to be an object, ${typeof dependencies} given. Value ignored.`,
+      getPosition(dependenciesWithPosition),
       "litvis:frontmatter:elm:dependencies",
     );
   } else {
-    for (const packageName in pseudoAstNode) {
-      if (pseudoAstNode.hasOwnProperty(packageName)) {
-        const position = convertPseudoYamlAstLocToPosition(
-          pseudoAstNode[packageName],
+    for (const packageName in dependenciesWithPosition) {
+      if (dependenciesWithPosition.hasOwnProperty(packageName)) {
+        const packagePosition = getPosition(
+          dependenciesWithPosition[packageName],
         );
         if (!packageName.match(/^([a-zA-Z0-9-])+\/([a-zA-Z0-9-])+$/)) {
           document.message(
             `Wrong elm package name ${packageName} given. Package ignored.`,
-            position,
+            packagePosition,
             "litvis:frontmatter:elm:dependencies",
           );
           continue;
         }
-        let packageVersion = pseudoAstNode[packageName].valueOf();
+        let packageVersion = getValue(dependenciesWithPosition[packageName]);
         if (_.isFinite(packageVersion)) {
           document.message(
             `Using numbers as elm package version is not recommended. Wrap the value into quotes to avoid misinterpreting.`,
-            position,
+            packagePosition,
             "litvis:frontmatter:elm:dependencies",
           );
           packageVersion = `${packageVersion}`;
@@ -64,7 +67,7 @@ export default (
         ) {
           document.message(
             `Wrong elm package version ${packageVersion} given. Package ignored.`,
-            position,
+            packagePosition,
             "litvis:frontmatter:elm:dependencies",
           );
           continue;

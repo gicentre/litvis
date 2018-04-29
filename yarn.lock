@@ -16,14 +16,6 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@kachkaev/pseudo-yaml-ast@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@kachkaev/pseudo-yaml-ast/-/pseudo-yaml-ast-0.2.0.tgz#ba3564791c41484cca0686d4794b3fc1b4e27e73"
-  dependencies:
-    lodash.isnull "^3.0.0"
-    lodash.isundefined "^3.0.1"
-    yaml-ast-parser "0.0.40"
-
 "@kachkaev/run-elm@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.2.tgz#dbfa2cb81c1f35c2e37d746740120e4a6cd4d19c"
@@ -4954,7 +4946,7 @@ yaml-ast-parser@0.0.36:
   version "0.0.36"
   resolved "https://registry.yarnpkg.com/yaml-ast-parser/-/yaml-ast-parser-0.0.36.tgz#9dfdef461570253392af1941b127b9de699a089b"
 
-yaml-ast-parser@0.0.40, yaml-ast-parser@^0.0.40:
+yaml-ast-parser@^0.0.40:
   version "0.0.40"
   resolved "https://registry.yarnpkg.com/yaml-ast-parser/-/yaml-ast-parser-0.0.40.tgz#08536d4e73d322b1c9ce207ab8dd70e04d20ae6e"
 

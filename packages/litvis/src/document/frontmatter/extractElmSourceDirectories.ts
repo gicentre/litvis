@@ -1,11 +1,11 @@
+import { getPosition, getValue } from "data-with-position";
 import * as _ from "lodash";
-import convertPseudoYamlAstLocToPosition from "../../convertPseudoYamlAstLocToPosition";
 import { LitvisDocument } from "../../types";
 // @ts-ignore
-import { Node, Position, PseudoAstNode, VFileBase } from "../../types";
+import { Node, Position, VFileBase } from "../../types";
 
 export default (
-  pseudoYamlAst,
+  dataWithPosition,
   document: LitvisDocument,
 ): {
   paths: string[];
@@ -19,48 +19,50 @@ export default (
     positions: [],
   };
 
-  const pseudoAstNode = _.get(pseudoYamlAst, ["elm", "source-directories"]);
+  const sourceDirectoriesWithPosition = _.get(dataWithPosition, [
+    "elm",
+    "source-directories",
+  ]);
 
-  if (!pseudoAstNode) {
+  if (!sourceDirectoriesWithPosition) {
     return result;
   }
 
-  const pseudoAstNodeValue = pseudoAstNode.valueOf();
-
-  if (_.isUndefined(pseudoAstNodeValue) || _.isNull(pseudoAstNodeValue)) {
+  const sourceDirectories = getValue(sourceDirectoriesWithPosition);
+  if (_.isUndefined(sourceDirectories) || _.isNull(sourceDirectories)) {
     // do not do anything if elm source-directories are not defined
-  } else if (!_.isArray(pseudoAstNodeValue)) {
+  } else if (!_.isArray(sourceDirectories)) {
     document.message(
-      `‘elm.source-directories’ has to be an array, ${typeof pseudoAstNodeValue} given. Value ignored.`,
-      convertPseudoYamlAstLocToPosition(pseudoAstNode),
+      `‘elm.source-directories’ has to be an array, ${typeof sourceDirectories} given. Value ignored.`,
+      getPosition(sourceDirectoriesWithPosition),
       "litvis:frontmatter:elm",
     );
   } else {
-    pseudoAstNode.forEach((pathNode, i) => {
-      const value = pathNode.valueOf();
-      const position = convertPseudoYamlAstLocToPosition(pathNode);
-      if (typeof value !== "string") {
+    sourceDirectoriesWithPosition.forEach((pathWithPosition, i) => {
+      const path = getValue(pathWithPosition);
+      const position = getPosition(pathWithPosition);
+      if (typeof path !== "string") {
         document.message(
-          `‘elm.source-directories[${i}]’ has to be a string, ${typeof value} given. Value ignored.`,
+          `‘elm.source-directories[${i}]’ has to be a string, ${typeof path} given. Value ignored.`,
           position,
           "litvis:frontmatter:elm:source-directories",
         );
-      } else if (value.match(/\n/g)) {
+      } else if (path.match(/\n/g)) {
         document.message(
           `‘elm.source-directories[${i}]’ cannot contain newlines. Value ignored.`,
           position,
           "litvis:frontmatter:elm:source-directories",
         );
       } else {
-        const normalizedValue = value.trim();
-        if (normalizedValue !== value) {
+        const normalizedPath = path.trim();
+        if (normalizedPath !== path) {
           document.info(
             `Surrounded spaces in ‘elm.source-directories[${i}]’ were trimmed.`,
             position,
             "litvis:frontmatter:elm:source-directories",
           );
         }
-        result.paths.push(normalizedValue);
+        result.paths.push(normalizedPath);
         result.positions.push(position);
       }
     });
