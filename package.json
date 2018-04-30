@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "build": "yarn clean:dist && lerna run build",
+    "build": "yarn use-prod-typings && yarn clean:dist && lerna run build",
     "build-and-qa": "yarn build && yarn qa",
-    "build:watch": "lerna run build; lerna run --parallel build:watch",
+    "build:watch": "lerna run build; yarn use-dev-typings && lerna run --parallel build:watch",
     "clean": "yarn clean:dist && rimraf packages/*/coverage packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
@@ -13,7 +13,9 @@
     "qa": "yarn lint && yarn format:check && yarn test",
     "release": "yarn build-and-qa && lerna publish",
     "test": "lerna run test",
-    "test:coverage": "lerna run test"
+    "test:coverage": "lerna run test",
+    "use-dev-typings": "lerna exec \"sed -i '' 's|\\\"types\\\":.*|\\\"types\\\": \\\"src/index.ts\\\",|' package.json\"",
+    "use-prod-typings": "lerna exec \"sed -i '' 's|\\\"types\\\":.*|\\\"types\\\": \\\"dist/index.d.ts\\\",|' package.json\""
   },
   "workspaces": {
     "packages": ["packages/*"],
