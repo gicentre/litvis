@@ -1,5 +1,5 @@
-import deriveType from "./deriveType";
-import { LabelFence } from "./types";
+import deriveType from "../deriveType";
+import { LabelFence } from "../types";
 
 function locator(value, fromIndex) {
   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
@@ -14,6 +14,8 @@ function locator(value, fromIndex) {
 }
 
 export default function plugin() {
+  // visitAndExtractDerivatives(ast, vFile);
+
   function inlineTokenizer(eat, value, silent) {
     if (
       !value.startsWith(LabelFence.START) &&

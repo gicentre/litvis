@@ -1,12 +1,12 @@
 import { getPosition } from "data-with-position";
 import * as _ from "lodash";
-import { loadComposedNarrativeSchema } from "narrative-schema";
-import * as vfile from "vfile";
+import { loadAndCompose } from "narrative-schema";
+import { VFileBase } from "vfile";
 import { LitvisDocument, LitvisNarrative } from "../types";
 
 export default async (
   narrative: LitvisNarrative,
-  filesInMemory: Array<vfile.VFile<{}>> = [],
+  filesInMemory: Array<VFileBase<any>> = [],
 ): Promise<void> => {
   _.forEach(narrative.documents, (document: LitvisDocument, fileIndex) => {
     const narrativeSchemasWithPosition =
@@ -20,10 +20,10 @@ export default async (
       return;
     }
   });
-  narrative.composedNarrativeSchema = await loadComposedNarrativeSchema(
+
+  narrative.composedNarrativeSchema = await loadAndCompose<LitvisDocument>(
     narrative.documents[0].data.litvisNarrativeSchemasWithPosition,
-    [narrative.documents[0]],
-    [],
+    narrative.documents[0],
     filesInMemory,
   );
 };

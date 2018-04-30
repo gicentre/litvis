@@ -2,9 +2,12 @@ import { DataWithPosition } from "data-with-position";
 import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
 import { VFileBase } from "vfile";
-import { Node, Position, Text } from "./unistTypes";
 
-export { Node, Position, Text } from "./unistTypes";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Parent, Position, Text } from "unist";
+
+// tslint:disable-next-line:no-implicit-dependencies
+export { Parent, Position, Text } from "unist";
 export { VFileBase } from "vfile";
 export import ProcessedLitvisContextStatus = ProgramResultStatus;
 
@@ -43,7 +46,7 @@ export interface AttributeDerivatives {
 
 export type LitvisDocument = VFileBase<{
   data: {
-    root: Node;
+    root: Parent;
     litvisFollowsPath?: string;
     litvisFollowsPosition?: Position;
     litvisElmDependencyVersions?: { [packageName: string]: string | false };
@@ -60,6 +63,7 @@ export interface LitvisNarrative {
   elmEnvironmentSpecForLastFile?: EnvironmentSpec;
   contexts?: ProcessedLitvisContext[];
   composedNarrativeSchema?: ComposedNarrativeSchema;
+  combinedAst?: Parent;
 }
 
 export interface SucceededLitvisContext {
@@ -85,6 +89,7 @@ export interface CodeBlock extends Text {
 }
 
 export interface OutputExpression extends Text {
+  type: string;
   data: {
     text: string;
     outputFormat: OutputFormat;
@@ -93,6 +98,7 @@ export interface OutputExpression extends Text {
 }
 
 export interface EvaluatedOutputExpression extends Text {
+  type: string;
   data: {
     text: string;
     outputFormat: OutputFormat;

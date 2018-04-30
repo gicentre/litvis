@@ -1,13 +1,14 @@
 // import * as _ from "lodash";
+import { EntityDefinition } from "narrative-schema-common";
 import * as visit from "unist-util-visit";
 import { VFile } from "vfile";
 import renderHtmlTemplate from "../renderHtmlTemplate";
-import { LabelDefinition, LabelType } from "../types";
+import { LabelType } from "../types";
 
 export default (
   ast,
   vFile: VFile<any>,
-  labelDefinitionsByName: { [name: string]: LabelDefinition },
+  labelDefinitionsByName: { [name: string]: EntityDefinition },
 ) => {
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
     if (labelNode.data.syntaxError) {
@@ -18,8 +19,8 @@ export default (
     const labelName = labelNode.data.labelName;
     const labelAttributes = labelNode.data.labelAttributes;
 
-    const label = labelDefinitionsByName[labelName];
-    if (!label) {
+    const labelDefinition = labelDefinitionsByName[labelName];
+    if (!labelDefinition) {
       vFile.message(
         `Label ${labelName} cannot be used because it does not exist in the linked narrative schemas or is not valid.`,
         labelNode,
@@ -29,7 +30,7 @@ export default (
     }
 
     if (labelType === LabelType.SINGLE) {
-      if (!label.single) {
+      if (!labelDefinition.data.single) {
         vFile.message(
           `Label ${labelName} cannot be used as single (no-paired), according to the linked narrative schemas.`,
           labelNode,
@@ -39,7 +40,7 @@ export default (
       }
       try {
         const html = renderHtmlTemplate(
-          label.single.htmlTemplate,
+          labelDefinition.data.single.htmlTemplate,
           labelName,
           labelType,
           labelAttributes,
@@ -55,7 +56,7 @@ export default (
       return;
     }
 
-    if (!label.paired) {
+    if (!labelDefinition.data.paired) {
       vFile.message(
         `Label ${labelName} cannot be used as paired, according to the linked narrative schemas.`,
         labelNode,
@@ -66,7 +67,7 @@ export default (
 
     try {
       const html = renderHtmlTemplate(
-        label.paired.htmlTemplate,
+        labelDefinition.data.paired.htmlTemplate,
         labelName,
         labelType,
         labelAttributes,

@@ -21,6 +21,7 @@
     "data-with-position": "^0.2.0",
     "jsonschema": "^1.2.4",
     "lodash": "^4.17.5",
+    "narrative-schema-common": "^0.0.1",
     "narrative-schema-label": "^0.1.2",
     "narrative-schema-rule": "^0.0.1",
     "narrative-schema-styling": "^0.0.1 ",

@@ -1,6 +1,6 @@
 import { BlockAttributes } from "block-attributes";
-import * as cheerio from "cheerio";
-import * as Handlebars from "handlebars";
+import { load } from "cheerio";
+import { compile } from "handlebars";
 import { LabelType } from "./types";
 
 const FAKE_CHILDREN_CONTENTS = "__FAKE_CHILDREN__";
@@ -11,11 +11,11 @@ export default (
   labelType: LabelType,
   labelAttributes: BlockAttributes,
 ) => {
-  const rawRenderedTemplate = Handlebars.compile(htmlTemplate)({
+  const rawRenderedTemplate = compile(htmlTemplate)({
     ...labelAttributes,
     children: FAKE_CHILDREN_CONTENTS,
   });
-  const $ = cheerio.load(rawRenderedTemplate);
+  const $ = load(rawRenderedTemplate);
   $("*").attr("data-role", "narrativeSchemaLabelChild");
   $(":root")
     .attr("data-role", "narrativeSchemaLabel")

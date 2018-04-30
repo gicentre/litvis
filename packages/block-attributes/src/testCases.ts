@@ -1,7 +1,7 @@
 const testCases: Array<{
   attributes?: any;
   normalizedAttributes?: any;
-  raw?: string | string[];
+  raw?: string | Array<string | null | undefined>;
   stringified?: string;
 }> = [
   {

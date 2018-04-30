@@ -12,7 +12,7 @@ type Node = [any, number, NodeType];
  * Parses block attributes
  * @param text e.g. {#identifier .class1 .class2 key1=value1 key2=value2}
  */
-export default (text?: string): { [key: string]: any } => {
+export default (text?: string): BlockAttributes => {
   // remove surrounding { } if exist
   let textToParse = (text || "").trim();
   if (textToParse[0] === "{" && textToParse[textToParse.length - 1] === "}") {
@@ -20,7 +20,7 @@ export default (text?: string): { [key: string]: any } => {
   }
 
   const output: BlockAttributes = {};
-  let pendingKey: string;
+  let pendingKey: string | undefined;
   let i = 0;
   while (i < textToParse.length) {
     const node: Node | void =
@@ -37,7 +37,7 @@ export default (text?: string): { [key: string]: any } => {
           : rawValue;
       i = subEnd;
       if (keyIsPending) {
-        output[pendingKey] = value;
+        output[pendingKey!] = value;
         pendingKey = undefined;
       } else if (textToParse[i] === "=") {
         pendingKey = value;
@@ -101,7 +101,7 @@ function extractStringInQuotes(text, start): Node | void {
     return;
   }
   let end = start + 1;
-  const chars = [];
+  const chars: string[] = [];
   while (end < text.length) {
     if (text[end] === "\\") {
       if (end + 1 < text.length) {
@@ -149,7 +149,7 @@ function extractArray(text, start): Node | void {
   if (text[start] !== "[") {
     return;
   }
-  const result = [];
+  const result: any[] = [];
   let i = start + 1;
   while (i < text.length) {
     const char = text[i];

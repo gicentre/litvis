@@ -1,14 +1,12 @@
-import * as _ from "lodash";
-import { NarrativeSchema } from "./types";
+// import * as _ from "lodash";
+import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
 
+// @ts-ignore
+import { NarrativeSchemaData } from "narrative-schema-common";
 // @ts-ignore
 import { VFileBase } from "vfile";
-// @ts-ignore
-import { NarrativeSchemaData } from "./types";
 
-export default <Document extends VFileBase<any>>(
-  parents: Array<Document | NarrativeSchema<Document>>,
-): string => {
+export default (parents: Array<ParentDocument | NarrativeSchema>): string => {
   //   if (parents && parents.length) {
   //     const parts = _.reduce(
   //       parents,

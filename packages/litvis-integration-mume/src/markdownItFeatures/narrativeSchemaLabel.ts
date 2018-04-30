@@ -1,7 +1,10 @@
 import { parse as parseBlockInfo } from "block-info";
 import { Html5Entities } from "html-entities";
 import { MarkdownIt } from "markdown-it";
-import { deriveLabelType, LabelFence } from "narrative-schema-label";
+import {
+  deriveType as deriveLabelType,
+  LabelFence,
+} from "narrative-schema-label";
 
 const escapeString = new Html5Entities().encode;
 

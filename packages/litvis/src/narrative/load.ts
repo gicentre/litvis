@@ -3,10 +3,10 @@ import * as _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import * as vfile from "vfile";
-import { parse as parseDocument } from "../document";
+import parseDocument from "../document/parse";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
-const MAX_CHAIN_LENGTH = 10;
+const MAX_CHAIN_LENGTH = 20;
 
 export default async (
   filePath: string,

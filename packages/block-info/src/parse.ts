@@ -1,10 +1,13 @@
-import { parse as parseBlockAttributes } from "block-attributes";
+import {
+  BlockAttributes,
+  parse as parseBlockAttributes,
+} from "block-attributes";
 import { BlockInfo } from ".";
 
 export default function(raw: string = ""): BlockInfo {
   let language;
   let attributesAsString: string;
-  let attributes: object;
+  let attributes: BlockAttributes;
   const trimmedParams = raw.trim();
   const match =
     trimmedParams.indexOf("{") !== -1
@@ -25,7 +28,7 @@ export default function(raw: string = ""): BlockInfo {
     try {
       attributes = parseBlockAttributes(attributesAsString);
     } catch (e) {
-      //
+      attributes = {};
     }
   } else {
     attributes = {};

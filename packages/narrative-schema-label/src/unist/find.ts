@@ -1,5 +1,5 @@
-import deriveType from "./deriveType";
-import { LabelFence } from "./types";
+import deriveType from "../deriveType";
+import { LabelFence } from "../types";
 
 function locator(value, fromIndex) {
   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
@@ -69,14 +69,4 @@ export default function plugin() {
     0,
     "narrativeSchemaLabel",
   );
-
-  // const Compiler = this.Compiler;
-
-  // // Stringify
-  // if (Compiler) {
-  //   const visitors = Compiler.prototype.visitors;
-  //   visitors.narrativeSchemaLabel = function(node) {
-  //     return `!!!${this.data.labelStart}${this.all(node).join("")}${this.data.labelEnd}`;
-  //   };
-  // }
 }

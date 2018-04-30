@@ -68,7 +68,7 @@ function recursivelyConvertApplicableObjectsToArrays(obj: object) {
     : obj;
 
   // convert any object that has only sequential numeric keys into an array
-  const arrayValues = [];
+  const arrayValues: any[] = [];
   let nextExpectedKey = 0;
   for (const key in resultingObject) {
     // istanbul ignore next

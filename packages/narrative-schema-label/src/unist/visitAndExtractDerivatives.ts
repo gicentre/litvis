@@ -45,15 +45,3 @@ export default (ast, vFile: VFile<any>) => {
     }
   });
 };
-
-// export default function() {
-//   return function transformer(ast, vFile, next) {
-//     visitNarrativeSchemaLabel(ast, vFile);
-
-//     if (typeof next === "function") {
-//       return next(null, ast, vFile);
-//     }
-
-//     return ast;
-//   };
-// }

@@ -1,7 +1,6 @@
 import { loadAndProcessLitvisNarrative } from "litvis";
 import * as toVFile from "to-vfile";
-import { VFile } from "vfile";
-
+import { VFile, VFileBase } from "vfile";
 import { LitvisEnhancerCache } from "../types";
 import enhanceWithLitvisLiterateElm from "./literateElm";
 import enhanceWithLitvisNarrativeSchemas from "./narrativeSchemas";
@@ -29,17 +28,15 @@ export default async function enhance(
     cache.litvisCache,
   );
 
-  const vFilesToReport = [
+  const vFilesToReport: Array<VFileBase<any>> = [
     ...processedNarrative.documents,
-    ...processedNarrative.composedNarrativeSchema.components,
   ];
+  if (processedNarrative.composedNarrativeSchema) {
+    vFilesToReport.push(
+      ...processedNarrative.composedNarrativeSchema.components,
+    );
+  }
   updateLintingReport(vFilesToReport);
-
-  // output messages to stdout
-  // tslint:disable-next-line:no-console
-  // console.log(
-  //   report(vFilesToReport),
-  // );
 
   await enhanceWithLitvisNarrativeSchemas($, processedNarrative, cache);
   await enhanceWithLitvisLiterateElm($, processedNarrative, cache);

@@ -12,8 +12,8 @@ export default (md: MarkdownIt) => {
     "litvis:triple-hat-reference",
     // @ts-ignore
     (state, silent) => {
-      let openTag = null;
-      let closeTag = null;
+      let openTag: string | null = null;
+      let closeTag: string | null = null;
       for (const tagPair of delimiters) {
         if (state.src.startsWith(tagPair[0], state.pos)) {
           [openTag, closeTag] = tagPair;
@@ -21,11 +21,11 @@ export default (md: MarkdownIt) => {
         }
       }
 
-      if (!openTag) {
+      if (!openTag || !closeTag) {
         return false; // not triple hat reference
       }
 
-      let content = null;
+      let content: string | null = null;
       let end = -1;
 
       let i = state.pos + openTag.length;
@@ -40,7 +40,7 @@ export default (md: MarkdownIt) => {
       }
 
       if (end >= 0) {
-        content = state.src.slice(state.pos + openTag.length, end);
+        content = state.src.slice(state.pos + openTag.length, end) as string;
       } else {
         return false;
       }

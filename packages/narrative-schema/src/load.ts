@@ -6,6 +6,7 @@ import {
   getValue,
 } from "data-with-position";
 import * as _ from "lodash";
+import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
 import { extractDefinitions as extractLabelDefinitions } from "narrative-schema-label";
 import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-rule";
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
@@ -13,16 +14,16 @@ import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import * as vfile from "vfile";
 import traceParents from "./traceParents";
-import { NarrativeSchema } from "./types";
-// @ts-ignore
-import { NarrativeSchemaData } from "./types";
 
-const load = async <Document extends vfile.VFileBase<any>>(
+// @ts-ignore
+import { NarrativeSchemaData } from "narrative-schema-common";
+
+const load = async (
   dependenciesWithPosition: DataWithPosition,
-  parents: Array<Document | NarrativeSchema<Document>>,
-  filesInMemory: Array<vfile.VFileBase<{}>>,
-  schemasAlreadyLoaded: Array<NarrativeSchema<Document>>,
-): Promise<Array<NarrativeSchema<Document>>> => {
+  parents: Array<ParentDocument | NarrativeSchema>,
+  filesInMemory: Array<vfile.VFileBase<any>>,
+  schemasAlreadyLoaded: NarrativeSchema[],
+): Promise<NarrativeSchema[]> => {
   const kind = getKind(dependenciesWithPosition);
   if (kind === "null" || kind === "undefined") {
     return [];
@@ -39,7 +40,7 @@ const load = async <Document extends vfile.VFileBase<any>>(
     }
   }
 
-  const result: Array<NarrativeSchema<Document>> = [];
+  const result: NarrativeSchema[] = [];
   for (const pathWithPosition of dependenciesWithPosition) {
     const pathPosition = getPosition(pathWithPosition);
     const resolvedPath = await resolveNarrativeSchemaPath(
@@ -55,7 +56,7 @@ const load = async <Document extends vfile.VFileBase<any>>(
       continue;
     }
 
-    let narrativeSchema: NarrativeSchema<Document>;
+    let narrativeSchema: NarrativeSchema;
 
     // load narrative schema file
     try {
@@ -131,9 +132,9 @@ const load = async <Document extends vfile.VFileBase<any>>(
 
     // extract data
     narrativeSchema.data = {
-      labels: extractLabelDefinitions(dataWithPosition),
-      rules: extractRuleDefinitions(dataWithPosition),
-      styling: extractStylingDefinitions(dataWithPosition),
+      labels: extractLabelDefinitions(dataWithPosition, narrativeSchema),
+      rules: extractRuleDefinitions(dataWithPosition, narrativeSchema),
+      styling: extractStylingDefinitions(dataWithPosition, narrativeSchema),
     };
 
     // report unknown keys in schema
@@ -155,11 +156,9 @@ const load = async <Document extends vfile.VFileBase<any>>(
 
 export default load;
 
-const resolveNarrativeSchemaPath = async <
-  Document extends vfile.VFileBase<any>
->(
+const resolveNarrativeSchemaPath = async (
   path,
-  file: Document | NarrativeSchema<Document>,
+  file: NarrativeSchema,
 ): Promise<string> => {
   let result = resolve(file.dirname!, path);
   if (

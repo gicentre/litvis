@@ -1,4 +1,3 @@
-# Block Attributes
+# Narrative Schema Label
 
-Parses and stringifies code block attributes in markdown files.
 Part of [litvis](https://github.com/gicentre/litvis).

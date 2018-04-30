@@ -1,6 +1,6 @@
-import { XmlEntities } from "html-entities";
+import { Html5Entities } from "html-entities";
 
-const entities = new XmlEntities();
+const escapeString = new Html5Entities().encode;
 
 export default (html) =>
   html
@@ -10,5 +10,5 @@ export default (html) =>
     )
     .replace(
       /<litvis-narrative-schema-label>(.*)<\/litvis-narrative-schema-label>/g,
-      (_, inner) => entities.decode(inner),
+      (_, inner) => escapeString(inner),
     );

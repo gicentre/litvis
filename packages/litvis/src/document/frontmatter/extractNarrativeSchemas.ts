@@ -1,8 +1,9 @@
 import { DataWithPosition, getPosition, getValue } from "data-with-position";
 import * as _ from "lodash";
 import { LitvisDocument } from "../../types";
+
 // @ts-ignore
-import { Node, Position, VFileBase } from "../../types";
+import { Parent, Position, VFileBase } from "../../types";
 
 export default (
   dataWithPosition,

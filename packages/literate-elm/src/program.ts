@@ -151,7 +151,7 @@ ${outputSymbolName} =
             _.findIndex(
               chunks,
               (chunk) =>
-                chunk.offsetY + 1 >
+                chunk.offsetY! + 1 >
                 _.get(elmError, ["region", "start", "line"], 0),
             ) - 1
           ];
@@ -160,7 +160,7 @@ ${outputSymbolName} =
             start: {
               line:
                 _.get(elmError, ["region", "start", "line"], 0) -
-                currentChunk.offsetY -
+                currentChunk.offsetY! -
                 1 +
                 currentChunk.ref.position.start.line,
               column:
@@ -171,7 +171,7 @@ ${outputSymbolName} =
             end: {
               line:
                 _.get(elmError, ["region", "end", "line"], 0) -
-                currentChunk.offsetY -
+                currentChunk.offsetY! -
                 1 +
                 currentChunk.ref.position.start.line,
               column:

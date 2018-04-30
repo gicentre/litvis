@@ -12,7 +12,7 @@ describe("stringify()", () => {
       if (typeof stringified !== "string") {
         return;
       }
-      const attributesToTest = [];
+      const attributesToTest: any[] = [];
       if (normalizedAttributes) {
         attributesToTest.push(normalizedAttributes);
       } else if (attributes) {

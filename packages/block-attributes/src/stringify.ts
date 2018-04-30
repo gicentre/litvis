@@ -8,7 +8,7 @@ export default function(
   attributes: BlockAttributes,
   addCurlyBrackets: boolean = false,
 ): string {
-  const parts = [];
+  const parts: string[] = [];
   for (const key in attributes) {
     if (attributes.hasOwnProperty(key)) {
       parts.push(" ");

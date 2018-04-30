@@ -8,7 +8,12 @@ import {
   OutputExpression,
   OutputFormat,
 } from "../types";
-import { Parent } from "../unistTypes";
+
+// @ts-ignore
+// tslint:disable-next-line:no-implicit-dependencies
+import { Parent } from "unist";
+// @ts-ignore
+import { VFileBase } from "vfile";
 
 function visitCodeBlock(ast, vFile) {
   return visit(ast, "code", (codeBlockNode, index, parent) => {
