@@ -62,7 +62,7 @@ if (getKind(dataWithPosition) === "array") {
     }
     // or
     for (const element of dataWithPosition) {
-        console.log(getPosition(dataWithPosition[i]));
+        console.log(getPosition(element));
     }
 }
 
