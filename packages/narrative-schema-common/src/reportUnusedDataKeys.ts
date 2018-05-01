@@ -48,7 +48,7 @@ const reportUnusedDataKeys = (
     narrativeSchema.info(
       `Finding ${stringifyDataPath(
         path,
-      )} was not expected and therefore ignored. Please check narrative schema docs and ensure there are no typos.`,
+      )} was unexpected and the value was ignored. Please check narrative schema docs and ensure there are no typos.`,
       getPosition(dataWithPosition),
     );
   }

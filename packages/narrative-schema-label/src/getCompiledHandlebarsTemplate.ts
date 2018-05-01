@@ -7,6 +7,7 @@ export default (htmlTemplate: string) => {
   if (!cache[htmlTemplate]) {
     try {
       cache[htmlTemplate] = compile(htmlTemplate);
+      cache[htmlTemplate]();
     } catch (e) {
       cache[htmlTemplate] = e;
     }

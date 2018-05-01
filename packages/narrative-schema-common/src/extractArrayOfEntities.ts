@@ -28,7 +28,7 @@ export default (
 
   if (kindOfListOfEntities !== "array") {
     narrativeSchema.message(
-      `Expected ${listOfEntitiesWithPosition} to be an array, got ${kindOfListOfEntities}`,
+      `Expected ${dataKeyForEntityArray} to be an array, got ${kindOfListOfEntities}`,
       getPosition(listOfEntitiesWithPosition),
       `narrative-schema:${entityName}`,
     );
@@ -45,7 +45,7 @@ export default (
         `Expected ${stringifyDataPath(
           entityDataPath,
         )} to be an object, got ${kindOfEntityData}`,
-        getPosition(listOfEntitiesWithPosition),
+        getPosition(entityDataWithPosition),
         `narrative-schema:${entityName}`,
       );
       continue;
@@ -67,7 +67,7 @@ export default (
         `Skipping ${stringifyDataPath(
           entityDataPath,
         )} due to declaration issues`,
-        getPosition(listOfEntitiesWithPosition),
+        getPosition(entityDataWithPosition),
         `narrative-schema:${entityName}`,
       );
     } else {

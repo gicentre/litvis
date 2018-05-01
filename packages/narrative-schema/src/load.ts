@@ -75,7 +75,7 @@ const load = async (
       parents[0].message(
         `Unable to load narrative schema dependency ${pathWithPosition}${traceParents(
           parents,
-        )}. Does this file ${resolvedPath} exist?`,
+        )}. Does file ${resolvedPath} exist?`,
         pathPosition,
         "narrative-schema:load",
       );

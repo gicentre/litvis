@@ -2,7 +2,7 @@ labels:
   - name: userQuestion
     paired:
       htmlTemplate: <div class="question">{{children}}</div>
- 
+
 rules:
   - description: narrative must contain at least one user question
     selector:

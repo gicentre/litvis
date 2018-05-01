@@ -31,6 +31,7 @@
     "vfile": "^2.3.0"
   },
   "devDependencies": {
+    "@types/handlebars": "^4.0.37",
     "@types/html-entities": "^1.2.16",
     "@types/jest": "^22.2.3",
     "@types/lru-cache": "^4.1.0",

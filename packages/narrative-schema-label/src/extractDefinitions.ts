@@ -70,6 +70,7 @@ const extractDataFromLabel = (
     }
   }
 
+  let containsBrokenTemplates = false;
   ["single", "paired"].forEach((labelKind) => {
     const htmlTemplateWithPosition = _.get(labelDataWithPosition, [
       labelKind,
@@ -98,6 +99,7 @@ const extractDataFromLabel = (
         getPosition(htmlTemplateWithPosition),
         "narrative-schema:label",
       );
+      containsBrokenTemplates = true;
     }
   });
 
@@ -132,7 +134,12 @@ const extractDataFromLabel = (
     labelData = null;
   }
 
-  if (!labelData.paired && !labelData.single && !labelData.aliasFor) {
+  if (
+    !containsBrokenTemplates &&
+    !labelData.paired &&
+    !labelData.single &&
+    !labelData.aliasFor
+  ) {
     narrativeSchema.message(
       `Label should be declared as single, paired or aliasFor`,
       getPosition(labelDataWithPosition),
@@ -141,6 +148,9 @@ const extractDataFromLabel = (
     labelData = null;
   }
 
+  if (containsBrokenTemplates) {
+    return null;
+  }
   if (!labelData || !labelData.name) {
     return null;
   }
