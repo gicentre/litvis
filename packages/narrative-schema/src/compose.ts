@@ -1,18 +1,15 @@
-import * as _ from "lodash";
+// @ts-ignore
+import { NarrativeSchemaData } from "narrative-schema-common";
+// @ts-ignore
+import { VFileBase } from "vfile";
 
 import {
   ComposedNarrativeSchema,
   EntityDefinitionWithOrigin,
   NarrativeSchema,
 } from "narrative-schema-common";
-import { composeDefinitions as composeLabelDefinitions } from "narrative-schema-label";
-import { composeDefinitions as composeRuleDefinitions } from "narrative-schema-rule";
-import { composeDefinitions as composeStylingDefinitions } from "narrative-schema-styling";
-
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
-// @ts-ignore
-import { VFileBase } from "vfile";
+import { composeEntityDefinitions } from "narrative-schema-common";
+import { resolveAliasesAndKeyByName } from "narrative-schema-label";
 
 const compose = async (
   narrativeSchemas: NarrativeSchema[],
@@ -22,17 +19,16 @@ const compose = async (
   let styling: EntityDefinitionWithOrigin[] = [];
 
   for (const narrativeSchema of narrativeSchemas) {
-    labels = composeLabelDefinitions(labels, narrativeSchema);
-    rules = composeRuleDefinitions(rules, narrativeSchema);
-    styling = composeStylingDefinitions(rules, narrativeSchema);
+    labels = composeEntityDefinitions(narrativeSchema, "labels", labels);
+    rules = composeEntityDefinitions(narrativeSchema, "rules", rules);
+    styling = composeEntityDefinitions(narrativeSchema, "styling", styling);
   }
-
   return {
     components: narrativeSchemas,
     labels,
     rules,
     styling,
-    labelsByName: _.keyBy(labels, ["data", "name"]),
+    labelByName: resolveAliasesAndKeyByName(labels),
   };
 };
 

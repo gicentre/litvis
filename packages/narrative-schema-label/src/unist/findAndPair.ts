@@ -1,84 +1,89 @@
-import deriveType from "../deriveType";
-import { LabelFence } from "../types";
+import extractDerivatives from "./extractDerivatives";
+import find from "./find";
 
-function locator(value, fromIndex) {
-  const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
-  const indexOfStartClosing = value.indexOf(
-    LabelFence.START_CLOSING,
-    fromIndex,
-  );
-  if (indexOfStart > -1 && indexOfStartClosing > -1) {
-    return Math.min(indexOfStart, indexOfStartClosing);
-  }
-  return Math.max(indexOfStart, indexOfStartClosing);
-}
+export default [find, extractDerivatives];
 
-export default function plugin() {
-  // visitAndExtractDerivatives(ast, vFile);
+// import deriveType from "../deriveType";
+// import { LabelFence } from "../types";
 
-  function inlineTokenizer(eat, value, silent) {
-    if (
-      !value.startsWith(LabelFence.START) &&
-      !value.startsWith(LabelFence.START_CLOSING)
-    ) {
-      return;
-    }
-    const start = value.substring(0, 2);
+// function locator(value, fromIndex) {
+//   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
+//   const indexOfStartClosing = value.indexOf(
+//     LabelFence.START_CLOSING,
+//     fromIndex,
+//   );
+//   if (indexOfStart > -1 && indexOfStartClosing > -1) {
+//     return Math.min(indexOfStart, indexOfStartClosing);
+//   }
+//   return Math.max(indexOfStart, indexOfStartClosing);
+// }
 
-    let character = "";
-    let previous = "";
-    let subvalue = "";
-    let index = 1;
-    const length = value.length;
-    const now = eat.now();
-    now.column += 1;
-    now.offset += 1;
+// export default function plugin() {
+//   // visitAndExtractDerivatives(ast, vFile);
 
-    while (++index < length) {
-      character = value.charAt(index);
-      const end = `${previous}${character}`;
+//   function inlineTokenizer(eat, value, silent) {
+//     if (
+//       !value.startsWith(LabelFence.START) &&
+//       !value.startsWith(LabelFence.START_CLOSING)
+//     ) {
+//       return;
+//     }
+//     const start = value.substring(0, 2);
 
-      if (end === LabelFence.END || end === LabelFence.END_OPENING) {
-        /* istanbul ignore if - never used (yet) */
-        if (silent) {
-          return true;
-        }
+//     let character = "";
+//     let previous = "";
+//     let subvalue = "";
+//     let index = 1;
+//     const length = value.length;
+//     const now = eat.now();
+//     now.column += 1;
+//     now.offset += 1;
 
-        return eat(start + subvalue + end)({
-          type: "narrativeSchemaLabel",
-          data: {
-            hName: "narrativeSchemaLabel",
-            info: subvalue,
-            labelType: deriveType(start, end),
-          },
-        });
-      }
+//     while (++index < length) {
+//       character = value.charAt(index);
+//       const end = `${previous}${character}`;
 
-      subvalue += previous;
-      previous = character;
-    }
-  }
-  (inlineTokenizer as any).locator = locator;
+//       if (end === LabelFence.END || end === LabelFence.END_OPENING) {
+//         /* istanbul ignore if - never used (yet) */
+//         if (silent) {
+//           return true;
+//         }
 
-  const Parser = this.Parser;
+//         return eat(start + subvalue + end)({
+//           type: "narrativeSchemaLabel",
+//           data: {
+//             hName: "narrativeSchemaLabel",
+//             info: subvalue,
+//             labelType: deriveType(start, end),
+//           },
+//         });
+//       }
 
-  // Inject inlineTokenizer
-  const inlineTokenizers = Parser.prototype.inlineTokenizers;
-  const inlineMethods = Parser.prototype.inlineMethods;
-  inlineTokenizers.narrativeSchemaLabel = inlineTokenizer;
-  inlineMethods.splice(
-    inlineMethods.indexOf("text"),
-    0,
-    "narrativeSchemaLabel",
-  );
+//       subvalue += previous;
+//       previous = character;
+//     }
+//   }
+//   (inlineTokenizer as any).locator = locator;
 
-  // const Compiler = this.Compiler;
+//   const Parser = this.Parser;
 
-  // // Stringify
-  // if (Compiler) {
-  //   const visitors = Compiler.prototype.visitors;
-  //   visitors.narrativeSchemaLabel = function(node) {
-  //     return `!!!${this.data.labelStart}${this.all(node).join("")}${this.data.labelEnd}`;
-  //   };
-  // }
-}
+//   // Inject inlineTokenizer
+//   const inlineTokenizers = Parser.prototype.inlineTokenizers;
+//   const inlineMethods = Parser.prototype.inlineMethods;
+//   inlineTokenizers.narrativeSchemaLabel = inlineTokenizer;
+//   inlineMethods.splice(
+//     inlineMethods.indexOf("text"),
+//     0,
+//     "narrativeSchemaLabel",
+//   );
+
+//   // const Compiler = this.Compiler;
+
+//   // // Stringify
+//   // if (Compiler) {
+//   //   const visitors = Compiler.prototype.visitors;
+//   //   visitors.narrativeSchemaLabel = function(node) {
+//   //     return `!!!${this.data.labelStart}${this.all(node).join("")}${this.data.labelEnd}`;
+//   //   };
+//   // }
+// }

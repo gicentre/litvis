@@ -4,9 +4,9 @@ import { VFileBase } from "vfile";
 export { VFileBase } from "vfile";
 
 export interface EntityDefinition {
-  name: string;
-  dataWithPosition: DataWithPosition;
   data: any;
+  dataWithPosition: DataWithPosition;
+  dataPath: Array<number | string>;
 }
 
 export interface EntityDefinitionWithOrigin extends EntityDefinition {
@@ -31,5 +31,5 @@ export interface ComposedNarrativeSchema {
   labels: EntityDefinitionWithOrigin[];
   rules: EntityDefinitionWithOrigin[];
   styling: EntityDefinitionWithOrigin[];
-  labelsByName: { [name: string]: EntityDefinitionWithOrigin };
+  labelByName: { [name: string]: EntityDefinitionWithOrigin };
 }

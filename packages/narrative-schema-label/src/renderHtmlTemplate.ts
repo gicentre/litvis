@@ -1,6 +1,6 @@
 import { BlockAttributes } from "block-attributes";
 import { load } from "cheerio";
-import { compile } from "handlebars";
+import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
 import { LabelType } from "./types";
 
 const FAKE_CHILDREN_CONTENTS = "__FAKE_CHILDREN__";
@@ -11,7 +11,7 @@ export default (
   labelType: LabelType,
   labelAttributes: BlockAttributes,
 ) => {
-  const rawRenderedTemplate = compile(htmlTemplate)({
+  const rawRenderedTemplate = getCompiledHandlebarsTemplate(htmlTemplate)({
     ...labelAttributes,
     children: FAKE_CHILDREN_CONTENTS,
   });

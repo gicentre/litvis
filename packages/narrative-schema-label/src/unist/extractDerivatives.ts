@@ -4,7 +4,7 @@ import * as visit from "unist-util-visit";
 import { VFile } from "vfile";
 import { LabelType } from "../types";
 
-export default (ast, vFile: VFile<any>) => {
+export default () => (ast, vFile: VFile<any>) => {
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
     const parsedInfo = parseBlockInfo(labelNode.data.info);
     const labelName = parsedInfo.language;

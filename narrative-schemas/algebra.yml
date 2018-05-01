@@ -82,7 +82,7 @@ rules:
   #     minimumTrimmedLength: 1
 
 styling:
-   css: |
+  css: |
     .invarianceHeader, .unambiguityHeader, .correspondenceHeader {
       font-size:0.9em; font-style: italic;
     }

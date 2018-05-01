@@ -11,7 +11,3 @@ export enum LabelFence {
   START_CLOSING = "{|",
   END_OPENING = "|}",
 }
-
-export interface LabelKind {
-  htmlTemplate: string;
-}

@@ -6,7 +6,11 @@ import {
   getValue,
 } from "data-with-position";
 import * as _ from "lodash";
-import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
+import {
+  NarrativeSchema,
+  ParentDocument,
+  reportUnusedDataKeys,
+} from "narrative-schema-common";
 import { extractDefinitions as extractLabelDefinitions } from "narrative-schema-label";
 import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-rule";
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
@@ -138,18 +142,17 @@ const load = async (
     };
 
     // report unknown keys in schema
-    const knownKeys = ["labels", "rules", "styling", "dependencies"];
-    const foundKeys = Object.keys(dataWithPosition);
-    const unknownKeys = _.difference(foundKeys, knownKeys);
-    for (const key of unknownKeys) {
-      narrativeSchema.message(
-        `Did not expect to find "${key}", expected ${knownKeys.join(
-          ", ",
-        )}${traceParents(parents)}`,
-        getPosition(dataWithPosition[key]),
-        "narrative-schema:content",
-      );
-    }
+    reportUnusedDataKeys(
+      narrativeSchema,
+      dataWithPosition,
+      {
+        labels: true,
+        rules: true,
+        styling: true,
+        dependencies: true,
+      },
+      [],
+    );
   }
   return result;
 };

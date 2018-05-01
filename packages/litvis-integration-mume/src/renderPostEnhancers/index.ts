@@ -1,6 +1,6 @@
 import { Html5Entities } from "html-entities";
 
-const escapeString = new Html5Entities().encode;
+const unEscapeString = new Html5Entities().decode;
 
 export default (html) =>
   html
@@ -10,5 +10,5 @@ export default (html) =>
     )
     .replace(
       /<litvis-narrative-schema-label>(.*)<\/litvis-narrative-schema-label>/g,
-      (_, inner) => escapeString(inner),
+      (_, inner) => unEscapeString(inner),
     );
