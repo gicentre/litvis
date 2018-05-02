@@ -23,7 +23,7 @@ Elm provides several ways of representing collections of items including [record
 Lists comprise items of the same type and are immutable once created.
 They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
 
-```elm {l}
+```elm {l raw}
 ages : List Int
 ages =
     [ 49, 24, 16, 58, 13 ]
@@ -39,12 +39,10 @@ mySequence =
     List.range 3 13
 ```
 
-^^^elm{raw=[ages,names,mySequence]}^^^
-
 Unlike arrays there is no random access to list items, but the _head_ and _tail_ of any list can be easily found.
 Because a list can be empty (`[]`), there is no guarantee that a list will be sepraable into a head and tail, so these functions return a `Maybe` value:
 
-```elm {l}
+```elm {l raw}
 leader : String
 leader =
     List.head names |> Maybe.withDefault "No band leader"
@@ -55,9 +53,7 @@ followers =
     List.tail names |> Maybe.withDefault []
 ```
 
-^^^elm{raw=[leader,followers]}^^^
-
-While lists are immutable, it is easy (and effiecient) to create new lists by joining a new values and an existing list.
+While lists are immutable, it is easy (and efficient) to create new lists by joining a new values and an existing list.
 This is achieved with the [cons operator `::`](http://package.elm-lang.org/packages/elm-lang/core/latest/List#::)
 
 ```elm {l siding}
@@ -68,16 +64,16 @@ newNames =
 
 The cons operator will always append an item to the head of a list, but items can be reordered with a number of the functions in the [List module](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List) such as `List.reverse`:
 
-```elm {l}
+```elm {l raw}
 newNames : List String
 newNames =
     "Pete" :: List.reverse names |> List.reverse
 ```
 
-^^^elm{raw=[newNames]}^^^
-
 Here we have created a new list by adding 'Pete' to a reversed copy of the previous list of names and then creating a reversed copy of that new list.
 The effect of which is to add 'Pete' to the end of the original list.
+
+Note that as with all elm values, lists are _immutable_ so can never change their contents. What we are doing above is to create a completely new list (`newNames`) based on the contents of an existing one (`names`). At no point does `names` ever contain `"Pete"`.
 
 ### Processing lists with recursion
 
@@ -177,8 +173,6 @@ triOutput =
     triList 20
 ```
 
-^^^elm {raw=triOutput}^^^
-
 ### Transforming list contents with map
 
 The final commonly used function with lists we will consider here is [map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map), which is used to apply some transforming function to each item in a list.
@@ -199,18 +193,16 @@ doubler =
     List.map ((*) 2)
 ```
 
-```elm {l}
+```elm {l raw}
 doublerOutput : List Int
 doublerOutput =
     List.range 1 10 |> doubler
 ```
 
-^^^elm {raw=doublerOutput}^^^
-
 ### Using tuples to compare adjacent list items
 
 Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list).
-Sometimes though you may wish to perform actions that depend on adjacent list items.
+Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#windowAs) available via elm-vega).
 For example, you could incease the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller.
 
 To help do this, we can transform a list of numbers into a list of _tuples_.
@@ -243,13 +235,11 @@ neighbours items =
     List.map2 (,) items (List.tail items |> Maybe.withDefault [])
 ```
 
-```elm {l}
+```elm {l raw}
 neighbourOutput : List ( Int, Int )
 neighbourOutput =
     neighbours [ 1, 2, 3, 4, 5 ]
 ```
-
-^^^elm {raw=neighbourOutput}^^^
 
 Notice that the new list is one shorter than the original because the last item in the original list has no value following it so cannot be transformed into a tuple.
 
@@ -270,13 +260,12 @@ smooth items =
     neighbours items |> List.map equalise
 ```
 
-```elm {l}
+```elm {l raw}
 smoothOutput : List Int
 smoothOutput =
     smooth [ 1, 10, 1, 10, 1, 10 ]
 ```
 
-^^^elm {raw=smoothOutput}^^^
 {(question |}
 
 1.  How would you express the `smooth` function in point-free style?

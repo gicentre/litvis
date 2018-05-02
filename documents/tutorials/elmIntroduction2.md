@@ -147,9 +147,9 @@ sumIsOdd2 n1 n2 =
     isOdd <| add n1 n2
 ```
 
-The value of this form of expression becomes more obvious when we use the `|>` operator in more complex expressions to representing the `piping` of the output of one evaluated expression into the input of another.
+The value of this form of expression becomes more obvious when we use the `|>` operator in more complex expressions to representing the 'piping' of the output of one evaluated expression into the input of another.
 
-Consider the coding coding of the following party trick:
+Consider the coding of the following party trick:
 
 > _Think of a number.
 > Double it.
@@ -199,12 +199,12 @@ result =
     square 32
 ```
 
-Unlike top-level function definitions, locally scoped functions do not need to have a type annotation (although this always remains an option).
+Unlike top-level function definitions, locally scoped functions do not need to have a type annotation, although this always remains an option.
 
 ### Anonymous Functions
 
 Sometimes it is a little cumbersome to create a new named function with its own type annotation, especially if that function is simple or is to be used only once.
-A more compact alternative is to create an anonymous function (sometime referred to as _lambda expressions_).
+A more compact alternative is to create an anonymous function (sometime referred to as a _lambda expression_).
 
 Here's a named function that contains an anonymous function for finding the square a number:
 
@@ -234,8 +234,8 @@ anotherDivide =
 ```
 
 The first case (`betterDivide`) calls an existing function (`divide`) but reverses the order of parameters.
-In the second case (`anotherDivide`) notice how the type annotation expects two `Int` parameters and returns an `Int` but we do not name those parameters in the body of the function.
-Instead it returns another function (`divide`) with the same type signature.
+In the second case (`anotherDivide`) notice how the type annotation also expects two `Int` parameters and returns an `Int` but we do not name those parameters in the body of the function.
+It does this by returning another function (`divide`) with the same type signature.
 It is common in functional programming to create functions that themselves return functions.
 In fact this is what happens in every single function that has more then one parameter...
 

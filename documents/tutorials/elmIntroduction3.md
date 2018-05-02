@@ -175,7 +175,7 @@ In the example above we called that name `credits` so we could handle it in buil
 
 ## Elm's built-in union types
 
-Elm has a few tagged union types builtin that are handy for representing uncertain values.
+Elm has a few of its own tagged union types that are handy for representing uncertain values.
 
 ### Maybe
 
@@ -238,12 +238,10 @@ resultSqrt x =
         Ok (sqrt x)
 ```
 
-```elm {l siding}
+```elm {l siding raw}
 output : Result String Float
 output =
     resultSqrt -256
 ```
-
-^^^elm{raw=(resultSqrt -256)}^^^
 
 _Next >>_ [Lists and list processing](elmIntroduction4.md)
