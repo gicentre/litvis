@@ -23,34 +23,34 @@ smallMultiples =
         enc =
             encoding
                 << position X
-                    [ PName "temp_max"
-                    , PmType Quantitative
-                    , PBin []
-                    , PAxis [ AxTitle "" ]
+                    [ pName "temp_max"
+                    , pMType Quantitative
+                    , pBin []
+                    , pAxis [ axTitle "" ]
                     ]
                 << position Y
-                    [ PAggregate Count
-                    , PmType Quantitative
+                    [ pAggregate Count
+                    , pMType Quantitative
                     ]
                 << color
-                    [ MName "weather"
-                    , MmType Nominal
-                    , MLegend []
-                    , MScale weatherColors
+                    [ mName "weather"
+                    , mMType Nominal
+                    , mLegend []
+                    , mScale weatherColors
                     ]
                 << column
-                    [ FName "weather"
-                    , FmType Nominal
+                    [ fName "weather"
+                    , fMType Nominal
                     ]
     in
-    toVegaLite [ width 110, height 110, seattleData, mark Bar [], enc [] ]
+    toVegaLite [ width 110, height 110, seattleData, bar [], enc [] ]
 ```
 
 There are only two additions in order to create these small multiples.
 Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to.
-Note that the `F` prefix for `FName` and `FmType` refers to _facet_ – a form of data selection and grouping standard in data visualization.
+Note that the `F` prefix for `fiName` and `FmType` refers to _facet_ – a form of data selection and grouping standard in data visualization.
 
-The second, minor change, is to include an `MLegend` specification in the color encoding. The legend can be customised with its parametmer list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
+The second, minor change, is to include an `mLegend` specification in the color encoding. The legend can be customised with its parametmer list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
 
 ### Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
 
@@ -80,17 +80,17 @@ barChart =
         enc =
             encoding
                 << position X
-                    [ PName "date"
-                    , PmType Ordinal
-                    , PTimeUnit Month
+                    [ pName "date"
+                    , pMType Ordinal
+                    , pTimeUnit Month
                     ]
                 << position Y
-                    [ PName "precipitation"
-                    , PmType Quantitative
-                    , PAggregate Mean
+                    [ pName "precipitation"
+                    , pMType Quantitative
+                    , pAggregate Mean
                     ]
     in
-    toVegaLite [ seattleData, mark Bar [], enc [] ]
+    toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
 (Note that here we've cast the date, which has been quantized into monthly intervals, to be ordinal so that bars span the full width of each month.)
@@ -103,10 +103,10 @@ temporalBarSpec pField w =
     let
         enc =
             encoding
-                << position X [ PName "date", PmType Ordinal, PTimeUnit Month ]
-                << position Y [ pField, PmType Quantitative, PAggregate Mean ]
+                << position X [ pName "date", pMType Ordinal, pTimeUnit Month ]
+                << position Y [ pField, pMType Quantitative, pAggregate Mean ]
     in
-    asSpec [ width w, height w, mark Bar [], enc [] ]
+    asSpec [ width w, height w, bar [], enc [] ]
 ```
 
 This can then be passed to `toVegaLite` as its own _layer_:
@@ -114,7 +114,7 @@ This can then be passed to `toVegaLite` as its own _layer_:
 ```elm {l s}
 barChart : Spec
 barChart =
-    toVegaLite [ seattleData, layer [ temporalBarSpec (PName "precipitation") 180 ] ]
+    toVegaLite [ seattleData, layer [ temporalBarSpec (pName "precipitation") 180 ] ]
 ```
 
 ### Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
@@ -127,14 +127,14 @@ barChart : Spec
 barChart =
     let
         dataField =
-            PName "precipitation"
+            pName "precipitation"
 
         enc =
-            encoding << position Y [ dataField, PmType Quantitative, PAggregate Mean ]
+            encoding << position Y [ dataField, pMType Quantitative, pAggregate Mean ]
     in
     toVegaLite
         [ seattleData
-        , layer [ temporalBarSpec dataField 180, asSpec [ enc [], mark Rule [] ] ]
+        , layer [ temporalBarSpec dataField 180, asSpec [ enc [], rule [] ] ]
         ]
 ```
 
@@ -149,10 +149,10 @@ temporalAvBarSpec : PositionChannel -> Float -> Spec
 temporalAvBarSpec dataField w =
     let
         enc =
-            encoding << position Y [ dataField, PmType Quantitative, PAggregate Mean ]
+            encoding << position Y [ dataField, pMType Quantitative, pAggregate Mean ]
     in
     asSpec
-        [ layer [ temporalBarSpec dataField w, asSpec [ enc [], mark Rule [] ] ] ]
+        [ layer [ temporalBarSpec dataField w, asSpec [ enc [], rule [] ] ] ]
 ```
 
 ### Concatenating views ([10:47](https://youtu.be/9uaHRWj04D4?t=10m47s))
@@ -165,8 +165,8 @@ barCharts =
     toVegaLite
         [ seattleData
         , vConcat
-            [ temporalBarSpec (PName "precipitation") 180
-            , temporalBarSpec (PName "temp_max") 180
+            [ temporalBarSpec (pName "precipitation") 180
+            , temporalBarSpec (pName "temp_max") 180
             ]
         ]
 ```
@@ -183,12 +183,12 @@ barCharts : Spec
 barCharts =
     toVegaLite
         [ seattleData
-        , repeat [ RowFields [ "precipitation", "temp_max", "wind" ] ]
-        , specification (temporalBarSpec (PRepeat Row) 150)
+        , repeat [ rowFields [ "precipitation", "temp_max", "wind" ] ]
+        , specification (temporalBarSpec (pRepeat Row) 150)
         ]
 ```
 
-This more compact specification replaces the data field name (`PName "precipitation"` etc.) with a reference to the repeating field (`PRepeat`) either as a `Row` or `Column` depending on the desired layout. We then compose the specifications by providing a set of `RowFields` (or `ColumnFields`) containing a list of the fields to which we wish to apply the specification (identified with the function `specification` which should follow the `repeat` function provided to `toVegaLite`).
+This more compact specification replaces the data field name (`pName "precipitation"` etc.) with a reference to the repeating field (`pRepeat`) either as a `Row` or `Column` depending on the desired layout. We then compose the specifications by providing a set of `rowFields` (or `columnFields`) containing a list of the fields to which we wish to apply the specification (identified with the function `specification` which should follow the `repeat` function provided to `toVegaLite`).
 
 We can combine repeated rows and repeated columns to create a grid of views, such as a scatterplot matrix (or SPLOM for short):
 
@@ -198,22 +198,22 @@ splom =
     let
         enc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PRepeat Row, PmType Quantitative ]
+                << position X [ pRepeat Column, pMType Quantitative ]
+                << position Y [ pRepeat Row, pMType Quantitative ]
 
         spec =
             asSpec
                 [ width 120
                 , height 120
-                , mark Point [ MStrokeWidth 0.4 ]
+                , point [ maStrokeWidth 0.4 ]
                 , enc []
                 ]
     in
     toVegaLite
         [ seattleData
         , repeat
-            [ RowFields [ "temp_max", "precipitation", "wind" ]
-            , ColumnFields [ "wind", "precipitation", "temp_max" ]
+            [ rowFields [ "temp_max", "precipitation", "wind" ]
+            , columnFields [ "wind", "precipitation", "temp_max" ]
             ]
         , specification spec
         ]
@@ -232,34 +232,34 @@ histogram =
 
         histoEnc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
 
         histoSpec =
-            asSpec [ width w, height w, mark Bar [], histoEnc [] ]
+            asSpec [ width w, height w, bar [], histoEnc [] ]
 
         scatterEnc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative ]
-                << position Y [ PName "precipitation", PmType Quantitative ]
+                << position X [ pName "temp_max", pMType Quantitative ]
+                << position Y [ pName "precipitation", pMType Quantitative ]
 
         scatterSpec =
-            asSpec [ width w, height w, mark Point [ MStrokeWidth 0.3 ], scatterEnc [] ]
+            asSpec [ width w, height w, point [ maStrokeWidth 0.3 ], scatterEnc [] ]
 
         barEnc =
             encoding
-                << position X [ PName "date", PmType Ordinal, PTimeUnit Month ]
-                << position Y [ PName "precipitation", PmType Quantitative, PAggregate Mean ]
+                << position X [ pName "date", pMType Ordinal, pTimeUnit Month ]
+                << position Y [ pName "precipitation", pMType Quantitative, pAggregate Mean ]
 
         barSpec =
-            asSpec [ width w, height w, mark Bar [], barEnc [] ]
+            asSpec [ width w, height w, bar [], barEnc [] ]
 
         lineEnc =
             encoding
-                << position Y [ PName "precipitation", PmType Quantitative, PAggregate Mean ]
+                << position Y [ pName "precipitation", pMType Quantitative, pAggregate Mean ]
 
         lineSpec =
-            asSpec [ width w, height w, mark Rule [], lineEnc [] ]
+            asSpec [ width w, height w, rule [], lineEnc [] ]
     in
     toVegaLite
         [ seattleData
@@ -279,36 +279,36 @@ dashboard data =
     let
         scatterEnc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PRepeat Row, PmType Quantitative ]
+                << position X [ pRepeat Column, pMType Quantitative ]
+                << position Y [ pRepeat Row, pMType Quantitative ]
 
         scatterSpec =
-            asSpec [ mark Point [ MStrokeWidth 0.4 ], scatterEnc [] ]
+            asSpec [ point [ maStrokeWidth 0.4 ], scatterEnc [] ]
 
         splomSpec =
             asSpec
                 [ repeat
-                    [ RowFields [ "temp_max", "precipitation", "wind" ]
-                    , ColumnFields [ "wind", "precipitation", "temp_max" ]
+                    [ rowFields [ "temp_max", "precipitation", "wind" ]
+                    , columnFields [ "wind", "precipitation", "temp_max" ]
                     ]
                 , specification scatterSpec
                 ]
 
         barsSpec =
             asSpec
-                [ repeat [ RowFields [ "precipitation", "temp_max", "wind" ] ]
-                , specification (temporalAvBarSpec (PRepeat Row) 150)
+                [ repeat [ rowFields [ "precipitation", "temp_max", "wind" ] ]
+                , specification (temporalAvBarSpec (pRepeat Row) 150)
                 ]
 
         histoEnc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [], PAxis [ AxTitle "Max temp" ] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
-                << color [ MName "weather", MmType Nominal, MLegend [], MScale weatherColors ]
-                << column [ FName "weather", FmType Nominal ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [], pAxis [ axTitle "Max temp" ] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
+                << color [ mName "weather", mMType Nominal, mLegend [], mScale weatherColors ]
+                << column [ fName "weather", fMType Nominal ]
 
         histoSpec =
-            asSpec [ width 120, height 120, mark Bar [], histoEnc [] ]
+            asSpec [ width 120, height 120, bar [], histoEnc [] ]
     in
     toVegaLite
         [ data

@@ -28,7 +28,7 @@ We can store the specification for retrieving the data in its own function for l
 ```elm {l}
 seattleData : Data
 seattleData =
-    dataFromUrl "https://vega.github.io/vega-lite/data/seattle-weather.csv" [ Parse [ ( "Date", FoDate "%Y/%m/%d" ) ] ]
+    dataFromUrl "https://vega.github.io/vega-lite/data/seattle-weather.csv" [ parse [ ( "Date", foDate "%Y/%m/%d" ) ] ]
 ```
 
 ### A Strip plot ([3:26](https://youtu.be/9uaHRWj04D4?t=3m26s))
@@ -41,8 +41,8 @@ stripPlot : Spec
 stripPlot =
     toVegaLite
         [ seattleData
-        , mark Tick []
-        , encoding (position X [ PName "temp_max", PmType Quantitative ] [])
+        , tick []
+        , encoding (position X [ pName "temp_max", pMType Quantitative ] [])
         ]
 ```
 
@@ -68,9 +68,9 @@ stripPlot : Spec
 stripPlot =
     let
         enc =
-            encoding << position X [ PName "temp_max", PmType Quantitative ]
+            encoding << position X [ pName "temp_max", pMType Quantitative ]
     in
-    toVegaLite [ seattleData, mark Tick [], enc [] ]
+    toVegaLite [ seattleData, tick [], enc [] ]
 ```
 
 ### Simple Histogram ([5:02](https://youtu.be/9uaHRWj04D4?t=5m02s))
@@ -83,13 +83,13 @@ histogram =
     let
         enc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
     in
-    toVegaLite [ seattleData, mark Bar [], enc [] ]
+    toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
-The code now contains two chained `position` encodings: one for the x-position, which is now binned, and one for the y-position which is aggregated by providing `PAggregate Count` instead of a data field name.
+The code now contains two chained `position` encodings: one for the x-position, which is now binned, and one for the y-position which is aggregated by providing `pAggregate Count` instead of a data field name.
 
 Notice again that sensible defaults are provided for the parts of the specification we didn't specify such as axis titles, colors and number of bins.
 
@@ -105,20 +105,19 @@ stackedHistogram =
     let
         enc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
-                << color [ MName "weather", MmType Nominal ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
+                << color [ mName "weather", mMType Nominal ]
     in
-    toVegaLite [ seattleData, mark Bar [], enc [] ]
+    toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
 The code to do this simply adds another channel encoding, this time `color` rather than `position`, and uses it to encode the `weather` data field.
 Unlike temperature, weather type is _nominal_, that is, categorical with no intrinsic order.
 And once again, simply by declaring the measurement type, Vega-Lite determines an appropriate color scheme and legend.
 
-Notice how that with elm-vega we make frequent use of _union types_ (always indicated by names starting with an uppercase letter).
-Types used to customise various channels all start with an uppercase letter indicating the type of channel affected.
-So the name of the data field use to encode _position_ is `PName`, its measurement type, `PmType` and its positional aggregation is `PAggregate`, whereas the name of the data field for encoding color is indicated by `MName` and its measurement type `MmType` (where `M` is short for _mark_).
+Notice how functions are used to customise various channels starting with a letter indicating the type of channel affected.
+So the name of the data field use to encode _position_ is `pName`, its measurement type, `pMType` and its positional aggregation is `pAggregate`, whereas the name of the data field for encoding color is indicated by `mName` and its measurement type `mMType` (where `m` is short for _mark_).
 
 ### Stacked Histogram with Customised Colors ([7:20](https://youtu.be/9uaHRWj04D4?t=7m20s))
 
@@ -144,18 +143,20 @@ stackedHistogram =
     let
         enc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
-                << color [ MName "weather", MmType Nominal, MScale weatherColors ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
+                << color [ mName "weather", mMType Nominal, mScale weatherColors ]
     in
-    toVegaLite [ seattleData, mark Bar [], enc [] ]
+    toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
-The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vega function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
+The mapping between the values in the domain (weather type
+
+s `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vega function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
 
 Notice how we never needed to state explicitly that we wished our bars to be stacked.
 This was reasoned directly by Vega-Lite based on the combination of bar marks and color channel encoding.
-If we were to change just the mark type from `Bar` to `Line`, Vega-Lite produces an unstacked series of lines, which makes sense because unlike bars, lines do not occlude one another to the same extent.
+If we were to change just the mark function from `bar` to `line`, Vega-Lite produces an unstacked series of lines, which makes sense because unlike bars, lines do not occlude one another to the same extent.
 
 ```elm {v l s}
 lineChart : Spec
@@ -163,11 +164,11 @@ lineChart =
     let
         enc =
             encoding
-                << position X [ PName "temp_max", PmType Quantitative, PBin [] ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
-                << color [ MName "weather", MmType Nominal, MScale weatherColors ]
+                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
+                << color [ mName "weather", mMType Nominal, mScale weatherColors ]
     in
-    toVegaLite [ seattleData, mark Line [], enc [] ]
+    toVegaLite [ seattleData, line [], enc [] ]
 ```
 
 The stacked bar chart version is better at showing the overall distribution of all weather types but it is more difficult to compare distributions of anything other than sun as all other weather types lack a common baseline.

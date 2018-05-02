@@ -31,12 +31,12 @@ scatterplot =
     let
         enc =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PName "Miles_per_Gallon", PmType Quantitative ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
                 << color
-                    [ MSelectionCondition (SelectionName "picked")
-                        [ MName "Origin", MmType Nominal ]
-                        [ MString "grey" ]
+                    [ mSelectionCondition (selectionName "picked")
+                        [ mName "Origin", mMType Nominal ]
+                        [ mStr "grey" ]
                     ]
 
         sel =
@@ -45,13 +45,13 @@ scatterplot =
     in
     toVegaLite
         [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-        , mark Circle []
+        , circle []
         , enc []
         , sel []
         ]
 ```
 
-In comparison to the static specifications we have already seen, the addition here is the new function `selection` that is added to the spec passed to Vega-Lite and a new `MSelectionCondition` used to encode color.
+In comparison to the static specifications we have already seen, the addition here is the new function `selection` that is added to the spec passed to Vega-Lite and a new `mSelectionCondition` used to encode color.
 
 Previously when encoding color (or any other channel) we have provided a list of properties.
 Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
@@ -67,15 +67,15 @@ scatterProps =
     let
         enc =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PName "Miles_per_Gallon", PmType Quantitative ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
                 << color
-                    [ MSelectionCondition (SelectionName "picked")
-                        [ MName "Origin", MmType Nominal ]
-                        [ MString "grey" ]
+                    [ mSelectionCondition (selectionName "picked")
+                        [ mName "Origin", mMType Nominal ]
+                        [ mStr "grey" ]
                     ]
     in
-    [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], mark Circle [], enc [] ]
+    [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], circle [], enc [] ]
 ```
 
 This allows us to add the selection specification separately.
@@ -103,14 +103,14 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-Alternatively, we could make the selection happen based on any browser event by parameterising `select` with the type `On` and a value matching a JavaScript event name, such as mouse movement over points to give more of a paintbrush effect (_hold shift down while moving pointer to select multiple points_):
+Alternatively, we could make the selection happen based on any browser event by parameterising `select` with the function `seOn` and a value matching a JavaScript event name, such as mouse movement over points to give more of a paintbrush effect (_hold shift down while moving pointer to select multiple points_):
 
 ```elm {v l s interactive}
 scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Multi [ On "mouseover" ]
+            selection << select "picked" Multi [ seOn "mouseover" ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -127,12 +127,12 @@ scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Single [ Empty, Fields [ "Cylinders" ] ]
+            selection << select "picked" Single [ Empty, seFields [ "Cylinders" ] ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
-This is invoked simply by adding a parameterised `Fields` type to the `select` parameters naming the fields onto which we wish to project our selection.
+This is invoked simply by adding a parameterised `seFields` function to the `select` parameters naming the fields onto which we wish to project our selection.
 Additionally, we have set the default selection to `Empty` here so that if nothing is selected, the selection is empty (without this the default selection is the entire encoded dataset.)
 
 Selection need not be limited to direct interaction with the visualization marks.
@@ -148,14 +148,14 @@ scatterplot =
             selection
                 << select "picked"
                     Single
-                    [ Fields [ "Cylinders" ]
-                    , Bind [ IRange "Cylinders" [ InName "Cylinders: ", InMin 3, InMax 8, InStep 1 ] ]
+                    [ seFields [ "Cylinders" ]
+                    , seBind [ iRange "Cylinders" [ inName "Cylinders: ", inMin 3, inMax 8, inStep 1 ] ]
                     ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
-The binding to the slider is added with the parameterised `Bind` type followed by a type representing the HTML input element (`IRange` in this example), the data field to which it is to be bound and then a list of optional input element parameters (here just setting the limits of the slider and step between slider values).
+The binding to the slider is added with the parameterised `seBind` function followed by a function generating the HTML input element (`iRange` in this example), the data field to which it is to be bound and then a list of optional input element parameters (here just setting the limits of the slider and step between slider values).
 The binding is two-way, so directly selecting points on the scatterplot updates the sliders and moving the sliders updates the selected (and therefore highlighted) points.
 
 Binding need not be limited to single input element.
@@ -170,10 +170,10 @@ scatterplot =
             selection
                 << select "picked"
                     Single
-                    [ Fields [ "Cylinders", "Year" ]
-                    , Bind
-                        [ IRange "Cylinders" [ InMin 3, InMax 8, InStep 1 ]
-                        , IRange "Year" [ InMin 1969, InMax 1981, InStep 1 ]
+                    [ seFields [ "Cylinders", "Year" ]
+                    , seBind
+                        [ iRange "Cylinders" [ inMin 3, inMax 8, inStep 1 ]
+                        , iRange "Year" [ inMin 1969, inMax 1981, inStep 1 ]
                         ]
                     ]
     in
@@ -202,12 +202,12 @@ scatterplot =
     let
         sel =
             selection
-                << select "picked" Interval [ Encodings [ ChX ] ]
+                << select "picked" Interval [ seEncodings [ ChX ] ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
-Notice here that to project the selection we parameterise `Interval` not with a field name as we have done previously but with a channel encoding using the union type `Encodings` (here parameterised with the X-position channel `ChX`).
+Notice here that to project the selection we parameterise `Interval` not with a field name as we have done previously but with a channel encoding using the function `seEncodings` (here parameterised with the X-position channel `ChX`).
 
 If we further _bind_ that selection to the _scale_ transformation of X-position, we have created the ability to pan and zoom the view as the scaling is determined interactively depending on the extent and position of the interval selection.
 
@@ -219,7 +219,7 @@ scatterplot =
     let
         sel =
             selection
-                << select "picked" Interval [ Encodings [ ChX ], BindScales ]
+                << select "picked" Interval [ seEncodings [ ChX ], BindScales ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -234,29 +234,29 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PRepeat Row, PmType Quantitative ]
+                << position X [ pRepeat Column, pMType Quantitative ]
+                << position Y [ pRepeat Row, pMType Quantitative ]
                 << color
-                    [ MSelectionCondition (SelectionName "picked")
-                        [ MName "Origin", MmType Nominal ]
-                        [ MString "grey" ]
+                    [ mSelectionCondition (selectionName "picked")
+                        [ mName "Origin", mMType Nominal ]
+                        [ mStr "grey" ]
                     ]
 
         sel =
-            selection << select "picked" Interval [ Encodings [ ChX ] ]
+            selection << select "picked" Interval [ seEncodings [ ChX ] ]
 
         spec =
             asSpec
                 [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-                , mark Circle []
+                , circle []
                 , enc []
                 , sel []
                 ]
     in
     toVegaLite
         [ repeat
-            [ RowFields [ "Displacement", "Miles_per_Gallon" ]
-            , ColumnFields [ "Horsepower", "Miles_per_Gallon" ]
+            [ rowFields [ "Displacement", "Miles_per_Gallon" ]
+            , columnFields [ "Horsepower", "Miles_per_Gallon" ]
             ]
         , specification spec
         ]
@@ -275,9 +275,9 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PRepeat Row, PmType Quantitative ]
-                << color [ MName "Origin", MmType Nominal ]
+                << position X [ pRepeat Column, pMType Quantitative ]
+                << position Y [ pRepeat Row, pMType Quantitative ]
+                << color [ mName "Origin", mMType Nominal ]
 
         sel =
             selection << select "picked" Interval [ BindScales ]
@@ -285,15 +285,15 @@ linkedScatterplots =
         spec =
             asSpec
                 [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-                , mark Circle []
+                , circle []
                 , enc []
                 , sel []
                 ]
     in
     toVegaLite
         [ repeat
-            [ RowFields [ "Displacement", "Miles_per_Gallon" ]
-            , ColumnFields [ "Horsepower", "Miles_per_Gallon" ]
+            [ rowFields [ "Displacement", "Miles_per_Gallon" ]
+            , columnFields [ "Horsepower", "Miles_per_Gallon" ]
             ]
         , specification spec
         ]
@@ -312,32 +312,32 @@ linkedTimeSeries : Spec
 linkedTimeSeries =
     let
         sel =
-            selection << select "brush" Interval [ Encodings [ ChX ] ]
+            selection << select "brush" Interval [ seEncodings [ ChX ] ]
 
         encContext =
             encoding
-                << position X [ PName "date", PmType Temporal, PAxis [ AxFormat "%Y" ] ]
+                << position X [ pName "date", pMType Temporal, pAxis [ axFormat "%Y" ] ]
                 << position Y
-                    [ PName "price"
-                    , PmType Quantitative
-                    , PAxis [ AxTickCount 3, AxGrid False ]
+                    [ pName "price"
+                    , pMType Quantitative
+                    , pAxis [ axTickCount 3, axGrid False ]
                     ]
 
         specContext =
-            asSpec [ width 400, height 80, sel [], mark Area [], encContext [] ]
+            asSpec [ width 400, height 80, sel [], area [], encContext [] ]
 
         encDetail =
             encoding
                 << position X
-                    [ PName "date"
-                    , PmType Temporal
-                    , PScale [ SDomain (DSelection "brush") ]
-                    , PAxis [ AxTitle "" ]
+                    [ pName "date"
+                    , pMType Temporal
+                    , pScale [ scDomain (doSelection "brush") ]
+                    , pAxis [ axTitle "" ]
                     ]
-                << position Y [ PName "price", PmType Quantitative ]
+                << position Y [ pName "price", pMType Quantitative ]
 
         specDetail =
-            asSpec [ width 400, mark Area [], encDetail [] ]
+            asSpec [ width 400, area [], encDetail [] ]
     in
     toVegaLite
         [ dataFromUrl "https://vega.github.io/vega-lite/data/sp500.csv" []
@@ -364,34 +364,35 @@ crossFilter =
                 << calculateAs "hours(datum.date)" "hour"
 
         sel =
-            selection << select "brush" Interval [ Encodings [ ChX ] ]
+            selection << select "brush" Interval [ seEncodings [ ChX ] ]
 
         filterTrans =
             transform
-                << filter (FSelection "brush")
+                << filter (fiSelection "brush")
 
         totalEnc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
+                << position X [ pRepeat Column, pMType
+ Quantitative ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
 
         selectedEnc =
             encoding
-                << position X [ PRepeat Column, PmType Quantitative ]
-                << position Y [ PAggregate Count, PmType Quantitative ]
-                << color [ MString "goldenrod" ]
+                << position X [ pRepeat Column, pMType Quantitative ]
+                << position Y [ pAggregate Count, pMType Quantitative ]
+                << color [ mStr "goldenrod" ]
     in
     toVegaLite
-        [ repeat [ ColumnFields [ "hour", "delay", "distance" ] ]
+        [ repeat [ columnFields [ "hour", "delay", "distance" ] ]
         , specification <|
             asSpec
                 [ width 170
                 , height 150
-                , dataFromUrl "https://vega.github.io/vega-lite/data/flights-2k.json" [ Parse [ ( "date", FoDate "%Y/%m/%d %H:%M" ) ] ]
+                , dataFromUrl "https://vega.github.io/vega-lite/data/flights-2k.json" [ parse [ ( "date", foDate "%Y/%m/%d %H:%M" ) ] ]
                 , hourTrans []
                 , layer
-                    [ asSpec [ mark Bar [], totalEnc [] ]
-                    , asSpec [ sel [], filterTrans [], mark Bar [], selectedEnc [] ]
+                    [ asSpec [ bar [], totalEnc [] ]
+                    , asSpec [ sel [], filterTrans [], bar [], selectedEnc [] ]
                     ]
                 ]
         ]
