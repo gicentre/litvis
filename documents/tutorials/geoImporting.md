@@ -31,7 +31,7 @@ Assuming the dataset you wish to import is a shapefile, the process involves the
 *   Simplify geometry to reduce file size
 *   render file with elm-vega
 
-_For related tutorials, see Mike Bostock's series [Command-Line Cartography](https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c) and Ændrew Rininsland's [Creating TopoJSON using D3 v4](https://medium.com/@aendrew/creating-topojson-using-d3-v4-10838d1a9538) and for a thorough more London-centric example, Max Harlow's [Working with geographic data](https://github.com/maxharlow/tutorials/tree/master/working-with-geographical-data) tutorial._
+_For related tutorials, see Mike Bostock's series [Command-Line Cartography](https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c) and Ændrew Rininsland's [Creating topoJSON using D3 v4](https://medium.com/@aendrew/creating-topojson-using-d3-v4-10838d1a9538) and for a thorough more London-centric example, Max Harlow's [Working with geographic data](https://github.com/maxharlow/tutorials/tree/master/working-with-geographical-data) tutorial._
 
 ## 0. Setup
 
@@ -93,7 +93,7 @@ While you are getting used to this workflow it can be helpful to append a `_geo`
 ## 3. Identify the `id` attribute
 
 When we render the data we will need an ID to refer to each spatial feature within the dataset (boroughs in our case).
-GeoJson and TopoJson files can have an optional `id` for each feature which we need to add as part of our workflow.
+GeoJson and topoJson files can have an optional `id` for each feature which we need to add as part of our workflow.
 The original shape file should have had one or more attributes associated with each feature and these get transferred to the `geoJson` as 'properties'.
 You can see these properties by viewing the .json file in a text editor.
 Choose the property you wish to make the id and then type the following:
@@ -172,10 +172,18 @@ boroughs =
     toVegaLite
         [ width 600
         , height 400
-        , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
-        , mark Geoshape []
-        , encoding (color [ MName "id", MmType Nominal ] [])
+        , configure
+            (configuration
+                (coView
+                    [ vicoStroke
+                        Nothing
+                    ]
+                )
+                []
+            )
+        , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+        , geoshape []
+        , encoding (color [ mName "id", mMType Nominal ] [])
         ]
 ```
 
@@ -242,7 +250,7 @@ boroughColors =
         ]
 ```
 
-Setting the `MScale` to use this list gives us our new colour scheme:
+Setting the `mScale` to use this list gives us our new colour scheme:
 
 ```elm {l v s}
 boroughs : Spec
@@ -250,10 +258,10 @@ boroughs =
     toVegaLite
         [ width 600
         , height 400
-        , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
-        , mark Geoshape [ MStroke "white", MStrokeWidth 2 ]
-        , encoding (color [ MName "id", MmType Nominal, MScale boroughColors ] [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
+        , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+        , geoshape [ maStroke "white", maStrokeWidth 2 ]
+        , encoding (color [ mName "id", mMType Nominal, mScale boroughColors ] [])
         ]
 ```
 
@@ -306,34 +314,34 @@ boroughsCustom w h =
     let
         polyEnc =
             encoding
-                << color [ MName "id", MmType Nominal, MScale boroughColors, MLegend [] ]
+                << color [ mName "id", mMType Nominal, mScale boroughColors, mLegend [] ]
 
         polySpec =
             asSpec
-                [ dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
-                , mark Geoshape [ MStroke "white", MStrokeWidth (2 * w / 700) ]
+                [ dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+                , geoshape [ maStroke "white", maStrokeWidth (2 * w / 700) ]
                 , polyEnc []
                 ]
 
         labelEnc =
             encoding
-                << position Longitude [ PName "cx" ]
-                << position Latitude [ PName "cy" ]
-                << text [ TName "bLabel", TmType Nominal ]
-                << size [ MNumber (8 * w / 700) ]
-                << opacity [ MNumber 0.6 ]
+                << position Longitude [ pName "cx" ]
+                << position Latitude [ pName "cy" ]
+                << text [ tName "bLabel", tMType Nominal ]
+                << size [ mNum (8 * w / 700) ]
+                << opacity [ mNum 0.6 ]
 
         trans =
             transform
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], mark Text [], labelEnc [] ]
+            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], textMark [], labelEnc [] ]
     in
     toVegaLite
         [ width w
         , height h
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ polySpec, labelSpec ]
         ]
 ```
@@ -344,7 +352,7 @@ boroughs =
     boroughsCustom 700 500
 ```
 
-TopoJson files are not limited to areal units.
+topoJson files are not limited to areal units.
 Here, for example, we can import a file containing the geographical routes of selected London Underground tube lines.
 The conversion of the [tfl_lines.json](https://github.com/oobrien/vis/tree/master/tube/data) follows a similar pattern to the conversion of the borough boundary files, but with some minor differences:
 
@@ -370,9 +378,9 @@ tubeLines =
     toVegaLite
         [ width 700
         , height 400
-        , dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
-        , mark Geoshape [ MFilled False ]
-        , encoding (color [ MName "id", MmType Nominal ] [])
+        , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+        , geoshape [ maFilled False ]
+        , encoding (color [ mName "id", mMType Nominal ] [])
         ]
 ```
 
@@ -404,18 +412,18 @@ tubeLines =
         enc =
             encoding
                 << color
-                    [ MName "id"
-                    , MmType Nominal
-                    , MLegend [ LTitle "", LOrient BottomRight ]
-                    , MScale tubeLineColors
+                    [ mName "id"
+                    , mMType Nominal
+                    , mLegend [ leTitle "", leOrient BottomRight ]
+                    , mScale tubeLineColors
                     ]
     in
     toVegaLite
         [ width 700
         , height 500
-        , configure (configuration (View [ Stroke Nothing ]) [])
-        , dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
-        , mark Geoshape [ MFilled False, MStrokeWidth 2 ]
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
+        , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+        , geoshape [ maFilled False, maStrokeWidth 2 ]
         , enc []
         ]
 ```
@@ -428,46 +436,46 @@ tubeLines =
     let
         polySpec =
             asSpec
-                [ dataFromUrl (path "londonBoroughs.json") [ TopojsonFeature "boroughs" ]
-                , mark Geoshape [ MStroke "white", MStrokeWidth 2 ]
-                , encoding (color [ MString "#eee" ] [])
+                [ dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+                , geoshape [ maStroke "white", maStrokeWidth 2 ]
+                , encoding (color [ mStr "#eee" ] [])
                 ]
 
         labelEnc =
             encoding
-                << position Longitude [ PName "cx" ]
-                << position Latitude [ PName "cy" ]
-                << text [ TName "bLabel", TmType Nominal ]
-                << size [ MNumber 8 ]
-                << opacity [ MNumber 0.6 ]
+                << position Longitude [ pName "cx" ]
+                << position Latitude [ pName "cy" ]
+                << text [ tName "bLabel", tMType Nominal ]
+                << size [ mNum 8 ]
+                << opacity [ mNum 0.6 ]
 
         trans =
             transform
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], mark Text [], labelEnc [] ]
+            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], textMark [], labelEnc [] ]
 
         tubeEnc =
             encoding
                 << color
-                    [ MName "id"
-                    , MmType Nominal
-                    , MLegend [ LTitle "", LOrient BottomRight, LOffset 0 ]
-                    , MScale tubeLineColors
+                    [ mName "id"
+                    , mMType Nominal
+                    , mLegend [ leTitle "", leOrient BottomRight, leOffset 0 ]
+                    , mScale tubeLineColors
                     ]
 
         routeSpec =
             asSpec
-                [ dataFromUrl (path "londonTubeLines.json") [ TopojsonFeature "line" ]
-                , mark Geoshape [ MFilled False, MStrokeWidth 2 ]
+                [ dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+                , geoshape [ maFilled False, maStrokeWidth 2 ]
                 , tubeEnc []
                 ]
     in
     toVegaLite
         [ width 700
         , height 500
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ polySpec, labelSpec, routeSpec ]
         ]
 ```

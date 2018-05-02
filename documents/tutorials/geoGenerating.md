@@ -13,7 +13,7 @@ import VegaLite exposing (..)
 
 _This is one of a series of 'geo' tutorials for use with litvis._
 
-1.  [Geospatial File Formats](geoFormats.md)
+1.  [geospatial File Formats](geoFormats.md)
 2.  **Generating Global Map Projection Geo Files**
 3.  [Importing geographic datasets into elm-vega](geoImporting.md)
 
@@ -66,22 +66,22 @@ graticule =
     let
         graticuleSpec =
             asSpec
-                [ projection [ PType Equirectangular ]
-                , dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
-                , mark Geoshape [ MStroke "black", MStrokeWidth 0.1 ]
+                [ projection [ prType Equirectangular ]
+                , dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
+                , geoshape [ maStroke "black", maStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
-                [ projection [ PType Equirectangular ]
-                , dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
-                , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                [ projection [ prType Equirectangular ]
+                , dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
+                , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
     in
     toVegaLite
         [ width 500
         , height 250
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, countrySpec ]
         ]
 ```
@@ -101,22 +101,22 @@ graticule =
     let
         graticuleSpec =
             asSpec
-                [ projection [ PType Equirectangular ]
-                , dataFromUrl (path "graticule30.json") [ TopojsonMesh "graticule" ]
-                , mark Geoshape [ MStroke "black", MStrokeWidth 0.1 ]
+                [ projection [ prType Equirectangular ]
+                , dataFromUrl (path "graticule30.json") [ topojsonMesh "graticule" ]
+                , geoshape [ maStroke "black", maStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
-                [ projection [ PType Equirectangular ]
-                , dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
-                , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                [ projection [ prType Equirectangular ]
+                , dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
+                , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
     in
     toVegaLite
         [ width 500
         , height 250
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, countrySpec ]
         ]
 ```
@@ -155,52 +155,52 @@ paris projName proj =
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
-                       , mark Geoshape [ MStroke "black", MFilled False, MStrokeWidth 0.1 ]
+                    ++ [ dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
+                       , geoshape [ maStroke "black", maFilled False, maStrokeWidth 0.1 ]
                        ]
                 )
 
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
-                       , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                    ++ [ dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
+                       , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                        ]
                 )
 
         circleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "paris.json") [ TopojsonFeature "parisCircle" ]
-                       , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.3 ]
+                    ++ [ dataFromUrl (path "paris.json") [ topojsonFeature "parisCircle" ]
+                       , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.3 ]
                        ]
                 )
     in
     toVegaLite
         [ title (projName ++ " projection")
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, countrySpec, circleSpec ]
         ]
 ```
 
 </details>
 
-^^^elm v=(paris "Equirectangular" (projection [ PType Equirectangular ]))^^^
+^^^elm v=(paris "Equirectangular" (projection [ prType Equirectangular ]))^^^
 
 Note how the small circle is no longer circular when projected onto a plane.
 We can see the distortion effect by viewing the same circle with different map projections
 
-^^^elm v=(paris "Albers" (projection [ PType Albers ]))^^^
-^^^elm v=(paris "Conic equal area" (projection [ PType ConicEqualArea ]))^^^
+^^^elm v=(paris "Albers" (projection [ prType Albers ]))^^^
+^^^elm v=(paris "Conic equal area" (projection [ prType ConicEqualArea ]))^^^
 
-^^^elm v=(paris "Orthographic" (projection [ PType Orthographic, PRotate 0 -30 0 ]))^^^
-^^^elm v=(paris "Azimuthal equal area" (projection [ PType AzimuthalEqualArea ]))^^^
+^^^elm v=(paris "Orthographic" (projection [ prType Orthographic, prRotate 0 -30 0 ]))^^^
+^^^elm v=(paris "Azimuthal equal area" (projection [ prType AzimuthalEqualArea ]))^^^
 
-^^^elm v=(paris "Stereographic" (projection [ PType Stereographic ]))^^^
-^^^elm v=(paris "Gnomonic" (projection [ PType Gnomonic, PClipAngle (Just 70) ]))^^^
+^^^elm v=(paris "Stereographic" (projection [ prType Stereographic ]))^^^
+^^^elm v=(paris "Gnomonic" (projection [ prType Gnomonic, prClipAngle (Just 70) ]))^^^
 
-^^^elm v=(paris "Mercator" (projection [ PType Mercator ]))^^^
-^^^elm v=(paris "Transverse Mercator" (projection [ PType TransverseMercator ]))^^^
+^^^elm v=(paris "Mercator" (projection [ prType Mercator ]))^^^
+^^^elm v=(paris "Transverse Mercator" (projection [ prType TransverseMercator ]))^^^
 
 ## 3. Generate a Tissot's Indicatrix file.
 
@@ -246,7 +246,7 @@ tissot gStep =
         circles lng =
             List.map (\i -> circle lng i 2.5) (range -80 80 20)
     in
-    GeoPolygons <| List.map (\lng -> circles lng) (range -180 160 30)
+    geoPolygons <| List.map (\lng -> circles lng) (range -180 160 30)
 ```
 
 </details>
@@ -256,33 +256,33 @@ tissotMap : Spec
 tissotMap =
     let
         proj =
-            projection [ PType Equirectangular ]
+            projection [ prType Equirectangular ]
 
         graticuleSpec =
             asSpec
-                [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
+                [ dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
                 , proj
-                , mark Geoshape [ MStroke "black", MStrokeWidth 0.2 ]
+                , geoshape [ maStroke "black", maStrokeWidth 0.2 ]
                 ]
 
         tissotSpec =
             asSpec
                 [ dataFromJson (geometry (tissot 30) []) []
                 , proj
-                , mark Geoshape [ MStroke "#00a2f3", MStrokeWidth 0.5, MFill "#00a2f3", MFillOpacity 0.1 ]
+                , geoshape [ maStroke "#00a2f3", maStrokeWidth 0.5, maFill "#00a2f3", maFillOpacity 0.1 ]
                 ]
 
         countrySpec =
             asSpec
-                [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
+                [ dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
                 , proj
-                , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
     in
     toVegaLite
         [ width 500
         , height 250
-        , configure (configuration (View [ Stroke Nothing ]) [])
+        , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, tissotSpec, countrySpec ]
         ]
 ```

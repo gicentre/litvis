@@ -3,6 +3,7 @@ id: "litvis"
 elm:
     dependencies:
         gicentre/elm-vega: latest
+
 ---
 
 @import "css/tutorial.less"
@@ -29,13 +30,13 @@ This tutorial considers the [geoJson](http://geojson.org) and [topoJson](https:/
 
 Let's first consider how we might represent a broadly rectangular region with simple (x,y) coordinates.
 
-```elm {l v}
+```elm {l}
 myRegion : List DataColumn -> Data
 myRegion =
     dataFromColumns []
-        << dataColumn "order" (Numbers [ 1, 2, 3, 4, 5 ])
-        << dataColumn "easting" (Numbers [ -3, 4, 4, -3, -3 ])
-        << dataColumn "northing" (Numbers [ 52, 52, 45, 45, 52 ])
+        << dataColumn "order" (nums [ 1, 2, 3, 4, 5 ])
+        << dataColumn "easting" (nums [ -3, 4, 4, -3, -3 ])
+        << dataColumn "northing" (nums [ 52, 52, 45, 45, 52 ])
 ```
 
 Note that we need to provide an `order` field to define the order in which the coordinates representing each point of the boundary are to be linked with a line mark.
@@ -49,11 +50,11 @@ planar =
     let
         enc =
             encoding
-                << position X [ PName "easting", PmType Quantitative, PScale [ SZero False ] ]
-                << position Y [ PName "northing", PmType Quantitative, PScale [ SZero False ] ]
-                << order [ OName "order", OmType Ordinal ]
+                << position X [ pName "easting", pMType Quantitative, pScale [ scZero False ] ]
+                << position Y [ pName "northing", pMType Quantitative, pScale [ scZero False ] ]
+                << order [ oName "order", oMType Ordinal ]
     in
-    toVegaLite [ myRegion [], enc [], mark Line [] ]
+    toVegaLite [ myRegion [], enc [], line [] ]
 ```
 
 But if those `easting` and `northing` values represent longitude and latitude, have we produced a sufficiently accurate two-dimensional visual representation of what is a three-dimensional portion of the earth's surface?
@@ -65,15 +66,15 @@ geo : Spec
 geo =
     let
         proj =
-            projection [ PType Orthographic ]
+            projection [ prType Orthographic ]
 
         enc =
             encoding
-                << position Longitude [ PName "easting", PmType Quantitative ]
-                << position Latitude [ PName "northing", PmType Quantitative ]
-                << order [ OName "order", OmType Ordinal ]
+                << position Longitude [ pName "easting", pMType Quantitative ]
+                << position Latitude [ pName "northing", pMType Quantitative ]
+                << order [ oName "order", oMType Ordinal ]
     in
-    toVegaLite [ width 250, height 250, myRegion [], proj, enc [], mark Line [] ]
+    toVegaLite [ width 250, height 250, myRegion [], proj, enc [], line [] ]
 ```
 
 The `Orthographic` map projection used above gives a more accurate indication of the east-west distances of region's corners, here demonstrating the northern boundary is shorter than the southern one.
@@ -84,34 +85,34 @@ globe : Spec
 globe =
     let
         pDetails =
-            [ width 250, height 250, projection [ PType Orthographic, PRotate 0 -15 0 ] ]
+            [ width 250, height 250, projection [ prType Orthographic, prRotate 0 -15 0 ] ]
 
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "graticule.json") [ TopojsonMesh "graticule" ]
-                       , mark Geoshape [ MStroke "black", MFilled False, MStrokeWidth 0.1 ]
+                    ++ [ dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
+                       , geoshape [ maStroke "black", maFilled False, maStrokeWidth 0.1 ]
                        ]
                 )
 
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "world-110m.json") [ TopojsonFeature "countries1" ]
-                       , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                    ++ [ dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
+                       , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                        ]
                 )
 
         circleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "topoJson1.json") [ TopojsonMesh "myRegion" ]
-                       , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.3 ]
+                    ++ [ dataFromUrl (path "topoJson1.json") [ topojsonMesh "myRegion" ]
+                       , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.3 ]
                        ]
                 )
     in
     toVegaLite
-        [ configure (configuration (View [ Stroke Nothing ]) [])
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, countrySpec, circleSpec ]
         ]
 ```
@@ -159,20 +160,20 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "geoJson1.json") []
-        , projection [ PType Orthographic ]
-        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
+        , projection [ prType Orthographic ]
+        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
 
 Notice that not only is the `Geoshape` a more concise specification than the region boundary as a `Line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
 
-As we shall see, larger geo data are more efficiently stored not as geoJson, but [TopoJson](https://github.com/topojson/topojson/wiki) files.
+As we shall see, larger geo data are more efficiently stored not as geoJson, but [topoJson](https://github.com/topojson/topojson/wiki) files.
 These store the same geometric information as their geoJson counterparts but addtionally represent the _topology_ of the features.
 Here is the equivalent topoJson file representing the geoJson above:
 
 ```Javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegion": {
       "type": "Polygon",
@@ -188,9 +189,9 @@ Here is the equivalent topoJson file representing the geoJson above:
 Similarly, we can display this file directly in elm-vega as a `Geoshape`.
 Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`).
 Objects themselves can be treated either as _meshes_ or _features_.
-A `TopojsonMesh` treats the entire object as a single entity and is quicker to render.
-On the other hand a `TopojsonFeature` allows individual features within the object to be handled separately.
-In this simple example, we can store the object as a `TopojsonMesh`:
+A `topojsonMesh` treats the entire object as a single entity and is quicker to render.
+On the other hand a `topojsonFeature` allows individual features within the object to be handled separately.
+In this simple example, we can store the object as a `topojsonMesh`:
 
 ```elm {s l}
 geo : Spec
@@ -198,9 +199,9 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson1.json") [ TopojsonMesh "myRegion" ]
-        , projection [ PType Orthographic ]
-        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
+        , dataFromUrl (path "topoJson1.json") [ topojsonMesh "myRegion" ]
+        , projection [ prType Orthographic ]
+        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
 
@@ -213,9 +214,9 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson2.json") [ TopojsonFeature "myRegions" ]
-        , projection [ PType Orthographic ]
-        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
+        , dataFromUrl (path "topoJson2.json") [ topojsonFeature "myRegions" ]
+        , projection [ prType Orthographic ]
+        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
 
@@ -256,7 +257,7 @@ If more than one feature shares a common arc, it is only stored once:
 
 ```javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegions": {
       "type": "GeometryCollection",
@@ -291,7 +292,7 @@ Keeping with our simple two-region example, let's attach a text `id` with each o
 
 ```Javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegions": {
       "type": "GeometryCollection",
@@ -322,22 +323,22 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson3.json") [ TopojsonFeature "myRegions" ]
-        , projection [ PType Orthographic ]
-        , encoding (color [ MName "id", MmType Nominal ] [])
-        , mark Geoshape []
+        , dataFromUrl (path "topoJson3.json") [ topojsonFeature "myRegions" ]
+        , projection [ prType Orthographic ]
+        , encoding (color [ mName "id", mMType Nominal ] [])
+        , geoshape []
         ]
 ```
 
 ## 4. Feature Properties
 
 The `id` is a useful and concise way of identifying a single property in a topoJson file, but onle one `id` is permitted for each feature.
-TopoJson and GeoJson files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
+topoJson and GeoJson files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
 Here is an example of our two-region topoJson file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
 
 ```Javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegions": {
       "type": "GeometryCollection",
@@ -376,10 +377,10 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson4.json") [ TopojsonFeature "myRegions" ]
-        , projection [ PType Orthographic ]
-        , encoding (color [ MName "properties.myPopulationCount", MmType Quantitative ] [])
-        , mark Geoshape []
+        , dataFromUrl (path "topoJson4.json") [ topojsonFeature "myRegions" ]
+        , projection [ prType Orthographic ]
+        , encoding (color [ mName "properties.myPopulationCount", mMType Quantitative ] [])
+        , geoshape []
         ]
 ```
 
@@ -421,7 +422,7 @@ Its equivalent topoJson file looks like this:
 
 ```Javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegions": {
       "type": "GeometryCollection",
@@ -453,10 +454,10 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson5.json") [ TopojsonFeature "myRegions" ]
-        , projection [ PType Orthographic ]
-        , encoding (color [ MName "properties.myRegionName", MmType Nominal ] [])
-        , mark Geoshape []
+        , dataFromUrl (path "topoJson5.json") [ topojsonFeature "myRegions" ]
+        , projection [ prType Orthographic ]
+        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , geoshape []
         ]
 ```
 
@@ -498,7 +499,7 @@ The topojson equivalent is much as we have seen before, but now incorporating th
 
 ```Javascript
 {
-  "type": "Topology",
+  "type": "topology",
   "objects": {
     "myRegions": {
       "type": "GeometryCollection",
@@ -530,10 +531,10 @@ geo =
     toVegaLite
         [ width 200
         , height 200
-        , dataFromUrl (path "topoJson6.json") [ TopojsonFeature "myRegions" ]
-        , projection [ PType Orthographic ]
-        , encoding (color [ MName "properties.myRegionName", MmType Nominal ] [])
-        , mark Geoshape []
+        , dataFromUrl (path "topoJson6.json") [ topojsonFeature "myRegions" ]
+        , projection [ prType Orthographic ]
+        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , geoshape []
         ]
 ```
 
@@ -549,14 +550,14 @@ geo : Spec
 geo =
     let
         geojson =
-            geometry (GeoPolygon [ [ ( -3, 59 ), ( 4, 59 ), ( 4, 52 ), ( -3, 52 ), ( -3, 59 ) ] ]) []
+            geometry (geoPolygon [ [ ( -3, 59 ), ( 4, 59 ), ( 4, 52 ), ( -3, 52 ), ( -3, 59 ) ] ]) []
     in
     toVegaLite
         [ width 200
         , height 200
         , dataFromJson geojson []
-        , projection [ PType Orthographic ]
-        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
+        , projection [ prType Orthographic ]
+        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
 
@@ -568,9 +569,9 @@ geo =
     let
         geojson =
             geoFeatureCollection
-                [ geometry (GeoPoint 5 55) []
+                [ geometry (geoPoint 5 55) []
                 , geometry
-                    (GeoPolygons
+                    (geoPolygons
                         [ [ [ ( -3, 52 ), ( 4, 52 ), ( 4, 45 ), ( -3, 45 ), ( -3, 52 ) ]
                           , [ ( -3, 59 ), ( 4, 59 ), ( 4, 52 ), ( -3, 52 ), ( -3, 59 ) ]
                           ]
@@ -584,8 +585,8 @@ geo =
         [ width 200
         , height 200
         , dataFromJson geojson []
-        , projection [ PType Orthographic ]
-        , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.5 ]
+        , projection [ prType Orthographic ]
+        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
 
@@ -598,17 +599,17 @@ geo =
     let
         geojson =
             geoFeatureCollection
-                [ geometry (GeoPolygon [ [ ( -3, 52 ), ( 4, 52 ), ( 4, 45 ), ( -3, 45 ), ( -3, 52 ) ] ]) [ ( "myRegionName", Str "Southern region" ) ]
-                , geometry (GeoPolygon [ [ ( -3, 59 ), ( 4, 59 ), ( 4, 52 ), ( -3, 52 ), ( -3, 59 ) ] ]) [ ( "myRegionName", Str "Northern region" ) ]
+                [ geometry (geoPolygon [ [ ( -3, 52 ), ( 4, 52 ), ( 4, 45 ), ( -3, 45 ), ( -3, 52 ) ] ]) [ ( "myRegionName", str "Southern region" ) ]
+                , geometry (geoPolygon [ [ ( -3, 59 ), ( 4, 59 ), ( 4, 52 ), ( -3, 52 ), ( -3, 59 ) ] ]) [ ( "myRegionName", str "Northern region" ) ]
                 ]
     in
     toVegaLite
         [ width 200
         , height 200
-        , dataFromJson geojson [ JSON "features" ]
-        , projection [ PType Orthographic ]
-        , encoding (color [ MName "properties.myRegionName", MmType Nominal ] [])
-        , mark Geoshape []
+        , dataFromJson geojson [ jsonProperty "features" ]
+        , projection [ prType Orthographic ]
+        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , geoshape []
         ]
 ```
 
@@ -636,19 +637,19 @@ graticule gStep =
         parallel lat =
             List.map (\lng -> ( lng, lat )) (range -180 180 (min 10 gStep))
     in
-    GeoLines (List.map parallel (range (gStep - 90) (90 - gStep) gStep) ++ List.map meridian (range -180 180 gStep))
+    geoLines (List.map parallel (range (gStep - 90) (90 - gStep) gStep) ++ List.map meridian (range -180 180 gStep))
 ```
 
 ```elm {s l v}
 geo : Spec
 geo =
     toVegaLite
-        [ configure (configuration (View [ Stroke Nothing ]) [])
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
         , width 200
         , height 200
         , dataFromJson (geometry (graticule 10) []) []
-        , projection [ PType Orthographic, PRotate 5 -30 0 ]
-        , mark Geoshape [ MStrokeWidth 0.2, MFilled False ]
+        , projection [ prType Orthographic, prRotate 5 -30 0 ]
+        , geoshape [ maStrokeWidth 0.2, maFilled False ]
         ]
 ```
 
@@ -686,7 +687,7 @@ tissot gStep =
         circles lng =
             List.map (\i -> circle lng i 5) (range -80 80 20)
     in
-    GeoPolygons <| List.map (\lng -> circles lng) (range -180 160 30)
+    geoPolygons <| List.map (\lng -> circles lng) (range -180 160 30)
 ```
 
 ```elm {s l v}
@@ -694,24 +695,24 @@ geo : Spec
 geo =
     let
         proj =
-            projection [ PType Orthographic, PRotate 45 -30 0 ]
+            projection [ prType Orthographic, prRotate 45 -30 0 ]
 
         specGraticule =
             asSpec
                 [ dataFromJson (geometry (graticule 10) []) []
                 , proj
-                , mark Geoshape [ MStrokeWidth 0.2, MFilled False ]
+                , geoshape [ maStrokeWidth 0.2, maFilled False ]
                 ]
 
         specTissot =
             asSpec
                 [ dataFromJson (geometry (tissot 30) []) []
                 , proj
-                , mark Geoshape [ MStroke "#00a2f3", MStrokeWidth 0.5, MFill "#00a2f3", MFillOpacity 0.1 ]
+                , geoshape [ maStroke "#00a2f3", maStrokeWidth 0.5, maFill "#00a2f3", maFillOpacity 0.1 ]
                 ]
     in
     toVegaLite
-        [ configure (configuration (View [ Stroke Nothing ]) [])
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
         , width 400
         , height 400
         , layer [ specGraticule, specTissot ]
