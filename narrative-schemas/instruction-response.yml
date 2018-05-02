@@ -11,15 +11,15 @@ labels:
       htmlTemplate: '<div class="response">{{ children }}</div>'
 
 rules:
-  - description: "a non-paired instruction must contain a title attribute"
-    selector:
-      label: instruction
-      kind: single
-    attributeValues:
-        title:
-          minimumTrimmedLength: 1
-  - description: "a paired instruction must not contain any attributes"
-    selector:
-      label: instruction
-      kind: paired
-    allowedAttributes: []
+  # - description: "a non-paired instruction must contain a title attribute"
+  #   selector:
+  #     label: instruction
+  #     kind: single
+  #   attributeValues:
+  #       title:
+  #         minimumTrimmedTextLength: 1
+  # - description: "a paired instruction must not contain any attributes"
+  #   selector:
+  #     label: instruction
+  #     kind: paired
+  #   allowedAttributes: []

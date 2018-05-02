@@ -54,132 +54,132 @@ rules:
       label: binProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: binProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: binProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'rethink binaries' design output questions.
     selector:
       label: binOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: binOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: binOutput
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'embrace pluralism' design process questions.
     selector:
       label: pluProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: pluProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: pluProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'embrace pluralism' design output questions.
     selector:
       label: pluOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: pluOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: pluOutput
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'examine power' design process questions.
     selector:
       label: powProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: powProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: powProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'examine power' design output questions.
     selector:
       label: powOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: powOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: powOutput
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'consider context' design process questions.
     selector:
       label: conProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: conProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: conProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'consider context' design output questions.
     selector:
       label: conOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: conOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: conOutput
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'legitimise embodiment and affect' design process questions.
     selector:
       label: affProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: affProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: affProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'legitimise embodiment and affect' design output questions.
     selector:
       label: affOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: affOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: affOutput
+    children:
+      minimumTrimmedTextLength: 1
 
   - description: D'Ignazio and Klein's 'make labour visible' design process questions.
     selector:
       label: labProcess
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: labProcess
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: labProcess
+    children:
+      minimumTrimmedTextLength: 1
       
   - description: D'Ignazio and Klein's 'make labour visible' design output questions.
     selector:
       label: labOutput
     minimumOccurrences: 1
 
-  # - description: answer to process questions cannot be blank
-  #   selector:
-  #     label: labOutput
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: answer to process questions cannot be blank
+    selector:
+      label: labOutput
+    children:
+      minimumTrimmedTextLength: 1
 
 
 styling:

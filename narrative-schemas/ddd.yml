@@ -8,12 +8,11 @@ rules:
     selector:
       label: userQuestion
     minimumOccurrences: 1
-
-  # - description: user question cannot be blank
-  #   selector:
-  #     label: userQuestion
-  #   children:
-  #     minimumTrimmedLength: 1
+  - description: user question cannot be blank
+    selector:
+      label: userQuestion
+    children:
+      minimumTrimmedTextLength: 1
 
 styling:
   css: |

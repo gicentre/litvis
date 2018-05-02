@@ -3,14 +3,12 @@ labels:
     paired:
       htmlTemplate: <div class="question">{{children}}</div>
 
-
-# rules:
-#   - description: Question content cannot be blank
-#     selector:
-#       label: question
-#     children:
-#       minimumTrimmedTextLength: 1
-
+rules:
+  - description: Question content cannot be blank
+    selector:
+      label: question
+    children:
+      minimumTrimmedTextLength: 1
 
 styling:
    css: |
