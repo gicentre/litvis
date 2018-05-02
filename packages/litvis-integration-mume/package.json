@@ -1,6 +1,6 @@
 {
   "name": "litvis-integration-mume",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Enables litvis functionality in mume and markdown-preview-enhanced",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
