@@ -3,7 +3,6 @@ id: "litvis"
 elm:
     dependencies:
         gicentre/elm-vega: latest
-
 ---
 
 @import "css/tutorial.less"
@@ -119,12 +118,12 @@ globe =
 
 We have established that there can be good reason to represent geographic regions with spherical coordinates.
 But how do we represent boundaries more complex than simple squares?
-This is where the `geoJson` and `topoJson` file formats are useful.
+This is where the 'geoJSON' and 'topoJSON' file formats are useful.
 
 ## 2. Simple Geometry Files
 
 Let's first consider the [geoJson](http://geojson.org) file format which is commonly used for representing geo data.
-The simple rectangle above can be represented by the following geoJson file:
+The simple rectangle above can be represented by the following geoJSON file:
 
 ```Javascript
 {
@@ -139,10 +138,10 @@ The simple rectangle above can be represented by the following geoJson file:
 ```
 
 Again, we see the 5 coordinate pairs representing the points along the region's boundary including a duplicated first and last point to close the region.
-GeoJson files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
+GeoJSON files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
 But for the moment let's just stick with the simple polygon.
 
-To display the file, simply load it as any normal data file and encode it with the `Geoshape` mark.
+To display the file, simply load it as any normal data file and encode it with the `geoshape` function.
 
 To keep things flexible, we'll define a `path` function in Elm pointing to the base directory where all data are stored.
 You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
@@ -165,11 +164,11 @@ geo =
         ]
 ```
 
-Notice that not only is the `Geoshape` a more concise specification than the region boundary as a `Line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
+Notice that not only is the `geoshape` a more concise specification than the region boundary as a `line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
 
-As we shall see, larger geo data are more efficiently stored not as geoJson, but [topoJson](https://github.com/topojson/topojson/wiki) files.
-These store the same geometric information as their geoJson counterparts but addtionally represent the _topology_ of the features.
-Here is the equivalent topoJson file representing the geoJson above:
+As we shall see, larger geo data are more efficiently stored not as geoJSON, but [topoJson](https://github.com/topojson/topojson/wiki) files.
+These store the same geometric information as their geoJSON counterparts but addtionally represent the _topology_ of the features.
+Here is the equivalent topoJSON file representing the geoJSON above:
 
 ```Javascript
 {
@@ -186,7 +185,7 @@ Here is the equivalent topoJson file representing the geoJson above:
 }
 ```
 
-Similarly, we can display this file directly in elm-vega as a `Geoshape`.
+Similarly, we can display this file directly in elm-vega with `geoshape`.
 Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`).
 Objects themselves can be treated either as _meshes_ or _features_.
 A `topojsonMesh` treats the entire object as a single entity and is quicker to render.
@@ -205,7 +204,7 @@ geo =
         ]
 ```
 
-But why do we use a topoJson file rather than what looks like a simpler `geoJson` file?
+But why do we use a topoJSON file rather than what looks like a simpler geoJSON file?
 The answer is clearer if we consider a file representing two adjacent regions:
 
 ```elm {s v l=hidden}
@@ -220,7 +219,7 @@ geo =
         ]
 ```
 
-Here is its geoJson representation:
+Here is its geoJSON representation:
 
 ```Javascript
 {
@@ -252,7 +251,7 @@ Both are nested within an outer `features` array which in this case contains two
 Notice how the common edge between these two adjacent regions is duplicated (the boundary between (-3,52) and (4,52)).
 In this case that duplication isn't a big problem, but imagine that boundary was a complex meandering line with many hundreds of coordinate pairs.
 
-The topoJson format instead stores all boundaries as distinct _arcs_ that are then resassembled to form area boundaries.
+The topoJSON format instead stores all boundaries as distinct _arcs_ that are then resassembled to form area boundaries.
 If more than one feature shares a common arc, it is only stored once:
 
 ```javascript
@@ -332,9 +331,9 @@ geo =
 
 ## 4. Feature Properties
 
-The `id` is a useful and concise way of identifying a single property in a topoJson file, but onle one `id` is permitted for each feature.
-topoJson and GeoJson files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
-Here is an example of our two-region topoJson file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
+The `id` is a useful and concise way of identifying a single property in a topoJSON file, but onle one `id` is permitted for each feature.
+topoJSON and GeoJSON files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
+Here is an example of our two-region topoJSON file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
 
 ```Javascript
 {
@@ -387,7 +386,7 @@ geo =
 ## 5. Complex Geometry
 
 So far the features we have considered have been 'simple polygons', i.e. each polygon is defined by a single ring of coordinates.
-Features can be more complex than this though, for example, a single feature might be made up of a collection of simple polygons in a geoJson file:
+Features can be more complex than this though, for example, a single feature might be made up of a collection of simple polygons in a geoJSON file:
 
 ```Javascript
 {
@@ -418,7 +417,7 @@ Features can be more complex than this though, for example, a single feature mig
 ```
 
 Notice that the coordinates array for the northern region now contains two elements, each of which is a ring of 5 coordinate pairs.
-Its equivalent topoJson file looks like this:
+Its equivalent topoJSON file looks like this:
 
 ```Javascript
 {
@@ -462,7 +461,7 @@ geo =
 ```
 
 Finally, it is possible to have 'holes' within polygons and even 'islands' within those holes in cases where one polygon ring is within another.
-Here is the geoJson that defines two further rings within the southern region.
+Here is the geoJSON that defines two further rings within the southern region.
 Note that in order to specify a hole, the order of coordinates is anti-clockwise whereas the outer ring and inner island, bounding 'positive' areas are in clockwise order.
 
 ```Javascript
@@ -538,12 +537,13 @@ geo =
         ]
 ```
 
-## 6. Creating Json files programatically
+## 6. Creating JSON files programatically
 
-In all the examples above the topoJson and geoJson has been read from external files.
+In all the examples above the topoJSON and geoJSON has been read from external files.
 This is likely the most common use-case, but sometimes it can be useful to generate the content programmtically.
 This can be achieved using elm-vega's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
-Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
+Here, for example, is a simple rectangular feature (equivalent to `geoJson
+1.json` above) generated programmatically:
 
 ```elm {s l}
 geo : Spec
