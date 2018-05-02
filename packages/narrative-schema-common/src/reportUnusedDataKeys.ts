@@ -13,6 +13,7 @@ const reportUnusedDataKeys = (
   dataWithPosition: DataWithPosition,
   usedData: any,
   path: Array<string | number>,
+  context?: string,
 ) => {
   const kindOfDataWithPosition = getKind(dataWithPosition);
   const kindOfUsedData = kindOf(usedData);
@@ -46,9 +47,9 @@ const reportUnusedDataKeys = (
 
   if (kindOfUsedData === "undefined") {
     narrativeSchema.info(
-      `Finding ${stringifyDataPath(
-        path,
-      )} was unexpected and the value was ignored. Please check narrative schema docs and ensure there are no typos.`,
+      `Finding ${stringifyDataPath(path)} ${
+        context ? `in ${context} ` : ""
+      }was unexpected and the value was ignored. Please check narrative schema docs and ensure there are no typos.`,
       getPosition(dataWithPosition),
     );
   }

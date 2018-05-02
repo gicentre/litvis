@@ -6,6 +6,7 @@ export { default as extractDefinitions } from "./extractDefinitions";
 export {
   default as getCompiledHandlebarsTemplate,
 } from "./getCompiledHandlebarsTemplate";
+export { default as isValidLabelName } from "./isValidLabelName";
 export { default as renderHtmlTemplate } from "./renderHtmlTemplate";
 export {
   default as resolveAliasesAndKeyByName,

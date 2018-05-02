@@ -16,6 +16,7 @@ import {
   NarrativeSchema,
 } from "narrative-schema-common";
 import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
+import isValidLabelName from "./isValidLabelname";
 
 export default (
   dataWithPosition: DataWithPosition,
@@ -156,6 +157,3 @@ const extractDataFromLabel = (
   }
   return labelData;
 };
-
-const isValidLabelName = (name: string): boolean =>
-  !!name.match(/^[a-zA-Z][a-zA-Z0-9_]*$/);

@@ -5,7 +5,6 @@ import { NarrativeSchemaData } from "./types";
 
 import { DataWithPosition, getKind, getPosition } from "data-with-position";
 import reportUnusedDataKeys from "./reportUnusedDataKeys";
-import stringifyDataPath from "./stringifyDataPath";
 import { EntityDefinition, NarrativeSchema } from "./types";
 
 export default (
@@ -37,14 +36,12 @@ export default (
 
   const result: EntityDefinition[] = [];
   for (let i = 0; i < listOfEntitiesWithPosition.length; i += 1) {
-    const entityDataPath = [entityName, i];
+    const entityDataPath = [dataKeyForEntityArray, i];
     const entityDataWithPosition = listOfEntitiesWithPosition[i];
     const kindOfEntityData = getKind(entityDataWithPosition);
     if (kindOfEntityData !== "object") {
       narrativeSchema.message(
-        `Expected ${stringifyDataPath(
-          entityDataPath,
-        )} to be an object, got ${kindOfEntityData}`,
+        `Expected ${entityName} to be an object, got ${kindOfEntityData}`,
         getPosition(entityDataWithPosition),
         `narrative-schema:${entityName}`,
       );
@@ -60,13 +57,12 @@ export default (
       narrativeSchema,
       entityDataWithPosition,
       shapeOfExpectedData,
-      entityDataPath,
+      [],
+      entityName,
     );
     if (!entityData) {
       narrativeSchema.info(
-        `Skipping ${stringifyDataPath(
-          entityDataPath,
-        )} due to declaration issues`,
+        `Skipping ${entityName} ${i + 1} due to declaration issues`,
         getPosition(entityDataWithPosition),
         `narrative-schema:${entityName}`,
       );

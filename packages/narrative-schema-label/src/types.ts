@@ -5,6 +5,11 @@ export enum LabelType {
   INVALID = "invalid",
 }
 
+export enum LabelKind {
+  SINGLE = "single",
+  INVALID = "paired",
+}
+
 export enum LabelFence {
   START = "{(",
   END = ")}",

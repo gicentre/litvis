@@ -73,14 +73,18 @@ export default async function enhance(
         );
         return;
       }
-      const htmlTemplate = labelDefinition.data.single.htmlTemplate;
-      const html = renderHtmlTemplate(
-        htmlTemplate,
-        labelName,
-        labelType,
-        info.attributes,
-      );
-      $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
+      try {
+        const html = renderHtmlTemplate(
+          labelDefinition.data.single.htmlTemplate,
+          labelName,
+          labelType,
+          info.attributes,
+        );
+        $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
+      } catch (e) {
+        markLabelAsErroneous($el, e.message);
+        return;
+      }
     } else {
       if (!labelDefinition.data.paired) {
         markLabelAsErroneous(
@@ -89,14 +93,18 @@ export default async function enhance(
         );
         return;
       }
-      const htmlTemplate = labelDefinition.data.paired.htmlTemplate;
-      const html = renderHtmlTemplate(
-        htmlTemplate,
-        labelName,
-        labelType,
-        info.attributes,
-      );
-      $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
+      try {
+        const html = renderHtmlTemplate(
+          labelDefinition.data.paired.htmlTemplate,
+          labelName,
+          labelType,
+          info.attributes,
+        );
+        $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
+      } catch (e) {
+        markLabelAsErroneous($el, e.message);
+        return;
+      }
     }
   });
 }

@@ -1,5 +1,6 @@
 import { BlockAttributes } from "block-attributes";
 import { load } from "cheerio";
+// import { Position } from "data-with-position";
 import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
 import { LabelType } from "./types";
 
@@ -10,20 +11,29 @@ export default (
   labelName: string,
   labelType: LabelType,
   labelAttributes: BlockAttributes,
+  // labelPosition: Position,
 ) => {
   const rawRenderedTemplate = getCompiledHandlebarsTemplate(htmlTemplate)({
     ...labelAttributes,
     children: FAKE_CHILDREN_CONTENTS,
   });
   const $ = load(rawRenderedTemplate);
-  $("*").attr("data-role", "narrativeSchemaLabelChild");
+  $("*").attr("ns-role", "label-child");
   $(":root")
-    .attr("data-role", "narrativeSchemaLabel")
-    .attr("data-narrativeSchemaLabelName", labelName)
+    .attr("ns-role", "label")
+    .attr("ns-label-name", labelName)
+    // .attr("ns-position-start-line", labelPosition.start.line)
+    // .attr("ns-position-start-column", labelPosition.start.column)
+    // .attr("ns-position-end-column", labelPosition.end.column)
+    // .attr("ns-position-end-line", labelPosition.end.line)
     .attr(
-      "data-narrativeSchemaLabelAttributes",
-      JSON.stringify(labelAttributes),
+      "ns-label-kind",
+      labelType === LabelType.SINGLE ? "single" : "paired",
     );
+  // .attr(
+  //   "data-narrativeSchemaLabelAttributes",
+  //   JSON.stringify(labelAttributes),
+  // );
   const rawHtml = $.html();
 
   const positionOfFakeChildren = rawHtml.indexOf(FAKE_CHILDREN_CONTENTS);
