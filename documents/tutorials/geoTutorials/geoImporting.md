@@ -5,7 +5,7 @@ elm:
         gicentre/elm-vega: latest
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 ```elm {l=hidden}
 import VegaLite exposing (..)

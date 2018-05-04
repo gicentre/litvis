@@ -5,7 +5,7 @@ elm:
         gicentre/elm-vega: latest
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 1.  **Introduction**
 2.  [Single View Specifications](elmVegaWalkthrough2.md)

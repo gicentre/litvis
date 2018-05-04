@@ -1,13 +1,13 @@
 ---
 id: "litvis"
 narrative-schemas:
-  - schemas/tutorial
+  - ../schemas/tutorial
 elm:
   dependencies:
     gicentre/elm-vega: latest
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 _Litvis tutorials: Introducing Elm_
 

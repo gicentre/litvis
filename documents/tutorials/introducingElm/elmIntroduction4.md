@@ -1,10 +1,10 @@
 ---
 id: "litvis"
 narrative-schemas:
-    - schemas/tutorial
+    - ../schemas/tutorial
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 _Litvis tutorials: Introducing Elm_
 

@@ -5,7 +5,7 @@ elm:
         gicentre/elm-vega: latest
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 ```elm {l=hidden}
 import VegaLite exposing (..)
@@ -542,8 +542,7 @@ geo =
 In all the examples above the topoJSON and geoJSON has been read from external files.
 This is likely the most common use-case, but sometimes it can be useful to generate the content programmtically.
 This can be achieved using elm-vega's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
-Here, for example, is a simple rectangular feature (equivalent to `geoJson
-1.json` above) generated programmatically:
+Here, for example, is a simple rectangular feature (equivalent to `geoJson 1.json` above) generated programmatically:
 
 ```elm {s l}
 geo : Spec

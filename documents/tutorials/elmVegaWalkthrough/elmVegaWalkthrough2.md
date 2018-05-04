@@ -3,7 +3,7 @@ follows: 'elmVegaWalkthrough1'
 id : litvis
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 1.  [Introduction](elmVegaWalkthrough1.md)
 2.  **Single View Specifications**

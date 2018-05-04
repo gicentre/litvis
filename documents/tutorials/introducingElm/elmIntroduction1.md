@@ -2,7 +2,7 @@
 id: "litvis"
 ---
 
-@import "css/tutorial.less"
+@import "../css/tutorial.less"
 
 1.  **Introduction**
 2.  [Functions, functions, functions](elmIntroduction2.md)
