@@ -1,17 +1,30 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto+Condensed:300|Fjalla+One");
+
 #litvis {
-  @body-font: 'Crimson';
+  @body-font: 'Roboto Condensed';
   @code-font: 'Iosevka';
-  @font-size--small: 11px;
+  @header-font: 'Fjalla One';
+  @font-size--small: 10px;
+
   font-family: @body-font, sans-serif;
 
-  code, pre {
+  code,
+  pre {
     font-family: @code-font;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: @header-font, serif;
   }
 
   @media print {
     font-size: @font-size--small;
     padding: 8em;
-
   }
 
   .question {
@@ -30,5 +43,4 @@
     padding-bottom: 1em;
     border-radius: 0 0 8px 8px;
   }
-
 }

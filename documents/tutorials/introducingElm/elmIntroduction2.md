@@ -15,7 +15,7 @@ id: "litvis"
 ## Functions, functions, functions
 
 Elm code is organised into _functions_ that evaluate expressions to produce some value.
-Those functions may have some input in the form or _parameters_ and they will always return some output.
+Those functions may have some input in the form of _parameters_ and they will always return some output.
 Functions never change existing values and their returned value is always the only thing they return. In other words functions in Elm never have any _side effects_.
 Almost everything in an Elm program will be a function.
 Elm doesn't use 'variables' common in many other languages.
@@ -138,7 +138,7 @@ Note also that Elm has a special operator for integer division (e.g. `6 // 2`) t
 In the function `sumIsOdd` we have used brackets to force `add n1 n2` to be evaluated before its value is supplied as an argument to `isOdd`.
 This is necessary because without brackets, the expression `isOdd add n1 n2` would be treated as a call to `isOdd` providing 3 arguments `add`, `n1` and `n2`.
 
-An alternative to using brackets is to force the order of evaluation with the pipe operators `<|` and `|>`, where the part of the expression at the thick end of the arrow is evaluated before the part at the thin end.
+An alternative to using brackets is to force the order of evaluation with the pipe operators `<|` and `|>`, where the part of the expression at the wide end of the triangle is evaluated before the part at the pointy end.
 For example, the following is exactly equivalent to `sumIsOdd`:
 
 ```elm {l}
@@ -170,7 +170,7 @@ partyTrick =
     always3 146470
 ```
 
-The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing on the 'wrong' order when read left to right, and is therefore more difficult to read:
+The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing in the 'wrong' order when read left to right, and is therefore more difficult to read:
 
 ```elm {l raw siding}
 always3 : Int -> Int

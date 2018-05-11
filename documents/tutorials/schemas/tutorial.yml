@@ -16,4 +16,6 @@ styling:
       border: 1px solid #ccc;
       border-radius: 8px;
       background: #f3f3f3;
+      padding: 8px;
+      padding-bottom:0;
     }
