@@ -21,9 +21,9 @@ _α_ represents some transform in data and _ω_ some transform in visualization.
 
 In a good visualization design we would expect:
 
-*   a _correspondence_ between α and ω: as data varies in some way we would expect to see a corresponding variation in the visualization sufficient to infer how the data varies.
-*   that if α is the identity transform (i.e. no change in data), two different data representations should yield identical visualizations (therefore ω is also an identity transform).
-*   that if ω is the identity transform (i.e. two similar looking visualizations), this should only arise when α is also an identity transform (i.e. two similar data sources).
+- a _correspondence_ between α and ω: as data varies in some way we would expect to see a corresponding variation in the visualization sufficient to infer how the data varies.
+- that if α is the identity transform (i.e. no change in data), two different data representations should yield identical visualizations (therefore ω is also an identity transform).
+- that if ω is the identity transform (i.e. two similar looking visualizations), this should only arise when α is also an identity transform (i.e. two similar data sources).
 
 This can be summarised by saying that the paths from the D in the top left corner to the V in the bottom right should be equivalent either by traversing right then down _(r1 >> v >> ω)_ or down then right _(α >> r2 >> v )_.
 That is, the diagram is _commutative_.
@@ -57,7 +57,7 @@ Varying the order in which data rows are plotted shows noticable differences, es
 Therefore failing this principle introduces _hallucinators_.
 This is due to considerable overlap of the proportional circles.
 
-*   [ ] passed?
+- [ ] passed?
 
 {| invarianceAssessment)}
 
@@ -76,7 +76,7 @@ Systematic shifts that don't cross the 50% boundary are also detectable, althoug
 See for example size of blue circles in Scotland or red circles in Midlands/Northern England.
 Therefore, no evidence for _confusers_ in design.
 
-*   [x] passed?
+- [x] passed?
 
 {| unambiguityAssessment )}
 
@@ -103,7 +103,7 @@ Because of the problems with _hallicinators_ combined with ordering from largest
 Overall there is no evidence of any _jumblers_.
 While not tested directly, there is no evidence to point towards _misleaders_ other than the re-ordering of two overlapping discs with similar majorities (size) but on opposite sides of leave-remain.
 
-*   [x] passed?
+- [x] passed?
 
 {| correspondenceAssessment )}
 

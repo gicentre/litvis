@@ -17,11 +17,11 @@ id : litvis
 Interaction is enabled by creating _selections_ that may be combined with the kinds of specifications already described.
 Selections involve three components:
 
-*   **Events** are those actions that trigger the interaction such as clicking at a location on screen or pressing a key.
+- **Events** are those actions that trigger the interaction such as clicking at a location on screen or pressing a key.
 
-*   **Points of interest** are the elements of the visualization with which the interaction occurs, for example, a set of points selected on a scatterplot.
+- **Points of interest** are the elements of the visualization with which the interaction occurs, for example, a set of points selected on a scatterplot.
 
-*   **Predicates** (i.e. Boolean functions) identify whether or not something is included in the selection. These need not be limited to only those parts of the visualization directly selected through interaction (see _selection projection_ below).
+- **Predicates** (i.e. Boolean functions) identify whether or not something is included in the selection. These need not be limited to only those parts of the visualization directly selected through interaction (see _selection projection_ below).
 
 By way of an example consider this colored scatterplot where any point can be selected and all non-selected points are turned grey (_click on a point to select it_):
 

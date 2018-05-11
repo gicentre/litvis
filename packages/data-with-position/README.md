@@ -57,19 +57,19 @@ import { fromYaml, getKind, getPosition } from "data-with-position";
 const dataWithPosition = fromYaml("...");
 
 if (getKind(dataWithPosition) === "array") {
-    for (let i = 0; i < dataWithPosition.length; i += 1) {
-        console.log(getPosition(dataWithPosition[i]));
-    }
-    // or
-    for (const element of dataWithPosition) {
-        console.log(getPosition(element));
-    }
+  for (let i = 0; i < dataWithPosition.length; i += 1) {
+    console.log(getPosition(dataWithPosition[i]));
+  }
+  // or
+  for (const element of dataWithPosition) {
+    console.log(getPosition(element));
+  }
 }
 
 if (getKind(dataWithPosition) === "object") {
-    for (const key in dataWithPosition) {
-        console.log(getPosition(dataWithPosition[key]));
-    }
+  for (const key in dataWithPosition) {
+    console.log(getPosition(dataWithPosition[key]));
+  }
 }
 ```
 
@@ -80,6 +80,6 @@ import * as kindOf from "kind-of";
 import { getKind, getValue } from "data-with-position";
 
 kindOf(getValue(dataWithPosition.element)) ===
-    getKind(dataWithPosition.element);
+  getKind(dataWithPosition.element);
 // always true, even when element is undefined
 ```

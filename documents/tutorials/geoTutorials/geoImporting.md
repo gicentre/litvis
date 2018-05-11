@@ -24,12 +24,12 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 This tutorial leads you through the workflow for importing arbitrary spatial datasets into elm-vega, and therefore into litvis documents.
 Assuming the dataset you wish to import is a shapefile, the process involves the following steps:
 
-*   Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
-*   Convert the shapefile into a [geoJson](http://geojson.org) file.
-*   Identify the attribute field you wish to store and associate it with an id.
-*   Convert from geoJson to [topoJson](https://github.com/topojson/topojson).
-*   Simplify geometry to reduce file size
-*   render file with elm-vega
+- Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
+- Convert the shapefile into a [geoJson](http://geojson.org) file.
+- Identify the attribute field you wish to store and associate it with an id.
+- Convert from geoJson to [topoJson](https://github.com/topojson/topojson).
+- Simplify geometry to reduce file size
+- render file with elm-vega
 
 _For related tutorials, see Mike Bostock's series [Command-Line Cartography](https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c) and Ændrew Rininsland's [Creating topoJSON using D3 v4](https://medium.com/@aendrew/creating-topojson-using-d3-v4-10838d1a9538) and for a thorough more London-centric example, Max Harlow's [Working with geographic data](https://github.com/maxharlow/tutorials/tree/master/working-with-geographical-data) tutorial._
 
@@ -356,10 +356,10 @@ topoJson files are not limited to areal units.
 Here, for example, we can import a file containing the geographical routes of selected London Underground tube lines.
 The conversion of the [tfl_lines.json](https://github.com/oobrien/vis/tree/master/tube/data) follows a similar pattern to the conversion of the borough boundary files, but with some minor differences:
 
-*   The file is already in unprojected `geoJson` format so does not need reprojecting or conversion from a shapefile.
-*   `ndjson-cat` converts the original geoJson file to a single line necessary for further processing.
-*   the file contains details of more rail lines than we need to map so `ndjson.filter` is used with a regular expression to select data for tube and DLR lines only.
-*   the property we will use for the id (the tube line name) is inside the first element of an array so we reference it with `[0]` (where there is more than one element in the array it indicates more than one named tube line shares the same physical line).
+- The file is already in unprojected `geoJson` format so does not need reprojecting or conversion from a shapefile.
+- `ndjson-cat` converts the original geoJson file to a single line necessary for further processing.
+- the file contains details of more rail lines than we need to map so `ndjson.filter` is used with a regular expression to select data for tube and DLR lines only.
+- the property we will use for the id (the tube line name) is inside the first element of an array so we reference it with `[0]` (where there is more than one element in the array it indicates more than one named tube line shares the same physical line).
 
 ```bash
 ndjson-cat < tfl_lines.json \

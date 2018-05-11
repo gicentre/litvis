@@ -4,9 +4,9 @@ _Litvis_ as a framework for interpreting markdown documents can have multiple im
 A reference implementation of litvis has been developed using [TypeScript](https://www.typescriptlang.org/), a typed superset of JavaScript.
 Most of this open-source software can be found in https://github.com/gicentre/litvis → `packages` directory and the remaining bits are located in these repositories:
 
-*   [gicentre/mume-with-litvis](https://github.com/gicentre/mume-with-litvis)
-*   [gicentre/markdown-preview-enhanced-with-litvis](https://github.com/gicentre/markdown-preview-enhanced-with-litvis)
-*   [gicentre/vscode-markdown-preview-enhanced-with-litvis](https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis)
+- [gicentre/mume-with-litvis](https://github.com/gicentre/mume-with-litvis)
+- [gicentre/markdown-preview-enhanced-with-litvis](https://github.com/gicentre/markdown-preview-enhanced-with-litvis)
+- [gicentre/vscode-markdown-preview-enhanced-with-litvis](https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis)
 
 The easiest way to try litvis is to install an Atom package available at
 

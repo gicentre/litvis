@@ -7,8 +7,8 @@
     "clean": "yarn clean:dist && rimraf packages/*/coverage packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
-    "format:check": "prettier-check --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
-    "format": "prettier --write --ignore-path .gitignore \"{docs/{,source/**},.,packages/**,test}/{*.js,*.ts,*.md}\"",
+    "format:check": "prettier-check --ignore-path .gitignore \"**/{*.js,*.ts,*.md}\"",
+    "format": "prettier --write --ignore-path .gitignore \"**/{*.js,*.ts,*.md}\"",
     "lint": "lerna run lint",
     "qa": "yarn lint && yarn format:check && yarn test",
     "release": "yarn build-and-qa && lerna publish",
@@ -18,14 +18,19 @@
     "use-prod-typings": "lerna exec \"sed -i '' 's|\\\"types\\\":.*|\\\"types\\\": \\\"dist/index.d.ts\\\",|' package.json\""
   },
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": ["**/@types/**"]
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@types/**"
+    ]
   },
   "dependencies": {},
   "devDependencies": {
     "lerna": "^2.10.2",
-    "prettier": "^1.12.1",
+    "prettier": "https://github.com/gicentre/prettier#1.13.0-beta.0",
     "prettier-check": "^2.0.0",
+    "prettier-plugin-elm": "^0.2.2",
     "rimraf": "^2.6.2"
   }
 }
