@@ -23,22 +23,22 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
     npm install --global prettier-plugin-elm
     ```
 
-    > A [custom build of Prettier](https://github.com/gicentre/prettier/tree/1.13.0-beta.0) will be replaced with the official one when [1.13.0 is released](https://github.com/prettier/prettier/issues/4444).
+    > The [custom build of Prettier](https://github.com/gicentre/prettier/tree/1.13.0-beta.0) above will be replaced with the official one when [1.13.0 is released](https://github.com/prettier/prettier/issues/4444).
 
 3.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 
 4.  From within the editor, install _litvis_ and _Prettier_ extensions:
 
-    1.  _In Atom:_ `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)  
+    *   _In Atom:_ `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
         _In VSCode:_ `View → Extensions`
 
-    2.  Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
+    *   Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
 
-    3.  Search for `prettier` and then click the `install` button next to the result with the highest number of downloads.
+    *   Search for `prettier` and then click the `install` button next to the result with the highest number of downloads.
 
     > **Atom users:** you may want to disable Atom’s standard markdown preview tool by going to `Preferences → Packages` (or `File → Settings → Packages`), searching for `markdown-preview` and clicking `disable`.
 
-    > **VSCode users:** Prettier extension does not work with a global instance of Prettier ([#232](https://github.com/prettier/prettier-vscode/issues/232), [#395](https://github.com/prettier/prettier-vscode/issues/395)). Until this is fixed, please consider installing `prettier` and `prettier-plugin-elm` in your project folder (i.e. without `--global` flag).
+    > **VSCode users:** The Prettier extension does not currently work with a global instance of Prettier ([#232](https://github.com/prettier/prettier-vscode/issues/232), [#395](https://github.com/prettier/prettier-vscode/issues/395)). Until this is fixed, please consider installing `prettier` and `prettier-plugin-elm` in your project folder (i.e. without `--global` flag in step 2 above).
 
 5.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
     There is a plan to merge litvis functionality into this extension, which should ease the setup.
