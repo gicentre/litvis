@@ -3,11 +3,11 @@
 A light-touch approach to designing, building and describing visualization.
 Here you will find
 
-*   [Explanations](documents) of the literate visualization process.
-*   [Tutorials](documents/tutorials) for working with litvs, Elm and elm-vega.
-*   [Examples](examples) of literate visualization.
-*   [Narrative Schemas](narrative-schemas) to help you write literate visualization documents.
-*   [Packages](packages) for developers working with litvis and NPM.
+- [Explanations](documents) of the literate visualization process.
+- [Tutorials](documents/tutorials) for working with litvs, Elm and elm-vega.
+- [Examples](examples) of literate visualization.
+- [Narrative Schemas](narrative-schemas) to help you write literate visualization documents.
+- [Packages](packages) for developers working with litvis and NPM.
 
 ## Installing litvis
 
@@ -29,12 +29,12 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
 4.  From within the editor, install _litvis_ and _Prettier_ extensions:
 
-    *   _In Atom:_ `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
-        _In VSCode:_ `View → Extensions`
+    - _In Atom:_ `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
+      _In VSCode:_ `View → Extensions`
 
-    *   Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
+    - Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
 
-    *   Search for `prettier` and then click the `install` button next to the result with the highest number of downloads.
+    - Search for `prettier` and then click the `install` button next to the result with the highest number of downloads.
 
     > **Atom users:** you may want to disable Atom’s standard markdown preview tool by going to `Preferences → Packages` (or `File → Settings → Packages`), searching for `markdown-preview` and clicking `disable`.
 

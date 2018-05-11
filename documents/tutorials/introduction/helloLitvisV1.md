@@ -7,6 +7,7 @@ elm:
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
+
 # Hello Litvis
 
 Top 5 programming languages according to the [TIOBE index](https://www.tiobe.com/tiobe-index).

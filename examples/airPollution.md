@@ -101,11 +101,11 @@ Why have you made these visual mark design choices?
 
 {( voiceB |}
 
-*   Roadside emission data are very peaky during the day, so it makes sense to overly the NOx levels for each 24 hour period to avoid having to spot patterns in rapidly oscillating signals.
-*   There are many hundreds of profiles, so need to be symbolised with thin semi-transparent lines that scale well when overlaid.
-*   Need to distinguish clearly between the 'Ride London' Sundays and all others while affording comparison, so using hue and line thickness to do this.
-*   Can summarise the complexity of the many hundreds of Sunday readings with an average making the 24 hour trend clearer.
-*   To reduce visual clutter, only show grid lines at 4 hour intervals. This helps also to anchor the day at midday.
+- Roadside emission data are very peaky during the day, so it makes sense to overly the NOx levels for each 24 hour period to avoid having to spot patterns in rapidly oscillating signals.
+- There are many hundreds of profiles, so need to be symbolised with thin semi-transparent lines that scale well when overlaid.
+- Need to distinguish clearly between the 'Ride London' Sundays and all others while affording comparison, so using hue and line thickness to do this.
+- Can summarise the complexity of the many hundreds of Sunday readings with an average making the 24 hour trend clearer.
+- To reduce visual clutter, only show grid lines at 4 hour intervals. This helps also to anchor the day at midday.
 
 ```elm {v siding}
 airPollution : Spec
@@ -175,11 +175,11 @@ airPollution =
 
 > _Litvis Note: The commentary here is more about goal setting than justification, but feels a natural way of 'thinking aloud' while designing. Do we want to support/encourge this?_
 
-*   Most of the variation is in the 0-300 μg m-3 range, but the less frequent peaks dominate the scaling.
-    Perhaps better to scale to the lower part of the range.
-*   Maximum EU NO2 limits are 200 μg m-3 in an hour and 40 μg m-3 average over the year.
-    Would be good to show these, and by implication, how far above the limits 'normal' Sundays are, helping to meet objective II.
-    It would be good to somehow anchor the chart to these legal limits in order to frame the data.
+- Most of the variation is in the 0-300 μg m-3 range, but the less frequent peaks dominate the scaling.
+  Perhaps better to scale to the lower part of the range.
+- Maximum EU NO2 limits are 200 μg m-3 in an hour and 40 μg m-3 average over the year.
+  Would be good to show these, and by implication, how far above the limits 'normal' Sundays are, helping to meet objective II.
+  It would be good to somehow anchor the chart to these legal limits in order to frame the data.
 
 ```elm {v siding}
 airPollution : Spec

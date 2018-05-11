@@ -27,60 +27,60 @@ The arguments that determine the behaviour of the block should be placed into `{
 
 `...attributes` are whitespace-separated tags or key-value pairs, e.g. `tag1 key1=value1 key2=[value21, value22] tag2`. The following syntactic rules apply:
 
-*   A tag is a synonym to `key=true` (e.g. adding `v=true` is the same as `v`).
+- A tag is a synonym to `key=true` (e.g. adding `v=true` is the same as `v`).
 
-*   No spacing is allowed around `=`.
+- No spacing is allowed around `=`.
 
-*   Square brackets indicate an array of values.
-    The values are separated by commas.
-    If commas, whitespace or semicolons are a part of a value, the should be escaped by backslash (e.g.`\,`).
+- Square brackets indicate an array of values.
+  The values are separated by commas.
+  If commas, whitespace or semicolons are a part of a value, the should be escaped by backslash (e.g.`\,`).
 
-*   It is allowed to surround the values with quotes (`"`, `'` and `` ` ``) in order for them to contain spaces and other control characters, e.g. `=`, `[ ]` or `( )`.
-    A quote can be also placed into a quoted value if it is a different symbol or if it is escaped with `\`, e.g. `key1="It's a different symbol" key2='It\'s escaped'`.
-    Quotes are useful in _schema label_ attributes, about which you will find below.
+- It is allowed to surround the values with quotes (`"`, `'` and `` ` ``) in order for them to contain spaces and other control characters, e.g. `=`, `[ ]` or `( )`.
+  A quote can be also placed into a quoted value if it is a different symbol or if it is escaped with `\`, e.g. `key1="It's a different symbol" key2='It\'s escaped'`.
+  Quotes are useful in _schema label_ attributes, about which you will find below.
 
-*   Values can be surrounded by round brackets.
-    This works similarly to quotes and allows for nesting round brackets, e.g. `z=(function (x, y))`.
-    However, unlike quotes, outer round brackets are not cropped during parsing and remain in the value.
-    Surrounding attribute values with brackets can be useful in triple hat references (see below).
+- Values can be surrounded by round brackets.
+  This works similarly to quotes and allows for nesting round brackets, e.g. `z=(function (x, y))`.
+  However, unlike quotes, outer round brackets are not cropped during parsing and remain in the value.
+  Surrounding attribute values with brackets can be useful in triple hat references (see below).
 
 Literate code blocks support the following attributes:
 
-*   `l` (or `literate`) is an indicator of a literate code block, which differentiates it from a standard code listing.
-    By default, any Elm declaration is accessible in other literate code blocks within the document.
-    If `l=hidden`, the code is still evaluated but its source is not displayed in the rendered output.
-    This is useful for setup code such as import statements and cases when the implementation is not central to the narrative.
+- `l` (or `literate`) is an indicator of a literate code block, which differentiates it from a standard code listing.
+  By default, any Elm declaration is accessible in other literate code blocks within the document.
+  If `l=hidden`, the code is still evaluated but its source is not displayed in the rendered output.
+  This is useful for setup code such as import statements and cases when the implementation is not central to the narrative.
 
--   `v` (or `visualize`) indicates that the code block is expected to render some output at this point in the document.
-    The format of this output is determined by the contents of a symbol or an expression to render.
-    At the moment only vega specs are supported (type `Spec` from `gicentre/elm-vega` package).
-    If no value is assigned to `v`, the last symbol defined in the code block is used.
+* `v` (or `visualize`) indicates that the code block is expected to render some output at this point in the document.
+  The format of this output is determined by the contents of a symbol or an expression to render.
+  At the moment only vega specs are supported (type `Spec` from `gicentre/elm-vega` package).
+  If no value is assigned to `v`, the last symbol defined in the code block is used.
 
-*   `r` (or `raw`) works similarly to `v` and indicates that the code block is expected to print raw values of listed expressions.
-    Elm’s `toString` function is used to generate the output.
-    This can be useful for debugging or exporting vega specs.
-    If no value is assigned to `r`, the last symbol defined in the code block is used.
+- `r` (or `raw`) works similarly to `v` and indicates that the code block is expected to print raw values of listed expressions.
+  Elm’s `toString` function is used to generate the output.
+  This can be useful for debugging or exporting vega specs.
+  If no value is assigned to `r`, the last symbol defined in the code block is used.
 
-*   `j` (or `json`) works just like `r`/`raw` except that the value gets parsed as JSON and formatted.
+- `j` (or `json`) works just like `r`/`raw` except that the value gets parsed as JSON and formatted.
 
-*   `context` is an attribute that enables code isolation within one document. Code blocks in different contexts work in parallel and do not share any imports or symbol declarations.
-    All blocks belong to an implicit `default` context if the attribute is not defined.
-    Contexts are evaluated independently, which reduces the spread of Elm compile errors.
-    When a problem does not allow the code to run or a `v`/`r`/`j` expression to evaluate, other independent contexts (if any) are not affected.
+- `context` is an attribute that enables code isolation within one document. Code blocks in different contexts work in parallel and do not share any imports or symbol declarations.
+  All blocks belong to an implicit `default` context if the attribute is not defined.
+  Contexts are evaluated independently, which reduces the spread of Elm compile errors.
+  When a problem does not allow the code to run or a `v`/`r`/`j` expression to evaluate, other independent contexts (if any) are not affected.
 
-*   `id` assigns an identifier to a code block so that it could be referenced in other code blocks (see `follows`).
+- `id` assigns an identifier to a code block so that it could be referenced in other code blocks (see `follows`).
 
-*   `follows` can be used in the first code block of a new context to branch off from an existing context.
-    This makes the definitions and imports _above_ the block shared between the two contexts.
-    The attribute may also refer to an `id` of a specific block when it is necessary to hand-pick a specific forking point.
+- `follows` can be used in the first code block of a new context to branch off from an existing context.
+  This makes the definitions and imports _above_ the block shared between the two contexts.
+  The attribute may also refer to an `id` of a specific block when it is necessary to hand-pick a specific forking point.
 
-*   `i` (or `isolated`) is a shorthand tag for assigning a random context name to a single block.
-    This attribute does not expect a value.
+- `i` (or `isolated`) is a shorthand tag for assigning a random context name to a single block.
+  This attribute does not expect a value.
 
-*   `s` (or `siding`) is a shorthand for `isolated follows=default`.
-    This attribute does not expect a value.
+- `s` (or `siding`) is a shorthand for `isolated follows=default`.
+  This attribute does not expect a value.
 
-*   `interactive` (or `interactive=true`) makes visualised specs interactive if _grammar of interaction_ is used within the specs.
+- `interactive` (or `interactive=true`) makes visualised specs interactive if _grammar of interaction_ is used within the specs.
 
 The order of `l`, `v`, `r` or `j` in attributes determines the order of rendering.
 
@@ -145,20 +145,20 @@ _Renders symbols from literate code blocks in any part of the markdown narrative
 Triple hat references allow for inline rendering or repeated calls to the same rendering within a document.
 They use the same attribute syntax as literate code blocks and recognise the following keys:
 
-*   `v` (or `visualize`) indicates what symbols and expressions to render.
-    In the most common scenario the value is a single Elm constant, e.g. `v=spec1`.
-    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+- `v` (or `visualize`) indicates what symbols and expressions to render.
+  In the most common scenario the value is a single Elm constant, e.g. `v=spec1`.
+  Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
 
-*   `r` (or `raw`) indicates what symbols and expressions to output without formatting.
-    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+- `r` (or `raw`) indicates what symbols and expressions to output without formatting.
+  Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
 
-*   `j` (or `json`) indicates what symbols and expressions to output as formatted JSONs.
-    Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
+- `j` (or `json`) indicates what symbols and expressions to output as formatted JSONs.
+  Unlike in code blocks this attribute cannot be used as a tag, i.e. without `=`.
 
-*   `context` is an optional attribute to specify which code block context to refer to.
-    `default` context is assumed if the attribute is not defined.
+- `context` is an optional attribute to specify which code block context to refer to.
+  `default` context is assumed if the attribute is not defined.
 
-*   `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
+- `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
 
 The order of `v`, `r` and `j` determines the order of the output.
 It is considered a good practice to avoid multiple output formats and specs in a triple hat reference as this helps control spacing in output.

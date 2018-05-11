@@ -56,18 +56,18 @@ The second, minor change, is to include an `mLegend` specification in the color 
 
 There are four ways in which multiple views may be combined:
 
-*   The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above).
-    elm-vega functions to create faceted views: `column`, `row`, `facet` and `specification`.
+- The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above).
+  elm-vega functions to create faceted views: `column`, `row`, `facet` and `specification`.
 
-*   The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot.
-    elm-vega functions to create a layered view: `layer` and `asSpec`.
+- The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot.
+  elm-vega functions to create a layered view: `layer` and `asSpec`.
 
-*   The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns.
-    This allows 'dashboards' to be built.
-    elm-vega functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
+- The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns.
+  This allows 'dashboards' to be built.
+  elm-vega functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
 
-*   The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view.
-    elm-vega functions for repeated views: `repeat` and `specification`.
+- The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view.
+  elm-vega functions for repeated views: `repeat` and `specification`.
 
 ## Composition Example: Precipitation in Seattle ([9:40](https://youtu.be/9uaHRWj04D4?t=9m40s))
 

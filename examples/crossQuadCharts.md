@@ -63,12 +63,12 @@ _a2,b1 association_
 
 {(limitations|}
 
-*   Does not adapt well to contingency tables of more than 2x2 states.
+- Does not adapt well to contingency tables of more than 2x2 states.
 
-*   Some 2d to 1d mental transformation is still required when comparing two items in a column or two items in a row.
-    There may be a temptation to judge these like bars in a bar chart rather than perform a mental squaring of length differences (e.g. '4' in the example above may be incorrectly interpreted as half the magnitude of '16').
+- Some 2d to 1d mental transformation is still required when comparing two items in a column or two items in a row.
+  There may be a temptation to judge these like bars in a bar chart rather than perform a mental squaring of length differences (e.g. '4' in the example above may be incorrectly interpreted as half the magnitude of '16').
 
-*   Data-ink ratio is quite low (only 4 numbers in each crossQuad chart)
+- Data-ink ratio is quite low (only 4 numbers in each crossQuad chart)
 
 {|limitations)}
 

@@ -15,7 +15,6 @@ import VegaLite exposing (..)
 2.  **Branching narratives**
 3.  [Narrative schemas](intro3.md)
 
-
 ---
 
 # Branching Narratives
