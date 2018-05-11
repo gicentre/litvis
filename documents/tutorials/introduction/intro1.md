@@ -26,7 +26,7 @@ We will look at each of these in turn.
 ## Providing a visualization specification
 
 Let's start with a simple litvis document that displays a bar chart.
-Create a new document called `helloLitvis.md` and copy the following into it.
+Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the following into it.
 
 ````
 ---
@@ -113,7 +113,7 @@ Try changing the values inside the curly braces of `elm {v}` in `helloLitvis.md`
 ## Working with multiple code blocks
 
 You can mix normal markdown text with fenced code blocks throughout a litvis document.
-For example, try adding the following text and code to the bottom of `helloLitvis.md`:
+For example, try adding the following text and code to the bottom of [`helloLitvis.md`](helloLitvisV2.md):
 
 ````
 Here are the same data but displayed as horizontal bars arranged in alphabetical order:
@@ -205,7 +205,7 @@ data =
 
 {|question )}
 
-Without changing any other part of the document, the results should be something similar to the following:
+Without changing any other part of the document, the results should be something similar to the [following](helloLitvisV4.md):
 
 ![helloLitvis](images/hello3.png)
 
