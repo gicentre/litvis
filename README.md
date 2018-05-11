@@ -16,7 +16,7 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 1.  If you don't have it already, install [node.js](https://nodejs.org/en).
 2.  Open a terminal window and install [Elm](elm) by typing
 
-    `npm install --global elm elm-format`
+    `npm install --global elm`
 
 3.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 4.  From within the editor, install the 'markdown-preview-enhanced-with-litvis' plug-in:
@@ -24,6 +24,8 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
     _In atom:_ `File->Settings->Install` and type `markdown-preview-enhanced-with-litvis` in the search box and then click the `install` button next to the returned result.
 
     _In VSCode:_ `View->Extensions` and type `markdown-preview-enhanced-with-litvis` in the search box and then click the `install` button next to the returned result.
+
+Once you have litvis installed, get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 
 ## ‘Hello world’ in literate Elm
 
