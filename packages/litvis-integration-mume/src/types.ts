@@ -7,3 +7,7 @@ export interface LitvisEnhancerCache {
   litvisCache: any;
   successfulRenders: Cache<string, string>;
 }
+
+export interface LitvisEnhancerCacheInitOptions {
+  mumeWorkingDirectory: string;
+}
