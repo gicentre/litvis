@@ -52,25 +52,14 @@ export default async (
   if (!lastDocument) {
     return;
   }
+
+  const literateElmJobs: Array<{
+    contextName: string;
+    codeNodes: CodeNode[];
+    expressionNodes: ExpressionNode[];
+  }> = [];
+
   try {
-    const literateElmEnvironment = await ensureEnvironment(
-      narrative.elmEnvironmentSpecForLastFile!,
-      cache.literateElmDirectory,
-    );
-
-    if (literateElmEnvironment.metadata.status !== EnvironmentStatus.READY) {
-      try {
-        lastDocument.fail(
-          literateElmEnvironment.metadata.errorMessage!,
-          undefined,
-          "litvis:elm-environment",
-        );
-      } catch (e) {
-        // no need for action - just preventing .fail() from throwing further
-      }
-      return;
-    }
-
     const wrappedCodeBlocksInAllDocuments: WrappedCodeBlock[] = [];
     const wrappedCodeBlocksInLastDocument: WrappedCodeBlock[] = [];
     _.forEach(narrative.documents, (document, documentIndex) => {
@@ -179,8 +168,6 @@ export default async (
       }
     });
 
-    const literateElmProgramPromises: Array<Promise<ProgramResult>> = [];
-    const ranContextNames: string[] = [];
     _.forEach(
       foundContextsByName,
       ({ wrappedCodeBlocks, wrappedOutputExpressions }, contextName) => {
@@ -202,16 +189,47 @@ export default async (
           }),
         );
 
-        ranContextNames.push(contextName);
-        literateElmProgramPromises.push(
-          runProgram({
-            environment: literateElmEnvironment,
-            codeNodes,
-            expressionNodes,
-          }),
-        );
+        literateElmJobs.push({
+          contextName,
+          codeNodes,
+          expressionNodes,
+        });
       },
     );
+
+    if (!literateElmJobs.length) {
+      return;
+    }
+
+    console.log("HERE");
+    const literateElmEnvironment = await ensureEnvironment(
+      narrative.elmEnvironmentSpecForLastFile!,
+      cache.literateElmDirectory,
+    );
+
+    if (literateElmEnvironment.metadata.status !== EnvironmentStatus.READY) {
+      try {
+        lastDocument.fail(
+          literateElmEnvironment.metadata.errorMessage!,
+          undefined,
+          "litvis:elm-environment",
+        );
+      } catch (e) {
+        // no need for action - just preventing .fail() from throwing further
+      }
+      return;
+    }
+
+    const literateElmProgramPromises: Array<
+      Promise<ProgramResult>
+    > = literateElmJobs.map(({ codeNodes, expressionNodes }) =>
+      runProgram({
+        environment: literateElmEnvironment,
+        codeNodes,
+        expressionNodes,
+      }),
+    );
+
     const literateElmProgramResults = await Promise.all(
       literateElmProgramPromises,
     );
@@ -253,8 +271,8 @@ export default async (
     });
 
     const processedContexts: ProcessedLitvisContext[] = _.map(
-      ranContextNames,
-      (contextName, index) => {
+      literateElmJobs,
+      ({ contextName }, index) => {
         const literateElmProgramResult = literateElmProgramResults[index];
         const context = foundContextsByName[contextName];
         if (literateElmProgramResult.status === ProgramResultStatus.FAILED) {
