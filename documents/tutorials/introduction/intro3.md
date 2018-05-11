@@ -17,7 +17,7 @@ import VegaLite exposing (..)
 
 ---
 
-# Branching Narratives
+# Narrative Schemas
 
 TODO
 
