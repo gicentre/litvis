@@ -118,6 +118,102 @@ Try changing the values inside the curly braces of `elm {v}` in `helloLitvis.md`
 
 {|question )}
 
+## Working with multiple code blocks
+
+You can mix normal markdown text with fenced code blocks throughout a litvis document.
+For example, try adding the following text and code to the bottom of `helloLitvis.md`:
+
+````
+Here are the same data but displayed as horizontal bars arranged in alphabetical order:
+
+```elm {v}
+helloLitvis2 : Spec
+helloLitvis2 =
+    let
+        data =
+            dataFromColumns []
+                << dataColumn "language" (strs [ "Java", "C", "C++", "Python", "C#" ])
+                << dataColumn "rating" (nums [ 15.8, 13.6, 7.2, 5.8, 5.3 ])
+
+        enc =
+            encoding
+                << position Y [ pName "language", pMType Nominal ]
+                << position X [ pName "rating", pMType Quantitative ]
+    in
+    toVegaLite [ data [], bar [], enc [] ]
+```
+````
+
+which should generate output like this:
+
+![helloLitvis](images/hello2.png)
+
+By continuing to add text and code samples that render visualizations we can build up literate visualization narratives that lead the reader through the design of a visualization as well as help you as the author of the visualization to organise your thoughts and experiement with design decisions.
+
+But notice that we have some repitition between the two code blocks that share a common data source, and that we have been forced to give the two versions of the function different names (`helloLitvis` and `helloLitvis2`) to avoid name clashes.
+
+By default, functions that are defined in fenced code blocks are visisble throughout the entire document (which is why we had to give both rendering functions different names).
+We can use this to clean things up a little by putting the common code inside its own function to be used by other functions:
+
+````
+```elm {l=hidden}
+data =
+    dataFromColumns []
+        << dataColumn "language" (strs [ "Java", "C", "C++", "Python", "C#" ])
+        << dataColumn "rating" (nums [ 15.8, 13.6, 7.2, 5.8, 5.3 ])
+```
+````
+
+Additionally, we can give our two visualization specification-generating functions the same name by making them _sidings_ – blocks of code that are not accessible to the other parts of the litvis document.
+This can be useful when you want to create 'one-off' functions that are not referenced elsewhere in your document:
+
+````
+Top 5 programming languages according to the [TIOBE index](https://www.tiobe.com/tiobe-index).
+
+```elm {v siding}
+helloLitvis : Spec
+helloLitvis =
+    let
+        enc =
+            encoding
+                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" Mean, Descending ] ]
+                << position Y [ pName "rating", pMType Quantitative ]
+    in
+    toVegaLite [ data [], bar [], enc [] ]
+```
+
+Here are the same data but displayed as horizontal bars arranged in alphabetical order:
+
+```elm {v siding}
+helloLitvis : Spec
+helloLitvis =
+    let
+        enc =
+            encoding
+                << position Y [ pName "language", pMType Nominal ]
+                << position X [ pName "rating", pMType Quantitative ]
+    in
+    toVegaLite [ data [], bar [], enc [] ]
+```
+````
+
+Not only are these blocks of code now shorter, we only have a single place where our data source is defined, so it becomes
+easier to change it and see the results cascade through the document.
+
+{(question |}
+
+Try changing the `data` function so that instead of defining the dataset inline, it loads the dataset from an external URL:
+
+````
+```elm {l=hidden}
+data =
+    dataFromUrl "XXX"
+
+```
+````
+
+{|question )}
+
 ---
 
 _Next >>_ [branching narratives](intro2.md)
