@@ -3,10 +3,27 @@
 A light-touch approach to designing, building and describing visualization.
 Here you will find
 
-*   [NPM packages](packages) for creating literate visualization.
 *   [Explanations](documents) of the literate visualization process.
+*   [Tutorials](documents/tutorials) for working with litvs, Elm and elm-vega.
 *   [Examples](examples) of literate visualization.
 *   [Narrative Schemas](narrative-schemas) to help you write literate visualization documents.
+*   [Packages](packages) for developers working with litvis and NPM.
+
+## Installing litvis
+
+Litvis documents can be viewed and created in either the Atom or VS Code editors:
+
+1.  If you don't have it already, install [node.js](https://nodejs.org/en).
+2.  Open a terminal window and install [Elm](elm) by typing
+
+    `npm install --global elm elm-format`
+
+3.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
+4.  From within the editor, install the 'markdown-preview-enhanced-with-litvis' plug-in:
+
+    _In atom:_ `File->Settings->Install` and type `markdown-preview-enhanced-with-litvis` in the search box and then click the `install` button next to the returned result.
+
+    _In VSCode:_ `View->Extensions` and type `markdown-preview-enhanced-with-litvis` in the search box and then click the `install` button next to the returned result.
 
 ## ‘Hello world’ in literate Elm
 
@@ -88,9 +105,7 @@ Each branch in a tree can represent alternative potentially competing designs ea
 
 ![branchingnarratives](https://user-images.githubusercontent.com/608862/38163350-84ecde10-34ea-11e8-900c-ec8f4ad46ef0.gif)
 
-> [examples/features/branching/root.md](examples/features/branching/root.md)  
-> [examples/features/branching/branchA.md](examples/features/branching/branchA.md)  
-> [examples/features/branching/branchB.md](examples/features/branching/branchB.md)
+> [examples/features/branching/root.md](examples/features/branching/root.md) > [examples/features/branching/branchA.md](examples/features/branching/branchA.md) > [examples/features/branching/branchB.md](examples/features/branching/branchB.md)
 
 ### Narrative schemas
 
@@ -102,8 +117,7 @@ Schemas can be used to validate litvis documents.
 
 ![narrativeschemas](https://user-images.githubusercontent.com/608862/38163859-d69bc4da-34f2-11e8-984d-786118f3100b.gif)
 
-> [examples/crossQuardChart.md](examples/crossQuardChart.md)  
-> [schemas/idiom.yml](schemas/idiom.yml)
+> [examples/crossQuardChart.md](examples/crossQuardChart.md) > [schemas/idiom.yml](schemas/idiom.yml)
 
 ## Linting
 
