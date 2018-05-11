@@ -1,9 +1,10 @@
 import * as path from "path";
 import * as tempDir from "temp-dir";
-import { Cache } from "./types";
+import { Cache, CacheOptions } from "./types";
 
-export function initCache(): Cache {
+export function initCache({ literateElmDirectory }: CacheOptions = {}): Cache {
   return {
-    literateElmDirectory: path.resolve(tempDir, "literate-elm"),
+    literateElmDirectory:
+      literateElmDirectory || path.resolve(tempDir, "literate-elm"),
   };
 }

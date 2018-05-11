@@ -109,6 +109,9 @@ export interface EvaluatedOutputExpression extends Text {
 }
 
 export interface Cache {
-  a?: string;
   literateElmDirectory: string;
+}
+
+export interface CacheOptions {
+  literateElmDirectory?: string;
 }
