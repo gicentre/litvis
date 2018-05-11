@@ -1,10 +1,6 @@
 ---
 id: "litvis"
 
-elm:
-  dependencies:
-    gicentre/elm-vega: latest
-
 narrative-schemas:
   - ../schemas/tutorial
 ---
@@ -202,17 +198,20 @@ easier to change it and see the results cascade through the document.
 
 {(question |}
 
-Try changing the `data` function so that instead of defining the dataset inline, it loads the dataset from an external URL:
+Try changing the `data` function so that instead of defining the dataset inline, it loads a larger dataset from an external URL:
 
 ````
 ```elm {l=hidden}
 data =
-    dataFromUrl "XXX"
-
+    dataFromUrl "https://gicentre.github.io/data/tiobeIndexMay2018.csv"
 ```
 ````
 
 {|question )}
+
+Without changing any other part of the document, the results should be something similar to the following:
+
+![helloLitvis](images/hello3.png)
 
 ---
 

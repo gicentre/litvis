@@ -18,4 +18,5 @@ styling:
       background: #f3f3f3;
       padding: 8px;
       padding-bottom:0;
+      margin-bottom: 1em;
     }
