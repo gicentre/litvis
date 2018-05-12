@@ -138,7 +138,7 @@ helloLitvis2 =
 
 which should generate output like this:
 
-![helloLitvis](images/hello2.png)
+![helloLitvis with two charts](images/hello2.png)
 
 By continuing to add text and code samples that render visualizations we can build up literate visualization narratives that lead the reader through the design of a visualization as well as help you as the author of the visualization to organise your thoughts and experiement with design decisions.
 
@@ -207,7 +207,7 @@ data =
 
 Without changing any other part of the document, the results should be something similar to the [following](helloLitvisV4.md):
 
-![helloLitvis](images/hello3.png)
+![full dataset output](images/hello3.png)
 
 ---
 

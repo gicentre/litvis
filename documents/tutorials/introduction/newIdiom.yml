@@ -1,0 +1,45 @@
+labels:
+  - name: aim
+    paired:
+      htmlTemplate: <div><h2>What is the aim of your visualization design?</h2><div>{{children}}</div></div>
+  - name: desc
+    paired:
+      htmlTemplate: <div><h2>Describe how your design works</h2><div>{{children}}</div></div>
+  - name: architypes
+    paired:
+      htmlTemplate: <div><h2>Provide some architypes showing how your design works with different patterns of data.</h2><div>{{children}}</div></div>
+  - name: limitations
+    paired:
+      htmlTemplate: <div><h2>What are the limitations of your design?</h2><div>{{children}}</div></div>
+
+rules:
+  - description: Narrative must contain one set of aims.
+    selector:
+      label: aim
+    minimumOccurrences: 1
+    maximumOccurrences: 1
+    
+  - description: Aims should be provided before the design is described.
+    selector:
+      label: aim
+    before:
+      selector:
+        label: desc
+
+  - description: Narrative must contain one description of the idiom.
+    selector:
+      label: desc
+    minimumOccurrences: 1
+    maximumOccurrences: 1
+  
+  - description: Narrative must always contain at least one set of limitations.
+    selector:
+      label: limitations
+    minimumOccurrences: 1
+        
+  - description: An idiom's description should be provided before listing its limtitations.
+    selector:
+      label: desc
+    before:
+      selector:
+        label: limitations

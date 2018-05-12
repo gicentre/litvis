@@ -1,0 +1,18 @@
+labels:
+  - name: todo
+    paired:
+      htmlTemplate: <div class="todo">{{children}}</div>
+
+rules:
+  - description: There should always be some content between 'todo' labels.
+    selector:
+      label: todo
+    children:
+      minimumTrimmedTextLength: 1
+
+styling:
+   css: |
+    .todo {
+      font-style: italic;
+      background: yellow;
+    }

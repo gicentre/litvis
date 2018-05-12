@@ -63,7 +63,7 @@ Copy the file [incomeLineCharts.md](incomeLineCharts.md) into the same folder as
 
 This should generate formatted output similar to the following where you can experiment with some line chart representations of the data:
 
-![helloLitvis](images/linecharts.png)
+![line chart output](images/linecharts.png)
 
 {(question |}
 If you are feeling confident with [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) you can try further experiments with line charts by editing `incomeLineCharts.md`
@@ -93,7 +93,7 @@ Copy the file [incomeScatterplot.md](incomeScatterplot.md) into the same folder 
 
 This should generate a page where we can explore connected scatterplot designs, a portion of which is shown below:
 
-![helloLitvis](images/scatterplots.png)
+![scatterplot output](images/scatterplots.png)
 
 Note in passing that the final scatterplot allows interactive zooming (try dragging and 'mousewheel zooming' over final scatterplot).
 To enable interaction with a visualization that specifies it (here with the line `selection << select "view" Interval [ BindScales ]`), simply add an `interaction` keyword at the start of the code block:
@@ -109,7 +109,7 @@ scatter = ...
 We can summarise the two parallel branches as a tree structure.
 Depending on which approach we think the better one we can continue exploring income inequality by adopting one or other of the designs and linking a new file with either `follows:incomeLineCharts` or `follows:incomeScatterplots` in the header.
 
-![helloLitvis](images/branching.png)
+![branching structure](images/branching.png)
 
 Alternatively we could continue to develop both branches to see if we can improve them futher.
 Or perhaps a completely different approach might occur to us, in which case we simply add a new parallel branch.
