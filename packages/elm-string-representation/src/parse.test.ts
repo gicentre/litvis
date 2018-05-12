@@ -96,6 +96,13 @@ export const testCases: Array<{
     },
   },
   {
+    input: ['{ = "test", b = 42 }', '{ b = 42, = "test" }'],
+    output: {
+      "": "test",
+      b: 42,
+    },
+  },
+  {
     input: [
       "{ x = {",
       '{ x = { field = "x", type = "quantitative", axis = null }, y = { field = "y", type =',
