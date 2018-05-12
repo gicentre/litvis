@@ -19,13 +19,19 @@ export default (text: string): any => {
   if (!text.length) {
     return null;
   }
-  let patchedInput = text;
-  if (text.charAt(0) === "{") {
-    patchedInput = patchedInput
-      .replace(/ = True/g, " = true")
-      .replace(/ = False/g, " = false")
-      .replace(/([$a-zA-Z_0-9]+)\s=\s/g, '"$1": ');
-  }
+
+  // Replacing using regexps is error-prone when searched
+  // strings are contained in values.
+  // The method should be rewritten as a tokenizer
+  // and a grammar parser to avoid this.
+  const patchedInput =
+    text.charAt(0) !== "{"
+      ? text
+      : text
+          .replace(/ = True/g, " = true")
+          .replace(/ = False/g, " = false")
+          .replace(/(,|{)(| ([$a-zA-Z_0-9]+)) = /g, '$1 "$3": ');
+
   try {
     return recursivelyConvertApplicableObjectsToArrays(
       JSON.parse(patchedInput),
