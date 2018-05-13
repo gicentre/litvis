@@ -2,6 +2,8 @@ import { ensureDir, readFile, remove, writeFile } from "fs-extra";
 import * as hash from "object-hash";
 import { resolve } from "path";
 import * as sleep from "sleep-promise";
+import { ensureUnlocked, unlock } from "./auxFiles";
+import { collectGarbageIfNeeded } from "./gc";
 import { initializeElmPackage, installElmPackage } from "./tools";
 import {
   Dependencies,
@@ -11,7 +13,7 @@ import {
   EnvironmentStatus,
 } from "./types";
 
-const VERSION = "0.0.1";
+const CACHE_SHAPE_VERSION = "v1";
 const TICK = 100;
 const DEFAULT_TIMEOUT = 30000;
 
@@ -21,9 +23,21 @@ export async function ensureEnvironment(
   timeout: number = DEFAULT_TIMEOUT,
 ): Promise<Environment> {
   const now = +new Date();
-  const workingSubdirectory = hash(spec);
-  const workingDirectory = resolve(literateElmDirectory, workingSubdirectory);
 
+  const currentCacheDirectory = resolve(
+    literateElmDirectory,
+    CACHE_SHAPE_VERSION,
+  );
+
+  try {
+    await ensureUnlocked(literateElmDirectory);
+  } catch (e) {
+    // resetting directory lock (garbage collector in another process could get stuck)
+    unlock(literateElmDirectory);
+  }
+  await collectGarbageIfNeeded(literateElmDirectory);
+
+  const workingDirectory = resolve(currentCacheDirectory, hash({ spec }));
   try {
     await ensureDir(workingDirectory);
   } catch (e) {
@@ -31,27 +45,31 @@ export async function ensureEnvironment(
       spec,
       workingDirectory,
       metadata: {
-        version: VERSION,
         status: EnvironmentStatus.ERROR,
         createdAt: now,
         usedAt: now,
-        errorMessage: `Could not create directory ${workingSubdirectory}`,
+        errorMessage: `Could not create directory ${workingDirectory}`,
       },
     };
   }
 
   // attempt to restore existing environment
   try {
+    await ensureUnlocked(workingDirectory);
     const timeToGiveUp = +new Date() + timeout;
     // the same elm environment can be initializing by another process,
     // so waiting till initialization is over or it's time to give up
     do {
       const existingMetadata = await readMetadata(workingDirectory);
-      if (existingMetadata.status === EnvironmentStatus.INITIALIZING) {
+      if (existingMetadata.status === EnvironmentStatus.CHANGING) {
         if (existingMetadata.createdAt + timeout < +new Date()) {
           throw new Error("Initialization is stuck, retrying...");
         }
       } else {
+        if (existingMetadata.expiresAt && existingMetadata.expiresAt < now) {
+          throw new Error("Need to reinitialize");
+        }
+
         const metadata = { ...existingMetadata };
         metadata.usedAt = now;
         if (!(metadata.usedAt - existingMetadata.usedAt < 1000)) {
@@ -72,8 +90,7 @@ export async function ensureEnvironment(
     // initialize new Elm project if Environment directory is empty
     // or there have been problems with existing metadata
     const metadata: EnvironmentMetadata = {
-      version: VERSION,
-      status: EnvironmentStatus.INITIALIZING,
+      status: EnvironmentStatus.CHANGING,
       createdAt: now,
       usedAt: now,
     };
