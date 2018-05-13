@@ -14,8 +14,8 @@
     "release": "yarn build-and-qa && lerna publish",
     "test": "lerna run test",
     "test:coverage": "lerna run test",
-    "use-dev-typings": "lerna exec \"sed -i '' 's|\\\"types\\\":.*|\\\"types\\\": \\\"src/index.ts\\\",|' package.json\"",
-    "use-prod-typings": "lerna exec \"sed -i '' 's|\\\"types\\\":.*|\\\"types\\\": \\\"dist/index.d.ts\\\",|' package.json\""
+    "use-dev-typings": "lerna exec \"sed -i.bak 's|\\\"types\\\":.*|\\\"types\\\": \\\"src/index.ts\\\",|' package.json && rm package.json.bak\"",
+    "use-prod-typings": "lerna exec \"sed -i.bak 's|\\\"types\\\":.*|\\\"types\\\": \\\"dist/index.d.ts\\\",|' package.json && rm package.json.bak\""
   },
   "workspaces": {
     "packages": [
