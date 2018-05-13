@@ -56,6 +56,8 @@ interface CachedProgramResult {
   debugLog?: string;
 }
 
+const PROGRAM_TIMEOUT = 20000;
+
 export async function runProgram(program: Program): Promise<ProgramResult> {
   const chunkifiedProgram = chunkifyProgram(program);
   const programBasePath = resolve(
@@ -67,7 +69,7 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
 
   let cachedResult: CachedProgramResult;
   try {
-    await auxFiles.ensureUnlocked(programBasePath);
+    await auxFiles.ensureUnlocked(programBasePath, PROGRAM_TIMEOUT);
     cachedResult = require(programResultPath) as CachedProgramResult;
   } catch (e) {
     await auxFiles.lock(programBasePath);

@@ -330,6 +330,10 @@ export default async (
     );
     narrative.contexts = processedContexts;
   } catch (e) {
-    lastDocument.fail(e.message);
+    try {
+      lastDocument.fail(e.message);
+    } catch (e) {
+      // no need for action - just preventing .fail() from throwing further
+    }
   }
 };

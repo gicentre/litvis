@@ -27,6 +27,7 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
   if (await isLocked(literateElmDirectory)) {
     return;
   }
+  await fs.ensureDir(literateElmDirectory);
   await lock(literateElmDirectory);
   const programRelatedPaths = await globby("*/*/*/Program*.*", {
     cwd: literateElmDirectory,
