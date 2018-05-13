@@ -2,7 +2,7 @@ import { ensureDir, readFile, remove, writeFile } from "fs-extra";
 import * as hash from "object-hash";
 import { resolve } from "path";
 import * as sleep from "sleep-promise";
-import { ensureUnlocked, unlock } from "./auxFiles";
+import { ensureUnlocked, lock, unlock } from "./auxFiles";
 import { collectGarbageIfNeeded } from "./gc";
 import { initializeElmPackage, installElmPackage } from "./tools";
 import {
@@ -54,80 +54,98 @@ export async function ensureEnvironment(
   }
 
   // attempt to restore existing environment
+  let metadata: EnvironmentMetadata;
   try {
-    await ensureUnlocked(workingDirectory);
-    const timeToGiveUp = +new Date() + timeout;
-    // the same elm environment can be initializing by another process,
-    // so waiting till initialization is over or it's time to give up
-    do {
-      const existingMetadata = await readMetadata(workingDirectory);
-      if (existingMetadata.status === EnvironmentStatus.CHANGING) {
-        if (existingMetadata.createdAt + timeout < +new Date()) {
-          throw new Error("Initialization is stuck, retrying...");
-        }
-      } else {
-        if (existingMetadata.expiresAt && existingMetadata.expiresAt < now) {
-          throw new Error("Need to reinitialize");
-        }
-
-        const metadata = { ...existingMetadata };
-        metadata.usedAt = now;
-        if (!(metadata.usedAt - existingMetadata.usedAt < 1000)) {
-          await writeMetadata(workingDirectory, metadata);
-        }
-        return {
-          metadata: existingMetadata,
-          spec,
-          workingDirectory,
-        };
-      }
-      await sleep(TICK);
-    } while (+new Date() < timeToGiveUp);
-    throw new Error(
-      "Something unexpected happened while reading existing metadata",
-    );
+    await ensureUnlocked(workingDirectory, timeout);
+    metadata = require(resolvePathToMetadata(workingDirectory));
   } catch (e) {
-    // initialize new Elm project if Environment directory is empty
-    // or there have been problems with existing metadata
-    const metadata: EnvironmentMetadata = {
-      status: EnvironmentStatus.CHANGING,
-      createdAt: now,
-      usedAt: now,
-    };
+    await lock(workingDirectory);
+
+    // clean-up working directory; do not delete non-elm files
+    // to avoid user data deletion
+    await Promise.all([
+      remove(resolvePathToMetadata(workingDirectory)),
+      remove(resolve(workingDirectory, "elm-stuff")),
+      remove(resolve(workingDirectory, "elm-package.json")),
+    ]);
     try {
-      // clean-up working directory; do not delete non-elm files
-      // to avoid user data deletion
-      await Promise.all([
-        writeMetadata(workingDirectory, metadata),
-        remove(resolve(workingDirectory, "elm-stuff")),
-        remove(resolve(workingDirectory, "elm-package.json")),
-      ]);
       await initializeElmProject(
         workingDirectory,
         spec.dependencies,
         spec.sourceDirectories,
       );
-
-      metadata.status = EnvironmentStatus.READY;
-      await writeMetadata(workingDirectory, metadata);
+      // metadata =
     } catch (e) {
-      // mark environment with an error if it cannot be initialized
-      metadata.status = EnvironmentStatus.ERROR;
-      metadata.errorMessage = e.message || e;
-      try {
-        await writeMetadata(workingDirectory, metadata);
-      } catch (e2) {
-        // not being able to save metadata error is not fatal
-      }
+      //
     }
+    await writeMetadata(workingDirectory, metadata);
 
-    return {
-      metadata,
-      spec,
-      workingDirectory,
-    };
+    await unlock(workingDirectory);
   }
+  return {
+    metadata,
+    spec,
+    workingDirectory,
+  };
+  // const timeToGiveUp = +new Date() + timeout;
+  // // the same elm environment can be initializing by another process,
+  // // so waiting till initialization is over or it's time to give up
+  // do {
+  //   const existingMetadata = await readMetadata(workingDirectory);
+  //   if (existingMetadata.status === EnvironmentStatus.CHANGING) {
+  //     if (existingMetadata.createdAt + timeout < +new Date()) {
+  //       throw new Error("Initialization is stuck, retrying...");
+  //     }
+  //   } else {
+  //     if (existingMetadata.expiresAt && existingMetadata.expiresAt < now) {
+  //       throw new Error("Need to reinitialize");
+  //     }
+
+  //     const metadata = { ...existingMetadata };
+  //     metadata.usedAt = now;
+  //     if (!(metadata.usedAt - existingMetadata.usedAt < 1000)) {
+  //       await writeMetadata(workingDirectory, metadata);
+  //     }
+  //     return {
+  //       metadata: existingMetadata,
+  //       spec,
+  //       workingDirectory,
+  //     };
+  //   }
+  //   await sleep(TICK);
+  // } while (+new Date() < timeToGiveUp);
+  // throw new Error(
+  //   "Something unexpected happened while reading existing metadata",
+  // );
+  // } catch (e) {
+  // initialize new Elm project if Environment directory is empty
+  // or there have been problems with existing metadata
+  const metadata: EnvironmentMetadata = {
+    status: EnvironmentStatus.CHANGING,
+    createdAt: now,
+    usedAt: now,
+  };
+  try {
+    metadata.status = EnvironmentStatus.READY;
+    await writeMetadata(workingDirectory, metadata);
+  } catch (e) {
+    // mark environment with an error if it cannot be initialized
+    metadata.status = EnvironmentStatus.ERROR;
+    metadata.errorMessage = e.message || e;
+    try {
+      await writeMetadata(workingDirectory, metadata);
+    } catch (e2) {
+      // not being able to save metadata error is not fatal
+    }
+  }
+
+  return {
+    metadata,
+    spec,
+    workingDirectory,
+  };
 }
+// }
 
 async function initializeElmProject(
   directory,
@@ -159,6 +177,7 @@ async function initializeElmProject(
 function resolvePathToMetadata(workingDirectory: string) {
   return resolve(workingDirectory, "literate-elm-metadata.json");
 }
+
 async function readMetadata(workingDirectory: string) {
   return JSON.parse(
     await readFile(resolvePathToMetadata(workingDirectory), "utf8"),
