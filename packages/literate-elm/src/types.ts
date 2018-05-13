@@ -32,7 +32,6 @@ export interface EnvironmentSpec {
 }
 
 export enum EnvironmentStatus {
-  CHANGING = "changing",
   READY = "ready",
   ERROR = "error",
 }
@@ -40,7 +39,7 @@ export enum EnvironmentStatus {
 export interface EnvironmentMetadata {
   status: EnvironmentStatus;
   createdAt: number;
-  usedAt: number;
+  expiresAt?: number;
   errorMessage?: string;
 }
 
