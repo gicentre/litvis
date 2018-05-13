@@ -207,7 +207,6 @@ const extractDataFromRule = (
           ),
         };
       } catch (e) {
-        console.log("EEEE", e);
         ruleIsBroken = true;
       }
       // if (property === "followedBy") {

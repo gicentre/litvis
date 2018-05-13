@@ -3,6 +3,7 @@ import { remove, writeFile } from "fs-extra";
 import * as _ from "lodash";
 import * as hash from "object-hash";
 import { resolve } from "path";
+import * as auxFiles from "./auxFiles";
 import { runElm } from "./tools";
 import {
   CodeNode,
@@ -42,10 +43,88 @@ interface ExpressionTextChunk extends AbstractChunk {
 
 type Chunk = AuxiliaryChunk | CodeNodeChunk | ExpressionTextChunk;
 
-export async function runProgram(program: Program): Promise<ProgramResult> {
-  const outputSymbolName = "literateElmOutputSymbol";
+interface ChunkifiedProgram {
+  name: string;
+  chunks: Chunk[];
+  maxFileIndex: number;
+}
 
-  // generate Elm module contents
+interface CachedProgramResult {
+  status: ProgramResultStatus.SUCCEEDED | ProgramResultStatus.FAILED;
+  errors: any[];
+  evaluatedExpressionTextMap?: { [expressionText: string]: string };
+  debugLog?: string;
+}
+
+export async function runProgram(program: Program): Promise<ProgramResult> {
+  const chunkifiedProgram = chunkifyProgram(program);
+  const programBasePath = resolve(
+    program.environment.workingDirectory,
+    chunkifiedProgram.name,
+  );
+  await auxFiles.touch(programBasePath);
+  const programResultPath = `${programBasePath}.result.json`;
+
+  let cachedResult: CachedProgramResult;
+  try {
+    await auxFiles.ensureUnlocked(programBasePath);
+    cachedResult = require(programResultPath) as CachedProgramResult;
+  } catch (e) {
+    await auxFiles.lock(programBasePath);
+
+    cachedResult = await runChunkifiedProgram(
+      chunkifiedProgram,
+      program.environment.workingDirectory,
+    );
+    await writeFile(programResultPath, JSON.stringify(cachedResult), "utf8");
+
+    await auxFiles.unlock(programBasePath);
+  }
+
+  if (cachedResult && cachedResult.status === ProgramResultStatus.SUCCEEDED) {
+    const evaluatedExpressions = program.expressionNodes.map(
+      (expressionNode): EvaluatedExpression => {
+        const valueStringRepresentation =
+          (cachedResult.evaluatedExpressionTextMap &&
+            cachedResult.evaluatedExpressionTextMap[expressionNode.text]) ||
+          "";
+        let value;
+        try {
+          value = parseUsingCache(valueStringRepresentation);
+        } catch (e) {
+          value = e;
+        }
+        return {
+          node: expressionNode,
+          value,
+          valueStringRepresentation,
+        };
+      },
+    );
+    return {
+      program,
+      status: ProgramResultStatus.SUCCEEDED,
+      evaluatedExpressions,
+      messages: convertErrorsToMessages(
+        chunkifiedProgram,
+        (cachedResult && cachedResult.errors) || [],
+      ),
+      debugLog: cachedResult.debugLog || "",
+    };
+  } else {
+    return {
+      program,
+      status: ProgramResultStatus.FAILED,
+      messages: convertErrorsToMessages(
+        chunkifiedProgram,
+        (cachedResult && cachedResult.errors) || [],
+      ),
+    };
+  }
+}
+
+const outputSymbolName = "literateElmOutputSymbol";
+const chunkifyProgram = (program: Program): ChunkifiedProgram => {
   const chunks: Chunk[] = [];
 
   _.forEach(program.codeNodes, (codeNode, i) => {
@@ -88,8 +167,6 @@ ${outputSymbolName} =
     text: `-------- literate-elm output end\n            ]\n`,
   });
 
-  const programId = hash(chunks);
-
   // only import Json.Encode if not done so in user code
   const containsJsonEncodeImport = _.some(chunks, (codeChunk) =>
     `\n${codeChunk.text}`.match(/\n\s*import\s+Json\.Encode/),
@@ -101,15 +178,10 @@ ${outputSymbolName} =
     });
   }
 
-  const moduleName = `Main${programId}`;
-  const modulePath = resolve(
-    program.environment.workingDirectory,
-    `${moduleName}.elm`,
-  );
-
+  const programName = `Program${hash(chunks.map((chunk) => chunk.text))}`;
   chunks.unshift({
     type: ChunkType.AUXILIARY,
-    text: `module ${moduleName} exposing (..)`,
+    text: `module ${programName} exposing (..)`,
   });
 
   // measure vertical offset for each code chunk to map errors later
@@ -120,101 +192,55 @@ ${outputSymbolName} =
     offsetY += lineCount;
   });
 
-  const codeToRun = chunks.map(({ text }) => text).join("\n");
-  const messages: Message[] = [];
+  return {
+    name: programName,
+    chunks,
+    maxFileIndex: Math.max(
+      ..._.map(
+        [...program.codeNodes, ...program.expressionNodes],
+        (node) => node.fileIndex || 0,
+      ),
+    ),
+  };
+};
+
+const runChunkifiedProgram = async (
+  chunkifiedProgram: ChunkifiedProgram,
+  workingDirectory: string,
+  keepElmFiles: boolean = false,
+): Promise<CachedProgramResult> => {
+  const programPath = resolve(
+    workingDirectory,
+    `${chunkifiedProgram.name}.elm`,
+  );
+  const codeToRun = chunkifiedProgram.chunks.map(({ text }) => text).join("\n");
   try {
     let runElmStdout;
-    await writeFile(modulePath, codeToRun, "utf8");
+    await writeFile(programPath, codeToRun, "utf8");
     try {
       runElmStdout = await runElm(
-        program.environment.workingDirectory,
-        modulePath,
+        workingDirectory,
+        programPath,
         outputSymbolName,
       );
     } catch (e) {
       const linesInStdout = (e.message || "").split("\n");
-      let elmErrors;
+      let errors;
       _.findLast(linesInStdout, (line) => {
         try {
-          elmErrors = JSON.parse(line);
+          errors = JSON.parse(line);
           return true;
         } catch (e) {
           return false;
         }
       });
-      if (!elmErrors || !_.isArray(elmErrors)) {
+
+      if (!errors || !_.isArray(errors)) {
         throw e;
       }
-      _.forEach(elmErrors, (elmError) => {
-        const currentChunk =
-          chunks[
-            _.findIndex(
-              chunks,
-              (chunk) =>
-                chunk.offsetY! + 1 >
-                _.get(elmError, ["region", "start", "line"], 0),
-            ) - 1
-          ];
-        if (currentChunk.type === ChunkType.CODE_NODE) {
-          const position = {
-            start: {
-              line:
-                _.get(elmError, ["region", "start", "line"], 0) -
-                currentChunk.offsetY! -
-                1 +
-                currentChunk.ref.position.start.line,
-              column:
-                _.get(elmError, ["region", "start", "column"], 0) -
-                1 +
-                currentChunk.ref.position.start.column,
-            },
-            end: {
-              line:
-                _.get(elmError, ["region", "end", "line"], 0) -
-                currentChunk.offsetY! -
-                1 +
-                currentChunk.ref.position.start.line,
-              column:
-                _.get(elmError, ["region", "end", "column"], 0) -
-                1 +
-                currentChunk.ref.position.start.column,
-            },
-          };
-          messages.push({
-            text: `${elmError.overview || ""}${
-              elmError.details
-                ? `. ${elmError.details.replace(/\s+/g, " ")}`
-                : ""
-            }`,
-            position,
-            severity: MessageSeverity.ERROR,
-            fileIndex: currentChunk.ref.fileIndex || 0,
-            node: currentChunk.ref,
-          });
-        } else if (currentChunk.type === ChunkType.EXPRESSION_TEXT) {
-          const messageText = `${elmError.overview || ""}${
-            elmError.details ? `. ${elmError.details.replace(/\s+/g, " ")}` : ""
-          }`;
-          const expressionNodes = currentChunk.ref;
-          _.forEach(expressionNodes, (expressionNode) => {
-            messages.push({
-              text: messageText,
-              position: expressionNode.position,
-              fileIndex: expressionNode.fileIndex || 0,
-              severity: MessageSeverity.ERROR,
-              node: expressionNode,
-            });
-          });
-        } else {
-          throw new Error(
-            elmError.overview || elmError.details || JSON.stringify(elmError),
-          );
-        }
-      });
       return {
-        program,
         status: ProgramResultStatus.FAILED,
-        messages,
+        errors,
       };
     }
 
@@ -228,50 +254,135 @@ ${outputSymbolName} =
       .replace(/This is output from elm to the console.: /g, "")
       .trim();
     const evaluatedExpressionTextMap = JSON.parse(output || "{}");
-
-    const evaluatedExpressions = program.expressionNodes.map(
-      (expressionNode): EvaluatedExpression => {
-        const valueStringRepresentation =
-          evaluatedExpressionTextMap[expressionNode.text];
-        let value;
-        try {
-          value = parseUsingCache(valueStringRepresentation);
-        } catch (e) {
-          value = e;
-        }
-        return {
-          node: expressionNode,
-          value,
-          valueStringRepresentation,
-        };
-      },
-    );
     return {
-      program,
       status: ProgramResultStatus.SUCCEEDED,
-      messages,
-      evaluatedExpressions,
+      errors: [],
+      evaluatedExpressionTextMap,
       debugLog,
     };
   } catch (e) {
-    messages.push({
-      text: e.message,
-      position: { start: { line: 1, column: 1 }, end: { line: 1, column: 1 } },
-      severity: MessageSeverity.ERROR,
-      fileIndex: Math.max(
-        ..._.map(
-          [...program.codeNodes, ...program.expressionNodes],
-          (node) => node.fileIndex || 0,
-        ),
-      ),
-      node: null,
-    });
+    // some messages need to be patched to avoid confusing output
+    const message = (e.message || "")
+      .replace(/^Compilation failed\n/, "")
+      .replace(/\n{2,}/, "\n")
+      .replace(/Module .* is trying to import it.\n\n/, "")
+      .replace(
+        /(\n  \* Need to add a source directory or new dependency) to elm-package.json/,
+        "$1",
+      );
+    const indexOfFirstNewline = message.indexOf("\n");
+
+    const overview =
+      indexOfFirstNewline !== -1
+        ? message.substring(0, indexOfFirstNewline)
+        : message;
+    const details =
+      indexOfFirstNewline !== -1
+        ? message.substring(indexOfFirstNewline + 1)
+        : "";
+
     return {
-      program,
       status: ProgramResultStatus.FAILED,
-      messages,
+      errors: [
+        {
+          overview,
+          details,
+          region: {
+            start: { line: 1, column: 1 },
+            end: { line: 1, column: 1 },
+          },
+        },
+      ],
     };
   } finally {
-    await remove(modulePath);
+    if (!keepElmFiles) {
+      await remove(programPath);
+    }
   }
-}
+};
+
+const convertErrorsToMessages = (
+  chunkifiedProgram: ChunkifiedProgram,
+  errors: any[],
+): Message[] => {
+  const result: Message[] = [];
+  errors.map((error) => {
+    const currentChunk =
+      chunkifiedProgram.chunks[
+        _.findIndex(
+          chunkifiedProgram.chunks,
+          (chunk) =>
+            chunk.offsetY! + 1 > _.get(error, ["region", "start", "line"], 0),
+        ) - 1
+      ];
+    if (currentChunk && currentChunk.type === ChunkType.CODE_NODE) {
+      const position = {
+        start: {
+          line:
+            _.get(error, ["region", "start", "line"], 0) -
+            currentChunk.offsetY! -
+            1 +
+            currentChunk.ref.position.start.line,
+          column:
+            _.get(error, ["region", "start", "column"], 0) -
+            1 +
+            currentChunk.ref.position.start.column,
+        },
+        end: {
+          line:
+            _.get(error, ["region", "end", "line"], 0) -
+            currentChunk.offsetY! -
+            1 +
+            currentChunk.ref.position.start.line,
+          column:
+            _.get(error, ["region", "end", "column"], 0) -
+            1 +
+            currentChunk.ref.position.start.column,
+        },
+      };
+      result.push({
+        text: getErrorMessageText(error),
+        position,
+        severity: MessageSeverity.ERROR,
+        fileIndex: currentChunk.ref.fileIndex || 0,
+        node: currentChunk.ref,
+      });
+    } else if (
+      currentChunk &&
+      currentChunk.type === ChunkType.EXPRESSION_TEXT
+    ) {
+      const messageText = getErrorMessageText(error);
+      const expressionNodes = currentChunk.ref;
+      _.forEach(expressionNodes, (expressionNode) => {
+        result.push({
+          text: messageText,
+          position: expressionNode.position,
+          fileIndex: expressionNode.fileIndex || 0,
+          severity: MessageSeverity.ERROR,
+          node: expressionNode,
+        });
+      });
+    } else {
+      result.push({
+        text: getErrorMessageText(error),
+        severity: MessageSeverity.ERROR,
+        position: {
+          start: { line: 1, column: 1 },
+          end: { line: 1, column: 1 },
+        },
+        fileIndex: chunkifiedProgram.maxFileIndex,
+        node: null,
+      });
+    }
+  });
+  return result;
+};
+
+const getErrorMessageText = (error): string => {
+  if (error.overview) {
+    return `${error.overview || ""}${
+      error.details ? `. ${error.details.replace(/\s+/g, " ")}` : ""
+    }`;
+  }
+  return error.message || error.valueOf();
+};

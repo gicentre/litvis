@@ -32,13 +32,12 @@ export interface EnvironmentSpec {
 }
 
 export enum EnvironmentStatus {
-  INITIALIZING = "initializing",
+  CHANGING = "changing",
   READY = "ready",
   ERROR = "error",
 }
 
 export interface EnvironmentMetadata {
-  version: string;
   status: EnvironmentStatus;
   createdAt: number;
   usedAt: number;

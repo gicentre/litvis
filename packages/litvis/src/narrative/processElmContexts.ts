@@ -201,7 +201,6 @@ export default async (
       return;
     }
 
-    console.log("HERE");
     const literateElmEnvironment = await ensureEnvironment(
       narrative.elmEnvironmentSpecForLastFile!,
       cache.literateElmDirectory,
