@@ -30,3 +30,5 @@ styling:
     .voiceB {
       font-style: italic;
     }
+    
+    code,pre {font-style: normal;}

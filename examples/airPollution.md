@@ -74,21 +74,21 @@ airPollution : Spec
 airPollution =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ Parse [ ( "dateTime", FoDate "%Y-%m-%dT%H:%M" ) ] ]
+            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         trans =
             transform
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "datum.reading > 0")
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
 
         enc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative ]
-                << position Y [ PName "reading", PmType Quantitative ]
-                << detail [ DName "day", DmType Ordinal ]
+                << position X [ pName "time of day", pMType Quantitative ]
+                << position Y [ pName "reading", pMType Quantitative ]
+                << detail [ dName "day", dMType Ordinal ]
     in
-    toVegaLite [ data, trans [], mark Line [], enc [] ]
+    toVegaLite [ data, trans [], line [], enc [] ]
 ```
 
 {| voiceB )}
@@ -112,61 +112,66 @@ airPollution : Spec
 airPollution =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ Parse [ ( "dateTime", FoDate "%Y-%m-%dT%H:%M" ) ] ]
+            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+                [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         backgroundTrans =
             transform
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "datum.reading > 0")
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
 
         backgroundEnc =
             encoding
                 << position X
-                    [ PName "time of day"
-                    , PmType Quantitative
-                    , PAxis [ AxValues [ 0, 4, 8, 12, 16, 20, 24 ], AxFormat "05.2f" ]
+                    [ pName "time of day"
+                    , pMType Quantitative
+                    , pAxis [ axValues [ 0, 4, 8, 12, 16, 20, 24 ], axFormat "05.2f" ]
                     ]
-                << position Y [ PName "reading", PmType Quantitative, PAxis [ AxValues [ 250, 500, 750, 1000 ], AxTitle "Oxides of Nitrogen (μg m-3 )" ] ]
-                << detail [ DName "day", DmType Ordinal ]
-                << color [ MString "#200" ]
-                << opacity [ MNumber 0.5 ]
+                << position Y
+                    [ pName "reading"
+                    , pMType Quantitative
+                    , pAxis [ axValues [ 250, 500, 750, 1000 ], axTitle "Oxides of Nitrogen (μg m-3 )" ]
+                    ]
+                << detail [ dName "day", dMType Ordinal ]
+                << color [ mStr "#200" ]
+                << opacity [ mNum 0.5 ]
 
         backgroundSpec =
-            asSpec [ backgroundTrans [], mark Line [ MStrokeWidth 0.1 ], backgroundEnc [] ]
+            asSpec [ backgroundTrans [], line [ maStrokeWidth 0.1 ], backgroundEnc [] ]
 
         avTrans =
             transform
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "datum.reading > 0")
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
 
         avEnc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative ]
-                << position Y [ PAggregate Mean, PName "reading", PmType Quantitative ]
-                << color [ MString "#000" ]
-                << opacity [ MNumber 0.2 ]
+                << position X [ pName "time of day", pMType Quantitative ]
+                << position Y [ pAggregate Mean, pName "reading", pMType Quantitative ]
+                << color [ mStr "#000" ]
+                << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], mark Line [ MStrokeWidth 4, MInterpolate Monotone ], avEnc [] ]
+            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate Monotone ], avEnc [] ]
 
         rideTrans =
             transform
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
-                << filter (FExpr "(year(datum.dateTime) == 2016 && month(datum.dateTime) == 6 && date(datum.dateTime) == 31) || (year(datum.dateTime) == 2015 && month(datum.dateTime) == 7 && date(datum.dateTime) == 2) || (year(datum.dateTime) == 2014 && month(datum.dateTime) == 7 && date(datum.dateTime) == 10) || (year(datum.dateTime) == 2013 && month(datum.dateTime) == 7 && date(datum.dateTime) == 4)")
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "(year(datum.dateTime) == 2016 && month(datum.dateTime) == 6 && date(datum.dateTime) == 31) || (year(datum.dateTime) == 2015 && month(datum.dateTime) == 7 && date(datum.dateTime) == 2) || (year(datum.dateTime) == 2014 && month(datum.dateTime) == 7 && date(datum.dateTime) == 10) || (year(datum.dateTime) == 2013 && month(datum.dateTime) == 7 && date(datum.dateTime) == 4)")
+                << filter (fiExpr "datum.reading > 0")
 
         rideEnc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative ]
-                << position Y [ PName "reading", PmType Quantitative ]
-                << detail [ DName "day", DmType Ordinal ]
-                << color [ MString "rgb(202,0,0)" ]
+                << position X [ pName "time of day", pMType Quantitative ]
+                << position Y [ pName "reading", pMType Quantitative ]
+                << detail [ dName "day", dMType Ordinal ]
+                << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
-            asSpec [ rideTrans [], mark Line [ MStrokeWidth 1, MInterpolate Monotone ], rideEnc [] ]
+            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate Monotone ], rideEnc [] ]
     in
     toVegaLite [ width 500, height 300, background "white", data, layer [ backgroundSpec, avSpec, rideSpec ] ]
 ```
@@ -190,105 +195,117 @@ airPollution =
 
         backgroundTrans =
             transform
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "datum.reading > 0")
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
 
         backgroundEnc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative, PAxis [ AxValues [ 0, 4, 8, 12, 16, 20, 24 ], AxFormat "05.2f", AxTitle "Time of day" ] ]
-                << position Y [ PName "reading", PmType Quantitative, PScale [ SDomain (DNumbers [ 0, 600 ]) ], PAxis [ AxTitle "Oxides of Nitrogen (μg m-3 )" ] ]
-                << detail [ DName "day", DmType Ordinal ]
-                << color [ MString "#200" ]
-                << opacity [ MNumber 0.5 ]
+                << position X
+                    [ pName "time of day"
+                    , pMType Quantitative
+                    , pAxis [ axValues [ 0, 4, 8, 12, 16, 20, 24 ], axFormat "05.2f", axTitle "Time of day" ]
+                    ]
+                << position Y
+                    [ pName "reading"
+                    , pMType Quantitative
+                    , pScale [ scDomain (doNums [ 0, 600 ]) ]
+                    , pAxis [ axTitle "Oxides of Nitrogen (μg m-3 )" ]
+                    ]
+                << detail [ dName "day", dMType Ordinal ]
+                << color [ mStr "#200" ]
+                << opacity [ mNum 0.5 ]
 
         backgroundSpec =
-            asSpec [ backgroundTrans [], mark Line [ MClip True, MStrokeWidth 0.1 ], backgroundEnc [] ]
+            asSpec [ backgroundTrans [], line [ maClip True, maStrokeWidth 0.1 ], backgroundEnc [] ]
 
         avTrans =
             transform
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "datum.reading > 0")
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
 
         avEnc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative ]
-                << position Y [ PAggregate Mean, PName "reading", PmType Quantitative, PAxis [] ]
-                << color [ MString "#000" ]
-                << opacity [ MNumber 0.2 ]
+                << position X [ pName "time of day", pMType Quantitative ]
+                << position Y [ pAggregate Mean, pName "reading", pMType Quantitative, pAxis [] ]
+                << color [ mStr "#000" ]
+                << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], mark Line [ MStrokeWidth 4, MInterpolate Monotone ], avEnc [] ]
+            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate Monotone ], avEnc [] ]
 
         limitsData =
             dataFromColumns []
-                << dataColumn "EULimits" (Numbers [ 200, 40 ])
-                << dataColumn "max" (Numbers [ 600, 600 ])
+                << dataColumn "EULimits" (nums [ 200, 40 ])
+                << dataColumn "max" (nums [ 600, 600 ])
 
         limitsEnc =
             encoding
                 << position Y
-                    [ PName "EULimits"
-                    , PmType Quantitative
-                    , PAxis [ AxTitle "EU limits: : 40 μg m-3 annaul average, 200 μg m-3 maximum in any hour", AxValues [ 40, 200 ] ]
+                    [ pName "EULimits"
+                    , pMType Quantitative
+                    , pAxis
+                        [ axTitle "EU limits: : 40 μg m-3 annaul average, 200 μg m-3 maximum in any hour"
+                        , axValues [ 40, 200 ]
+                        ]
                     ]
-                << position Y2 [ PName "max", PmType Quantitative ]
-                << color [ MString "rgb(173,118,66)" ]
-                << opacity [ MNumber 0.15 ]
+                << position Y2 [ pName "max", pMType Quantitative ]
+                << color [ mStr "rgb(173,118,66)" ]
+                << opacity [ mNum 0.15 ]
 
         limitsSpec =
-            asSpec [ limitsData [], mark Rect [], limitsEnc [] ]
+            asSpec [ limitsData [], rect [], limitsEnc [] ]
 
         rideTrans =
             transform
                 << calculateAs "datetime(year(datum.dateTime),month(datum.dateTime),date(datum.dateTime))" "day"
                 << calculateAs "hours(datum.dateTime)+(minutes(datum.dateTime)/60)" "time of day"
-                << filter (FExpr "(year(datum.dateTime) == 2016 && month(datum.dateTime) == 6 && date(datum.dateTime) == 31) || (year(datum.dateTime) == 2015 && month(datum.dateTime) == 7 && date(datum.dateTime) == 2) || (year(datum.dateTime) == 2014 && month(datum.dateTime) == 7 && date(datum.dateTime) == 10) || (year(datum.dateTime) == 2013 && month(datum.dateTime) == 7 && date(datum.dateTime) == 4)")
-                << filter (FExpr "datum.reading > 0")
+                << filter (fiExpr "(year(datum.dateTime) == 2016 && month(datum.dateTime) == 6 && date(datum.dateTime) == 31) || (year(datum.dateTime) == 2015 && month(datum.dateTime) == 7 && date(datum.dateTime) == 2) || (year(datum.dateTime) == 2014 && month(datum.dateTime) == 7 && date(datum.dateTime) == 10) || (year(datum.dateTime) == 2013 && month(datum.dateTime) == 7 && date(datum.dateTime) == 4)")
+                << filter (fiExpr "datum.reading > 0")
 
         rideEnc =
             encoding
-                << position X [ PName "time of day", PmType Quantitative ]
-                << position Y [ PName "reading", PmType Quantitative, PAxis [] ]
-                << detail [ DName "day", DmType Ordinal ]
-                << color [ MString "rgb(202,0,0)" ]
+                << position X [ pName "time of day", pMType Quantitative ]
+                << position Y [ pName "reading", pMType Quantitative, pAxis [] ]
+                << detail [ dName "day", dMType Ordinal ]
+                << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
-            asSpec [ rideTrans [], mark Line [ MStrokeWidth 1, MInterpolate Monotone ], rideEnc [] ]
+            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate Monotone ], rideEnc [] ]
 
         res =
             resolve
-                << resolution (RAxis [ ( ChY, Independent ) ])
+                << resolution (reAxis [ ( ChY, Independent ) ])
 
         annotationData =
             dataFromColumns []
                 << dataColumn "text"
-                    (Strings
+                    (strs
                         [ "Airborne Pollution, Putney High Street Facade"
                         , "All Sundays between 2013 and 2017"
                         , "Ride London Sundays 2013-2016"
                         ]
                     )
-                << dataColumn "x" (Numbers [ 0.5, 0.5, 0.5 ])
-                << dataColumn "y" (Numbers [ 570, 550, 530 ])
-                << dataColumn "titleType" (Strings [ "title", "subtitle1", "subtitle2" ])
+                << dataColumn "x" (nums [ 0.5, 0.5, 0.5 ])
+                << dataColumn "y" (nums [ 570, 550, 530 ])
+                << dataColumn "titleType" (strs [ "title", "subtitle1", "subtitle2" ])
 
         annotationEnc =
             encoding
-                << position X [ PName "x", PmType Quantitative ]
-                << position Y [ PName "y", PmType Quantitative ]
+                << position X [ pName "x", pMType Quantitative ]
+                << position Y [ pName "y", pMType Quantitative ]
                 << color
-                    [ MName "titleType"
-                    , MmType Nominal
-                    , MScale (categoricalDomainMap [ ( "title", "#000" ), ( "subtitle1", "#666" ), ( "subtitle2", "#b00" ) ])
-                    , MLegend []
+                    [ mName "titleType"
+                    , mMType Nominal
+                    , mScale (categoricalDomainMap [ ( "title", "#000" ), ( "subtitle1", "#666" ), ( "subtitle2", "#b00" ) ])
+                    , mLegend []
                     ]
-                << size [ MNumber 14 ]
-                << text [ TName "text", TmType Nominal ]
+                << size [ mNum 14 ]
+                << text [ tName "text", tMType Nominal ]
 
         annotationSpec =
-            asSpec [ annotationData [], mark Text [ MAlign AlignLeft ], annotationEnc [] ]
+            asSpec [ annotationData [], textMark [ maAlign AlignLeft ], annotationEnc [] ]
     in
     toVegaLite
         [ width 500
