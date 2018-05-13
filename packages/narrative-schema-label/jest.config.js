@@ -1,6 +1,5 @@
 const jestBase = require("../../jest.config.js");
 
-module.exports = {
-  ...jestBase,
+module.exports = Object.assign({}, jestBase, {
   rootDir: ".",
-};
+});
