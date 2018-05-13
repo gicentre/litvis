@@ -12,8 +12,12 @@ import {
 } from "./auxFiles";
 
 const GARBAGE_COLLECTION_INTERVAL = 1000 * 60 * 5;
-const MAX_PROGRAM_COUNT = 100;
+const MAX_PROGRAM_COUNT = 500;
 const MAX_PROGRAM_LIFETIME = 1000 * 60 * 60 * 24 * 10;
+
+// const GARBAGE_COLLECTION_INTERVAL = 1000 * 5;
+// const MAX_PROGRAM_COUNT = 20;
+// const MAX_PROGRAM_LIFETIME = 1000 * 60;
 
 export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
   const gcFilePath = `${literateElmDirectory}/gc`;
@@ -24,9 +28,10 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
     return;
   }
   await lock(literateElmDirectory);
-  const programRelatedPaths = await globby("*/*/Program*.*", {
+  const programRelatedPaths = await globby("*/*/*/Program*.*", {
     cwd: literateElmDirectory,
   });
+
   const groupedProgramRelatedPaths = _.groupBy(programRelatedPaths, (path) =>
     path.replace(/\..*/, ""),
   );
@@ -34,7 +39,11 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
   const fileGroupInfos = _.map(
     groupedProgramRelatedPaths,
     (filePaths, relativeBasePath) => ({
-      relativeEnvironmentPath: relativeBasePath.substring(
+      relativeSpecDirectory: relativeBasePath.substring(
+        0,
+        relativeBasePath.indexOf("wd") - 1,
+      ),
+      relativeWorkingDirectory: relativeBasePath.substring(
         0,
         relativeBasePath.indexOf("Program") - 1,
       ),
@@ -65,7 +74,7 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
   const fileGroupInfosToRetain: any[] = [];
   sortedFileGroupInfos.forEach((fileGroupInfo, index) => {
     if (
-      index > MAX_PROGRAM_COUNT ||
+      index >= MAX_PROGRAM_COUNT ||
       fileGroupInfo.lastTouchedAt < programLifetimeThreshold
     ) {
       fileGroupInfosToRemove.push(fileGroupInfo);
@@ -73,34 +82,57 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
       fileGroupInfosToRetain.push(fileGroupInfo);
     }
   });
-  const relativeEnvironmentPathsToRetain = _.uniq(
-    _.map(fileGroupInfosToRetain, "relativeEnvironmentPath"),
+  const relativeSpecDirectoriesToRetain = _.uniq(
+    _.map(fileGroupInfosToRetain, "relativeSpecDirectory"),
+  );
+  const relativeWorkingDirectoriesToRetain = _.uniq(
+    _.map(fileGroupInfosToRetain, "relativeWorkingDirectory"),
   );
 
-  const fileGroupInfosToRemoveGroupedByRelativeEnvironmentPath = _.groupBy(
-    fileGroupInfosToRemove,
-    "relativeEnvironmentPath",
-  );
-  const removePromises: any[] = [];
+  const removedRelativeSpecDirectories: string[] = [];
+  const removedRelativeWorkingDirectories: string[] = [];
+
+  const relativePathsToRemove: string[] = [];
   _.forEach(
-    fileGroupInfosToRemoveGroupedByRelativeEnvironmentPath,
-    (currentFileGroupInfos, relativeEnvironmentPath) => {
-      if (
-        _.includes(relativeEnvironmentPathsToRetain, relativeEnvironmentPath)
-      ) {
-        _.forEach(currentFileGroupInfos, (fileGroupInfo) => {
-          _.forEach(fileGroupInfo.filePaths, (filePath) => {
-            removePromises.push(resolve(literateElmDirectory, filePath));
-          });
-        });
-      } else {
-        removePromises.push(
-          fs.remove(resolve(literateElmDirectory, relativeEnvironmentPath)),
-        );
+    fileGroupInfosToRemove,
+    ({ relativeSpecDirectory, relativeWorkingDirectory, filePaths }) => {
+      if (!_.includes(relativeSpecDirectoriesToRetain, relativeSpecDirectory)) {
+        if (
+          !_.includes(removedRelativeSpecDirectories, relativeSpecDirectory)
+        ) {
+          relativePathsToRemove.push(relativeSpecDirectory);
+        }
+        removedRelativeSpecDirectories.push(relativeSpecDirectory);
+        return;
       }
+
+      if (
+        !_.includes(
+          relativeWorkingDirectoriesToRetain,
+          relativeWorkingDirectory,
+        )
+      ) {
+        if (
+          !_.includes(
+            removedRelativeWorkingDirectories,
+            relativeWorkingDirectory,
+          )
+        ) {
+          relativePathsToRemove.push(relativeWorkingDirectory);
+        }
+        removedRelativeWorkingDirectories.push(relativeWorkingDirectory);
+        return;
+      }
+
+      _.forEach(filePaths, (filePath) => relativePathsToRemove.push(filePath));
     },
   );
+
+  const removePromises = relativePathsToRemove.map((relativePath) =>
+    fs.remove(resolve(literateElmDirectory, relativePath)),
+  );
   await Promise.all(removePromises);
+
   await touch(gcFilePath);
   await unlock(literateElmDirectory);
 };

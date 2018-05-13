@@ -1,8 +1,7 @@
-import { ensureDir, readFile, remove, writeFile } from "fs-extra";
+import { ensureDir, pathExists, readFile, writeFile } from "fs-extra";
 import * as hash from "object-hash";
 import { resolve } from "path";
-import * as sleep from "sleep-promise";
-import { ensureUnlocked, lock, unlock } from "./auxFiles";
+import { ensureUnlocked, lock, touch, unlock } from "./auxFiles";
 import { collectGarbageIfNeeded } from "./gc";
 import { initializeElmPackage, installElmPackage } from "./tools";
 import {
@@ -14,8 +13,9 @@ import {
 } from "./types";
 
 const CACHE_SHAPE_VERSION = "v1";
-const TICK = 100;
 const DEFAULT_TIMEOUT = 30000;
+const PROJECT_EXPIRY_WITH_ERRORS = 1000 * 60;
+// const PROJECT_EXPIRY_WITH_LATEST = 1000 * 60 * 60 * 24 * 7;
 
 export async function ensureEnvironment(
   spec: EnvironmentSpec,
@@ -37,115 +37,105 @@ export async function ensureEnvironment(
   }
   await collectGarbageIfNeeded(literateElmDirectory);
 
-  const workingDirectory = resolve(currentCacheDirectory, hash({ spec }));
+  const specDirectory = resolve(currentCacheDirectory, `spec${hash({ spec })}`);
   try {
-    await ensureDir(workingDirectory);
+    await ensureDir(specDirectory);
+    const specJsonPath = resolve(specDirectory, `spec.json`);
+    if (!(await pathExists(specJsonPath))) {
+      await writeFile(specJsonPath, JSON.stringify(spec, null, 4), "utf8");
+    }
   } catch (e) {
     return {
       spec,
-      workingDirectory,
+      workingDirectory: specDirectory,
       metadata: {
-        status: EnvironmentStatus.ERROR,
         createdAt: now,
-        usedAt: now,
-        errorMessage: `Could not create directory ${workingDirectory}`,
+        status: EnvironmentStatus.ERROR,
+        errorMessage: `Could not create directory ${specDirectory}`,
       },
     };
   }
 
   // attempt to restore existing environment
-  let metadata: EnvironmentMetadata;
+  const currentWorkingDirectoryLocatorPath = resolve(specDirectory, "wd");
   try {
-    await ensureUnlocked(workingDirectory, timeout);
-    metadata = require(resolvePathToMetadata(workingDirectory));
+    await ensureUnlocked(specDirectory, timeout);
+    const workingSubdirectory = await readFile(
+      currentWorkingDirectoryLocatorPath,
+      "utf8",
+    );
+    const workingDirectory = resolve(specDirectory, workingSubdirectory);
+    const metadata = JSON.parse(
+      await readFile(resolvePathToMetadata(workingDirectory), "utf8"),
+    ) as EnvironmentMetadata;
+    if (metadata.expiresAt && metadata.expiresAt < now) {
+      throw new Error("Expired");
+    }
+    return {
+      metadata,
+      spec,
+      workingDirectory,
+    };
   } catch (e) {
-    await lock(workingDirectory);
+    //
+  }
 
-    // clean-up working directory; do not delete non-elm files
-    // to avoid user data deletion
-    await Promise.all([
-      remove(resolvePathToMetadata(workingDirectory)),
-      remove(resolve(workingDirectory, "elm-stuff")),
-      remove(resolve(workingDirectory, "elm-package.json")),
-    ]);
+  try {
+    await lock(specDirectory);
+    const workingSubdirectory = `wd${now}`;
+    const workingDirectory = resolve(specDirectory, workingSubdirectory);
+    await ensureDir(workingDirectory);
+
+    let metadata: EnvironmentMetadata;
     try {
       await initializeElmProject(
         workingDirectory,
         spec.dependencies,
         spec.sourceDirectories,
       );
-      // metadata =
+      metadata = {
+        status: EnvironmentStatus.READY,
+        createdAt: now,
+      };
     } catch (e) {
-      //
+      await touch(resolve(workingDirectory, "ProgramFORGC"));
+      metadata = {
+        status: EnvironmentStatus.ERROR,
+        createdAt: now,
+        expiresAt: now + PROJECT_EXPIRY_WITH_ERRORS,
+        errorMessage: e.message,
+      };
     }
-    await writeMetadata(workingDirectory, metadata);
 
-    await unlock(workingDirectory);
-  }
-  return {
-    metadata,
-    spec,
-    workingDirectory,
-  };
-  // const timeToGiveUp = +new Date() + timeout;
-  // // the same elm environment can be initializing by another process,
-  // // so waiting till initialization is over or it's time to give up
-  // do {
-  //   const existingMetadata = await readMetadata(workingDirectory);
-  //   if (existingMetadata.status === EnvironmentStatus.CHANGING) {
-  //     if (existingMetadata.createdAt + timeout < +new Date()) {
-  //       throw new Error("Initialization is stuck, retrying...");
-  //     }
-  //   } else {
-  //     if (existingMetadata.expiresAt && existingMetadata.expiresAt < now) {
-  //       throw new Error("Need to reinitialize");
-  //     }
-
-  //     const metadata = { ...existingMetadata };
-  //     metadata.usedAt = now;
-  //     if (!(metadata.usedAt - existingMetadata.usedAt < 1000)) {
-  //       await writeMetadata(workingDirectory, metadata);
-  //     }
-  //     return {
-  //       metadata: existingMetadata,
-  //       spec,
-  //       workingDirectory,
-  //     };
-  //   }
-  //   await sleep(TICK);
-  // } while (+new Date() < timeToGiveUp);
-  // throw new Error(
-  //   "Something unexpected happened while reading existing metadata",
-  // );
-  // } catch (e) {
-  // initialize new Elm project if Environment directory is empty
-  // or there have been problems with existing metadata
-  const metadata: EnvironmentMetadata = {
-    status: EnvironmentStatus.CHANGING,
-    createdAt: now,
-    usedAt: now,
-  };
-  try {
-    metadata.status = EnvironmentStatus.READY;
-    await writeMetadata(workingDirectory, metadata);
+    await writeFile(
+      resolvePathToMetadata(workingDirectory),
+      JSON.stringify(metadata, null, 2),
+      "utf8",
+    );
+    await writeFile(
+      currentWorkingDirectoryLocatorPath,
+      workingSubdirectory,
+      "utf8",
+    );
+    return {
+      spec,
+      workingDirectory,
+      metadata,
+    };
   } catch (e) {
-    // mark environment with an error if it cannot be initialized
-    metadata.status = EnvironmentStatus.ERROR;
-    metadata.errorMessage = e.message || e;
-    try {
-      await writeMetadata(workingDirectory, metadata);
-    } catch (e2) {
-      // not being able to save metadata error is not fatal
-    }
+    return {
+      spec,
+      workingDirectory: specDirectory,
+      metadata: {
+        createdAt: now,
+        status: EnvironmentStatus.ERROR,
+        errorMessage: e.message,
+      },
+    };
+  } finally {
+    await unlock(specDirectory);
   }
-
-  return {
-    metadata,
-    spec,
-    workingDirectory,
-  };
 }
-// }
 
 async function initializeElmProject(
   directory,
@@ -167,7 +157,7 @@ async function initializeElmProject(
     await readFile(pathToElmPackageJson, "utf8"),
   );
   packageContents["source-directories"] = [...sourceDirectories, "."];
-  return writeFile(
+  await writeFile(
     pathToElmPackageJson,
     JSON.stringify(packageContents, null, 4),
     "utf8",
@@ -176,21 +166,4 @@ async function initializeElmProject(
 
 function resolvePathToMetadata(workingDirectory: string) {
   return resolve(workingDirectory, "literate-elm-metadata.json");
-}
-
-async function readMetadata(workingDirectory: string) {
-  return JSON.parse(
-    await readFile(resolvePathToMetadata(workingDirectory), "utf8"),
-  );
-}
-
-async function writeMetadata(
-  workingDirectory: string,
-  metadata: EnvironmentMetadata,
-) {
-  return writeFile(
-    resolvePathToMetadata(workingDirectory),
-    JSON.stringify(metadata, null, 2),
-    "utf8",
-  );
 }
