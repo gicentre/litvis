@@ -1,7 +1,7 @@
 ---
 id: "litvis"
 narrative-schemas:
-  - ../narrative-schemas/dialogue
+  - ../narrative-schemas/socratic-questions
 elm:
     dependencies:
         gicentre/elm-vega: latest
@@ -13,9 +13,8 @@ elm:
 import VegaLite exposing (..)
 ```
 
-_LitVis note: This is an example of some literate visualization we might use to think about a 'Socratic dialogue' schema to encourage design justicication.
-The narrative form of Socratic dialogue is an imaginary conversation between two people, one, often playing the 'simple man' (Socrates) querying the 'wise man'.
-Currently blocks are styled with css classes referencing a custom stylesheet in the frontmatter, but we might consider how a schema could be used to in associated with a generated template litvis document with the headings defined._
+> LitVis note: This is an example of some literate visualization we might use to think about a 'Socratic dialogue' schema to encourage design justicication.
+> The narrative form of Socratic dialogue is an imaginary conversation between two people, one, often playing the 'simple man' (Socrates) querying the 'wise man'.
 
 # London Air Pollution
 
@@ -26,27 +25,19 @@ They claimed this provided evidence of the benifical effect of the road closure.
 
 The concentration of pollutants certainly seemed lower on the Sunday, but with a sample of only eight days covering only one Sunday, it wasn't clear how representative this contrast was.
 
-{( voiceA |}
+{( question |} What are you trying to achieve with this visualization?{| question )}
 
-What are you trying to achieve with this visualization?
-
-{| voiceA )}
-
-{( voiceB |}
+{( answer |}
 
 To design a more robust visualization that demonstrates whether or not the 'closed road Sunday' has different NOx levels compared to 'normal' Sundays.
 
 To provide an impactful design that supports a 'call to action' to encourage a reduction in vehicle-induced pollutants.
 
-{| voiceB )}
+{| answer )}
 
-{( voiceA |}
+{( question |} Why have you chosen this data source and sample? {| question )}
 
-Why have you chosen this data source and sample?
-
-{| voiceA )}
-
-{( voiceB |}
+{( answer |}
 
 There are few regular sources of pollution monitoring data in London.
 The most widespread are distributed as part of the [London Air Quality Network](http://www.londonair.org.uk/london/asp/datadownload.asp).
@@ -91,15 +82,11 @@ airPollution =
     toVegaLite [ data, trans [], line [], enc [] ]
 ```
 
-{| voiceB )}
+{| answer )}
 
-{( voiceA |}
+{( question |} Why have you made these visual mark design choices? {| question )}
 
-Why have you made these visual mark design choices?
-
-{| voiceA )}
-
-{( voiceB |}
+{( answer |}
 
 - Roadside emission data are very peaky during the day, so it makes sense to overly the NOx levels for each 24 hour period to avoid having to spot patterns in rapidly oscillating signals.
 - There are many hundreds of profiles, so need to be symbolised with thin semi-transparent lines that scale well when overlaid.
@@ -319,34 +306,22 @@ airPollution =
 > _Litvis Note: The example above is a good one to illustrate a 'rejected' branch.
 > The intention and justification seem sound, but the result is not very effective, but with some lessons that may be applied to a final accepted design (e.g. shaded regions rather than lines don't work well making the chart too 'busy')_
 
-{| voiceB )}
+{| answer )}
 
-{( voiceA |}
+{( question |} To what extent does your visualization meet your original objectives? {| question )}
 
-To what extent does your visualization meet your original objectives?
+{( answer |}
 
-{| voiceA )}
+{| answer )}
 
-{( voiceB |}
+{( question |} What would you like to be able to do but were unable to in this instance? {| question )}
 
-{| voiceB )}
+{( answer|}
 
-{( voiceA |}
+{| answer )}
 
-What would you like to be able to do but were unable to in this instance?
+{( question |} What would you do differently if you were to start the project again? {| voiceA )}
 
-{| voiceA )}
+{( answer |}
 
-{( voiceB |}
-
-{| voiceB )}
-
-{( voiceA |}
-
-What would you do differently if you were to start the project again?
-
-{| voiceA )}
-
-{( voiceB |}
-
-{| voiceB )}
+{| answer )}
