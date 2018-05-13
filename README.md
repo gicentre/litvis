@@ -1,7 +1,7 @@
 # Literate Visualization
 
-<a href="https://travis-ci.org/gicentre/prettier-plugin-elm">
-  <img alt="travis" src="https://img.shields.io/travis/gicentre/litvis/master.svg?style=flat-square"><!--
+<a href="https://travis-ci.com/gicentre/litvis">
+  <img alt="travis" src="https://api.travis-ci.com/gicentre/litvis.svg?branch=master"><!--
 --></a>
 
 A light-touch approach to designing, building and describing visualization.
