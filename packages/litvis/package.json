@@ -1,6 +1,6 @@
 {
   "name": "litvis",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Literate Visualization, http://litvis.org/",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,7 +26,7 @@
     "immer": "^1.2.1",
     "is-whitespace-character": "^1.0.2",
     "kind-of": "^6.0.2",
-    "literate-elm": "^0.6.1",
+    "literate-elm": "^0.6.2",
     "lodash": "^4.17.5",
     "narrative-schema": "^0.2.1",
     "narrative-schema-label": "^0.2.1",
