@@ -1,8 +1,4 @@
-# Literate Visualization
-
-<a href="https://travis-ci.com/gicentre/litvis">
-  <img alt="travis" src="https://api.travis-ci.com/gicentre/litvis.svg?branch=master"><!--
---></a>
+# Literate Visualization &middot; [![License](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE.md) [![Travis CI Status](https://api.travis-ci.com/gicentre/litvis.svg?branch=master)](https://travis-ci.com/gicentre/litvis) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 A light-touch approach to designing, building and describing visualization.
 Here you will find
@@ -37,13 +33,13 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
       _In VSCode:_ `View → Extensions`
 
     - Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
-      This may take a few minutes, please be patient.
+      Please note that this may take a few minutes, especially on a slow network connection.
 
     - Search for `prettier` and then click the `install` button next to the result with the highest number of downloads.
       This extension will help you format litvis documents as you edit them.
 
     - Search for `language-elm` (Atom) or `elm` (VSCode) and then click the `install` button next to the result with the highest number of downloads.
-      This extension enables Elm code syntax highlighting in literate code blocks.
+      This extension enables syntax highlighting for Elm source in code blocks.
 
     > **Atom users:** you may want to disable Atom’s standard markdown preview tool by going to `Preferences → Packages` (or `File → Settings → Packages`), searching for `markdown-preview` and clicking `disable`.
 
