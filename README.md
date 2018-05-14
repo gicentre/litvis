@@ -1,4 +1,4 @@
-# Literate Visualization &middot; [![License](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE.md) [![Travis CI Status](https://api.travis-ci.com/gicentre/litvis.svg?branch=master)](https://travis-ci.com/gicentre/litvis) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+# Literate Visualization &middot; [![License: BSD 3-Clause](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE) [![Travis CI Status](https://api.travis-ci.com/gicentre/litvis.svg?branch=master)](https://travis-ci.com/gicentre/litvis) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
 
 A light-touch approach to designing, building and describing visualization.
 Here you will find
