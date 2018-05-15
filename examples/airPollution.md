@@ -28,11 +28,9 @@ The concentration of pollutants certainly seemed lower on the Sunday, but with a
 {( question |} What are you trying to achieve with this visualization?{| question )}
 
 {( answer |}
-
 To design a more robust visualization that demonstrates whether or not the 'closed road Sunday' has different NOx levels compared to 'normal' Sundays.
 
 To provide an impactful design that supports a 'call to action' to encourage a reduction in vehicle-induced pollutants.
-
 {| answer )}
 
 {( question |} Why have you chosen this data source and sample? {| question )}
