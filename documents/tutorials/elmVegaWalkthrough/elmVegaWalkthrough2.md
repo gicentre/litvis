@@ -150,9 +150,7 @@ stackedHistogram =
     toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
-The mapping between the values in the domain (weather type
-
-s `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vega function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
+The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vega function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
 
 Notice how we never needed to state explicitly that we wished our bars to be stacked.
 This was reasoned directly by Vega-Lite based on the combination of bar marks and color channel encoding.

@@ -48,7 +48,7 @@ smallMultiples =
 
 There are only two additions in order to create these small multiples.
 Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to.
-Note that the `F` prefix for `fiName` and `FmType` refers to _facet_ – a form of data selection and grouping standard in data visualization.
+Note that the `f` prefix for `fName` and `fMType` refers to _facet_ – a form of data selection and grouping standard in data visualization.
 
 The second, minor change, is to include an `mLegend` specification in the color encoding. The legend can be customised with its parametmer list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
 
