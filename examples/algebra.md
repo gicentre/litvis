@@ -138,23 +138,23 @@ brexitMap mapSize dChange orderType oDirection =
     let
         orderParams =
             let
-                oSort =
+                sortOrder =
                     case oDirection of
                         Asc ->
-                            OSort [ Ascending ]
+                            oSort [ Ascending ]
 
                         Desc ->
-                            OSort [ Descending ]
+                            oSort [ Descending ]
             in
             case orderType of
                 ByLongitude ->
-                    [ OName "Longitude", OmType Quantitative, oSort ]
+                    [ oName "Longitude", oMType Quantitative, sortOrder ]
 
                 ByLatitude ->
-                    [ OName "Latitude", OmType Quantitative, oSort ]
+                    [ oName "Latitude", oMType Quantitative, sortOrder ]
 
                 BySize ->
-                    [ OName "majority %", OmType Quantitative, oSort ]
+                    [ oName "majority %", oMType Quantitative, sortOrder ]
 
         titleText =
             let
@@ -196,10 +196,10 @@ brexitMap mapSize dChange orderType oDirection =
         dataFilter =
             case dChange of
                 Rand5pc ->
-                    filter (FEqual "DataSource" (Str "rand5pc"))
+                    filter (fiEqual "DataSource" (str "rand5pc"))
 
                 _ ->
-                    filter (FEqual "DataSource" (Str "Original"))
+                    filter (fiEqual "DataSource" (str "Original"))
 
         multiplier =
             case dChange of
@@ -212,18 +212,18 @@ brexitMap mapSize dChange orderType oDirection =
         ( w, h, legend ) =
             case mapSize of
                 Small ->
-                    ( 130, 280, [ MLegend [] ] )
+                    ( 130, 280, [ mLegend [] ] )
 
                 Medium ->
-                    ( 180, 400, [ MLegend [] ] )
+                    ( 180, 400, [ mLegend [] ] )
 
                 Large ->
                     ( 300, 600, [] )
 
         gbSpec =
             asSpec
-                [ dataFromUrl "https://gicentre.github.io/data/gbRegions.json" [ TopojsonFeature "regions_id_geo" ]
-                , mark Geoshape [ MStroke "#fff", MStrokeWidth 0.1, MFill "#ddd" ]
+                [ dataFromUrl "https://gicentre.github.io/data/gbRegions.json" [ topojsonFeature "regions_id_geo" ]
+                , geoshape [ maStroke "#fff", maStrokeWidth 0.1, maFill "#ddd" ]
                 ]
 
         trans =
@@ -239,29 +239,29 @@ brexitMap mapSize dChange orderType oDirection =
             asSpec
                 [ dataFromUrl "https://gicentre.github.io/data/brexit.tsv" []
                 , trans []
-                , mark Circle [ MStroke "white", MStrokeWidth 0.5 ]
+                , circle [ maStroke "white", maStrokeWidth 0.5 ]
                 , votingEnc []
                 ]
 
         votingEnc =
             encoding
-                << position Longitude [ PName "Longitude", PmType Quantitative ]
-                << position Latitude [ PName "Latitude", PmType Quantitative ]
-                << size ([ MName "majority %", MmType Quantitative ] ++ legend)
+                << position Longitude [ pName "Longitude", pMType Quantitative ]
+                << position Latitude [ pName "Latitude", pMType Quantitative ]
+                << size ([ mName "majority %", mMType Quantitative ] ++ legend)
                 << order orderParams
                 << color
-                    ([ MName "majority decision"
-                     , MmType Nominal
-                     , MScale (categoricalDomainMap [ ( "remain", "rgb(50,50,200)" ), ( "leave", "rgb(200,50,50)" ) ])
+                    ([ mName "majority decision"
+                     , mMType Nominal
+                     , mScale (categoricalDomainMap [ ( "remain", "rgb(50,50,200)" ), ( "leave", "rgb(200,50,50)" ) ])
                      ]
                         ++ legend
                     )
 
         config =
             configure
-                << configuration (View [ Stroke Nothing ])
-                << configuration (Scale [ SCMaxSize w ])
-                << configuration (TitleStyle [ TFontSize 10, TBaseline AlignBottom ])
+                << configuration (coView [ vicoStroke Nothing ])
+                << configuration (coScale [ sacoMaxSize w ])
+                << configuration (coTitle [ ticoFontSize 10, ticoBaseline AlignBottom ])
     in
     toVegaLite
         [ width w

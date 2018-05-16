@@ -56,44 +56,44 @@ eclipse proj lonRotate latRotate showLabels =
 
         labelData =
             dataFromColumns []
-                << dataColumn "label" (Strings [ "No eclipse visible", "Eclipse at moonrise", "All eclipse visible", "Eclipse at moonset", "p1", "p4", "u4", "u3", "u2", "u1", "p1", "p4", "u4", "u3", "u2", "u1" ])
-                << dataColumn "lon" (Numbers [ -122, -46, 58, 155, -175, -70, -52, -33, -10, 8, 25, 90, 108, 126, 149, 167 ])
-                << dataColumn "lat" (Numbers [ -35, -35, -35, -35, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ])
+                << dataColumn "label" (strs [ "No eclipse visible", "Eclipse at moonrise", "All eclipse visible", "Eclipse at moonset", "p1", "p4", "u4", "u3", "u2", "u1", "p1", "p4", "u4", "u3", "u2", "u1" ])
+                << dataColumn "lon" (nums [ -122, -46, 58, 155, -175, -70, -52, -33, -10, 8, 25, 90, 108, 126, 149, 167 ])
+                << dataColumn "lat" (nums [ -35, -35, -35, -35, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ])
 
         pDetails =
-            [ width w, height h, projection [ PType proj, PRotate lonRotate latRotate 0 ] ]
+            [ width w, height h, projection [ prType proj, prRotate lonRotate latRotate 0 ] ]
 
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ TopojsonFeature "countries1" ]
-                       , mark Geoshape [ MStroke "white", MFill "black", MStrokeWidth 0.1, MFillOpacity 0.1 ]
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
+                       , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                        ]
                 )
 
         umbraSpec =
             let
                 trans =
-                    transform << filter (FExpr "datum.id != 'p1' && datum.id != 'p4'")
+                    transform << filter (fiExpr "datum.id != 'p1' && datum.id != 'p4'")
             in
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ TopojsonFeature "eclipse" ]
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ topojsonFeature "eclipse" ]
                        , trans []
-                       , mark Geoshape [ MStroke "#00a2f3", MFill "#00a2f3", MFillOpacity 0.1 ]
+                       , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.1 ]
                        ]
                 )
 
         penumbraSpec =
             let
                 trans =
-                    transform << filter (FExpr "datum.id === 'p1' || datum.id == 'p4'")
+                    transform << filter (fiExpr "datum.id === 'p1' || datum.id == 'p4'")
             in
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "data/eclipse.json" [ TopojsonFeature "eclipse" ]
+                    ++ [ dataFromUrl "data/eclipse.json" [ topojsonFeature "eclipse" ]
                        , trans []
-                       , mark Geoshape [ MStrokeOpacity 0, MFill "#003", MFillOpacity 0.1 ]
+                       , geoshape [ maStrokeOpacity 0, maFill "#003", maFillOpacity 0.1 ]
                        ]
                 )
 
@@ -101,11 +101,11 @@ eclipse proj lonRotate latRotate showLabels =
             let
                 enc =
                     encoding
-                        << position Longitude [ PName "lon" ]
-                        << position Latitude [ PName "lat" ]
-                        << text [ TName "label", TmType Nominal ]
-                        << size [ MNumber 9 ]
-                        << color [ MString "#333" ]
+                        << position Longitude [ pName "lon" ]
+                        << position Latitude [ pName "lat" ]
+                        << text [ tName "label", tMType Nominal ]
+                        << size [ mNum 9 ]
+                        << color [ mStr "#333" ]
             in
             asSpec (pDetails ++ [ labelData [], enc [], mark Text [] ])
 
@@ -116,7 +116,7 @@ eclipse proj lonRotate latRotate showLabels =
                 [ countrySpec, umbraSpec, penumbraSpec ]
     in
     toVegaLite
-        [ configure (configuration (View [ Stroke Nothing ]) [])
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer layers
         ]
 ```

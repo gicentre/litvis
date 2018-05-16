@@ -60,14 +60,14 @@ gridmapCrimes =
 
         crimeTrans =
             transform
-                << filter (FExpr "datum.month == '2016-06'")
-                << filter (FExpr "abs(datum.runs) >= 7")
+                << filter (fiExpr "datum.month == '2016-06'")
+                << filter (fiExpr "abs(datum.runs) >= 7")
                 << calculateAs "11 - datum.gridY" "gridN"
                 << calculateAs "datum.gridX - 1" "gridE"
                 << calculateAs "datum.zScore < 0 ? 'low' : 'high'" "crimeCats"
 
         res =
-            resolve << resolution (RScale [ ( ChColor, Independent ) ])
+            resolve << resolution (reScale [ ( ChColor, Independent ) ])
 
         w =
             220
@@ -76,7 +76,7 @@ gridmapCrimes =
         [ config
         , crimeData
         , crimeTrans []
-        , facet [ RowBy [ FName "crimeType", FmType Ordinal, FHeader [ HTitle "" ] ] ]
+        , facet [ RowBy [ fName "crimeType", fMType Ordinal, fHeader [ hdTitle "" ] ] ]
         , specification (asSpec [ res [], layer [ gridMapSpec w UserOpacity, crimeOverlay w ] ])
         ]
 ```
@@ -89,9 +89,9 @@ geoMap w =
     asSpec
         [ width w
         , height (w / 1.54)
-        , dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsTopo.json" [ TopojsonFeature "NPU" ]
-        , mark Geoshape [ MStroke "white", MStrokeWidth (w * 0.00214) ]
-        , encoding (color [ MName "id", MmType Nominal, MScale npuColours, MLegend [] ] [])
+        , dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsTopo.json" [ topojsonFeature "NPU" ]
+        , geoshape [ maStroke "white", maStrokeWidth (w * 0.00214) ]
+        , encoding (color [ mName "id", mMType Nominal, mScale npuColours, mLegend [] ] [])
         ]
 
 
@@ -108,29 +108,29 @@ gridMapSpec w op =
             case op of
                 FixedOpacity ->
                     transform
-                        << filter (FExpr "datum.opacity == 100")
+                        << filter (fiExpr "datum.opacity == 100")
                         << calculateAs "11 - datum.gridY" "gridN"
                         << calculateAs "datum.gridX - 1" "gridE"
 
                 UserOpacity ->
                     transform
-                        << filter (FSelection "userOpacity")
+                        << filter (fiSelection "userOpacity")
                         << calculateAs "11 - datum.gridY" "gridN"
                         << calculateAs "datum.gridX - 1" "gridE"
 
         gridEnc =
             encoding
-                << position X [ PName "gridE", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "gridN", PmType Quantitative, PAxis [] ]
-                << color [ MName "NPU", MmType Nominal, MScale npuColours, MLegend [] ]
-                << size [ MNumber ((gSize - 1) * (gSize - 1)) ]
+                << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
+                << color [ mName "NPU", mMType Nominal, mScale npuColours, mLegend [] ]
+                << size [ mNum ((gSize - 1) * (gSize - 1)) ]
 
         gridSel =
             selection
                 << select "userOpacity"
                     Single
-                    [ Fields [ "opacity" ]
-                    , Bind [ IRange "opacity" [ InName "Opacity ", InMin 0, InMax 100, InStep 10 ] ]
+                    [ seFields [ "opacity" ]
+                    , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
                     , Empty
                     ]
     in
@@ -141,8 +141,8 @@ gridMapSpec w op =
                 , height (w / 2.36)
                 , gridData
                 , gridTrans []
-                , (gridEnc << opacity [ MNumber 1 ]) []
-                , mark Square []
+                , (gridEnc << opacity [ mNum 1 ]) []
+                , square []
                 ]
 
         UserOpacity ->
@@ -154,14 +154,14 @@ gridMapSpec w op =
                 , gridSel []
                 , (gridEnc
                     << opacity
-                        [ MName "opacity"
-                        , MmType Quantitative
-                        , MScale [ SDomain (DNumbers [ 40, 100 ]) ]
-                        , MLegend []
+                        [ mName "opacity"
+                        , mMType Quantitative
+                        , mScale [ scDomain (doNums [ 40, 100 ]) ]
+                        , mLegend []
                         ]
                   )
                     []
-                , mark Square []
+                , square []
                 ]
 
 
@@ -170,14 +170,14 @@ crimeOverlay w =
     let
         crimeEnc =
             encoding
-                << position X [ PName "gridE", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "gridN", PmType Quantitative, PAxis [] ]
-                << shape [ MName "crimeCats", MmType Nominal, MScale crimeSymbols, MLegend [] ]
-                << color [ MName "crimeCats", MmType Nominal, MScale crimeColours, MLegend [] ]
-                << opacity [ MNumber 1 ]
-                << size [ MNumber (w / 3) ]
+                << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
+                << shape [ mName "crimeCats", mMType Nominal, mScale crimeSymbols, mLegend [] ]
+                << color [ mName "crimeCats", mMType Nominal, mScale crimeColours, mLegend [] ]
+                << opacity [ mNum 1 ]
+                << size [ mNum (w / 3) ]
     in
-    asSpec [ width w, height (w / 2.36), crimeEnc [], mark Point [ MFilled True ] ]
+    asSpec [ width w, height (w / 2.36), crimeEnc [], point [ maFilled True ] ]
 
 
 type OpacityVal
@@ -215,5 +215,5 @@ crimeColours =
 
 
 config =
-    configure (configuration (View [ Stroke Nothing ]) [])
+    configure (configuration (coView [ vicoStroke Nothing ]) [])
 ```

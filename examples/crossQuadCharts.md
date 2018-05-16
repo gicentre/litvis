@@ -46,13 +46,9 @@ The use of numerical annotation of each quad allows absolute as well as relative
 _Little difference_
 
 ^^^elm {v=(labelledCrossQuad "a" "b" "1" "2" 100 5 1 5 1)}^^^
-_'a's greater than 'b's_<!-- ^^^elm {v=(labelledCrossQuad "a" "b" "1" "2" 100 1 5 1 5 )}^^^
-_'b's greater than 'a's_ -->
+_'a's greater than 'b's_
 ^^^elm {v=(labelledCrossQuad "a" "b" "1" "2" 100 5 5 1 1)}^^^
 _'1's greater than '2's_
-
-<!-- ^^^elm {v=(labelledCrossQuad "a" "b" "1" "2" 100 1 1 5 5 )}^^^
-_'2's greater than '1's_ -->
 
 ^^^elm {v=(labelledCrossQuad "a" "b" "1" "2" 100 10 1 1 10 )}^^^
 _a1,b2 association_
@@ -128,82 +124,82 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         data =
             dataFromColumns []
-                << dataColumn "magnitude" (Numbers [ tl, tr, bl, br ])
-                << dataColumn "quadrant" (Strings [ "tl", "tr", "bl", "br" ])
-                << dataColumn "x" (Numbers [ 0, 0, 0, 0 ])
-                << dataColumn "y" (Numbers [ 0, 0, 0, 0 ])
-                << dataColumn "numLabelX" (Numbers [ -2, 2, -2, 2 ])
-                << dataColumn "numLabelY" (Numbers [ 1.2, 1.2, -1.2, -1.2 ])
-                << dataColumn "labelX" (Numbers [ -d / 2, d / 2, -d * 2, -d * 2 ])
-                << dataColumn "labelY" (Numbers [ d * 1.4, d * 1.4, d / 2, -d / 2 ])
-                << dataColumn "label" (Strings [ col1Title, col2Title, row1Title, row2Title ])
+                << dataColumn "magnitude" (nums [ tl, tr, bl, br ])
+                << dataColumn "quadrant" (strs [ "tl", "tr", "bl", "br" ])
+                << dataColumn "x" (nums [ 0, 0, 0, 0 ])
+                << dataColumn "y" (nums [ 0, 0, 0, 0 ])
+                << dataColumn "numLabelX" (nums [ -2, 2, -2, 2 ])
+                << dataColumn "numLabelY" (nums [ 1.2, 1.2, -1.2, -1.2 ])
+                << dataColumn "labelX" (nums [ -d / 2, d / 2, -d * 2, -d * 2 ])
+                << dataColumn "labelY" (nums [ d * 1.4, d * 1.4, d / 2, -d / 2 ])
+                << dataColumn "label" (strs [ col1Title, col2Title, row1Title, row2Title ])
 
         quadEnc =
             encoding
-                << position X [ PName "x", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "y", PmType Quantitative, PAxis [] ]
-                << shape [ MName "quadrant", MmType Nominal, MScale quadPaths, MLegend [] ]
+                << position X [ pName "x", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "y", pMType Quantitative, pAxis [] ]
+                << shape [ mName "quadrant", mMType Nominal, mScale quadPaths, mLegend [] ]
                 << size
-                    [ MName "magnitude"
-                    , MmType Quantitative
-                    , MScale [ SRange (RNumbers [ 0, w * 2 ]) ]
-                    , MLegend []
+                    [ mName "magnitude"
+                    , mMType Quantitative
+                    , mScale [ scRange (raNums [ 0, w * 2 ]) ]
+                    , mLegend []
                     ]
 
         quadSpec =
             asSpec
-                [ mark Point [ MFill "rgb(129,160,194)", MFillOpacity 1, MStroke "#fff", MStrokeWidth 0 ]
+                [ point [ maFill "rgb(129,160,194)", maFillOpacity 1, maStroke "#fff", maStrokeWidth 0 ]
                 , quadEnc []
                 ]
 
         axisEnc =
             encoding
-                << position X [ PName "x", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "y", PmType Quantitative, PAxis [] ]
-                << size [ MNumber (w * 2) ]
-                << shape [ MName "quadrant", MmType Nominal, MScale quadPaths, MLegend [] ]
+                << position X [ pName "x", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "y", pMType Quantitative, pAxis [] ]
+                << size [ mNum (w * 2) ]
+                << shape [ mName "quadrant", mMType Nominal, mScale quadPaths, mLegend [] ]
 
         axisSpec =
-            asSpec [ mark Point [ MStroke "#fff" ], axisEnc [] ]
+            asSpec [ point [ maStroke "#fff" ], axisEnc [] ]
 
         numLabelEnc =
             encoding
-                << position X [ PName "numLabelX", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "numLabelY", PmType Quantitative, PAxis [] ]
-                << text [ TName "magnitude", TmType Nominal ]
+                << position X [ pName "numLabelX", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "numLabelY", pMType Quantitative, pAxis [] ]
+                << text [ tName "magnitude", tMType Nominal ]
 
         numLabelSpec =
             asSpec
                 [ mark Text
-                    [ MAlign AlignCenter
-                    , MBaseline AlignMiddle
-                    , MStrokeOpacity 0
-                    , MFill "#f0f0f6"
-                    , MFontSize (d * 0.9)
+                    [ maAlign AlignCenter
+                    , maBaseline AlignMiddle
+                    , maStrokeOpacity 0
+                    , maFill "#f0f0f6"
+                    , maFontSize (d * 0.9)
                     ]
                 , numLabelEnc []
                 ]
 
         labelEnc =
             encoding
-                << position X [ PName "labelX", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "labelY", PmType Quantitative, PAxis [] ]
-                << text [ TName "label", TmType Nominal ]
+                << position X [ pName "labelX", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "labelY", pMType Quantitative, pAxis [] ]
+                << text [ tName "label", tMType Nominal ]
 
         labelSpec =
             asSpec
                 [ mark Text
-                    [ MAlign AlignCenter
-                    , MBaseline AlignTop
-                    , MStrokeOpacity 0
-                    , MFill "#666"
-                    , MFontSize d
+                    [ maAlign AlignCenter
+                    , maBaseline AlignTop
+                    , maStrokeOpacity 0
+                    , maFill "#666"
+                    , maFontSize d
                     ]
                 , labelEnc []
                 ]
     in
     toVegaLite
-        [ configure (configuration (View [ Stroke Nothing ]) [])
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
         , data []
         , width w
         , height w
