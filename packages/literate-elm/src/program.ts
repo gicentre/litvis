@@ -53,7 +53,7 @@ interface CachedProgramResult {
   status: ProgramResultStatus.SUCCEEDED | ProgramResultStatus.FAILED;
   errors: any[];
   evaluatedExpressionTextMap?: { [expressionText: string]: string };
-  debugLog?: string;
+  debugLog?: string[];
 }
 
 const PROGRAM_TIMEOUT = 20000;
@@ -111,7 +111,8 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
         chunkifiedProgram,
         (cachedResult && cachedResult.errors) || [],
       ),
-      debugLog: cachedResult.debugLog || "",
+      debugLog:
+        cachedResult.debugLog instanceof Array ? cachedResult.debugLog : [],
     };
   } else {
     return {
@@ -217,10 +218,10 @@ const runChunkifiedProgram = async (
   );
   const codeToRun = chunkifiedProgram.chunks.map(({ text }) => text).join("\n");
   try {
-    let runElmStdout;
+    let runElmResult;
     await writeFile(programPath, codeToRun, "utf8");
     try {
-      runElmStdout = await runElm(
+      runElmResult = await runElm(
         workingDirectory,
         programPath,
         outputSymbolName,
@@ -246,21 +247,11 @@ const runChunkifiedProgram = async (
       };
     }
 
-    // create a map for expression string representations from elm output
-    // only parse the last non-empty row in stdout not to include Debug.log output
-    const outputRows = (runElmStdout || "").split("\n");
-    const output = outputRows[outputRows.length - 1];
-    const debugLog = outputRows
-      .slice(0, outputRows.length - 2)
-      .join("\n")
-      .replace(/This is output from elm to the console.: /g, "")
-      .trim();
-    const evaluatedExpressionTextMap = JSON.parse(output || "{}");
     return {
       status: ProgramResultStatus.SUCCEEDED,
       errors: [],
-      evaluatedExpressionTextMap,
-      debugLog,
+      evaluatedExpressionTextMap: JSON.parse(runElmResult.output || "{}"),
+      debugLog: runElmResult.debugLog,
     };
   } catch (e) {
     // some messages need to be patched to avoid confusing output

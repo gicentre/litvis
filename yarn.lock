@@ -16,13 +16,13 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@kachkaev/run-elm@^2.4.3":
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.3.tgz#ba405efd300524a2a0fe1f5a40cfa772b8a7eae5"
+"@kachkaev/run-elm@^2.4.4":
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.4.tgz#db9e1d55053e770b10d72a830b7a6e26bbbc43dd"
   dependencies:
     babel-polyfill "^6.26.0"
     commander "^2.13.0"
-    fs-extra "^5.0.0"
+    fs-extra "^6.0.1"
     node-elm-compiler "^4.3.0"
     shelljs "^0.7.6"
 
@@ -1733,6 +1733,14 @@ fs-extra@4.0.3, fs-extra@^4.0.1:
 fs-extra@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-5.0.0.tgz#414d0110cdd06705734d055652c5411260c31abd"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^4.0.0"
+    universalify "^0.1.0"
+
+fs-extra@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-6.0.1.tgz#8abc128f7946e310135ddc93b98bddb410e7a34b"
   dependencies:
     graceful-fs "^4.1.2"
     jsonfile "^4.0.0"

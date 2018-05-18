@@ -79,7 +79,7 @@ export interface SucceededProgramResult {
   status: ProgramResultStatus.SUCCEEDED;
   messages: Message[];
   evaluatedExpressions: EvaluatedExpression[];
-  debugLog: string;
+  debugLog: string[];
 }
 
 export interface FailedProgramResult {

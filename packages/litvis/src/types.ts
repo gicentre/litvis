@@ -70,7 +70,7 @@ export interface SucceededLitvisContext {
   name: string;
   status: ProcessedLitvisContextStatus.SUCCEEDED;
   evaluatedOutputExpressions: EvaluatedOutputExpression[];
-  debugLog: string;
+  debugLog: string[];
 }
 
 export interface FailedLitvisContext {

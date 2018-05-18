@@ -284,7 +284,9 @@ export default async (
           const debugLog = literateElmProgramResult.debugLog;
           if (debugLog) {
             lastDocument.info(
-              `Debug.log results in context "${contextName}":\n${debugLog}`,
+              `Debug.log results in context "${contextName}":\n${debugLog.join(
+                "\n",
+              )}`,
               undefined,
               "literate-elm:debug-log",
             );
