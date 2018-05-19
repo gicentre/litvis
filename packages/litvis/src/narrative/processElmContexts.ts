@@ -281,10 +281,9 @@ export default async (
           };
           return processedContext;
         } else {
-          const debugLog = literateElmProgramResult.debugLog;
-          if (debugLog && debugLog.length) {
+          if (literateElmProgramResult.debugLog) {
             lastDocument.info(
-              `Debug.log results in context "${contextName}":\n${debugLog.join(
+              `Debug.log results in context "${contextName}":\n${literateElmProgramResult.debugLog.join(
                 "\n",
               )}`,
               undefined,
@@ -324,7 +323,7 @@ export default async (
             name: contextName,
             status: literateElmProgramResult.status,
             evaluatedOutputExpressions,
-            debugLog,
+            debugLog: literateElmProgramResult.debugLog,
           };
           return processedContext;
         }
