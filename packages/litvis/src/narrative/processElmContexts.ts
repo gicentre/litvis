@@ -281,7 +281,7 @@ export default async (
           };
           return processedContext;
         } else {
-          if (literateElmProgramResult.debugLog) {
+          if (literateElmProgramResult.debugLog.length) {
             lastDocument.info(
               `Debug.log results in context "${contextName}":\n${literateElmProgramResult.debugLog.join(
                 "\n",

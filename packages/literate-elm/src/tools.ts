@@ -35,7 +35,7 @@ export async function runElm(
   outputSymbolName: string,
 ): Promise<string> {
   const result = await executeRunElm(modulePath, {
-    reportFormat: "json",
+    report: "json",
     outputName: outputSymbolName,
     projectDir: projectDirectory,
   });
