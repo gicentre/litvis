@@ -282,7 +282,7 @@ export default async (
           return processedContext;
         } else {
           const debugLog = literateElmProgramResult.debugLog;
-          if (debugLog) {
+          if (debugLog && debugLog.length) {
             lastDocument.info(
               `Debug.log results in context "${contextName}":\n${debugLog.join(
                 "\n",
