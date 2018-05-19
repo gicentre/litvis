@@ -21,8 +21,8 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 
 # Importing geographic datasets into elm-vega
 
-This tutorial leads you through the workflow for importing arbitrary spatial datasets into elm-vega, and therefore into litvis documents.
-Assuming the dataset you wish to import is a shapefile, the process involves the following steps:
+This tutorial leads you through the workflow for importing spatial datasets into elm-vega, and therefore into litvis documents.
+If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJson format, just jump to step 3).
 
 - Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
 - Convert the shapefile into a [geoJson](http://geojson.org) file.
@@ -66,7 +66,7 @@ Download the shapefiles, noting that you will need the geometry (_something_.shp
 For this tutorial we will use `London_Borough_Excluding_MHW` from the [London Data Store](https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london).
 
 As part of the conversion we will convert the geometry from the projected coordinates it currently uses into 'unprojected' longitude/latitude spherical coordinates.
-This requires us to know what the projection the source data is using.
+This requires us to know what the projection the source data are using.
 Typically a shapefile collection will come with a `.proj` file that will contain the projection information.
 We need to provide these projection parameters to `gdal`, but thankfully most standard projections have a [EPSG code](http://epsg.io) referencing this information which we can pass to the converter.
 In our case the data use the Ordnance Survey National Grid with an [EPSG of 27700](http://epsg.io/27700).
@@ -110,7 +110,7 @@ The first line splits the geoJson file so that each feature (borough boundary in
 The second line selects a property and adds it as an `id` to each line while deleting the other properties as they are no longer needed.
 The third line converts the split feature-per-line file back into a `geoJson` file with the new `id` as well as the original properties.
 
-Note that if you wish to do more complex data manipulation such as combining attributes from multiple files or calculating new feature attributes, it is on these feature-per-line `ndjson` files that it is performed. See Bostock's [command line cartography](https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3) for examples.
+Note that if you wish to do more complex data manipulation such as combining attributes from multiple files or calculating new feature attributes, it is on these feature-per-line `ndjson` files that it is performed. See Mike Bostock's [command line cartography](https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3) for examples.
 
 ## 4. Convert to topoJson
 
@@ -122,9 +122,9 @@ By converting to the `topoJson` format we can use a much more efficient data str
 geo2topo boroughs=boroughs_id_geo.json > boroughs_topo.json
 ```
 
-In this conversion we give a name to the new geotopo object (here called `boroughs`) that we will reference later in elm-vega.
+In this conversion we give a name to the new feature object (here called `boroughs`) that we will reference later in elm-vega.
 
-Again, as you are learning to use this workflow, it can be helpful to name the resulting file with `_topo` appended so we know the `.json` file is now in `topoJson` not `geoJson` format.
+Again, as you are learning to use this workflow, it can be helpful to name the resulting file with `_topo` appended so we know the `.json` file is now in topoJSON, not geoJSON, format.
 
 ## 5. Simplify geometry
 
@@ -133,7 +133,7 @@ We can however shrink the file size much more by (i) simplifying complex lines; 
 We can do this because our aim is to produce a file for rendering, not accurate geoprocessing.
 
 To simplify the line we need to specify a _threshold_ that determines the degree of simplification.
-You can think of this threshold as being the distance below which we attempt to make all boundary lines straight.
+You can think of this threshold as being the length of line details below which we attempt to make all boundary lines straight.
 The larger the threshold, the simpler the boundary lines look.
 Because we are dealing with latitude and longitude coordinates, that threshold is expressed as [steradians](https://en.wikipedia.org/wiki/Steradian).
 Tyically, useful thresholds will be in the order of 1e-9 steradians but it pays to experiment to find a suitable level of simplification.
@@ -384,7 +384,7 @@ tubeLines =
         ]
 ```
 
-We can improve the design by thickening the lines, giving them their standard tube line colours and tweeking the legend:
+We can improve the design by thickening the lines, giving them their standard tube line colours and moving the legend to the bottom-right corner:
 
 ```elm {l=hidden}
 tubeLineColors : List ScaleProperty
