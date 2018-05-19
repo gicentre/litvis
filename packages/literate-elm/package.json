@@ -1,6 +1,6 @@
 {
   "name": "literate-elm",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Runs literate Elm code blocks and calculates Elm expressions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
