@@ -41,7 +41,7 @@ myRegion =
 Note that we need to provide an `order` field to define the order in which the coordinates representing each point of the boundary are to be linked with a line mark.
 Note also that while the region has only 4 corners, we provide 5 sets of coordinate pairs, the last one matching the first one to _close_ the shape.
 
-With the boundary region defined we can encode it as a `Line` mark using the `X` and `Y` `position` channels:
+With the boundary region defined we can encode it as a `line` mark using the `X` and `Y` `position` channels:
 
 ```elm {l v s}
 planar : Spec
@@ -166,7 +166,7 @@ geo =
 
 Notice that not only is the `geoshape` a more concise specification than the region boundary as a `line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
 
-As we shall see, larger geo data are more efficiently stored not as geoJSON, but [topoJson](https://github.com/topojson/topojson/wiki) files.
+As we shall see, larger geo data are more efficiently stored not as geoJSON, but as [topoJson](https://github.com/topojson/topojson/wiki) files.
 These store the same geometric information as their geoJSON counterparts but addtionally represent the _topology_ of the features.
 Here is the equivalent topoJSON file representing the geoJSON above:
 
@@ -331,8 +331,8 @@ geo =
 
 ## 4. Feature Properties
 
-The `id` is a useful and concise way of identifying a single property in a topoJSON file, but onle one `id` is permitted for each feature.
-topoJSON and GeoJSON files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
+The `id` is a useful and concise way of identifying a single property in a topoJSON file, but only one `id` is permitted for each feature.
+TopoJSON and GeoJSON files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
 Here is an example of our two-region topoJSON file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
 
 ```Javascript
@@ -542,7 +542,7 @@ geo =
 In all the examples above the topoJSON and geoJSON has been read from external files.
 This is likely the most common use-case, but sometimes it can be useful to generate the content programmtically.
 This can be achieved using elm-vega's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
-Here, for example, is a simple rectangular feature (equivalent to `geoJson 1.json` above) generated programmatically:
+Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
 
 ```elm {s l}
 geo : Spec
