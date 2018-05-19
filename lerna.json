@@ -5,7 +5,7 @@
   "version": "independent",
   "command": {
     "publish": {
-      "ignore": ["*.md", "jest.config.js", "*.test.ts"]
+      "ignoreChanges": ["*.md", "jest.config.js", "*.test.ts"]
     }
   }
 }
