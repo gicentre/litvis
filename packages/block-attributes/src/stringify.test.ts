@@ -1,6 +1,6 @@
-import { stringify } from ".";
+import stringify from "./stringify";
 
-import testCases from "./testCases";
+import testCases from "./fixtures/sharedTestCases";
 
 describe("stringify()", () => {
   testCases.map(

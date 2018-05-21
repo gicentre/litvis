@@ -14,8 +14,8 @@
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",
     "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest --no-coverage",
-    "test:coverage": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "block-attributes": "^0.2.2",

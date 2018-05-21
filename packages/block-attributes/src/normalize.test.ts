@@ -1,6 +1,6 @@
 import normalize from "./normalize";
 
-import testCases from "./testCases";
+import testCases from "./fixtures/sharedTestCases";
 
 describe("normalize()", () => {
   testCases.map(({ attributes = null, normalizedAttributes = null }) => {

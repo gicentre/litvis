@@ -1,7 +1,7 @@
 *
 !dist/**/*
 dist/**/*.test.*
-dist/**/testCases.*
+dist/**/fixtures/*
 !package.json
 !README.md
 !LICENSE

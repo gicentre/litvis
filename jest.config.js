@@ -1,9 +1,5 @@
+// this config is used in "test" and "test:coverage" npm scripts
 module.exports = {
-  collectCoverage: true,
-  collectCoverageFrom: ["src/**/*.{ts,tsx,js}"],
-  moduleFileExtensions: ["ts", "tsx", "js"],
-  testMatch: ["**/src/**/?(*.)(spec|test).(j|t)s?(x)"],
-  transform: {
-    "^.+\\.tsx?$": "ts-jest",
-  },
+  collectCoverageFrom: ["**/src/**/*.{ts,tsx,js}", "!**/fixtures/**"],
+  projects: ["<rootDir>/packages/*"],
 };

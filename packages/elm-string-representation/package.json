@@ -17,8 +17,8 @@
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",
     "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest --no-coverage",
-    "test:coverage": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "lru-cache": "^4.1.2"
