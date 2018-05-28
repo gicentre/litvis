@@ -4230,9 +4230,9 @@ prettier-plugin-elm@^0.3.0:
     serialize-error "^2.1.0"
     temp-dir "^1.0.0"
 
-"prettier@https://github.com/gicentre/prettier#1.13.0-beta.0":
-  version "1.13.0-beta.0"
-  resolved "https://github.com/gicentre/prettier#ab4c72f95b315e1596bcd4e9301c93a1a3a7ed52"
+prettier@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.0.tgz#054de8d5fb1a4405c845d16183f58a2c301f6f16"
 
 pretty-format@^22.4.3:
   version "22.4.3"
