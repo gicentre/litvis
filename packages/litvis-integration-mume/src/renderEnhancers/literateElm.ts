@@ -207,8 +207,7 @@ export default async function enhance(
         case OutputFormat.V: {
           const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
           const language =
-            _
-              .get(vegaOrVegaLiteJson, "$schema", "")
+            _.get(vegaOrVegaLiteJson, "$schema", "")
               .toLowerCase()
               .indexOf("lite") !== -1
               ? "vega-lite"
