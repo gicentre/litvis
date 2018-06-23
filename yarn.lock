@@ -16,16 +16,6 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@kachkaev/run-elm@^2.4.4":
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-2.4.4.tgz#db9e1d55053e770b10d72a830b7a6e26bbbc43dd"
-  dependencies:
-    babel-polyfill "^6.26.0"
-    commander "^2.13.0"
-    fs-extra "^6.0.1"
-    node-elm-compiler "^4.3.0"
-    shelljs "^0.7.6"
-
 "@lerna/add@^3.0.0-beta.21":
   version "3.0.0-beta.21"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.0.0-beta.21.tgz#5634492930b5f97eca3775b85f39f9e382680425"
@@ -4749,6 +4739,16 @@ run-async@^2.2.0:
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"
   dependencies:
     is-promise "^2.1.0"
+
+run-elm@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/run-elm/-/run-elm-2.3.0.tgz#970b335ecaf611899c4e8aa7a3fa65b52a994c00"
+  dependencies:
+    babel-polyfill "^6.26.0"
+    commander "^2.13.0"
+    fs-extra "^6.0.1"
+    node-elm-compiler "^4.3.0"
+    shelljs "^0.7.6"
 
 rxjs@^5.5.2:
   version "5.5.11"
