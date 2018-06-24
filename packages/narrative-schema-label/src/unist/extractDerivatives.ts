@@ -2,9 +2,12 @@ import { parse as parseBlockInfo } from "block-info";
 import * as _ from "lodash";
 import * as visit from "unist-util-visit";
 import { VFile } from "vfile";
-import { LabelType } from "../types";
+import { LabelErrorType, LabelType } from "../types";
+import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";
 
 export default () => (ast, vFile: VFile<any>) => {
+  const idPrefix = getLabelIdPrefix(vFile);
+  let idIndex = 0;
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
     const parsedInfo = parseBlockInfo(labelNode.data.info);
     const labelName = parsedInfo.language;
@@ -15,31 +18,36 @@ export default () => (ast, vFile: VFile<any>) => {
     labelNode.data.labelName = labelName;
     labelNode.data.labelAttributes = labelAttributes;
 
+    // id helps litvis-integration-mume match labels in uniast
+    // with the ones it finds in markdown-it tree
+    labelNode.data.id = `${idPrefix}-${idIndex}`;
+    idIndex += 1;
+
     if (!labelName) {
-      labelNode.data.syntaxError = true;
-      vFile.message(
-        `Label cannot be blank.`,
+      markLabelNodeAsErroneous(
+        vFile,
         labelNode,
-        "litvis:narrative-schema-label",
+        LabelErrorType.BLANK,
+        `Label cannot be blank.`,
       );
       return;
     }
     if (labelType === LabelType.INVALID) {
-      labelNode.data.syntaxError = true;
-      vFile.message(
-        `Label ${labelName} is neither single nor paired, please change the endings.`,
+      markLabelNodeAsErroneous(
+        vFile,
         labelNode,
-        "litvis:narrative-schema-label",
+        LabelErrorType.INVALID,
+        `Label ${labelName} is neither single nor paired, please change the endings.`,
       );
       return;
     }
 
     if (labelType === LabelType.PAIRED_CLOSING && !_.isEmpty(labelAttributes)) {
-      labelNode.data.syntaxError = true;
-      vFile.message(
-        `A closing paired label cannot have attributes.`,
+      markLabelNodeAsErroneous(
+        vFile,
         labelNode,
-        "litvis:narrative-schema-label",
+        LabelErrorType.CLOSING_WITH_ATTRIBUTES,
+        `A closing paired label cannot have attributes.`,
       );
       return;
     }

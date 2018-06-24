@@ -22,10 +22,12 @@ export default (
   // hack labels
   // TODO: replace with a cleaner implementation
   const postEnhancedHtml = html
+    // block labels
     .replace(
       /<p>(<litvis-narrative-schema-label>.*<\/litvis-narrative-schema-label>)<\/p>/g,
       "$1",
     )
+    // inline labels
     .replace(
       /<litvis-narrative-schema-label>(.*)<\/litvis-narrative-schema-label>/g,
       (__, inner) => unescapeString(inner),

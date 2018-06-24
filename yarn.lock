@@ -541,7 +541,7 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash@*", "@types/lodash@^4.14.106", "@types/lodash@^4.14.108":
+"@types/lodash@*", "@types/lodash@^4.14.106", "@types/lodash@^4.14.108", "@types/lodash@^4.14.110":
   version "4.14.110"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.110.tgz#fb07498f84152947f30ea09d89207ca07123461e"
 
@@ -5480,6 +5480,10 @@ unist-util-select@^1.5.0:
 unist-util-stringify-position@^1.0.0, unist-util-stringify-position@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/unist-util-stringify-position/-/unist-util-stringify-position-1.1.2.tgz#3f37fcf351279dcbca7480ab5889bb8a832ee1c6"
+
+unist-util-visit-parents@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/unist-util-visit-parents/-/unist-util-visit-parents-1.1.2.tgz#f6e3afee8bdbf961c0e6f028ea3c0480028c3d06"
 
 unist-util-visit@^1.1.0, unist-util-visit@^1.3.0:
   version "1.3.1"

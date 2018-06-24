@@ -1,4 +1,4 @@
-import { findAndPair as findAndPairLabels } from "narrative-schema-label";
+import { processUnist as extractLabels } from "narrative-schema-label";
 import * as frontmatter from "remark-frontmatter";
 import * as remarkParse from "remark-parse";
 import * as unified from "unified";
@@ -18,7 +18,7 @@ export const engine = unified()
   .use(extractAttributeDerivatives)
   .use(extractOutputItems)
   .use(processFrontmatter)
-  .use(findAndPairLabels);
+  .use(extractLabels);
 
 export default async (vFile: LitvisDocument) => {
   vFile.data.root = await engine.parse(vFile);

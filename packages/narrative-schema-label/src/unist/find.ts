@@ -1,5 +1,5 @@
-import deriveType from "../deriveType";
 import { LabelFence } from "../types";
+import { deriveLabelType } from "../utils";
 
 function locator(value, fromIndex) {
   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
@@ -45,9 +45,8 @@ export default function plugin() {
         return eat(start + subvalue + end)({
           type: "narrativeSchemaLabel",
           data: {
-            hName: "narrativeSchemaLabel",
             info: subvalue,
-            labelType: deriveType(start, end),
+            labelType: deriveLabelType(start, end),
           },
         });
       }

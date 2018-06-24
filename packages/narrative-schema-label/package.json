@@ -27,14 +27,18 @@
     "lodash": "^4.17.5",
     "lru-cache": "^4.1.2",
     "narrative-schema-common": "^0.1.0",
+    "object-hash": "^1.3.0",
     "unist-util-visit": "^1.3.0",
+    "unist-util-visit-parents": "^1.1.2",
     "vfile": "^2.3.0"
   },
   "devDependencies": {
     "@types/handlebars": "^4.0.37",
     "@types/html-entities": "^1.2.16",
     "@types/jest": "^22.2.3",
+    "@types/lodash": "^4.14.110",
     "@types/lru-cache": "^4.1.0",
+    "@types/object-hash": "^1.2.0",
     "@types/vfile": "^2.2.2",
     "jest": "^22.4.3",
     "ts-jest": "^22.4.4",

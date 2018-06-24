@@ -1,9 +1,8 @@
-import { BlockInfo } from "block-info";
 import { LitvisNarrative } from "litvis";
 import * as _ from "lodash";
-import { LabelType } from "narrative-schema-label";
-import { renderHtmlTemplate } from "narrative-schema-label";
+import { getLabelIdPrefix } from "narrative-schema-label";
 import { getCssChunks } from "narrative-schema-styling";
+import * as select from "unist-util-select";
 import { LitvisEnhancerCache } from "../types";
 
 export default async function enhance(
@@ -32,84 +31,47 @@ export default async function enhance(
     $.root().prepend("", ...arrayOf$StyleTags);
   }
 
+  const labelNodesInAst = select(
+    processedNarrative.combinedAst,
+    "narrativeSchemaLabel",
+  );
+  const labelNodeInAstById = _.keyBy(labelNodesInAst, (node) => node.data.id);
+
+  const labelIdPrefix = getLabelIdPrefix(
+    processedNarrative.documents[processedNarrative.documents.length - 1],
+  );
+  let labelIdIndex = 0;
+
   $('[data-role="litvis:narrative-schema-label"]').each((i, el) => {
+    const labelId = `${labelIdPrefix}-${labelIdIndex}`;
+    labelIdIndex += 1;
+
     const $el = $(el);
-    const labelType: LabelType = $el.data("labelType");
-    if (labelType === LabelType.INVALID) {
+    const labelNodeInAst = labelNodeInAstById[labelId];
+
+    if (!labelNodeInAst) {
       markLabelAsErroneous(
         $el,
-        "The label is neither single nor paired, please change the endings.",
-      );
-      return;
-    }
-    const info: BlockInfo = $el.data("parsedInfo");
-    const labelName = info.language;
-    const labelAttributes = info.attributes;
-    if (labelType === LabelType.PAIRED_CLOSING && !_.isEmpty(labelAttributes)) {
-      markLabelAsErroneous(
-        $el,
-        "A closing paired label cannot have attributes.",
+        "This label was not detected correctly by litivs-integration-mume. Please report a bug at https://github.com/gicentre/litvis.",
       );
       return;
     }
 
-    const labelDefinition =
-      processedNarrative.composedNarrativeSchema &&
-      processedNarrative.composedNarrativeSchema.labelByName[labelName];
-
-    if (!labelDefinition) {
+    if (labelNodeInAst.data.errorType) {
       markLabelAsErroneous(
         $el,
-        `Unknown label name ‘${labelName}’. Please add a dependency to a narrative schema that describes this label.`,
+        labelNodeInAst.data.errorCaption || "Syntax error",
       );
       return;
     }
 
-    if (labelType === LabelType.SINGLE) {
-      if (!labelDefinition.data.single) {
-        markLabelAsErroneous(
-          $el,
-          `‘${labelName}’ cannot be used as single (no-paired) label`,
-        );
-        return;
-      }
-      try {
-        const html = renderHtmlTemplate(
-          labelDefinition.data.single.htmlTemplate,
-          labelName,
-          labelType,
-          info.attributes,
-        );
-        $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
-      } catch (e) {
-        markLabelAsErroneous($el, e.message);
-        return;
-      }
-    } else {
-      if (!labelDefinition.data.paired) {
-        markLabelAsErroneous(
-          $el,
-          `‘${labelName}’ cannot be used as paired label`,
-        );
-        return;
-      }
-      try {
-        const html = renderHtmlTemplate(
-          labelDefinition.data.paired.htmlTemplate,
-          labelName,
-          labelType,
-          info.attributes,
-        );
-        $el.replaceWith($("<litvis-narrative-schema-label/>").text(html));
-      } catch (e) {
-        markLabelAsErroneous($el, e.message);
-        return;
-      }
-    }
+    $el.replaceWith(
+      $("<litvis-narrative-schema-label/>").text(labelNodeInAst.data.html),
+    );
   });
 }
 
 const markLabelAsErroneous = ($el: Cheerio, message) => {
-  $el.attr("style", "background: #fdd");
+  $el.children().attr("style", "background: #fdd");
   $el.attr("title", message);
 };

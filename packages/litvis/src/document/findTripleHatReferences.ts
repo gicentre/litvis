@@ -51,7 +51,6 @@ export default function plugin() {
         return eat(TRIPLE_HAT + subvalue + TRIPLE_HAT)({
           type: "tripleHatReference",
           data: {
-            hName: "tripleHatReference",
             info: subvalue,
           },
         });

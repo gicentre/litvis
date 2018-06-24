@@ -1,10 +1,6 @@
-import { parse as parseBlockInfo } from "block-info";
 import { Html5Entities } from "html-entities";
 import { MarkdownIt } from "markdown-it";
-import {
-  deriveType as deriveLabelType,
-  LabelFence,
-} from "narrative-schema-label";
+import { LabelFence } from "narrative-schema-label";
 
 const escapeString = new Html5Entities().encode;
 
@@ -50,10 +46,11 @@ export default (md: MarkdownIt) => {
         token.content = content;
         token.openTag = state.src.slice(startPos, startPos + openTagLength);
         token.closeTag = state.src.slice(endPos, endPos + closeTagLength);
-        token.labelType = deriveLabelType(token.openTag, token.closeTag);
         token.displayMode = false;
-
         state.pos += content.length + openTagLength + openTagLength;
+        // no need to derive label attributes in markdown-it
+        // as they are extracted in unist by litvis module;
+        // the only thing necessary is to derive label id in enhancer and match it
         return true;
       } else {
         return false;
@@ -63,12 +60,7 @@ export default (md: MarkdownIt) => {
 
   md.renderer.rules["litvis:narrative-schema-label"] = (tokens, idx) => {
     const token: any = tokens[idx];
-    const parsedInfo = parseBlockInfo(token.content.trim());
-    return `<span data-role="litvis:narrative-schema-label" data-info="${escapeString(
-      token.content,
-    )}" data-labelType="${token.labelType}" data-parsedInfo="${escapeString(
-      JSON.stringify(parsedInfo),
-    )}"><code>${escapeString(
+    return `<span data-role="litvis:narrative-schema-label"><code>${escapeString(
       token.openTag + token.content + token.closeTag,
     )}</code></span>`;
   };

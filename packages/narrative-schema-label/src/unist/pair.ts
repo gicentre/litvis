@@ -1,84 +1,68 @@
-// import * as _ from "lodash";
-import { EntityDefinition } from "narrative-schema-common";
 import * as visit from "unist-util-visit";
 import { VFile } from "vfile";
-import renderHtmlTemplate from "../renderHtmlTemplate";
-import { LabelType } from "../types";
+import { LabelErrorType, LabelType } from "../types";
+import { markLabelNodeAsErroneous } from "../utils";
 
-export default (
-  ast,
-  vFile: VFile<any>,
-  labelDefinitionsByName: { [name: string]: EntityDefinition },
-) => {
-  return visit(ast, "narrativeSchemaLabel", (labelNode) => {
-    if (labelNode.data.syntaxError) {
-      return;
-    }
-
-    const labelType = labelNode.data.labelType;
-    const labelName = labelNode.data.labelName;
-    const labelAttributes = labelNode.data.labelAttributes;
-
-    const labelDefinition = labelDefinitionsByName[labelName];
-    if (!labelDefinition) {
-      vFile.message(
-        `Label ${labelName} cannot be used because it does not exist in the linked narrative schemas or is not valid.`,
-        labelNode,
-        "litvis:narrative-schema-label",
-      );
-      return;
-    }
-
-    if (labelType === LabelType.SINGLE) {
-      if (!labelDefinition.data.single) {
-        vFile.message(
-          `Label ${labelName} cannot be used as single (no-paired), according to the linked narrative schemas.`,
-          labelNode,
-          "litvis:narrative-schema-label",
-        );
+export default () => (ast, vFile: VFile<any>) => {
+  return visit(
+    ast,
+    "narrativeSchemaLabel",
+    (labelNode, index, parent) => {
+      if (
+        labelNode.data.errorType ||
+        labelNode.data.labelType !== LabelType.PAIRED_OPENING
+      ) {
         return;
       }
-      try {
-        const html = renderHtmlTemplate(
-          labelDefinition.data.single.htmlTemplate,
-          labelName,
-          labelType,
-          labelAttributes,
-        );
-        labelNode.data.html = html;
-      } catch (e) {
-        vFile.message(
-          `Label ${labelName} cannot be converted to html. Is htmlTemplate correct?`,
-          labelNode,
-          "litvis:narrative-schema-label",
-        );
+      const nestedOpenLabelNodes: any[] = [];
+      for (let i = index + 1; i < parent.children.length; i += 1) {
+        const possibleMatch = parent.children[i];
+        if (possibleMatch.type !== "narrativeSchemaLabel") {
+          continue;
+        }
+        if (
+          possibleMatch.data.labelType === LabelType.PAIRED_CLOSING &&
+          possibleMatch.data.labelName === labelNode.data.labelName &&
+          !possibleMatch.data.errorType &&
+          !possibleMatch.data.pairedId
+        ) {
+          possibleMatch.data.pairedId = labelNode.data.id;
+          labelNode.data.pairedId = possibleMatch.data.id;
+          break;
+        }
+
+        if (possibleMatch.data.labelType === LabelType.PAIRED_OPENING) {
+          if (possibleMatch.data.pairedId) {
+            nestedOpenLabelNodes.unshift(possibleMatch);
+          } else {
+            markLabelNodeAsErroneous(
+              vFile,
+              labelNode,
+              LabelErrorType.BROKEN_NESTING,
+              "There is an issue with pairing labels with each other. Make sure all labels are correctly nested and spelled.",
+            );
+            break;
+          }
+        }
+
+        if (possibleMatch.data.labelType === LabelType.PAIRED_CLOSING) {
+          if (
+            !nestedOpenLabelNodes.length ||
+            nestedOpenLabelNodes[0].data.pairedId !== possibleMatch.data.id
+          ) {
+            markLabelNodeAsErroneous(
+              vFile,
+              labelNode,
+              LabelErrorType.BROKEN_NESTING,
+              "There is an issue with pairing labels with each other. Make sure all labels are correctly nested and spelled.",
+            );
+            break;
+          } else {
+            nestedOpenLabelNodes.shift();
+          }
+        }
       }
-      return;
-    }
-
-    if (!labelDefinition.data.paired) {
-      vFile.message(
-        `Label ${labelName} cannot be used as paired, according to the linked narrative schemas.`,
-        labelNode,
-        "litvis:narrative-schema-label",
-      );
-      return;
-    }
-
-    try {
-      const html = renderHtmlTemplate(
-        labelDefinition.data.paired.htmlTemplate,
-        labelName,
-        labelType,
-        labelAttributes,
-      );
-      labelNode.data.html = html;
-    } catch (e) {
-      vFile.message(
-        `Label ${labelName} cannot be converted to html. Is htmlTemplate correct?`,
-        labelNode,
-        "litvis:narrative-schema-label",
-      );
-    }
-  });
+    },
+    true /* reverse */,
+  );
 };

@@ -16,7 +16,7 @@ import {
   NarrativeSchema,
 } from "narrative-schema-common";
 import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
-import isValidLabelName from "./isValidLabelName";
+import { isValidLabelName } from "./utils";
 
 export default (
   dataWithPosition: DataWithPosition,
