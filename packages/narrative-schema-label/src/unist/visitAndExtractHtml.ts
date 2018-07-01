@@ -11,7 +11,7 @@ export default (
   labelDefinitionsByName: { [name: string]: EntityDefinition },
 ) => {
   return visit(ast, "narrativeSchemaLabel", (labelNode) => {
-    if (labelNode.data.error) {
+    if (labelNode.data.errorType) {
       return;
     }
 
