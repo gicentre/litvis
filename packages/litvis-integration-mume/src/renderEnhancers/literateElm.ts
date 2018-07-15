@@ -193,6 +193,14 @@ export default async function enhance(
             evaluatedOutputExpression.data.valueStringRepresentation,
           );
           break;
+        case OutputFormat.H:
+          $result = $(
+            `${evaluatedOutputExpression.data.valueStringRepresentation}`
+              .replace(/\\"/g, '"')
+              .replace(/^"/, "")
+              .replace(/"$/, ""),
+          );
+          break;
         case OutputFormat.J:
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
