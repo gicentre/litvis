@@ -88,7 +88,7 @@ Now suppose we've had enough experimentation with line charts and we want to con
 To try an alternative set of designs, we can create another document `incomeScatterplot.md` which also follows `incomeRoot`:
 
 {(question |}
-Copy the file [incomeScatterplot.md](incomeScatterplot.md) into the same folder as `incomeRoot.md` and view the results in the preview pane.
+Copy the file [incomeScatterplots.md](incomeScatterplots.md) into the same folder as `incomeRoot.md` and view the results in the preview pane.
 {|question )}
 
 This should generate a page where we can explore connected scatterplot designs, a portion of which is shown below:
