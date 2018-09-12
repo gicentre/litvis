@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 narrative-schemas:
   - ../narrative-schemas/idiom.yml
 ---
@@ -170,7 +170,7 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         numLabelSpec =
             asSpec
-                [ mark Text
+                [ textMark
                     [ maAlign AlignCenter
                     , maBaseline AlignMiddle
                     , maStrokeOpacity 0
@@ -188,7 +188,7 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         labelSpec =
             asSpec
-                [ mark Text
+                [ textMark
                     [ maAlign AlignCenter
                     , maBaseline AlignTop
                     , maStrokeOpacity 0

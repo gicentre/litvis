@@ -29,7 +29,7 @@ We can start, as we did in the previous chapter, by creating litvis document wit
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 ---
 
 # Household Income
@@ -66,7 +66,7 @@ This should generate formatted output similar to the following where you can exp
 ![line chart output](images/linecharts.png)
 
 {(question |}
-If you are feeling confident with [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) you can try further experiments with line charts by editing `incomeLineCharts.md`
+If you are feeling confident with [elm-vega 3.0](https://package.elm-lang.org/packages/gicentre/elm-vega/3.0.1) you can try further experiments with line charts by editing `incomeLineCharts.md`
 {|question )}
 
 Notice that the header of this new file doen't have the usual `elm dependencies` lines, nor does it import anything or create a `data` function.

@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
     dependencies:
-        gicentre/elm-vega: latest
+        gicentre/elm-vega: "3.0"
 narrative-schemas:
         - ../narrative-schemas/ddd
 ---
@@ -76,7 +76,7 @@ gridmapCrimes =
         [ config
         , crimeData
         , crimeTrans []
-        , facet [ RowBy [ fName "crimeType", fMType Ordinal, fHeader [ hdTitle "" ] ] ]
+        , facet [ rowBy [ fName "crimeType", fMType Ordinal, fHeader [ hdTitle "" ] ] ]
         , specification (asSpec [ res [], layer [ gridMapSpec w UserOpacity, crimeOverlay w ] ])
         ]
 ```

@@ -25,6 +25,8 @@ Selections involve three components:
 
 By way of an example consider this colored scatterplot where any point can be selected and all non-selected points are turned grey (_click on a point to select it_):
 
+_Note that in the interactive examples that follow, the code block header must include the `interactive` keyword, e.g. `elm {v l interactive}` (this might not be apparent if you are viewing this document directly in github)._
+
 ```elm {v l s interactive}
 scatterplot : Spec
 scatterplot =
@@ -372,8 +374,7 @@ crossFilter =
 
         totalEnc =
             encoding
-                << position X [ pRepeat Column, pMType
- Quantitative ]
+                << position X [ pRepeat Column, pMType Quantitative ]
                 << position Y [ pAggregate Count, pMType Quantitative ]
 
         selectedEnc =

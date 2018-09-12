@@ -107,7 +107,7 @@ eclipse proj lonRotate latRotate showLabels =
                         << size [ mNum 9 ]
                         << color [ mStr "#333" ]
             in
-            asSpec (pDetails ++ [ labelData [], enc [], mark Text [] ])
+            asSpec (pDetails ++ [ labelData [], enc [], textMark [] ])
 
         layers =
             if showLabels then

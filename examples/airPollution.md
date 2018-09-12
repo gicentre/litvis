@@ -4,7 +4,7 @@ narrative-schemas:
   - ../narrative-schemas/socratic-questions
 elm:
     dependencies:
-        gicentre/elm-vega: latest
+        gicentre/elm-vega: "3.0"
 ---
 
 @import "assets/litvis.less"
@@ -178,7 +178,7 @@ airPollution : Spec
 airPollution =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ Parse [ ( "dateTime", FoDate "%Y-%m-%dT%H:%M" ) ] ]
+            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         backgroundTrans =
             transform

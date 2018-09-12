@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 ---
 
 # Household Income

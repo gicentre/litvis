@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 
 narrative-schemas:
     - ../schemas/tutorial
@@ -75,7 +75,7 @@ To see the schema in action, copy the schema above into a file `todo.yaml` then 
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 
 narrative-schemas:
   - todo
@@ -172,7 +172,7 @@ Below is an example litvis document that conforms to this narrative schema:
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 
 narrative-schemas:
   - newIdiom

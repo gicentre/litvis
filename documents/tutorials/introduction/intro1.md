@@ -32,7 +32,7 @@ Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the f
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 ---
 
 ```elm {l=hidden}
@@ -73,11 +73,11 @@ The top of the document is the _header_ fenced with a pair of `---` lines:
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 ---
 ```
 
-We will be using the [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) package to provide visualization specifications in our litvis documents, so this header just ensures that the relevant module is installed and ready to use.
+We will be using the [elm-vega 3.0](https://package.elm-lang.org/packages/gicentre/elm-vega/3.0.1) package to provide visualization specifications in our litvis documents, so this header just ensures that the relevant module is installed and ready to use.
 
 Litvis documents allow you to write and code directly within them but also to control whether or not the code should be displayed in the formatted output.
 The code block
@@ -89,7 +89,7 @@ import VegaLite exposing (..)
 ````
 
 provides a fenced block of code between a pair of ` ``` ` lines where `elm` indicates the code will be written in the [elm language](http://elm-lang.org) and the `{l=hidden}` prevents this particular block of code from being displayed in the formatted output pane.
-The code itself just imports the module `VegaLite` from [elm-vega](http://package.elm-lang.org/packages/gicentre/elm-vega/latest) so we can use it later on in the litvis document.
+The code itself just imports the module `VegaLite` from [elm-vega 3.0](https://package.elm-lang.org/packages/gicentre/elm-vega/3.0.1) so we can use it later on in the litvis document.
 
 The header and hidden import code block are commonly used at the start of litvis documents to set things up nicely, so can usually just be copied from from one document to the next.
 

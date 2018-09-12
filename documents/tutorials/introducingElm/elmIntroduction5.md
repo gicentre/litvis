@@ -4,7 +4,7 @@ narrative-schemas:
   - ../schemas/tutorial
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vega: "3.0"
 ---
 
 @import "../css/tutorial.less"

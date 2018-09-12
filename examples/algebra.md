@@ -4,7 +4,7 @@ narrative-schemas:
   - ../narrative-schemas/algebra
 elm:
     dependencies:
-        gicentre/elm-vega: latest
+        gicentre/elm-vega: "3.0"
 ---
 
 @import "assets/litvis.less"
