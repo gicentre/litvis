@@ -5,7 +5,7 @@ elm:
     gicentre/elm-vega: "3.0"
 
 narrative-schemas:
-    - ../schemas/tutorial
+  - ../schemas/tutorial
 ---
 
 @import "../css/tutorial.less"
@@ -51,7 +51,7 @@ rules:
       minimumTrimmedTextLength: 1
 
 styling:
-   css: |
+  css: |
     .todo {
       font-style: italic;
       background: yellow;

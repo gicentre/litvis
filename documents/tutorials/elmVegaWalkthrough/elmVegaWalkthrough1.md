@@ -1,8 +1,8 @@
 ---
 id: "litvis"
 elm:
-    dependencies:
-        gicentre/elm-vega: "3.0"
+  dependencies:
+    gicentre/elm-vega: "3.0"
 ---
 
 @import "../css/tutorial.less"

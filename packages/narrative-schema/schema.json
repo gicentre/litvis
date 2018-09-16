@@ -31,15 +31,13 @@
       "items": { "type": "string" }
     },
     "labels": {
-      "description":
-        "a list of new labels to introduce; names must not be the same as in other schemas being used",
+      "description": "a list of new labels to introduce; names must not be the same as in other schemas being used",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "name": {
-            "description":
-              "identifier you expect to see inside {( ... )}, e.g. my_label ",
+            "description": "identifier you expect to see inside {( ... )}, e.g. my_label ",
             "type": "string",
             "pattern": "^[a-z][a-zA-Z_0-9]+$"
           },
@@ -66,8 +64,7 @@
         "type": "object",
         "properties": {
           "description": {
-            "description":
-              "text to show in the linter if the rule is not followed",
+            "description": "text to show in the linter if the rule is not followed",
             "type": "string"
           },
           "selector": { "$ref": "#/definitions/selector" },

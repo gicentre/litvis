@@ -3,8 +3,8 @@ id: "litvis"
 narrative-schemas:
   - ../narrative-schemas/algebra
 elm:
-    dependencies:
-        gicentre/elm-vega: "3.0"
+  dependencies:
+    gicentre/elm-vega: "3.0"
 ---
 
 @import "assets/litvis.less"

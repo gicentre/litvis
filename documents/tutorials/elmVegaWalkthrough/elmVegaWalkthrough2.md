@@ -1,6 +1,6 @@
 ---
-follows: 'elmVegaWalkthrough1'
-id : litvis
+follows: "elmVegaWalkthrough1"
+id: litvis
 ---
 
 @import "../css/tutorial.less"

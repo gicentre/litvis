@@ -1,10 +1,10 @@
 ---
 id: "litvis"
 elm:
-    dependencies:
-        gicentre/elm-vega: "3.0"
+  dependencies:
+    gicentre/elm-vega: "3.0"
 narrative-schemas:
-        - ../narrative-schemas/ddd
+  - ../narrative-schemas/ddd
 ---
 
 @import "assets/robotoStyle.less"

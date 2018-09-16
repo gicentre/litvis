@@ -1,8 +1,8 @@
 ---
 id: "litvis"
 elm:
-    dependencies:
-         gicentre/elm-vega: latest
+  dependencies:
+    gicentre/elm-vega: latest
 ---
 
 @import "assets/robotoStyle.less"
