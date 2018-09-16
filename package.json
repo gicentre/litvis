@@ -31,7 +31,7 @@
   "dependencies": {},
   "devDependencies": {
     "lerna": "^3.0.0-beta.21",
-    "prettier": "^1.13.0",
+    "prettier": "^1.14.2",
     "prettier-check": "^2.0.0",
     "prettier-plugin-elm": "^0.3.0",
     "replace": "^1.0.0",
