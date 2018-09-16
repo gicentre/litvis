@@ -57,16 +57,22 @@ nextDay : DayOfWeek -> DayOfWeek
 nextDay day =
     if day == Monday then
         Tuesday
+
     else if day == Tuesday then
         Wednesday
+
     else if day == Wednesday then
         Thursday
+
     else if day == Thursday then
         Friday
+
     else if day == Friday then
         Saturday
+
     else if day == Saturday then
         Sunday
+
     else
         Monday
 
@@ -189,6 +195,7 @@ safeSqrt : Float -> Maybe Float
 safeSqrt x =
     if x >= 0 then
         Just (sqrt x)
+
     else
         Nothing
 ```
@@ -234,6 +241,7 @@ resultSqrt : Float -> Result String Float
 resultSqrt x =
     if x < 0 then
         Err (toString x ++ " does not have a real square root")
+
     else
         Ok (sqrt x)
 ```

@@ -629,6 +629,7 @@ graticule gStep =
         meridian lng =
             if round lng % 90 == 0 then
                 List.map (\lat -> ( lng, lat )) (range -90 90 (min 10 gStep))
+
             else
                 List.map (\lat -> ( lng, lat )) (range (gStep - 90) (90 - gStep) (min 5 gStep))
 

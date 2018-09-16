@@ -252,8 +252,10 @@ smooth items =
         equalise ( a, b ) =
             if a > b then
                 a - 1
+
             else if a < b then
                 a + 1
+
             else
                 a
     in

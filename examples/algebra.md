@@ -169,8 +169,10 @@ brexitMap mapSize dChange orderType oDirection =
                 cText pc =
                     if pc < 0 then
                         "Swing by " ++ toString (abs pc) ++ "% away from leave"
+
                     else if pc == 0 then
                         "Original vote"
+
                     else
                         "Swing by " ++ toString pc ++ "% to leave vote"
             in

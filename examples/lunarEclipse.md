@@ -112,6 +112,7 @@ eclipse proj lonRotate latRotate showLabels =
         layers =
             if showLabels then
                 [ countrySpec, umbraSpec, penumbraSpec, labelSpec ]
+
             else
                 [ countrySpec, umbraSpec, penumbraSpec ]
     in

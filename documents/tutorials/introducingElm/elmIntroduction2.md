@@ -104,6 +104,7 @@ divide : Int -> Int -> Int
 divide denominator numerator =
     if denominator == 0 then
         0
+
     else
         numerator // denominator
 
