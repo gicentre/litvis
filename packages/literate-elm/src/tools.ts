@@ -1,5 +1,5 @@
+import executeRunElm from "@kachkaev/run-elm";
 import * as execa from "execa";
-import executeRunElm from "run-elm";
 
 export async function initializeElmPackage(projectDirectory: string) {
   const args = ["install", "--yes"];
