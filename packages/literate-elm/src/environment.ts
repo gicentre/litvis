@@ -3,7 +3,7 @@ import * as hash from "object-hash";
 import { resolve } from "path";
 import { ensureUnlocked, lock, touch, unlock } from "./auxFiles";
 import { collectGarbageIfNeeded } from "./gc";
-import { initializeElmPackage, installElmPackage } from "./tools";
+import { initializeElmFile, installElmPackage } from "./tools";
 import {
   Dependencies,
   Environment,
@@ -13,6 +13,7 @@ import {
 } from "./types";
 
 const CACHE_SHAPE_VERSION = "v1";
+const CACHE_DIRECTORY_SALT = "v0.19";
 const DEFAULT_TIMEOUT = 30000;
 const PROJECT_EXPIRY_WITH_ERRORS = 1000 * 60;
 // const PROJECT_EXPIRY_WITH_LATEST = 1000 * 60 * 60 * 24 * 7;
@@ -37,7 +38,10 @@ export async function ensureEnvironment(
   }
   await collectGarbageIfNeeded(literateElmDirectory);
 
-  const specDirectory = resolve(currentCacheDirectory, `spec${hash({ spec })}`);
+  const specDirectory = resolve(
+    currentCacheDirectory,
+    `spec${hash({ spec, CACHE_DIRECTORY_SALT })}`,
+  );
   try {
     await ensureDir(specDirectory);
     const specJsonPath = resolve(specDirectory, `spec.json`);
@@ -88,7 +92,7 @@ export async function ensureEnvironment(
 
     let metadata: EnvironmentMetadata;
     try {
-      await initializeElmProject(
+      await prepareElmApplication(
         workingDirectory,
         spec.dependencies,
         spec.sourceDirectories,
@@ -137,13 +141,14 @@ export async function ensureEnvironment(
   }
 }
 
-async function initializeElmProject(
+async function prepareElmApplication(
   directory,
   dependencies: Dependencies,
   sourceDirectories: string[],
 ) {
   // install dependencies
-  await initializeElmPackage(directory);
+  await initializeElmFile(directory);
+  await installElmPackage(directory, "elm/json", "latest");
   for (const packageName in dependencies) {
     if (dependencies.hasOwnProperty(packageName)) {
       const packageVersion = dependencies[packageName];
@@ -151,14 +156,14 @@ async function initializeElmProject(
     }
   }
 
-  // add sourceDirectories to elm-package.json
-  const pathToElmPackageJson = resolve(directory, "elm-package.json");
+  // add sourceDirectories to elm.json
+  const pathToElmJson = resolve(directory, "elm.json");
   const packageContents = await JSON.parse(
-    await readFile(pathToElmPackageJson, "utf8"),
+    await readFile(pathToElmJson, "utf8"),
   );
   packageContents["source-directories"] = [...sourceDirectories, "."];
   await writeFile(
-    pathToElmPackageJson,
+    pathToElmJson,
     JSON.stringify(packageContents, null, 4),
     "utf8",
   );

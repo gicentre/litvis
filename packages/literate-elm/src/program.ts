@@ -161,7 +161,7 @@ ${outputSymbolName} =
         ${i > 0 ? "," : " "} ("${text.replace(
         /"/g,
         '\\"',
-      )}", Json.Encode.string <| toString <| ${text})`,
+      )}", Json.Encode.string <| Debug.toString <| ${text})`,
     });
   });
 
@@ -260,7 +260,7 @@ const runChunkifiedProgram = async (
       .replace(/\n{2,}/, "\n")
       .replace(/Module .* is trying to import it.\n\n/, "")
       .replace(
-        /(\n  \* Need to add a source directory or new dependency) to elm-package.json/,
+        /(\n  \* Need to add a source directory or new dependency) to elm.json/,
         "$1",
       );
     const indexOfFirstNewline = message.indexOf("\n");

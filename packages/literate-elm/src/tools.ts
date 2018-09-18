@@ -1,12 +1,14 @@
 import executeRunElm from "@kachkaev/run-elm";
 import * as execa from "execa";
 
-export async function initializeElmPackage(projectDirectory: string) {
-  const args = ["install", "--yes"];
-  await execa("elm-package", args, {
+export async function initializeElmFile(projectDirectory: string) {
+  const args = ["init"];
+  const childProcess = execa("elm", args, {
     cwd: projectDirectory,
-    stripEof: false,
+    stdin: null,
   });
+  childProcess.stdin.write("\n");
+  await childProcess;
 }
 
 export async function installElmPackage(
@@ -14,18 +16,20 @@ export async function installElmPackage(
   packageName: string,
   packageVersion: string,
 ) {
-  const args = ["install", "--yes", packageName];
+  const args = ["install", packageName];
   if (packageVersion !== "latest") {
     const semver = `${packageVersion}${".0".repeat(
       2 - (packageVersion.match(/\./g) || []).length,
     )}`;
     args.push(semver);
   }
-  await execa("elm-package", args, {
+  const childProcess = execa("elm", args, {
     cwd: projectDirectory,
-    stripEof: false,
+    stdin: null,
   });
-  // TODO: return meaningful error when elm-package is not installed
+  childProcess.stdin.write("\n");
+  await childProcess;
+  // TODO: return meaningful error when elm package is not installed
   // see https://github.com/jwoLondon/litvis/issues/27
 }
 
