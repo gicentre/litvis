@@ -161,7 +161,7 @@ ${outputSymbolName} =
         ${i > 0 ? "," : " "} ("${text.replace(
         /"/g,
         '\\"',
-      )}", Json.Encode.string <| Debug.toString <| ${text})`,
+      )}", Json.Encode.string <| Json.Encode.encode 0 <| ${text})`,
     });
   });
 
