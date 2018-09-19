@@ -148,12 +148,18 @@ async function prepareElmApplication(
 ) {
   // install dependencies
   await initializeElmFile(directory);
-  await installElmPackage(directory, "elm/json", "latest");
+  let userRequestsJsonPackage = false;
   for (const packageName in dependencies) {
     if (dependencies.hasOwnProperty(packageName)) {
       const packageVersion = dependencies[packageName];
       await installElmPackage(directory, packageName, packageVersion);
+      if (packageName === "elm/json") {
+        userRequestsJsonPackage = true;
+      }
     }
+  }
+  if (!userRequestsJsonPackage) {
+    await installElmPackage(directory, "elm/json", "latest");
   }
 
   // add sourceDirectories to elm.json
