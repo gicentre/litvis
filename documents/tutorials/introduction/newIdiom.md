@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 
 narrative-schemas:
   - newIdiom

@@ -15,7 +15,7 @@ config =
     configure
         << configuration (coAxis [ axcoTitleFont font, axcoLabelFont font, axcoGrid False ])
         << configuration (coView [ vicoStroke Nothing, vicoWidth 300, vicoHeight 300 ])
-        << configuration (coText [ maAlign AlignRight, maFontSize 7, maAngle 20, maDx -4 ])
+        << configuration (coText [ maAlign raRight, maFontSize 7, maAngle 20, maDx -4 ])
 ```
 
 ```elm {l=hidden}
@@ -52,7 +52,7 @@ scatter =
         [ config []
         , data
         , line
-            [ maInterpolate Monotone
+            [ maInterpolate miMonotone
             , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
             ]
         , enc []
@@ -76,7 +76,7 @@ scatter =
         lineSpec =
             asSpec
                 [ line
-                    [ maInterpolate Monotone
+                    [ maInterpolate miMonotone
                     , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
                     ]
                 , enc []
@@ -97,7 +97,7 @@ scatter =
         lineSpec =
             asSpec
                 [ line
-                    [ maInterpolate Monotone
+                    [ maInterpolate miMonotone
                     , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
                     ]
                 , enc []
@@ -107,7 +107,7 @@ scatter =
             asSpec [ textMark [], labelEnc [], sel [] ]
 
         sel =
-            selection << select "view" Interval [ BindScales ]
+            selection << select "view" seInterval [ seBindScales ]
     in
     toVegaLite [ config [], data, layer [ lineSpec, labelSpec ] ]
 ```

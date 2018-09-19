@@ -77,8 +77,8 @@ combinedLinechart =
 
         res =
             resolve
-                << resolution (reAxis [ ( ChY, Independent ) ])
-                << resolution (reScale [ ( ChY, Independent ) ])
+                << resolution (reAxis [ ( chY, reIndependent ) ])
+                << resolution (reScale [ ( chY, reIndependent ) ])
     in
     toVegaLite
         [ width 400

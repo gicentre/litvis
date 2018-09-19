@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 ```elm {l=hidden}
@@ -23,7 +23,7 @@ helloLitvis =
     let
         enc =
             encoding
-                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" Mean, Descending ] ]
+                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" opMean, soDescending ] ]
                 << position Y [ pName "rating", pMType Quantitative ]
     in
     toVegaLite [ data [], bar [], enc [] ]

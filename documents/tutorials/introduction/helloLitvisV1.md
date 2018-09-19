@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 ```elm {l=hidden}
@@ -26,7 +26,7 @@ helloLitvis =
                 << position X
                     [ pName "language"
                     , pMType Nominal
-                    , pSort [ soByField "rating" Mean, Descending ]
+                    , pSort [ soByField "rating" opMean, soDescending ]
                     ]
                 << position Y [ pName "rating", pMType Quantitative ]
     in
