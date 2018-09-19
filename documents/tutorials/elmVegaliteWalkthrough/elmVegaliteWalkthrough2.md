@@ -1,14 +1,14 @@
 ---
-follows: "elmVegaWalkthrough1"
+follows: "elmVegaliteWalkthrough1"
 id: litvis
 ---
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmVegaWalkthrough1.md)
+1.  [Introduction](elmVegaliteWalkthrough1.md)
 2.  **Single View Specifications**
-3.  [Layered and Multi-view Composition](elmVegaWalkthrough3.md)
-4.  [Interaction](elmVegaWalkthrough4.md)
+3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
+4.  [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 
@@ -34,7 +34,7 @@ seattleData =
 ### A Strip plot ([3:26](https://youtu.be/9uaHRWj04D4?t=3m26s))
 
 We could encode one of the numeric data fields as a _strip plot_ where the horizontal position of a tick mark is determined by the magnitude of the data item (maximum daily temperature in this case).
-With elm-vega, we do the following to create this visualization expression:
+With elm-vegalite, we do the following to create this visualization expression:
 
 ```elm {v l s}
 stripPlot : Spec
@@ -60,7 +60,7 @@ We can provide a hint by delcaring the _measurement type_ of the data field, her
 The final parameter of `position` is a list of any additional encodings in our specification.
 Here, with only one encoding, we provide an empty list.
 
-As we build up more complex visualizations we will use many more encodings. To keep the coding clear, the idiomatic way to do this with elm-vega is to chain encoding functions using point-free style.
+As we build up more complex visualizations we will use many more encodings. To keep the coding clear, the idiomatic way to do this with elm-vegalite is to chain encoding functions using point-free style.
 The example above coded in this way would be
 
 ```elm {l s}
@@ -84,12 +84,12 @@ histogram =
         enc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
     in
     toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
-The code now contains two chained `position` encodings: one for the x-position, which is now binned, and one for the y-position which is aggregated by providing `pAggregate Count` instead of a data field name.
+The code now contains two chained `position` encodings: one for the x-position, which is now binned, and one for the y-position which is aggregated by providing `pAggregate opCount` instead of a data field name.
 
 Notice again that sensible defaults are provided for the parts of the specification we didn't specify such as axis titles, colors and number of bins.
 
@@ -106,7 +106,7 @@ stackedHistogram =
         enc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
                 << color [ mName "weather", mMType Nominal ]
     in
     toVegaLite [ seattleData, bar [], enc [] ]
@@ -144,13 +144,13 @@ stackedHistogram =
         enc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
                 << color [ mName "weather", mMType Nominal, mScale weatherColors ]
     in
     toVegaLite [ seattleData, bar [], enc [] ]
 ```
 
-The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vega function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
+The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vegalite function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
 
 Notice how we never needed to state explicitly that we wished our bars to be stacked.
 This was reasoned directly by Vega-Lite based on the combination of bar marks and color channel encoding.
@@ -163,7 +163,7 @@ lineChart =
         enc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
                 << color [ mName "weather", mMType Nominal, mScale weatherColors ]
     in
     toVegaLite [ seattleData, line [], enc [] ]
@@ -174,4 +174,4 @@ To compare distributions of all categories we can move from a single view to a m
 
 ---
 
-_Next >>_ [Layered and Multi-view Composition](elmVegaWalkthrough3.md)
+_Next >>_ [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)

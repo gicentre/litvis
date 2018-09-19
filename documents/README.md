@@ -16,6 +16,7 @@ _Delimits a block of literate code, which is evaluated in real time_
 
 ````markdown
 ```elm {...attributes}
+
 ```
 ````
 
@@ -302,20 +303,20 @@ Other fields from `elm-package.json` may be added in future to support more use 
 elm:
   dependencies:
     kuon/elm-hsluv: "1.0.1"
-    gicentre/elm-vega: "1.0.4"
+    gicentre/elm-vegalite: "1.0.1"
 ---
 ```
 
-`localCopyOfElmVega.md`
+`localCopyOfElmVegalite.md`
 
 ```markdown
 ---
 follows: root
 elm:
   dependencies:
-    gicentre/elm-vega: false
+    gicentre/elm-vegalite: false
     source-directories:
-      - ~/dev/local-copy-of-elm-vega
+      - ~/dev/local-copy-of-elm-vegalite
 ---
 ```
 
