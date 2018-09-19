@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vegalite: latest
 ---
 
 ^^^elm v=[(sparkline "1"), (sparkline "2"), (sparkline "3")]^^^
@@ -16,21 +16,21 @@ sparkline : String -> Spec
 sparkline groupName =
     let
         config =
-            configure << configuration (View [ Stroke Nothing, ViewHeight 15, ViewWidth 80 ])
+            configure << configuration (coView [ vicoStroke Nothing, vicoHeight 15, vicoWidth 80 ])
 
         data =
             dataFromUrl "https://gicentre.github.io/data/randomWalk.csv"
 
         trans =
-            transform << filter (FExpr ("datum.group == " ++ groupName))
+            transform << filter (fiExpr ("datum.group == " ++ groupName))
 
         enc =
             encoding
-                << position X [ PName "x", PmType Quantitative, PAxis [] ]
-                << position Y [ PName "y", PmType Quantitative, PAxis [], PScale [ SZero False ] ]
-                << color [ MString "black" ]
+                << position X [ pName "x", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "y", pMType Quantitative, pAxis [], pScale [ scZero False ] ]
+                << color [ mStr "black" ]
     in
-    toVegaLite [ config [], data [], trans [], enc [], mark Line [] ]
+    toVegaLite [ config [], data [], trans [], enc [], line [] ]
 ```
 
 1.  ^^^elm v=(sparkline "1")^^^
