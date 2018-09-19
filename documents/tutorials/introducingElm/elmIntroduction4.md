@@ -12,13 +12,13 @@ _Litvis tutorials: Introducing Elm_
 2.  [Functions, functions, functions](elmIntroduction2.md)
 3.  [Types and pattern matching](elmIntroduction3.md)
 4.  **Lists and list processing**
-5.  [Elm and elm-vega](elmIntroduction5.md)
+5.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
 # Lists and list processing
 
-Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Tuple), but the most common approach and one used extensively in elm-vega is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
+Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Tuple), but the most common approach and one used extensively in both elm-vega and elm-vegalite is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
 
 Lists comprise items of the same type and are immutable once created.
 They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
@@ -149,14 +149,29 @@ len list =
 
 Folding is often used in place of the iterating constructions such as loops seen in other languages.
 
-If the intermediate steps of a folding operation need to be stored, `scanl` and `scanr` can be used in place of `foldl` and `foldr`.
+If the intermediate steps of a folding operation need to be stored, we can create a `scanl` function to be used in place of `foldl`:
 
-Here for example is a the generation of a triangular number sequence:
+```elm{l}
+scanl : (a -> b -> b) -> b -> List a -> List b
+scanl fn b =
+    let
+        scan a bs =
+            case bs of
+                hd :: tl ->
+                    fn a hd :: bs
+
+                _ ->
+                    []
+    in
+    List.foldl scan [ b ] >> List.reverse
+```
+
+We can use it, for example, in a the generation of a triangular number sequence:
 
 ```elm {l siding }
 triList : Int -> List Int
 triList upper =
-    List.range 2 upper |> List.scanl (\a b -> a + b) 1
+    List.range 2 upper |> scanl (\a b -> a + b) 1
 ```
 
 Or in point-free style using functional composition:
@@ -164,7 +179,7 @@ Or in point-free style using functional composition:
 ```elm {l}
 triList : Int -> List Int
 triList =
-    List.range 2 >> List.scanl (+) 1
+    List.range 2 >> scanl (+) 1
 ```
 
 ```elm {l raw}
@@ -202,7 +217,7 @@ doublerOutput =
 ### Using tuples to compare adjacent list items
 
 Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list).
-Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#windowAs) available via elm-vega).
+Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#window) available via elm-vegalite).
 For example, you could incease the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller.
 
 To help do this, we can transform a list of numbers into a list of _tuples_.
@@ -227,12 +242,12 @@ person =
 ```
 
 We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List#map2) that creates a new list based on the transformation of two other lists.
-If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple operator `(,)`:
+If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple construction function `Tuple.pair`:
 
 ```elm {l}
 neighbours : List a -> List ( a, a )
 neighbours items =
-    List.map2 (,) items (List.tail items |> Maybe.withDefault [])
+    List.map2 Tuple.pair items (List.tail items |> Maybe.withDefault [])
 ```
 
 ```elm {l raw}
@@ -278,4 +293,4 @@ smoothOutput =
 
 ---
 
-_Next >>_ [Elm and elm-vega](elmIntroduction5.md)
+_Next >>_ [Elm and elm-vegalite](elmIntroduction5.md)

@@ -8,7 +8,7 @@ id: "litvis"
 2.  [Functions, functions, functions](elmIntroduction2.md)
 3.  **Types and pattern matching**
 4.  [Lists and list processing](elmIntroduction4.md)
-5.  [Elm and elm-vega](elmIntroduction5.md)
+5.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
@@ -26,16 +26,26 @@ myErroneousFunction =
     "0.1234"
 ```
 
-> _The definition of `myErroneousFunction` does not match its type annotation. The type annotation for `myErroneousFunction` says it is a: Float but the definition (shown above) is a: String_
+```
+Something is off with the body of the `myErroneousFunction` definition:
 
-## Creating your own types
+The body is a string of type:
+
+    String
+
+But the type annotation on `myErroneousFunction` says it should be:
+
+    Float
+```
+
+## Creating custom types
 
 Suppose you wish to create some functions that deal with the days of the week.
 You could represent each day with the `String` type (`"Monday"`, `"Tuesday"` etc.), but this is vulnerable to hard-to-spot errors if somewhere in your program you misspell one of the days, or you forget whether you are using full names or abbreviations (`"Tue"` or`"Tues"` or `"Tuesday"`?).
 
-Instead, you can create your own types that restrict values to a named set of options known as _constuctors_.
+Instead, you can create your own custom types that restrict values to a named set of options known as _constuctors_.
 This has the advantage of marshalling the Elm compiler to help spot mistakes, as any inconsistent naming will be flagged as an error.
-The types, called _union types_ (also known as algebraic data types or ADTs) are similar, but more powerful, than 'enum' types available in some other languages.
+These custom types (also known as algebraic data types or union types) are similar, but more powerful, than 'enum' types available in some other languages.
 
 Here is how you might create a day of the week union type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that types and constructors must start with an upper case letter:
 
@@ -84,7 +94,7 @@ tomorrow =
 
 ## Pattern Matching
 
-Because simple union types consist of a finite set of named alternatives, it is common to use _pattern matching_ to make code conditional on the value of a union type.
+Because simple custom types consist of a finite set of named alternatives, it is common to use _pattern matching_ to make code conditional on the value of a union type.
 In the example above we used a series of nested `if...then...else` expressions, but a clearer and more flexible approach can be achieved using Elm's `case ... of`.
 Here is the same `nextDay` function expressed using `case ... of`:
 
@@ -140,9 +150,9 @@ activity =
 
 The `_` symbol is a wildcard and acts as a default 'else' if none of the previous cases are matched.
 
-## Tagged union types
+## Tagged custom types
 
-The real power and flexiblity of union types comes when they contain _tags_ similar to function parameters.
+The real power and flexiblity of custom types comes when they contain _tags_ similar to function parameters.
 A tag is simply another type that follows a constructor and allows it to carry extra information.
 
 ```elm {l raw siding}
@@ -155,7 +165,7 @@ courseDesc : Course -> String
 courseDesc course =
     case course of
         Assessed credits ->
-            "Assessed course worth " ++ toString credits ++ " credits."
+            "Assessed course worth " ++ String.fromInt credits ++ " credits."
 
         NonAssessed ->
             "Non-assessed course."
@@ -179,9 +189,9 @@ As in this example, there is no requirement for a type's constructors to share t
 When we pattern match tagged types with `case ... of` we need to give a name to the tag so we can do something with its value.
 In the example above we called that name `credits` so we could handle it in building a string describing the course assessment.
 
-## Elm's built-in union types
+## Elm's built-in custom types
 
-Elm has a few of its own tagged union types that are handy for representing uncertain values.
+Elm has a few of its own tagged custom types that are handy for representing uncertain values.
 
 ### Maybe
 
@@ -240,7 +250,7 @@ Note that in the type annotation of `Result` we have to specify the types used b
 resultSqrt : Float -> Result String Float
 resultSqrt x =
     if x < 0 then
-        Err (toString x ++ " does not have a real square root")
+        Err (String.fromFloat x ++ " does not have a real square root")
 
     else
         Ok (sqrt x)
