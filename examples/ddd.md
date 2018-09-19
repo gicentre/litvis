@@ -67,7 +67,7 @@ gridmapCrimes =
                 << calculateAs "datum.zScore < 0 ? 'low' : 'high'" "crimeCats"
 
         res =
-            resolve << resolution (reScale [ ( ChColor, Independent ) ])
+            resolve << resolution (reScale [ ( chColor, reIndependent ) ])
 
         w =
             220
@@ -95,74 +95,74 @@ geoMap w =
         ]
 
 
-        gridMapSpec : Float -> OpacityVal -> Spec
-        gridMapSpec w op =
-            let
-                gSize =
-                    w / 26
+gridMapSpec : Float -> OpacityVal -> Spec
+gridMapSpec w op =
+    let
+        gSize =
+            w / 26
 
-                gridData =
-                    dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsGridmapOpacity.tsv" []
+        gridData =
+            dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsGridmapOpacity.tsv" []
 
-                gridTrans =
-                    case op of
-                        FixedOpacity ->
-                            transform
-                                << filter (fiExpr "datum.opacity == 100")
-                                << calculateAs "11 - datum.gridY" "gridN"
-                                << calculateAs "datum.gridX - 1" "gridE"
-
-                        UserOpacity ->
-                            transform
-                                << filter (fiSelection "userOpacity")
-                                << calculateAs "11 - datum.gridY" "gridN"
-                                << calculateAs "datum.gridX - 1" "gridE"
-
-                gridEnc =
-                    encoding
-                        << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
-                        << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
-                        << color [ mName "NPU", mMType Nominal, mScale npuColours, mLegend [] ]
-                        << size [ mNum ((gSize - 1) * (gSize - 1)) ]
-
-                gridSel =
-                    selection
-                        << select "userOpacity"
-                            seSingle
-                            [ seFields [ "opacity" ]
-                            , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
-                            , seEmpty
-                            ]
-            in
+        gridTrans =
             case op of
                 FixedOpacity ->
-                    asSpec
-                        [ width w
-                        , height (w / 2.36)
-                        , gridData
-                        , gridTrans []
-                        , (gridEnc << opacity [ mNum 1 ]) []
-                        , square []
-                        ]
+                    transform
+                        << filter (fiExpr "datum.opacity == 100")
+                        << calculateAs "11 - datum.gridY" "gridN"
+                        << calculateAs "datum.gridX - 1" "gridE"
 
                 UserOpacity ->
-                    asSpec
-                        [ width w
-                        , height (w / 2.36)
-                        , gridData
-                        , gridTrans []
-                        , gridSel []
-                        , (gridEnc
-                            << opacity
-                                [ mName "opacity"
-                                , mMType Quantitative
-                                , mScale [ scDomain (doNums [ 40, 100 ]) ]
-                                , mLegend []
-                                ]
-                          )
-                            []
-                        , square []
+                    transform
+                        << filter (fiSelection "userOpacity")
+                        << calculateAs "11 - datum.gridY" "gridN"
+                        << calculateAs "datum.gridX - 1" "gridE"
+
+        gridEnc =
+            encoding
+                << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
+                << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
+                << color [ mName "NPU", mMType Nominal, mScale npuColours, mLegend [] ]
+                << size [ mNum ((gSize - 1) * (gSize - 1)) ]
+
+        gridSel =
+            selection
+                << select "userOpacity"
+                    seSingle
+                    [ seFields [ "opacity" ]
+                    , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
+                    , seEmpty
+                    ]
+    in
+    case op of
+        FixedOpacity ->
+            asSpec
+                [ width w
+                , height (w / 2.36)
+                , gridData
+                , gridTrans []
+                , (gridEnc << opacity [ mNum 1 ]) []
+                , square []
+                ]
+
+        UserOpacity ->
+            asSpec
+                [ width w
+                , height (w / 2.36)
+                , gridData
+                , gridTrans []
+                , gridSel []
+                , (gridEnc
+                    << opacity
+                        [ mName "opacity"
+                        , mMType Quantitative
+                        , mScale [ scDomain (doNums [ 40, 100 ]) ]
+                        , mLegend []
                         ]
+                    )
+                    []
+                , square []
+                ]
 
 
 crimeOverlay : Float -> Spec

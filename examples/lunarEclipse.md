@@ -46,81 +46,81 @@ type Aspect
     = Wide
     | Square
 
-    eclipse : Aspect -> Projection -> Float -> Float -> Bool -> Spec
-    eclipse aspect proj lonRotate latRotate showLabels =
-        let
-            ( w, h ) =
-                case aspect of
-                    Wide ->
-                        ( 520, 250 )
+eclipse : Aspect -> Projection -> Float -> Float -> Bool -> Spec
+eclipse aspect proj lonRotate latRotate showLabels =
+    let
+        ( w, h ) =
+            case aspect of
+                Wide ->
+                    ( 520, 250 )
 
-                    Square ->
-                        ( 150, 150 )
+                Square ->
+                    ( 150, 150 )
 
-            labelData =
-                dataFromColumns []
-                    << dataColumn "label" (strs [ "No eclipse visible", "Eclipse at moonrise", "All eclipse visible", "Eclipse at moonset", "p1", "p4", "u4", "u3", "u2", "u1", "p1", "p4", "u4", "u3", "u2", "u1" ])
-                    << dataColumn "lon" (nums [ -122, -46, 58, 155, -175, -70, -52, -33, -10, 8, 25, 90, 108, 126, 149, 167 ])
-                    << dataColumn "lat" (nums [ -35, -35, -35, -35, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ])
+        labelData =
+            dataFromColumns []
+                << dataColumn "label" (strs [ "No eclipse visible", "Eclipse at moonrise", "All eclipse visible", "Eclipse at moonset", "p1", "p4", "u4", "u3", "u2", "u1", "p1", "p4", "u4", "u3", "u2", "u1" ])
+                << dataColumn "lon" (nums [ -122, -46, 58, 155, -175, -70, -52, -33, -10, 8, 25, 90, 108, 126, 149, 167 ])
+                << dataColumn "lat" (nums [ -35, -35, -35, -35, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ])
 
-            pDetails =
-                [ width w, height h, projection [ prType proj, prRotate lonRotate latRotate 0 ] ]
+        pDetails =
+            [ width w, height h, projection [ prType proj, prRotate lonRotate latRotate 0 ] ]
 
-            countrySpec =
-                asSpec
-                    (pDetails
-                        ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
-                           , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
-                           ]
-                    )
+        countrySpec =
+            asSpec
+                (pDetails
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
+                        , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
+                        ]
+                )
 
-            umbraSpec =
-                let
-                    trans =
-                        transform << filter (fiExpr "datum.id != 'p1' && datum.id != 'p4'")
-                in
-                asSpec
-                    (pDetails
-                        ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ topojsonFeature "eclipse" ]
-                           , trans []
-                           , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.1 ]
-                           ]
-                    )
+        umbraSpec =
+            let
+                trans =
+                    transform << filter (fiExpr "datum.id != 'p1' && datum.id != 'p4'")
+            in
+            asSpec
+                (pDetails
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ topojsonFeature "eclipse" ]
+                        , trans []
+                        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.1 ]
+                        ]
+                )
 
-            penumbraSpec =
-                let
-                    trans =
-                        transform << filter (fiExpr "datum.id === 'p1' || datum.id == 'p4'")
-                in
-                asSpec
-                    (pDetails
-                        ++ [ dataFromUrl "data/eclipse.json" [ topojsonFeature "eclipse" ]
-                           , trans []
-                           , geoshape [ maStrokeOpacity 0, maFill "#003", maFillOpacity 0.1 ]
-                           ]
-                    )
+        penumbraSpec =
+            let
+                trans =
+                    transform << filter (fiExpr "datum.id === 'p1' || datum.id == 'p4'")
+            in
+            asSpec
+                (pDetails
+                    ++ [ dataFromUrl "data/eclipse.json" [ topojsonFeature "eclipse" ]
+                        , trans []
+                        , geoshape [ maStrokeOpacity 0, maFill "#003", maFillOpacity 0.1 ]
+                        ]
+                )
 
-            labelSpec =
-                let
-                    enc =
-                        encoding
-                            << position Longitude [ pName "lon" ]
-                            << position Latitude [ pName "lat" ]
-                            << text [ tName "label", tMType Nominal ]
-                            << size [ mNum 9 ]
-                            << color [ mStr "#333" ]
-                in
-                asSpec (pDetails ++ [ labelData [], enc [], textMark [] ])
+        labelSpec =
+            let
+                enc =
+                    encoding
+                        << position Longitude [ pName "lon" ]
+                        << position Latitude [ pName "lat" ]
+                        << text [ tName "label", tMType Nominal ]
+                        << size [ mNum 9 ]
+                        << color [ mStr "#333" ]
+            in
+            asSpec (pDetails ++ [ labelData [], enc [], textMark [] ])
 
-            layers =
-                if showLabels then
-                    [ countrySpec, umbraSpec, penumbraSpec, labelSpec ]
+        layers =
+            if showLabels then
+                [ countrySpec, umbraSpec, penumbraSpec, labelSpec ]
 
-                else
-                    [ countrySpec, umbraSpec, penumbraSpec ]
-        in
-        toVegaLite
-            [ configure (configuration (coView [ vicoStroke Nothing ]) [])
-            , layer layers
-            ]
+            else
+                [ countrySpec, umbraSpec, penumbraSpec ]
+    in
+    toVegaLite
+        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
+        , layer layers
+        ]
 ```
