@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 narrative-schemas:
   - ../narrative-schemas/idiom.yml
 ---
@@ -112,7 +112,7 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
             sqrt (w / 2)
 
         ds =
-            toString d
+            String.fromFloat d
 
         quadPaths =
             categoricalDomainMap
@@ -171,8 +171,8 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
         numLabelSpec =
             asSpec
                 [ textMark
-                    [ maAlign AlignCenter
-                    , maBaseline AlignMiddle
+                    [ maAlign haCenter
+                    , maBaseline vaMiddle
                     , maStrokeOpacity 0
                     , maFill "#f0f0f6"
                     , maFontSize (d * 0.9)
@@ -189,8 +189,8 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
         labelSpec =
             asSpec
                 [ textMark
-                    [ maAlign AlignCenter
-                    , maBaseline AlignTop
+                    [ maAlign haCenter
+                    , maBaseline vaTop
                     , maStrokeOpacity 0
                     , maFill "#666"
                     , maFontSize d

@@ -4,7 +4,7 @@ narrative-schemas:
   - ../narrative-schemas/socratic-questions
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 @import "assets/litvis.less"
@@ -136,12 +136,12 @@ airPollution =
         avEnc =
             encoding
                 << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pAggregate Mean, pName "reading", pMType Quantitative ]
+                << position Y [ pAggregate opMean, pName "reading", pMType Quantitative ]
                 << color [ mStr "#000" ]
                 << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate Monotone ], avEnc [] ]
+            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate miMonotone ], avEnc [] ]
 
         rideTrans =
             transform
@@ -158,7 +158,7 @@ airPollution =
                 << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
-            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate Monotone ], rideEnc [] ]
+            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate miMonotone ], rideEnc [] ]
     in
     toVegaLite [ width 500, height 300, background "white", data, layer [ backgroundSpec, avSpec, rideSpec ] ]
 ```
@@ -215,12 +215,12 @@ airPollution =
         avEnc =
             encoding
                 << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pAggregate Mean, pName "reading", pMType Quantitative, pAxis [] ]
+                << position Y [ pAggregate opMean, pName "reading", pMType Quantitative, pAxis [] ]
                 << color [ mStr "#000" ]
                 << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate Monotone ], avEnc [] ]
+            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate miMonotone ], avEnc [] ]
 
         limitsData =
             dataFromColumns []
@@ -259,11 +259,11 @@ airPollution =
                 << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
-            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate Monotone ], rideEnc [] ]
+            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate miMonotone ], rideEnc [] ]
 
         res =
             resolve
-                << resolution (reAxis [ ( ChY, Independent ) ])
+                << resolution (reAxis [ ( chY, reIndependent ) ])
 
         annotationData =
             dataFromColumns []
@@ -292,7 +292,7 @@ airPollution =
                 << text [ tName "text", tMType Nominal ]
 
         annotationSpec =
-            asSpec [ annotationData [], textMark [ maAlign AlignLeft ], annotationEnc [] ]
+            asSpec [ annotationData [], textMark [ maAlign haLeft ], annotationEnc [] ]
     in
     toVegaLite
         [ width 500
