@@ -16,9 +16,9 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@kachkaev/run-elm@^3.0.0-beta.1":
-  version "3.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-3.0.0-beta.1.tgz#c9e6fa50d255d8b3ff487cec0eb84ecdbb04bcfd"
+"@kachkaev/run-elm@^3.0.0-litvis-patch.1":
+  version "3.0.0-litvis-patch.1"
+  resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-3.0.0-litvis-patch.1.tgz#1a1edb4862cfa8be6ed36236451b8b4c08ac0095"
   dependencies:
     babel-polyfill "^6.26.0"
     commander "^2.18.0"
