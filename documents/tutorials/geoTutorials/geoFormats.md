@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 @import "../css/tutorial.less"
@@ -15,7 +15,7 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  **Geospatial File Formats**
 2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-3.  [Importing geographic datasets into elm-vega](geoImporting.md)
+3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
 
 ---
 
@@ -65,7 +65,7 @@ geo : Spec
 geo =
     let
         proj =
-            projection [ prType Orthographic ]
+            projection [ prType orthographic ]
 
         enc =
             encoding
@@ -76,7 +76,7 @@ geo =
     toVegaLite [ width 250, height 250, myRegion [], proj, enc [], line [] ]
 ```
 
-The `Orthographic` map projection used above gives a more accurate indication of the east-west distances of region's corners, here demonstrating the northern boundary is shorter than the southern one.
+The `orthographic` map projection function used above gives a more accurate indication of the east-west distances of region's corners, here demonstrating the northern boundary is shorter than the southern one.
 Viewing it in a global context makes it clearer why this is the case:
 
 ```elm {v l=hidden}
@@ -84,7 +84,7 @@ globe : Spec
 globe =
     let
         pDetails =
-            [ width 250, height 250, projection [ prType Orthographic, prRotate 0 -15 0 ] ]
+            [ width 250, height 250, projection [ prType orthographic, prRotate 0 -15 0 ] ]
 
         graticuleSpec =
             asSpec
@@ -159,7 +159,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "geoJson1.json") []
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
@@ -185,7 +185,7 @@ Here is the equivalent topoJSON file representing the geoJSON above:
 }
 ```
 
-Similarly, we can display this file directly in elm-vega with `geoshape`.
+Similarly, we can display this file directly in elm-vegalite with `geoshape`.
 Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`).
 Objects themselves can be treated either as _meshes_ or _features_.
 A `topojsonMesh` treats the entire object as a single entity and is quicker to render.
@@ -199,7 +199,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson1.json") [ topojsonMesh "myRegion" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
@@ -214,7 +214,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson2.json") [ topojsonFeature "myRegions" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
@@ -323,7 +323,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson3.json") [ topojsonFeature "myRegions" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , encoding (color [ mName "id", mMType Nominal ] [])
         , geoshape []
         ]
@@ -377,7 +377,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson4.json") [ topojsonFeature "myRegions" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , encoding (color [ mName "properties.myPopulationCount", mMType Quantitative ] [])
         , geoshape []
         ]
@@ -454,7 +454,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson5.json") [ topojsonFeature "myRegions" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
         , geoshape []
         ]
@@ -531,7 +531,7 @@ geo =
         [ width 200
         , height 200
         , dataFromUrl (path "topoJson6.json") [ topojsonFeature "myRegions" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
         , geoshape []
         ]
@@ -541,7 +541,7 @@ geo =
 
 In all the examples above the topoJSON and geoJSON has been read from external files.
 This is likely the most common use-case, but sometimes it can be useful to generate the content programmtically.
-This can be achieved using elm-vega's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vega/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
+This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
 Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
 
 ```elm {s l}
@@ -555,7 +555,7 @@ geo =
         [ width 200
         , height 200
         , dataFromJson geojson []
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
@@ -584,7 +584,7 @@ geo =
         [ width 200
         , height 200
         , dataFromJson geojson []
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.5 ]
         ]
 ```
@@ -606,7 +606,7 @@ geo =
         [ width 200
         , height 200
         , dataFromJson geojson [ jsonProperty "features" ]
-        , projection [ prType Orthographic ]
+        , projection [ prType orthographic ]
         , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
         , geoshape []
         ]
@@ -627,7 +627,7 @@ graticule : Float -> Geometry
 graticule gStep =
     let
         meridian lng =
-            if round lng % 90 == 0 then
+            if modBy 90 (round lng) == 0 then
                 List.map (\lat -> ( lng, lat )) (range -90 90 (min 10 gStep))
 
             else
@@ -648,7 +648,7 @@ geo =
         , width 200
         , height 200
         , dataFromJson (geometry (graticule 10) []) []
-        , projection [ prType Orthographic, prRotate 5 -30 0 ]
+        , projection [ prType orthographic, prRotate 5 -30 0 ]
         , geoshape [ maStrokeWidth 0.2, maFilled False ]
         ]
 ```
@@ -695,7 +695,7 @@ geo : Spec
 geo =
     let
         proj =
-            projection [ prType Orthographic, prRotate 45 -30 0 ]
+            projection [ prType orthographic, prRotate 45 -30 0 ]
 
         specGraticule =
             asSpec

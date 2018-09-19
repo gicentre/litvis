@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 @import "../css/tutorial.less"
@@ -15,13 +15,13 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [geospatial File Formats](geoFormats.md)
 2.  **Generating Global Map Projection Geo Files**
-3.  [Importing geographic datasets into elm-vega](geoImporting.md)
+3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
 
 ---
 
 # Generating Global Map Projection Geo Files
 
-This tutorial shows how you can explore the distortion effects of different map projections by generating graticule, circle and Tissot files and then viewing them with elm-vega in a litvis document.
+This tutorial shows how you can explore the distortion effects of different map projections by generating graticule, circle and Tissot files and then viewing them with elm-vegalite in a litvis document.
 
 ## 0. Setup
 
@@ -58,7 +58,7 @@ echo "{}"  \
 
 This will generate a graticule at the default resolution of 10 degrees (i.e. lines of latitude and longitude are each 10 degrees apart).
 
-We can view the file, along with contextual country outlines with some simple elm-vega:
+We can view the file, along with contextual country outlines with some simple elm-vegalite:
 
 ```elm {l v s}
 graticule : Spec
@@ -66,14 +66,14 @@ graticule =
     let
         graticuleSpec =
             asSpec
-                [ projection [ prType Equirectangular ]
+                [ projection [ prType equirectangular ]
                 , dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
                 , geoshape [ maStroke "black", maStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
-                [ projection [ prType Equirectangular ]
+                [ projection [ prType equirectangular ]
                 , dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
                 , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
@@ -101,14 +101,14 @@ graticule =
     let
         graticuleSpec =
             asSpec
-                [ projection [ prType Equirectangular ]
+                [ projection [ prType equirectangular ]
                 , dataFromUrl (path "graticule30.json") [ topojsonMesh "graticule" ]
                 , geoshape [ maStroke "black", maStrokeWidth 0.1 ]
                 ]
 
         countrySpec =
             asSpec
-                [ projection [ prType Equirectangular ]
+                [ projection [ prType equirectangular ]
                 , dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
                 , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
@@ -185,22 +185,22 @@ paris projName proj =
 
 </details>
 
-^^^elm v=(paris "Equirectangular" (projection [ prType Equirectangular ]))^^^
+^^^elm v=(paris "Equirectangular" (projection [ prType equirectangular ]))^^^
 
 Note how the small circle is no longer circular when projected onto a plane.
 We can see the distortion effect by viewing the same circle with different map projections
 
-^^^elm v=(paris "Albers" (projection [ prType Albers ]))^^^
-^^^elm v=(paris "Conic equal area" (projection [ prType ConicEqualArea ]))^^^
+^^^elm v=(paris "Albers" (projection [ prType albers ]))^^^
+^^^elm v=(paris "Conic equal area" (projection [ prType conicEqualArea ]))^^^
 
-^^^elm v=(paris "Orthographic" (projection [ prType Orthographic, prRotate 0 -30 0 ]))^^^
-^^^elm v=(paris "Azimuthal equal area" (projection [ prType AzimuthalEqualArea ]))^^^
+^^^elm v=(paris "Orthographic" (projection [ prType orthographic, prRotate 0 -30 0 ]))^^^
+^^^elm v=(paris "Azimuthal equal area" (projection [ prType azimuthalEqualArea ]))^^^
 
-^^^elm v=(paris "Stereographic" (projection [ prType Stereographic ]))^^^
+^^^elm v=(paris "Stereographic" (projection [ prType stereographic ]))^^^
 ^^^elm v=(paris "Gnomonic" (projection [ prType Gnomonic, prClipAngle (Just 70) ]))^^^
 
 ^^^elm v=(paris "Mercator" (projection [ prType Mercator ]))^^^
-^^^elm v=(paris "Transverse Mercator" (projection [ prType TransverseMercator ]))^^^
+^^^elm v=(paris "Transverse Mercator" (projection [ prType transverseMercator ]))^^^
 
 ## 3. Generate a Tissot's Indicatrix file.
 
@@ -256,7 +256,7 @@ tissotMap : Spec
 tissotMap =
     let
         proj =
-            projection [ prType Equirectangular ]
+            projection [ prType equirectangular ]
 
         graticuleSpec =
             asSpec

@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 @import "../css/tutorial.less"
@@ -15,13 +15,13 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [Geospatial File Formats](geoFormats.md)
 2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-3.  **Importing geographic datasets into elm-vega**
+3.  **Importing geographic datasets into elm-vegalite**
 
 ---
 
-# Importing geographic datasets into elm-vega
+# Importing geographic datasets into elm-vegalite
 
-This tutorial leads you through the workflow for importing spatial datasets into elm-vega, and therefore into litvis documents.
+This tutorial leads you through the workflow for importing spatial datasets into elm-vegalite, and therefore into litvis documents.
 If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJson format, just jump to step 3).
 
 - Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
@@ -29,7 +29,7 @@ If the dataset you wish to import is a shapefile, the process involves the follo
 - Identify the attribute field you wish to store and associate it with an id.
 - Convert from geoJson to [topoJson](https://github.com/topojson/topojson).
 - Simplify geometry to reduce file size
-- render file with elm-vega
+- render file with elm-vegalite
 
 _For related tutorials, see Mike Bostock's series [Command-Line Cartography](https://medium.com/@mbostock/command-line-cartography-part-1-897aa8f8ca2c) and Ændrew Rininsland's [Creating topoJSON using D3 v4](https://medium.com/@aendrew/creating-topojson-using-d3-v4-10838d1a9538) and for a thorough more London-centric example, Max Harlow's [Working with geographic data](https://github.com/maxharlow/tutorials/tree/master/working-with-geographical-data) tutorial._
 
@@ -122,7 +122,7 @@ By converting to the `topoJson` format we can use a much more efficient data str
 geo2topo boroughs=boroughs_id_geo.json > boroughs_topo.json
 ```
 
-In this conversion we give a name to the new feature object (here called `boroughs`) that we will reference later in elm-vega.
+In this conversion we give a name to the new feature object (here called `boroughs`) that we will reference later in elm-vegalite.
 
 Again, as you are learning to use this workflow, it can be helpful to name the resulting file with `_topo` appended so we know the `.json` file is now in topoJSON, not geoJSON, format.
 
@@ -164,7 +164,7 @@ shp2json -n boroughs.shp \
 
 ## 6. Render in elm-vaga
 
-Using the final output file after conversion (here, `londonBoroughs.json`), we can render all features with some simple elm-vega:
+Using the final output file after conversion (here, `londonBoroughs.json`), we can render all features with some simple elm-vegalite:
 
 ```elm {l v s}
 boroughs : Spec
@@ -191,7 +191,7 @@ boroughs =
 
 We can use the d3 command line tools to generate some additional files that may be useful for rendering.
 For example, suppose we wished to create a custom colour scheme to associate with each of the 33 boroughs in the dataset.
-In elm-vega, custom categorical colours are generated with
+In elm-vegalite, custom categorical colours are generated with
 
 ```elm
 categoricalDomainMap
@@ -208,7 +208,7 @@ To generate the equivalent list of category names we need to extract those IDs f
 shp2json -n boroughs.shp | ndjson-map 'd.properties.NAME'
 ```
 
-This allows us to create the elm-vega to generate a custom colour palette for the London map:
+This allows us to create the elm-vegalite to generate a custom colour palette for the London map:
 
 ```elm {l}
 boroughColors : List ScaleProperty
@@ -414,7 +414,7 @@ tubeLines =
                 << color
                     [ mName "id"
                     , mMType Nominal
-                    , mLegend [ leTitle "", leOrient BottomRight ]
+                    , mLegend [ leTitle "", leOrient loBottomRight ]
                     , mScale tubeLineColors
                     ]
     in
@@ -461,7 +461,7 @@ tubeLines =
                 << color
                     [ mName "id"
                     , mMType Nominal
-                    , mLegend [ leTitle "", leOrient BottomRight, leOffset 0 ]
+                    , mLegend [ leTitle "", leOrient loBottomRight, leOffset 0 ]
                     , mScale tubeLineColors
                     ]
 
