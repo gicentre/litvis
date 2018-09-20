@@ -296,7 +296,7 @@ const convertErrorsToMessages = (
   errors: any[],
 ): Message[] => {
   const result: Message[] = [];
-  _.map(_.get(errors, [0, "problems"]), (error) => {
+  _.map(_.get(errors, [0, "problems"], errors), (error) => {
     const currentChunk =
       chunkifiedProgram.chunks[
         _.findIndex(
