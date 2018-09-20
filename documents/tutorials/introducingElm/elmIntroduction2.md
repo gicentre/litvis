@@ -160,12 +160,13 @@ Consider the coding of the following party trick:
 >
 > _The number written on the paper is ... 3. Ta dah!_
 
-```elm {l raw siding}
+```elm {l}
 always3 : Int -> Int
 always3 n =
     double n |> multiply 5 |> divide n |> add -7
+```
 
-
+```elm {l raw siding}
 partyTrick : Int
 partyTrick =
     always3 146470
@@ -173,14 +174,14 @@ partyTrick =
 
 The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing in the 'wrong' order when read left to right, and is therefore more difficult to read:
 
-```elm {l raw siding}
-always3 : Int -> Int
-always3 n =
+```elm {l siding}
+always3Backwards : Int -> Int
+always3Backwards n =
     add -7 (divide n (multiply 5 (double n)))
 ```
 
 Often it is clearer to use the pipe operator to chain a sequence of functions together in the natural order we would process them.
-A variation of this is used commonly in elm-vegalite when creating visualization specifications (see _functional composition_ below for more details).
+A variation of this is used commonly in _elm-vegalite_ when creating visualization specifications (see _functional composition_ below for more details).
 
 ### Scoping expressions with 'let'
 
@@ -205,7 +206,7 @@ Unlike top-level function definitions, locally scoped functions do not need to h
 ### Anonymous Functions
 
 Sometimes it is a little cumbersome to create a new named function with its own type annotation, especially if that function is simple or is to be used only once.
-A more compact alternative is to create an anonymous function (sometime referred to as a _lambda expression_).
+A more compact alternative is to create an anonymous function (sometimes referred to as a _lambda expression_).
 
 Here's a named function that contains an anonymous function for finding the square a number:
 
@@ -223,7 +224,7 @@ One of the main uses of anonymous functions is when _folding_ and _mapping_ list
 The value returned by a function can be anything, including another function.
 So both of the following are valid functions:
 
-```elm {l raw}
+```elm {l}
 betterDivide : Int -> Int -> Int
 betterDivide n1 n2 =
     divide n2 n1

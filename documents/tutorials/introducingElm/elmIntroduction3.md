@@ -38,6 +38,8 @@ But the type annotation on `myErroneousFunction` says it should be:
     Float
 ```
 
+This is much more helpful than having your program make some unexpected or hidden conversion from the string "0.1234" into a number.
+
 ## Creating custom types
 
 Suppose you wish to create some functions that deal with the days of the week.
@@ -45,9 +47,9 @@ You could represent each day with the `String` type (`"Monday"`, `"Tuesday"` etc
 
 Instead, you can create your own custom types that restrict values to a named set of options known as _constuctors_.
 This has the advantage of marshalling the Elm compiler to help spot mistakes, as any inconsistent naming will be flagged as an error.
-These custom types (also known as algebraic data types or union types) are similar, but more powerful, than 'enum' types available in some other languages.
+These custom types (also known as algebraic data types or union types) are similar to, but more powerful than, 'enum' types available in some other languages.
 
-Here is how you might create a day of the week union type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that types and constructors must start with an upper case letter:
+Here is how you might create a day of the week union type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that custom types and their constructors must start with an upper case letter:
 
 ```elm {l}
 type DayOfWeek
@@ -60,7 +62,7 @@ type DayOfWeek
     | Sunday
 ```
 
-Once created, the type can be used just like any other in-built type:
+Once created, the custom type can be used just like any other in-built type:
 
 ```elm {l siding raw}
 nextDay : DayOfWeek -> DayOfWeek
@@ -184,9 +186,9 @@ report =
 ```
 
 In the example above the `Course` type has two constructors, one of which is tagged with an `Int` meaning that to specify it we have to both name it (`Assessed`) and provide an integer value (representing the number of credits associated with the course).
-As in this example, there is no requirement for a type's constructors to share the same tags or tag types.
+As in this example, there is no requirement for a custom type's constructors to share the same tags or tag types.
 
-When we pattern match tagged types with `case ... of` we need to give a name to the tag so we can do something with its value.
+When we pattern match tagged custom types with `case ... of` we need to give a name to the tag so we can do something with its value.
 In the example above we called that name `credits` so we could handle it in building a string describing the course assessment.
 
 ## Elm's built-in custom types
@@ -221,10 +223,10 @@ output =
         sqrtMessage n =
             case safeSqrt n of
                 Just x ->
-                    "Square root of " ++ toString n ++ " is " ++ toString x
+                    "Square root of " ++ String.fromFloat n ++ " is " ++ String.fromFloat x
 
                 Nothing ->
-                    toString n ++ " does not have a real square root"
+                    String.fromFloat n ++ " does not have a real square root"
     in
     sqrtMessage 2
 ```

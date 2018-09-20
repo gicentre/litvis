@@ -108,7 +108,7 @@ Folds can proceed from left to right with [List.foldl](http://package.elm-lang.o
 The general form is `(a -> b -> b) b List a` where `a` is the type of element in the source list and `b` is the type of the resulting fold.
 The first parameter `(a -> b -> b)` is a reducing function which itself takes parameters representing the source and result types and returns an evaluated result.
 
-For example, to create a function to calculate the sum of a list of numbers:
+For example, to create a function that calculates the sum of a list of numbers:
 
 ```elm {l siding}
 sum : List number -> number
@@ -129,7 +129,7 @@ sumList =
     List.range 1 1000 |> sum
 ```
 
-Addition is commutative so `foldl` and `foldr` would produce the same result in the examples above and therefore, for efficiency, `foldl` would be preferred.
+Addition is commutative so `foldl` and `foldr` would produce the same result in the examples above and therefore, for efficiency, `foldl` should be preferred.
 But below is an example of reversing the contents of a list using the `::` (cons) operator where only `foldl` would give the expected result,
 
 ```elm {l siding}
