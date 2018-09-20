@@ -3,7 +3,7 @@ import * as hash from "object-hash";
 import { resolve } from "path";
 import { ensureUnlocked, lock, touch, unlock } from "./auxFiles";
 import { collectGarbageIfNeeded } from "./gc";
-import { initializeElmFile, installElmPackage } from "./tools";
+import { initializeElmProject, installElmPackage, patchElmJson } from "./tools";
 import {
   Dependencies,
   Environment,
@@ -147,7 +147,7 @@ async function prepareElmApplication(
   sourceDirectories: string[],
 ) {
   // install dependencies
-  await initializeElmFile(directory);
+  await initializeElmProject(directory);
   let userRequestsJsonPackage = false;
   for (const packageName in dependencies) {
     if (dependencies.hasOwnProperty(packageName)) {
@@ -163,16 +163,9 @@ async function prepareElmApplication(
   }
 
   // add sourceDirectories to elm.json
-  const pathToElmJson = resolve(directory, "elm.json");
-  const packageContents = await JSON.parse(
-    await readFile(pathToElmJson, "utf8"),
-  );
-  packageContents["source-directories"] = [...sourceDirectories, "."];
-  await writeFile(
-    pathToElmJson,
-    JSON.stringify(packageContents, null, 4),
-    "utf8",
-  );
+  await patchElmJson(directory, (elmJson) => {
+    elmJson["source-directories"] = [...sourceDirectories, "."];
+  });
 }
 
 function resolvePathToMetadata(workingDirectory: string) {
