@@ -42,9 +42,11 @@ And finally, a rotation of the conic Albers projection by 0, 40 an 80 degrees of
 ```elm {l=hidden}
 import VegaLite exposing (..)
 
+
 type Aspect
     = Wide
     | Square
+
 
 eclipse : Aspect -> Projection -> Float -> Float -> Bool -> Spec
 eclipse aspect proj lonRotate latRotate showLabels =
@@ -70,8 +72,8 @@ eclipse aspect proj lonRotate latRotate showLabels =
             asSpec
                 (pDetails
                     ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
-                        , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
-                        ]
+                       , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
+                       ]
                 )
 
         umbraSpec =
@@ -82,9 +84,9 @@ eclipse aspect proj lonRotate latRotate showLabels =
             asSpec
                 (pDetails
                     ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/eclipse.json" [ topojsonFeature "eclipse" ]
-                        , trans []
-                        , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.1 ]
-                        ]
+                       , trans []
+                       , geoshape [ maStroke "#00a2f3", maFill "#00a2f3", maFillOpacity 0.1 ]
+                       ]
                 )
 
         penumbraSpec =
@@ -95,9 +97,9 @@ eclipse aspect proj lonRotate latRotate showLabels =
             asSpec
                 (pDetails
                     ++ [ dataFromUrl "data/eclipse.json" [ topojsonFeature "eclipse" ]
-                        , trans []
-                        , geoshape [ maStrokeOpacity 0, maFill "#003", maFillOpacity 0.1 ]
-                        ]
+                       , trans []
+                       , geoshape [ maStrokeOpacity 0, maFill "#003", maFillOpacity 0.1 ]
+                       ]
                 )
 
         labelSpec =

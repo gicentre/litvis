@@ -159,7 +159,7 @@ gridMapSpec w op =
                         , mScale [ scDomain (doNums [ 40, 100 ]) ]
                         , mLegend []
                         ]
-                    )
+                  )
                     []
                 , square []
                 ]
