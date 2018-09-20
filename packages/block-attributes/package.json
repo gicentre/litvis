@@ -1,6 +1,6 @@
 {
   "name": "block-attributes",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Parses and stringifies code block attributes in markdown files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,6 @@
 {
   "name": "narrative-schema-common",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Common resources for narrative schemas",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "data-with-position": "^0.3.1",
+    "data-with-position": "^0.3.2",
     "kind-of": "^6.0.2",
     "vfile": "^3.0.0"
   },
