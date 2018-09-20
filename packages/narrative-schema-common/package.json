@@ -20,15 +20,15 @@
   "dependencies": {
     "data-with-position": "^0.3.1",
     "kind-of": "^6.0.2",
-    "vfile": "^2.3.0"
+    "vfile": "^3.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^22.2.3",
+    "@types/jest": "^23.3.2",
     "@types/vfile": "^2.2.2",
-    "jest": "^22.4.3",
-    "ts-jest": "^22.4.4",
-    "tslint": "^5.9.1",
-    "tslint-config-prettier": "^1.12.0",
-    "typescript": "^2.8.3"
+    "jest": "^23.6.0",
+    "ts-jest": "^23.1.4",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.0.3"
   }
 }

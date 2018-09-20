@@ -1,13 +1,13 @@
 ---
-follows: "elmVegaWalkthrough3"
+follows: "elmVegaliteWalkthrough3"
 id: litvis
 ---
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmVegaWalkthrough1.md)
-2.  [Single View Specifications](elmVegaWalkthrough2.md)
-3.  [Layered and Multi-view Composition](elmVegaWalkthrough3.md)
+1.  [Introduction](elmVegaliteWalkthrough1.md)
+2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
+3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
 4.  **Interaction**
 
 ---
@@ -43,7 +43,7 @@ scatterplot =
 
         sel =
             selection
-                << select "picked" Single []
+                << select "picked" seSingle []
     in
     toVegaLite
         [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
@@ -59,7 +59,7 @@ Previously when encoding color (or any other channel) we have provided a list of
 Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
 
 The name `"picked"` is just one we have chosen to call the selection.
-The type of selection here is `Single` meaning we can only select one item at a time.
+The type of selection here is `seSingle` meaning we can only select one item at a time.
 
 Because we will reuse the scatterplot specification in several examples, we can declare the basic specification in its own Elm function:
 
@@ -88,19 +88,19 @@ scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Single []
+            selection << select "picked" seSingle []
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
-To select multiple points by shift-clicking, we use `Multi` instead of 'Single' in the `selection` (_shift-click to select multiple points_):
+To select multiple points by shift-clicking, we use the `seMulti` function instead of 'seSingle' in the `selection` (_shift-click to select multiple points_):
 
 ```elm {v l s interactive}
 scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Multi []
+            selection << select "picked" seMulti []
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -112,7 +112,7 @@ scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Multi [ seOn "mouseover" ]
+            selection << select "picked" seMulti [ seOn "mouseover" ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -129,13 +129,13 @@ scatterplot : Spec
 scatterplot =
     let
         sel =
-            selection << select "picked" Single [ Empty, seFields [ "Cylinders" ] ]
+            selection << select "picked" seSingle [ seEmpty, seFields [ "Cylinders" ] ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
 This is invoked simply by adding a parameterised `seFields` function to the `select` parameters naming the fields onto which we wish to project our selection.
-Additionally, we have set the default selection to `Empty` here so that if nothing is selected, the selection is empty (without this the default selection is the entire encoded dataset.)
+Additionally, we have set the default selection with `seEmpty` here so that if nothing is selected, the selection is empty (without this the default selection is the entire encoded dataset.)
 
 Selection need not be limited to direct interaction with the visualization marks.
 We can also _bind_ the selection to other user-interface components.
@@ -149,7 +149,7 @@ scatterplot =
         sel =
             selection
                 << select "picked"
-                    Single
+                    seSingle
                     [ seFields [ "Cylinders" ]
                     , seBind [ iRange "Cylinders" [ inName "Cylinders: ", inMin 3, inMax 8, inStep 1 ] ]
                     ]
@@ -171,7 +171,7 @@ scatterplot =
         sel =
             selection
                 << select "picked"
-                    Single
+                    seSingle
                     [ seFields [ "Cylinders", "Year" ]
                     , seBind
                         [ iRange "Cylinders" [ inMin 3, inMax 8, inStep 1 ]
@@ -182,7 +182,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-The `Interval` selection type is useful for rapidly choosing a region of a view.
+The `seInterval` selection type is useful for rapidly choosing a region of a view.
 Simply providing an unparameterised selection allows both the width and the height of the selection to be chosen:
 
 ```elm {v l s interactive}
@@ -191,7 +191,7 @@ scatterplot =
     let
         sel =
             selection
-                << select "picked" Interval []
+                << select "picked" seInterval []
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -204,12 +204,12 @@ scatterplot =
     let
         sel =
             selection
-                << select "picked" Interval [ seEncodings [ ChX ] ]
+                << select "picked" seInterval [ seEncodings [ chX ] ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
 
-Notice here that to project the selection we parameterise `Interval` not with a field name as we have done previously but with a channel encoding using the function `seEncodings` (here parameterised with the X-position channel `ChX`).
+Notice here that to project the selection we parameterise `seInterval` not with a field name as we have done previously but with a channel encoding using the function `seEncodings` (here parameterised with the X-position channel function `chX`).
 
 If we further _bind_ that selection to the _scale_ transformation of X-position, we have created the ability to pan and zoom the view as the scaling is determined interactively depending on the extent and position of the interval selection.
 
@@ -221,7 +221,7 @@ scatterplot =
     let
         sel =
             selection
-                << select "picked" Interval [ seEncodings [ ChX ], BindScales ]
+                << select "picked" seInterval [ seEncodings [ chX ], seBindScales ]
     in
     toVegaLite (sel [] :: scatterProps)
 ```
@@ -236,8 +236,8 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pRepeat Row, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pRepeat arRow, pMType Quantitative ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
                         [ mName "Origin", mMType Nominal ]
@@ -245,7 +245,7 @@ linkedScatterplots =
                     ]
 
         sel =
-            selection << select "picked" Interval [ seEncodings [ ChX ] ]
+            selection << select "picked" seInterval [ seEncodings [ chX ] ]
 
         spec =
             asSpec
@@ -277,12 +277,12 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pRepeat Row, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pRepeat arRow, pMType Quantitative ]
                 << color [ mName "Origin", mMType Nominal ]
 
         sel =
-            selection << select "picked" Interval [ BindScales ]
+            selection << select "picked" seInterval [ seBindScales ]
 
         spec =
             asSpec
@@ -301,7 +301,7 @@ linkedScatterplots =
         ]
 ```
 
-The only difference between this and the previous example is that we now `BindScales` based on the selection rather than provide a conditional encoding of color.
+The only difference between this and the previous example is that we now call `seBindScales` based on the selection rather than provide a conditional encoding of color.
 
 The ability to determine the scale of a chart based on a selection is useful in implementing a common visualization design pattern, that of 'context and focus' (or sometimes referred to as 'overview and detail on demand').
 We can achieve this by setting the scale of one view based on the selection in another.
@@ -314,7 +314,7 @@ linkedTimeSeries : Spec
 linkedTimeSeries =
     let
         sel =
-            selection << select "brush" Interval [ seEncodings [ ChX ] ]
+            selection << select "brush" seInterval [ seEncodings [ chX ] ]
 
         encContext =
             encoding
@@ -366,7 +366,7 @@ crossFilter =
                 << calculateAs "hours(datum.date)" "hour"
 
         sel =
-            selection << select "brush" Interval [ seEncodings [ ChX ] ]
+            selection << select "brush" seInterval [ seEncodings [ chX ] ]
 
         filterTrans =
             transform
@@ -374,13 +374,13 @@ crossFilter =
 
         totalEnc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
 
         selectedEnc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
                 << color [ mStr "goldenrod" ]
     in
     toVegaLite

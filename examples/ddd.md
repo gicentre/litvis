@@ -2,7 +2,7 @@
 id: "litvis"
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 narrative-schemas:
   - ../narrative-schemas/ddd
 ---
@@ -67,7 +67,7 @@ gridmapCrimes =
                 << calculateAs "datum.zScore < 0 ? 'low' : 'high'" "crimeCats"
 
         res =
-            resolve << resolution (reScale [ ( ChColor, Independent ) ])
+            resolve << resolution (reScale [ ( chColor, reIndependent ) ])
 
         w =
             220
@@ -128,10 +128,10 @@ gridMapSpec w op =
         gridSel =
             selection
                 << select "userOpacity"
-                    Single
+                    seSingle
                     [ seFields [ "opacity" ]
                     , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
-                    , Empty
+                    , seEmpty
                     ]
     in
     case op of

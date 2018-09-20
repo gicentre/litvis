@@ -7,5 +7,5 @@ follows: root
 ```elm {v}
 projectedGlobe : Spec
 projectedGlobe =
-    globe Equirectangular []
+    globe equirectangular []
 ```

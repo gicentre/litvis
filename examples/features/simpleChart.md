@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vegalite: latest
 ---
 
 ```elm {l=hidden}
@@ -14,14 +14,14 @@ import VegaLite exposing (..)
 barChart : Spec
 barChart =
     let
-        data =
-            dataFromUrl "https://vega.github.io/vega-lite/data/cars.json"
-                []
+        cars =
+            dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
 
         enc =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PmType Quantitative, PAggregate Count ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << color [ mName "Origin", mMType Nominal ]
     in
-    toVegaLite [ data, enc [], mark Bar [] ]
+    toVegaLite [ cars, circle [], enc [] ]
 ```

@@ -161,7 +161,7 @@ ${outputSymbolName} =
         ${i > 0 ? "," : " "} ("${text.replace(
         /"/g,
         '\\"',
-      )}", Json.Encode.string <| toString <| ${text})`,
+      )}", Json.Encode.string <| Debug.toString <| ${text})`,
     });
   });
 
@@ -227,23 +227,25 @@ const runChunkifiedProgram = async (
         outputSymbolName,
       );
     } catch (e) {
-      const linesInStdout = (e.message || "").split("\n");
-      let errors;
-      _.findLast(linesInStdout, (line) => {
+      const linesInStderr = (e.message || "").split("\n");
+
+      let parsedErrorOutput;
+
+      _.findLast(linesInStderr, (line) => {
         try {
-          errors = JSON.parse(line);
+          parsedErrorOutput = JSON.parse(line);
           return true;
         } catch (e) {
           return false;
         }
       });
 
-      if (!errors || !_.isArray(errors)) {
+      if (!parsedErrorOutput || !_.isArray(parsedErrorOutput.errors)) {
         throw e;
       }
       return {
         status: ProgramResultStatus.FAILED,
-        errors,
+        errors: parsedErrorOutput.errors,
       };
     }
 
@@ -257,12 +259,7 @@ const runChunkifiedProgram = async (
     // some messages need to be patched to avoid confusing output
     const message = (e.message || "")
       .replace(/^Compilation failed\n/, "")
-      .replace(/\n{2,}/, "\n")
-      .replace(/Module .* is trying to import it.\n\n/, "")
-      .replace(
-        /(\n  \* Need to add a source directory or new dependency) to elm-package.json/,
-        "$1",
-      );
+      .replace(/\n{2,}/, "\n");
     const indexOfFirstNewline = message.indexOf("\n");
 
     const overview =
@@ -299,7 +296,7 @@ const convertErrorsToMessages = (
   errors: any[],
 ): Message[] => {
   const result: Message[] = [];
-  errors.map((error) => {
+  _.map(_.get(errors, [0, "problems"], errors), (error) => {
     const currentChunk =
       chunkifiedProgram.chunks[
         _.findIndex(
@@ -372,10 +369,22 @@ const convertErrorsToMessages = (
 };
 
 const getErrorMessageText = (error): string => {
-  if (error.overview) {
-    return `${error.overview || ""}${
-      error.details ? `. ${error.details.replace(/\s+/g, " ")}` : ""
-    }`;
+  if (_.isArray(error.message)) {
+    const text = error.message
+      .map((chunk) => {
+        if (chunk.string) {
+          // remove underlines with ^^^^
+          if (chunk.string === "^".repeat(chunk.string.length)) {
+            return "__REMOVED_UNDERNLINE__";
+          }
+          return chunk.string;
+        }
+        return chunk;
+      })
+      .join("");
+    return text
+      .replace(/\s*__REMOVED_UNDERNLINE__\s*/g, "\n")
+      .replace(/\n\d+\|/g, "\n"); // remove line numbers in listings
   }
-  return error.message || error.valueOf();
+  return `${error.overview || error}`;
 };

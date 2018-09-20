@@ -8,7 +8,7 @@ id: "litvis"
 2.  **Functions, functions, functions**
 3.  [Types and pattern matching](elmIntroduction3.md)
 4.  [Lists and list processing](elmIntroduction4.md)
-5.  [Elm and elm-vega](elmIntroduction5.md)
+5.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
@@ -104,6 +104,7 @@ divide : Int -> Int -> Int
 divide denominator numerator =
     if denominator == 0 then
         0
+
     else
         numerator // denominator
 
@@ -115,7 +116,7 @@ double n =
 
 isOdd : Int -> Bool
 isOdd n =
-    n % 2 == 1
+    modBy 2 n == 1
 
 
 sumIsOdd : Int -> Int -> Bool
@@ -179,7 +180,7 @@ always3 n =
 ```
 
 Often it is clearer to use the pipe operator to chain a sequence of functions together in the natural order we would process them.
-A variation of this is used commonly in elm-vega when creating visualization specifications (see _functional composition_ below for more details).
+A variation of this is used commonly in elm-vegalite when creating visualization specifications (see _functional composition_ below for more details).
 
 ### Scoping expressions with 'let'
 
@@ -343,7 +344,7 @@ answer =
     isEven 240
 ```
 
-The `<<` operator is used commonly with elm-vega specifications to combine mutliple channel encodings (see the [last chapter](elmIntroduction5.md) of this tutorial).
+The `<<` operator is used commonly with elm-vegalite specifications to combine mutliple channel encodings (see the [last chapter](elmIntroduction5.md) of this tutorial).
 
 ---
 

@@ -1,31 +1,67 @@
+import executeRunElm from "@kachkaev/run-elm";
 import * as execa from "execa";
-import executeRunElm from "run-elm";
+import { readFile, writeFile } from "fs-extra";
+import { resolve } from "path";
 
-export async function initializeElmPackage(projectDirectory: string) {
-  const args = ["install", "--yes"];
-  await execa("elm-package", args, {
+export async function initializeElmProject(projectDirectory: string) {
+  const childProcess = execa("elm", ["init"], {
     cwd: projectDirectory,
-    stripEof: false,
+    stdin: null,
   });
+  childProcess.stdin.write("\n");
+  await childProcess;
 }
+
+const resolveVersion = (version: string) => {
+  // Can't use version ranges in Elm 0.19 (yet?)
+  // let min = version;
+  // let max = version;
+  // while ((min.match(/\./g) || []).length < 2) {
+  //   min = `${min}.0`;
+  //   max = `${max}.9999`;
+  // }
+  // if (min === max) {
+  //   return version;
+  // }
+  // return `${min} <= v < ${max}`;
+
+  let result = version;
+  while ((result.match(/\./g) || []).length < 2) {
+    result = `${result}.0`;
+  }
+  return result;
+};
+
+export const patchElmJson = async (projectPath, callback) => {
+  const pathToElmJson = resolve(projectPath, "elm.json");
+  const packageContents = await JSON.parse(
+    await readFile(pathToElmJson, "utf8"),
+  );
+  await writeFile(
+    pathToElmJson,
+    JSON.stringify(callback(packageContents) || packageContents),
+    "utf8",
+  );
+};
 
 export async function installElmPackage(
   projectDirectory: string,
   packageName: string,
   packageVersion: string,
 ) {
-  const args = ["install", "--yes", packageName];
   if (packageVersion !== "latest") {
-    const semver = `${packageVersion}${".0".repeat(
-      2 - (packageVersion.match(/\./g) || []).length,
-    )}`;
-    args.push(semver);
+    // waiting for elm install to support version picking
+    await patchElmJson(projectDirectory, (elmJson) => {
+      elmJson.dependencies.direct[packageName] = resolveVersion(packageVersion);
+    });
   }
-  await execa("elm-package", args, {
+  const childProcess = execa("elm", ["install", packageName], {
     cwd: projectDirectory,
-    stripEof: false,
+    stdin: null,
   });
-  // TODO: return meaningful error when elm-package is not installed
+  childProcess.stdin.write("\n");
+  await childProcess;
+  // TODO: return meaningful error when elm package is not installed
   // see https://github.com/jwoLondon/litvis/issues/27
 }
 

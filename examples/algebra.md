@@ -4,7 +4,7 @@ narrative-schemas:
   - ../narrative-schemas/algebra
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 @import "assets/litvis.less"
@@ -141,10 +141,10 @@ brexitMap mapSize dChange orderType oDirection =
                 sortOrder =
                     case oDirection of
                         Asc ->
-                            oSort [ Ascending ]
+                            oSort [ soAscending ]
 
                         Desc ->
-                            oSort [ Descending ]
+                            oSort [ soDescending ]
             in
             case orderType of
                 ByLongitude ->
@@ -166,13 +166,16 @@ brexitMap mapSize dChange orderType oDirection =
                         Desc ->
                             "decreasing"
 
+                cText : Float -> String
                 cText pc =
                     if pc < 0 then
-                        "Swing by " ++ toString (abs pc) ++ "% away from leave"
+                        "Swing by " ++ String.fromFloat (abs pc) ++ "% away from leave"
+
                     else if pc == 0 then
                         "Original vote"
+
                     else
-                        "Swing by " ++ toString pc ++ "% to leave vote"
+                        "Swing by " ++ String.fromFloat pc ++ "% to leave vote"
             in
             case ( mapSize, dChange, orderType ) of
                 ( Large, _, _ ) ->
@@ -204,7 +207,7 @@ brexitMap mapSize dChange orderType oDirection =
         multiplier =
             case dChange of
                 LeaveBy pc ->
-                    toString (pc / 100)
+                    String.fromFloat (pc / 100)
 
                 _ ->
                     "0"
@@ -261,7 +264,7 @@ brexitMap mapSize dChange orderType oDirection =
             configure
                 << configuration (coView [ vicoStroke Nothing ])
                 << configuration (coScale [ sacoMaxSize w ])
-                << configuration (coTitle [ ticoFontSize 10, ticoBaseline AlignBottom ])
+                << configuration (coTitle [ ticoFontSize 10, ticoBaseline vaBottom ])
     in
     toVegaLite
         [ width w

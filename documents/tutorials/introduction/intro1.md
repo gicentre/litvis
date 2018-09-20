@@ -32,7 +32,7 @@ Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the f
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 
 ```elm {l=hidden}
@@ -55,7 +55,7 @@ helloLitvis =
                 << position X
                     [ pName "language"
                     , pMType Nominal
-                    , pSort [ soByField "rating" Mean, Descending ]
+                    , pSort [ soByField "rating" opMean, soDescending ]
                     ]
                 << position Y [ pName "rating", pMType Quantitative ]
     in
@@ -73,11 +73,11 @@ The top of the document is the _header_ fenced with a pair of `---` lines:
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: "3.0"
+    gicentre/elm-vegalite: latest
 ---
 ```
 
-We will be using the [elm-vega 3.0](https://package.elm-lang.org/packages/gicentre/elm-vega/3.0.1) package to provide visualization specifications in our litvis documents, so this header just ensures that the relevant module is installed and ready to use.
+We will be using the [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest) package to provide visualization specifications in our litvis documents, so this header just ensures that the relevant module is installed and ready to use.
 
 Litvis documents allow you to write and code directly within them but also to control whether or not the code should be displayed in the formatted output.
 The code block
@@ -89,13 +89,13 @@ import VegaLite exposing (..)
 ````
 
 provides a fenced block of code between a pair of ` ``` ` lines where `elm` indicates the code will be written in the [elm language](http://elm-lang.org) and the `{l=hidden}` prevents this particular block of code from being displayed in the formatted output pane.
-The code itself just imports the module `VegaLite` from [elm-vega 3.0](https://package.elm-lang.org/packages/gicentre/elm-vega/3.0.1) so we can use it later on in the litvis document.
+The code itself just imports the module `VegaLite` from [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/) so we can use it later on in the litvis document.
 
 The header and hidden import code block are commonly used at the start of litvis documents to set things up nicely, so can usually just be copied from from one document to the next.
 
 Below the header the remains of the document can mix standard markdown text (e.g. _The top 5 programming languages..._) with fenced code blocks.
 In our first example, a function we've called `helloLitvis` creates a visualization specification that defines a simple data table comprising two columns (`language` and `rating`) each of 5 rows, and then encodes the data in the `language` column as horizontal (`X`) position and the `rating` value as vertical (`Y`) position.
-Additionally, `language` data are sorted by `rating` from high to low before positioning them (using the [pSort function](http://package.elm-lang.org/packages/gicentre/elm-vega/2.3.0/VegaLite#pSort)) before rendering the data as a collection of `bar` marks to produce a simple bar chart.
+Additionally, `language` data are sorted by `rating` from high to low before positioning them (using the [pSort function](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#pSort)) before rendering the data as a collection of `bar` marks to produce a simple bar chart.
 
 You can learn more about the elm language and specifying visualizations in the other [litvis tutorials](../README.md), but here we wil focus on constructing litvis documents.
 
@@ -168,7 +168,7 @@ helloLitvis =
     let
         enc =
             encoding
-                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" Mean, Descending ] ]
+                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" opMean, soDescending ] ]
                 << position Y [ pName "rating", pMType Quantitative ]
     in
     toVegaLite [ data [], bar [], enc [] ]

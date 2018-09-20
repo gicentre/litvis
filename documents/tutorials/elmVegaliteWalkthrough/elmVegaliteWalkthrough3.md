@@ -1,14 +1,14 @@
 ---
-follows: "elmVegaWalkthrough2"
+follows: "elmVegaliteWalkthrough2"
 id: litvis
 ---
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmVegaWalkthrough1.md)
-2.  [Single View Specifications](elmVegaWalkthrough2.md)
+1.  [Introduction](elmVegaliteWalkthrough1.md)
+2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
 3.  **Layered and Multi-view Composition**
-4.  [Interaction](elmVegaWalkthrough4.md)
+4.  [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 
@@ -29,7 +29,7 @@ smallMultiples =
                     , pAxis [ axTitle "" ]
                     ]
                 << position Y
-                    [ pAggregate Count
+                    [ pAggregate opCount
                     , pMType Quantitative
                     ]
                 << color
@@ -57,17 +57,17 @@ The second, minor change, is to include an `mLegend` specification in the color 
 There are four ways in which multiple views may be combined:
 
 - The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above).
-  elm-vega functions to create faceted views: `column`, `row`, `facet` and `specification`.
+  elm-vegalite functions to create faceted views: `column`, `row`, `facet` and `specification`.
 
 - The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot.
-  elm-vega functions to create a layered view: `layer` and `asSpec`.
+  elm-vegalite functions to create a layered view: `layer` and `asSpec`.
 
 - The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns.
   This allows 'dashboards' to be built.
-  elm-vega functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
+  elm-vegalite functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
 
 - The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view.
-  elm-vega functions for repeated views: `repeat` and `specification`.
+  elm-vegalite functions for repeated views: `repeat` and `specification`.
 
 ## Composition Example: Precipitation in Seattle ([9:40](https://youtu.be/9uaHRWj04D4?t=9m40s))
 
@@ -82,12 +82,12 @@ barChart =
                 << position X
                     [ pName "date"
                     , pMType Ordinal
-                    , pTimeUnit Month
+                    , pTimeUnit month
                     ]
                 << position Y
                     [ pName "precipitation"
                     , pMType Quantitative
-                    , pAggregate Mean
+                    , pAggregate opMean
                     ]
     in
     toVegaLite [ seattleData, bar [], enc [] ]
@@ -103,8 +103,8 @@ temporalBarSpec pField w =
     let
         enc =
             encoding
-                << position X [ pName "date", pMType Ordinal, pTimeUnit Month ]
-                << position Y [ pField, pMType Quantitative, pAggregate Mean ]
+                << position X [ pName "date", pMType Ordinal, pTimeUnit month ]
+                << position Y [ pField, pMType Quantitative, pAggregate opMean ]
     in
     asSpec [ width w, height w, bar [], enc [] ]
 ```
@@ -130,7 +130,7 @@ barChart =
             pName "precipitation"
 
         enc =
-            encoding << position Y [ dataField, pMType Quantitative, pAggregate Mean ]
+            encoding << position Y [ dataField, pMType Quantitative, pAggregate opMean ]
     in
     toVegaLite
         [ seattleData
@@ -149,7 +149,7 @@ temporalAvBarSpec : PositionChannel -> Float -> Spec
 temporalAvBarSpec dataField w =
     let
         enc =
-            encoding << position Y [ dataField, pMType Quantitative, pAggregate Mean ]
+            encoding << position Y [ dataField, pMType Quantitative, pAggregate opMean ]
     in
     asSpec
         [ layer [ temporalBarSpec dataField w, asSpec [ enc [], rule [] ] ] ]
@@ -184,11 +184,11 @@ barCharts =
     toVegaLite
         [ seattleData
         , repeat [ rowFields [ "precipitation", "temp_max", "wind" ] ]
-        , specification (temporalBarSpec (pRepeat Row) 150)
+        , specification (temporalBarSpec (pRepeat arRow) 150)
         ]
 ```
 
-This more compact specification replaces the data field name (`pName "precipitation"` etc.) with a reference to the repeating field (`pRepeat`) either as a `Row` or `Column` depending on the desired layout. We then compose the specifications by providing a set of `rowFields` (or `columnFields`) containing a list of the fields to which we wish to apply the specification (identified with the function `specification` which should follow the `repeat` function provided to `toVegaLite`).
+This more compact specification replaces the data field name (`pName "precipitation"` etc.) with a reference to the repeating field (`pRepeat`) either as a `arRow` or `arColumn` depending on the desired layout. We then compose the specifications by providing a set of `rowFields` (or `columnFields`) containing a list of the fields to which we wish to apply the specification (identified with the function `specification` which should follow the `repeat` function provided to `toVegaLite`).
 
 We can combine repeated rows and repeated columns to create a grid of views, such as a scatterplot matrix (or SPLOM for short):
 
@@ -198,8 +198,8 @@ splom =
     let
         enc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pRepeat Row, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pRepeat arRow, pMType Quantitative ]
 
         spec =
             asSpec
@@ -233,7 +233,7 @@ histogram =
         histoEnc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
 
         histoSpec =
             asSpec [ width w, height w, bar [], histoEnc [] ]
@@ -248,15 +248,15 @@ histogram =
 
         barEnc =
             encoding
-                << position X [ pName "date", pMType Ordinal, pTimeUnit Month ]
-                << position Y [ pName "precipitation", pMType Quantitative, pAggregate Mean ]
+                << position X [ pName "date", pMType Ordinal, pTimeUnit month ]
+                << position Y [ pName "precipitation", pMType Quantitative, pAggregate opMean ]
 
         barSpec =
             asSpec [ width w, height w, bar [], barEnc [] ]
 
         lineEnc =
             encoding
-                << position Y [ pName "precipitation", pMType Quantitative, pAggregate Mean ]
+                << position Y [ pName "precipitation", pMType Quantitative, pAggregate opMean ]
 
         lineSpec =
             asSpec [ width w, height w, rule [], lineEnc [] ]
@@ -279,8 +279,8 @@ dashboard data =
     let
         scatterEnc =
             encoding
-                << position X [ pRepeat Column, pMType Quantitative ]
-                << position Y [ pRepeat Row, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pMType Quantitative ]
+                << position Y [ pRepeat arRow, pMType Quantitative ]
 
         scatterSpec =
             asSpec [ point [ maStrokeWidth 0.4 ], scatterEnc [] ]
@@ -297,13 +297,13 @@ dashboard data =
         barsSpec =
             asSpec
                 [ repeat [ rowFields [ "precipitation", "temp_max", "wind" ] ]
-                , specification (temporalAvBarSpec (pRepeat Row) 150)
+                , specification (temporalAvBarSpec (pRepeat arRow) 150)
                 ]
 
         histoEnc =
             encoding
                 << position X [ pName "temp_max", pMType Quantitative, pBin [], pAxis [ axTitle "Max temp" ] ]
-                << position Y [ pAggregate Count, pMType Quantitative ]
+                << position Y [ pAggregate opCount, pMType Quantitative ]
                 << color [ mName "weather", mMType Nominal, mLegend [], mScale weatherColors ]
                 << column [ fName "weather", fMType Nominal ]
 
@@ -333,4 +333,4 @@ newYorkData =
 
 ---
 
-_Next >>_ [Interaction](elmVegaWalkthrough4.md)
+_Next >>_ [Interaction](elmVegaliteWalkthrough4.md)

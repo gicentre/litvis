@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vegalite: latest
 ---
 
 Teaser
@@ -24,10 +24,10 @@ barChart =
 
         enc =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PmType Quantitative, PAggregate Count ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pMType Quantitative, pAggregate opCount ]
     in
-    toVegaLite [ data, enc [], mark Bar [] ]
+    toVegaLite [ data, enc [], bar [] ]
 ```
 
 Frequency histogram: ^^^elm v=barChart^^^

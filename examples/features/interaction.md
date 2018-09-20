@@ -1,7 +1,7 @@
 ---
 elm:
   dependencies:
-    gicentre/elm-vega: latest
+    gicentre/elm-vegalite: latest
 ---
 
 ```elm {l=hidden}
@@ -13,19 +13,19 @@ interactive1 : Spec
 interactive1 =
     let
         sel =
-            selection << select "myBrush" Interval []
+            selection << select "myBrush" seInterval []
 
         enc =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PName "Miles_per_Gallon", PmType Quantitative ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
                 << color
-                    [ MSelectionCondition (SelectionName "myBrush")
-                        [ MName "Cylinders", MmType Ordinal ]
-                        [ MString "grey" ]
+                    [ mSelectionCondition (selectionName "myBrush")
+                        [ mName "Cylinders", mMType Ordinal ]
+                        [ mStr "grey" ]
                     ]
     in
-    toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], mark Point [], sel [], enc [] ]
+    toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], point [], sel [], enc [] ]
 ```
 
 ```elm {v interactive}
@@ -39,40 +39,40 @@ binding1 =
         sel1 =
             selection
                 << select "CylYr"
-                    Single
-                    [ Fields [ "Cylinders", "Year" ]
-                    , Bind
-                        [ IRange "Cylinders" [ InName "Cylinders ", InMin 3, InMax 8, InStep 1 ]
-                        , IRange "Year" [ InName "Year ", InMin 1969, InMax 1981, InStep 1 ]
+                    seSingle
+                    [ seFields [ "Cylinders", "Year" ]
+                    , seBind
+                        [ iRange "Cylinders" [ inName "Cylinders ", inMin 3, inMax 8, inStep 1 ]
+                        , iRange "Year" [ inName "Year ", inMin 1969, inMax 1981, inStep 1 ]
                         ]
                     ]
 
         enc1 =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PName "Miles_per_Gallon", PmType Quantitative ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
                 << color
-                    [ MSelectionCondition (SelectionName "CylYr")
-                        [ MName "Origin", MmType Nominal ]
-                        [ MString "grey" ]
+                    [ mSelectionCondition (selectionName "CylYr")
+                        [ mName "Origin", mMType Nominal ]
+                        [ mStr "grey" ]
                     ]
 
         spec1 =
-            asSpec [ sel1 [], mark Circle [], enc1 [] ]
+            asSpec [ sel1 [], circle [], enc1 [] ]
 
         trans2 =
             transform
-                << filter (FSelection "CylYr")
+                << filter (fiSelection "CylYr")
 
         enc2 =
             encoding
-                << position X [ PName "Horsepower", PmType Quantitative ]
-                << position Y [ PName "Miles_per_Gallon", PmType Quantitative ]
-                << color [ MName "Origin", MmType Nominal ]
-                << size [ MNumber 100 ]
+                << position X [ pName "Horsepower", pMType Quantitative ]
+                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << color [ mName "Origin", mMType Nominal ]
+                << size [ mNum 100 ]
 
         spec2 =
-            asSpec [ trans2 [], mark Circle [], enc2 [] ]
+            asSpec [ trans2 [], circle [], enc2 [] ]
     in
     toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], trans [], layer [ spec1, spec2 ] ]
 ```
