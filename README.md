@@ -13,9 +13,9 @@ Here you will find
 
 Litvis documents can be viewed and created in either the Atom or VS Code editors:
 
-1.  If you don't have it already, install [Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
+1.  If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
 
-2.  Open a terminal window and install [Elm](elm), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
+2.  Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
 
     ```
     npm install --global elm prettier prettier-plugin-elm
