@@ -61,22 +61,27 @@ export default (
           );
           packageVersion = `${packageVersion}`;
         }
-        if (
-          packageVersion !== false &&
-          packageVersion !== "latest" &&
-          !(
+        if (packageVersion !== false && packageVersion !== "latest") {
+          if (
             _.isString(packageVersion) &&
             packageVersion.match(/^\d+(\.\d+){0,2}$/)
-          )
-        ) {
-          document.message(
-            `Wrong elm package version ${packageVersion} given. Package ignored.`,
-            packagePosition,
-            "litvis:frontmatter:elm:dependencies",
-          );
-          continue;
+          ) {
+            document.message(
+              `Installing custom package versions is not yet supported by elm 0.19. Falling back to latest.`,
+              packagePosition,
+              "litvis:frontmatter:elm:dependencies",
+            );
+          } else {
+            document.message(
+              `Wrong elm package version ${packageVersion} given. Package ignored.`,
+              packagePosition,
+              "litvis:frontmatter:elm:dependencies",
+            );
+            continue;
+          }
         }
-        result.versions[packageName] = packageVersion;
+        result.versions[packageName] =
+          packageVersion === false ? false : "latest";
         result.positions[packageName] = packageVersion;
       }
     }

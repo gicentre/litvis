@@ -12,25 +12,25 @@ export async function initializeElmProject(projectDirectory: string) {
   await childProcess;
 }
 
-const resolveVersion = (version: string) => {
-  // Can't use version ranges in Elm 0.19 (yet?)
-  // let min = version;
-  // let max = version;
-  // while ((min.match(/\./g) || []).length < 2) {
-  //   min = `${min}.0`;
-  //   max = `${max}.9999`;
-  // }
-  // if (min === max) {
-  //   return version;
-  // }
-  // return `${min} <= v < ${max}`;
+// const resolveVersion = (version: string) => {
+//   // Can't use version ranges in Elm 0.19 (yet?)
+//   // let min = version;
+//   // let max = version;
+//   // while ((min.match(/\./g) || []).length < 2) {
+//   //   min = `${min}.0`;
+//   //   max = `${max}.9999`;
+//   // }
+//   // if (min === max) {
+//   //   return version;
+//   // }
+//   // return `${min} <= v < ${max}`;
 
-  let result = version;
-  while ((result.match(/\./g) || []).length < 2) {
-    result = `${result}.0`;
-  }
-  return result;
-};
+//   let result = version;
+//   while ((result.match(/\./g) || []).length < 2) {
+//     result = `${result}.0`;
+//   }
+//   return result;
+// };
 
 export const patchElmJson = async (projectPath, callback) => {
   const pathToElmJson = resolve(projectPath, "elm.json");
@@ -50,10 +50,14 @@ export async function installElmPackage(
   packageVersion: string,
 ) {
   if (packageVersion !== "latest") {
+    // https://github.com/elm/compiler/issues/1759
+    throw new Error(
+      "Installing dependencies rather than latest is currently not supported by elm install v0.19",
+    );
     // waiting for elm install to support version picking
-    await patchElmJson(projectDirectory, (elmJson) => {
-      elmJson.dependencies.direct[packageName] = resolveVersion(packageVersion);
-    });
+    // await patchElmJson(projectDirectory, (elmJson) => {
+    //   elmJson.dependencies.direct[packageName] = resolveVersion(packageVersion);
+    // });
   }
   const childProcess = execa("elm", ["install", packageName], {
     cwd: projectDirectory,
