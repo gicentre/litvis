@@ -63,7 +63,7 @@ helloLitvis =
 ```
 ````
 
-If you open the preview pane, you should see output similar to the following:
+If you open the preview pane (in Atom, select `Packages->Markdown Preview Enhanced with litvis->Toggle` or the keyboard shortcut `Shift-Ctrl-M`), you should see output similar to the following:
 
 ![helloLitvis](images/hello1.png)
 
