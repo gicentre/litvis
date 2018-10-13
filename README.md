@@ -33,7 +33,7 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
     - Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
       _This may take a few minutes on a slow network connection._
 
-    - Search for `prettier-atom` and then click the `install` button.
+    - Search for `prettier-atom` (Atom) or `prettier - Code formatter` (VSCode) and then click the `install` button.
       This extension will help you format litvis documents as you edit them.
 
     - Search for `language-elm` (Atom) or `elm` (VSCode) and then click the `install` button.
