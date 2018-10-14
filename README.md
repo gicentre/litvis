@@ -39,6 +39,8 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
     - Search for `language-elm` (Atom) or `elm` (VSCode) and then click the `install` button.
       This extension enables syntax highlighting for Elm source in code blocks.
 
+    - Atom users should also search for `language-markdown` and click the `install` button.
+
     > **Atom users:** you may want to disable Atom’s standard markdown preview tool by going to `Preferences → Packages` (or `File → Settings → Packages`), searching for `markdown-preview` and clicking `disable`. You may also wish to disable `spell-check` too so that misspelled words are not confused with coding errors.
 
     > **VSCode users:** The Prettier extension does not currently work with a global instance of Prettier ([#232](https://github.com/prettier/prettier-vscode/issues/232), [#395](https://github.com/prettier/prettier-vscode/issues/395)). Until this is fixed, please consider installing `prettier` and `prettier-plugin-elm` in your project folder (i.e. without `--global` flag in step 2 above).
