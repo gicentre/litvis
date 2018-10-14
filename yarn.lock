@@ -4656,9 +4656,9 @@ prettier-check@^2.0.0:
   dependencies:
     execa "^0.6.0"
 
-prettier-plugin-elm@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-elm/-/prettier-plugin-elm-0.4.0.tgz#5680c42e148aad1838835589baf80930b12b5305"
+prettier-plugin-elm@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-elm/-/prettier-plugin-elm-0.4.1.tgz#adaac646a1e93cad666b87c1174c056112f048a8"
   dependencies:
     elm-format "^0.8.1"
     execa "^1.0.0"
