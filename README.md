@@ -3,9 +3,9 @@
 A light-touch approach to designing, building and describing visualization.
 Here you will find
 
-- [Explanations](documents) of the literate visualization process.
-- [Tutorials](documents/tutorials) for working with litvis, Elm and elm-vega.
+- [Tutorials](documents/tutorials) for working with litvis, Elm and elm-vega/vegalite.
 - [Examples](examples) of literate visualization.
+- [documentation](documents) of the litvis markdown syntax.
 - [Narrative Schemas](narrative-schemas) to help you write literate visualization documents.
 - [Packages](packages) for developers working with litvis and NPM.
 
