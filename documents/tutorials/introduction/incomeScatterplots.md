@@ -15,7 +15,7 @@ config =
     configure
         << configuration (coAxis [ axcoTitleFont font, axcoLabelFont font, axcoGrid False ])
         << configuration (coView [ vicoStroke Nothing, vicoWidth 300, vicoHeight 300 ])
-        << configuration (coText [ maAlign raRight, maFontSize 7, maAngle 20, maDx -4 ])
+        << configuration (coText [ maAlign haRight, maFontSize 7, maAngle 20, maDx -4 ])
 ```
 
 ```elm {l=hidden}
