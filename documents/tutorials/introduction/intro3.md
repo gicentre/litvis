@@ -30,7 +30,7 @@ A narrative schema is simply a set of rules you define (either yourself or by us
 These rules might be as simple as 'if you define a section of text with this heading, it must contain some content', or more complex such as 'this document must contain these 6 sections in this order, each with at least 300 characters of text'.
 
 Their value comes in providing you with _scaffold_ to guide the writing of litvis documents so they have some desired structure.
-Documents that are validated against a narrative schema will be flagged in litivis with a warning message if they don't follow the rules defined in the schema.
+Documents that are validated against a narrative schema will be flagged in litvis with a warning message if they don't follow the rules defined in the schema.
 
 ## A simple example
 
@@ -66,7 +66,7 @@ In the schema this content is always referenced with the name `children` and in 
 Each rule should contain a `description` to be reported if the rule is broken, the label the rule applies to and then the rule itself.
 In this example we specify that the content between the paired labels must be at least 1 character long.
 
-Finally we can apply standard css styling to the html described in the `htmlTemplate`.
+Finally, we can apply standard 'CSS' styling to the html described in the `htmlTemplate`.
 Here we create a yellow background and italic text for any such content.
 
 To see the schema in action, copy the schema above into a file `todo.yaml` then create a new litvis document into which you copy the following code:
@@ -106,7 +106,7 @@ Try deleting the content between the `todo` labels to check that the editor flag
 ## Controlling Narrative Sequencing
 
 A common form of schema is to require a litvis document to include a number of specific headings that are to be presented in a fixed order.
-For example, when exploring a new form of data visualization we might force ourselves to ask and answer the following questions and prompts:
+For example, when exploring a new form of data visualization, we might force ourselves to ask and answer the following questions and prompts:
 
 1.  What is the aim of your visualization design?
 2.  Describe how your design works.
@@ -164,7 +164,7 @@ rules:
 ```
 
 Here we add a few more rules that specify that there must be one `aim` label in the document, one `desc` label and at least one `limitations`.
-Additionally we specify the order of labels by requiring `aim` must occur before `dec` which itself must occur before `limitations`.
+Additionally, we specify the order of labels by requiring `aim` must occur before `dec` which itself must occur before `limitations`.
 
 Below is an example litvis document that conforms to this narrative schema:
 
