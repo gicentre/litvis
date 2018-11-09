@@ -20,7 +20,7 @@ Markdown has the advantage that it uses easy to remember text formatting instruc
 For example, have a look at this document in either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor making sure to select the preview panel to see the formatted output.
 
 But litvis is more than a markdown editor for text.
-You can also write, edit and debug code for creating visualizations; render those visualization directly in your litvis document; arrange alternative visualization designs in _branches_; and validate the text in your litvis documents with _narrtive schemas_.
+You can also write, edit and debug code for creating visualizations; render those visualization directly in your litvis document; arrange alternative visualization designs in _branches_; and validate the text in your litvis documents with _narrative schemas_.
 We will look at each of these in turn.
 
 ## Providing a visualization specification
@@ -91,13 +91,13 @@ import VegaLite exposing (..)
 provides a fenced block of code between a pair of ` ``` ` lines where `elm` indicates the code will be written in the [elm language](http://elm-lang.org) and the `{l=hidden}` prevents this particular block of code from being displayed in the formatted output pane.
 The code itself just imports the module `VegaLite` from [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/) so we can use it later on in the litvis document.
 
-The header and hidden import code block are commonly used at the start of litvis documents to set things up nicely, so can usually just be copied from from one document to the next.
+The header and hidden import code block are commonly used at the start of litvis documents to set things up nicely, so can usually just be copied from one document to the next.
 
 Below the header the remains of the document can mix standard markdown text (e.g. _The top 5 programming languages..._) with fenced code blocks.
 In our first example, a function we've called `helloLitvis` creates a visualization specification that defines a simple data table comprising two columns (`language` and `rating`) each of 5 rows, and then encodes the data in the `language` column as horizontal (`X`) position and the `rating` value as vertical (`Y`) position.
 Additionally, `language` data are sorted by `rating` from high to low before positioning them (using the [pSort function](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#pSort)) before rendering the data as a collection of `bar` marks to produce a simple bar chart.
 
-You can learn more about the elm language and specifying visualizations in the other [litvis tutorials](../README.md), but here we wil focus on constructing litvis documents.
+You can learn more about the elm language and specifying visualizations in the other [litvis tutorials](../README.md), but here we will focus on constructing litvis documents.
 
 Notice that `helloLitvis` is defined within a fenced block starting with ` ```elm {v} `.
 The `v` indicates we wish to render the result of the specification as a visualization in the formatted output.
@@ -140,11 +140,11 @@ which should generate output like this:
 
 ![helloLitvis with two charts](images/hello2.png)
 
-By continuing to add text and code samples that render visualizations we can build up literate visualization narratives that lead the reader through the design of a visualization as well as help you as the author of the visualization to organise your thoughts and experiement with design decisions.
+By continuing to add text and code samples that render visualizations we can build up literate visualization narratives that lead the reader through the design of a visualization as well as help you as the author of the visualization to organise your thoughts and experiment with design decisions.
 
-But notice that we have some repitition between the two code blocks that share a common data source, and that we have been forced to give the two versions of the function different names (`helloLitvis` and `helloLitvis2`) to avoid name clashes.
+But notice that we have some repetition between the two code blocks that share a common data source, and that we have been forced to give the two versions of the function different names (`helloLitvis` and `helloLitvis2`) to avoid name clashes.
 
-By default, functions that are defined in fenced code blocks are visisble throughout the entire document (which is why we had to give both rendering functions different names).
+By default, functions that are defined in fenced code blocks are visible throughout the entire document (which is why we had to give both rendering functions different names).
 We can use this to clean things up a little by putting the common code inside its own function to be used by other functions:
 
 ````
