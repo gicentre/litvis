@@ -126,7 +126,7 @@ For other options for customising graticule generation, see the [geoGraticule do
 ## 2. Generating Small Circles
 
 A _great circle_ on a sphere is any circle whose centre is also the centre of the sphere.
-For example the equator or any cirlce crossing both poles along lines of longitude.
+For example, the equator or any cirlce crossing both poles along lines of longitude.
 Any other circle on a sphere is a known as _small circle_ and is useful in representing a fixed distance away from a point (at the small circle's centre).
 
 d3's `geoCircle` function can be used to generate small circles centred at any location on the globe with any radius.
@@ -197,9 +197,9 @@ We can see the distortion effect by viewing the same circle with different map p
 ^^^elm v=(paris "Azimuthal equal area" (projection [ prType azimuthalEqualArea ]))^^^
 
 ^^^elm v=(paris "Stereographic" (projection [ prType stereographic ]))^^^
-^^^elm v=(paris "Gnomonic" (projection [ prType Gnomonic, prClipAngle (Just 70) ]))^^^
+^^^elm v=(paris "Gnomonic" (projection [ prType gnomonic, prClipAngle (Just 70) ]))^^^
 
-^^^elm v=(paris "Mercator" (projection [ prType Mercator ]))^^^
+^^^elm v=(paris "Mercator" (projection [ prType mercator ]))^^^
 ^^^elm v=(paris "Transverse Mercator" (projection [ prType transverseMercator ]))^^^
 
 ## 3. Generate a Tissot's Indicatrix file.
@@ -207,7 +207,7 @@ We can see the distortion effect by viewing the same circle with different map p
 The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes.
 We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion.
 _Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude,latitude) space to projected space.
-We can simulate Tissot's indicatrices by generating a geojson object containing a grid of small circles:
+We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
 
 <details><summary>click to see Tissot generating code</summary>
 
