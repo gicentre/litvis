@@ -18,7 +18,7 @@ Elm is a statically typed language.
 This means that when you declare a function or one of its parameters to be of a particular type such as `Int`, `Float`, `String`, `Bool`, it can never change type during the program's lifetime.
 This apparent restriction is helpful in keeping your programs bug-free as the Elm compiler will flag any unexpected change in type as an error indicating the source of the problem.
 
-For example, this function would be flagged with an explantory error:
+For example, this function would be flagged with an explanatory error:
 
 ```elm
 myErroneousFunction : Float
@@ -45,11 +45,11 @@ This is much more helpful than having your program make some unexpected or hidde
 Suppose you wish to create some functions that deal with the days of the week.
 You could represent each day with the `String` type (`"Monday"`, `"Tuesday"` etc.), but this is vulnerable to hard-to-spot errors if somewhere in your program you misspell one of the days, or you forget whether you are using full names or abbreviations (`"Tue"` or`"Tues"` or `"Tuesday"`?).
 
-Instead, you can create your own custom types that restrict values to a named set of options known as _constuctors_.
+Instead, you can create your own custom types that restrict values to a named set of options known as _constructors_.
 This has the advantage of marshalling the Elm compiler to help spot mistakes, as any inconsistent naming will be flagged as an error.
 These custom types (also known as algebraic data types or union types) are similar to, but more powerful than, 'enum' types available in some other languages.
 
-Here is how you might create a day of the week union type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that custom types and their constructors must start with an upper case letter:
+Here is how you might create a day of the week custom type, using the Elm keyword `type` with available constructors separated with the vertical bar symbol `|`, noting that custom types and their constructors must start with an upper-case letter:
 
 ```elm {l}
 type DayOfWeek
@@ -96,8 +96,8 @@ tomorrow =
 
 ## Pattern Matching
 
-Because simple custom types consist of a finite set of named alternatives, it is common to use _pattern matching_ to make code conditional on the value of a union type.
-In the example above we used a series of nested `if...then...else` expressions, but a clearer and more flexible approach can be achieved using Elm's `case ... of`.
+Because simple custom types consist of a finite set of named alternatives, it is common to use _pattern matching_ to make code conditional on the value of the custom type.
+In the example above, we used a series of nested `if...then...else` expressions, but a clearer and more flexible approach can be achieved using Elm's `case ... of`.
 Here is the same `nextDay` function expressed using `case ... of`:
 
 ```elm {l siding}
@@ -154,7 +154,7 @@ The `_` symbol is a wildcard and acts as a default 'else' if none of the previou
 
 ## Tagged custom types
 
-The real power and flexiblity of custom types comes when they contain _tags_ similar to function parameters.
+The real power and flexibility of custom types comes when they contain _tags_ similar to function parameters.
 A tag is simply another type that follows a constructor and allows it to carry extra information.
 
 ```elm {l raw siding}
@@ -185,11 +185,11 @@ report =
     courseDesc datavis101
 ```
 
-In the example above the `Course` type has two constructors, one of which is tagged with an `Int` meaning that to specify it we have to both name it (`Assessed`) and provide an integer value (representing the number of credits associated with the course).
+In the example above, the `Course` type has two constructors, one of which is tagged with an `Int` meaning that to specify it we have to both name it (`Assessed`) and provide an integer value (representing the number of credits associated with the course).
 As in this example, there is no requirement for a custom type's constructors to share the same tags or tag types.
 
 When we pattern match tagged custom types with `case ... of` we need to give a name to the tag so we can do something with its value.
-In the example above we called that name `credits` so we could handle it in building a string describing the course assessment.
+In the example above, we called that name `credits` so we could handle it in building a string describing the course assessment.
 
 ## Elm's built-in custom types
 
@@ -212,7 +212,7 @@ safeSqrt x =
         Nothing
 ```
 
-If a non-negative number is provided, the function calcualtes its square root and wraps it in a `Just`.
+If a non-negative number is provided, the function calculates its square root and wraps it in a `Just`.
 Negative values will always result in the `Nothing` constructor being returned.
 We can handle both situations with some pattern matching:
 
