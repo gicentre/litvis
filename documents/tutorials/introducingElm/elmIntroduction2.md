@@ -16,7 +16,7 @@ id: "litvis"
 
 Elm code is organised into _functions_ that evaluate expressions to produce some value.
 Those functions may have some input in the form of _parameters_ and they will always return some output.
-Functions never change existing values and their returned value is always the only thing they return. In other words functions in Elm never have any _side effects_.
+Functions never change existing values and their returned value is always the only thing they return. In other words, functions in Elm never have any _side effects_.
 Almost everything in an Elm program will be a function.
 Elm doesn't use 'variables' common in many other languages.
 Instead, you create simple named functions that return a value.
@@ -76,7 +76,7 @@ Note also that unlike some other languages, the parameters are simply separated 
 
 Even operators such as `+`, `-`, `*` are functions.
 In their common form, as used in the example above, they are known as _infix operators_ because they sit in an expression with one parameter to the operator's left and one to the right.
-By placing such operators inside brackets they become _prefix operators_ with their parameters following the operator just like your own functions.
+By placing such operators inside brackets, they become _prefix operators_ with their parameters following the operator just like your own functions.
 The following functions are equivalent to each other:
 
 ```elm {l raw}
@@ -90,7 +90,7 @@ subtractPrefix =
     (-) 150 13
 ```
 
-We will see a use for the prefix operator form later on when we consider [list processing](elmIntroduction4.md) in a later chapter.
+We will see a use for the prefix operator form when we consider [list processing](elmIntroduction4.md) in a later chapter.
 
 The expressions evaluated in a function can contain a mix of operators and other functions:
 
@@ -132,7 +132,7 @@ myAnswer =
 
 In the `divide` function above we use a conditional expression (`if`...`then`...`else`) to ensure we do not perform a divide by zero.
 Unlike some other languages, `if` must always be paired with an `else` because we must guarantee a value is returned whatever the value of the condition.
-Note also that Elm has a special operator for integer division (e.g. `6 // 2`) to distingish it from floating point division (e.g. `6.3 / 2.0`).
+Note also that Elm has a special operator for integer division (e.g. `6 // 2`) to distinguish it from floating point division (e.g. `6.3 / 2.0`).
 
 ### Brackets, precedence and pipes
 
@@ -172,7 +172,7 @@ partyTrick =
     always3 146470
 ```
 
-The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing in the 'wrong' order when read left to right, and is therefore more difficult to read:
+The equivalent of the expression in `always3` using brackets requires us to nest brackets to control the order of evaluation, appearing in the 'wrong' order when read left to right, making it more difficult to read:
 
 ```elm {l siding}
 always3Backwards : Int -> Int
@@ -188,7 +188,7 @@ A variation of this is used commonly in _elm-vegalite_ when creating visualizati
 By default, once a function has been declared it is available to any other parts of your program.
 In a litvis document that means any non-isolated code block within the document including any upstream branches connected with `follows`.
 Sometimes a function may only have relevance within a small section of your code, so it is helpful to be able to limit its scope.
-This is done by delcaring a function with `let..in` within the body of another function.
+This is done by declaring a function with `let..in` within the body of another function.
 Any function declared in this way is only usable within the expression following the `in`.
 
 ```elm {l raw siding}
@@ -321,7 +321,7 @@ answer =
     combined 10
 ```
 
-This alternative form of function defintion is an example of _point-free style_ where we don't specify the parameter (storing the number to be cubed and have 6 added) but instead define another function that will have that parameter.
+This alternative form of function definition is an example of _point-free style_ where we don't specify the parameter (storing the number to be cubed and have 6 added) but instead define another function that will have that parameter.
 
 The general rule for the functional composition operator `>>` is
 
@@ -331,8 +331,8 @@ We can also reverse the order of composition with the `<<` operator:
 
 `g(f(x))` is equivalent to `(g << f) (x)`
 
-The left-pointing composition opertor often makes more intuitive sense to understand.
-For example, we could create a test for eveness by combing the `isOdd` function defined above with Elm's [not](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Basics#not) function to negate it:
+The left-pointing composition operator often makes more intuitive sense to understand.
+For example, we could create a test for evenness by combing the `isOdd` function defined above with Elm's [not](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Basics#not) function to negate it:
 
 ```elm {l raw siding}
 isEven : Int -> Bool
@@ -345,7 +345,7 @@ answer =
     isEven 240
 ```
 
-The `<<` operator is used commonly with elm-vegalite specifications to combine mutliple channel encodings (see the [last chapter](elmIntroduction5.md) of this tutorial).
+The `<<` operator is used commonly with elm-vegalite specifications to combine multiple channel encodings (see the [last chapter](elmIntroduction5.md) of this tutorial).
 
 ---
 
