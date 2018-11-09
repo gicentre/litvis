@@ -167,7 +167,7 @@ geo =
 Notice that not only is the `geoshape` a more concise specification than the region boundary as a `line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
 
 As we shall see, larger geo data are more efficiently stored not as geoJSON, but as [topoJson](https://github.com/topojson/topojson/wiki) files.
-These store the same geometric information as their geoJSON counterparts but addtionally represent the _topology_ of the features.
+These store the same geometric information as their geoJSON counterparts but additionally represent the _topology_ of the features.
 Here is the equivalent topoJSON file representing the geoJSON above:
 
 ```Javascript
@@ -189,7 +189,7 @@ Similarly, we can display this file directly in elm-vegalite with `geoshape`.
 Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`).
 Objects themselves can be treated either as _meshes_ or _features_.
 A `topojsonMesh` treats the entire object as a single entity and is quicker to render.
-On the other hand a `topojsonFeature` allows individual features within the object to be handled separately.
+On the other hand, a `topojsonFeature` allows individual features within the object to be handled separately.
 In this simple example, we can store the object as a `topojsonMesh`:
 
 ```elm {s l}
@@ -251,7 +251,7 @@ Both are nested within an outer `features` array which in this case contains two
 Notice how the common edge between these two adjacent regions is duplicated (the boundary between (-3,52) and (4,52)).
 In this case that duplication isn't a big problem, but imagine that boundary was a complex meandering line with many hundreds of coordinate pairs.
 
-The topoJSON format instead stores all boundaries as distinct _arcs_ that are then resassembled to form area boundaries.
+The topoJSON format instead stores all boundaries as distinct _arcs_ that are then reassembled to form area boundaries.
 If more than one feature shares a common arc, it is only stored once:
 
 ```javascript
@@ -284,8 +284,8 @@ Try drawing out the vertices, boundary lines and regions if you are not sure._
 
 ## 3. Feature IDs
 
-So far we have only considered the geometry of features.
-Each feature can addtionally have an `id` that stores some property to be associated with the feature, for example a country name, or population count.
+So far, we have only considered the geometry of features.
+Each feature can additionally have an `id` that stores some property to be associated with the feature, for example a country name, or population count.
 
 Keeping with our simple two-region example, let's attach a text `id` with each of the features (in the objects placed in the `geometries` array):
 
@@ -385,7 +385,7 @@ geo =
 
 ## 5. Complex Geometry
 
-So far the features we have considered have been 'simple polygons', i.e. each polygon is defined by a single ring of coordinates.
+So far, the features we have considered have been 'simple polygons', i.e. each polygon is defined by a single ring of coordinates.
 Features can be more complex than this though, for example, a single feature might be made up of a collection of simple polygons in a geoJSON file:
 
 ```Javascript
@@ -494,7 +494,7 @@ Note that in order to specify a hole, the order of coordinates is anti-clockwise
 }
 ```
 
-The topojson equivalent is much as we have seen before, but now incorporating the two extra rings:
+The topoJSON equivalent is much as we have seen before, but now incorporating the two extra rings:
 
 ```Javascript
 {
@@ -540,9 +540,9 @@ geo =
 ## 6. Creating JSON files programatically
 
 In all the examples above the topoJSON and geoJSON has been read from external files.
-This is likely the most common use-case, but sometimes it can be useful to generate the content programmtically.
+This is likely the most common use-case, but sometimes it can be useful to generate the content programatically.
 This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
-Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
+Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programatically:
 
 ```elm {s l}
 geo : Spec
@@ -614,7 +614,7 @@ geo =
 
 ### Programatically Generated Graticule
 
-Generating geo data programmatically allows us to create features that contain regular structures quite easily.
+Generating geo data programatically allows us to create features that contain regular structures quite easily.
 The following creates a graticule (lines of longitude and latitude):
 
 ```elm {l}
