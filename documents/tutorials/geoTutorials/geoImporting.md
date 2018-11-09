@@ -22,12 +22,12 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 # Importing geographic datasets into elm-vegalite
 
 This tutorial leads you through the workflow for importing spatial datasets into elm-vegalite, and therefore into litvis documents.
-If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJson format, just jump to step 3).
+If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJSON format, just jump to step 3).
 
 - Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
-- Convert the shapefile into a [geoJson](http://geojson.org) file.
+- Convert the shapefile into a [geoJSON](http://geojson.org) file.
 - Identify the attribute field you wish to store and associate it with an id.
-- Convert from geoJson to [topoJson](https://github.com/topojson/topojson).
+- Convert from geoJSON to [topoJSON](https://github.com/topojson/topojson).
 - Simplify geometry to reduce file size
 - render file with elm-vegalite
 
@@ -47,7 +47,7 @@ npm install -g shapefile ndjson-cli topojson d3-geo-centroid
 ```
 
 The `-g` option ensures the installed packages are available globally from any directory.
-The `gdal` package will be used for the the map projection work; `shapefile` for the conversion from shapefile to `geoJson`; `ndjson-cli` splits json files into separate lines to ease processing; `topojson` does the conversion to topoJson and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.
+The `gdal` package will be used for the map projection work; `shapefile` for the conversion from shapefile to geoJSON; `ndjson-cli` splits JSON files into separate lines to ease processing; `topojson` does the conversion to topoJSON and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.
 
 To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored.
 You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
@@ -78,9 +78,9 @@ To convert the shapefile, open a terminal and `cd` to the folder containing the 
 ogr2ogr -t_srs 'EPSG:4326' -s_srs 'EPSG:27700' boroughs_geo.shp London_Borough_Excluding_MHW.shp
 ```
 
-subtituting the name of the input and output .shp files with your own.
+substituting the name of the input and output .shp files with your own.
 
-## 2. Convert the shapefile to geoJson.
+## 2. Convert the shapefile to geoJSON.
 
 Type the following:
 
@@ -88,13 +88,13 @@ Type the following:
 shp2json boroughs.shp > boroughs_geo.json
 ```
 
-While you are getting used to this workflow it can be helpful to append a `_geo` to the output `geoJson` file you create here so as not to get confused with the `topoJson` file created later (both share the same `.json` file extension).
+While you are getting used to this workflow it can be helpful to append a `_geo` to the output geoJSON file you create here so as not to get confused with the topoJSON file created later (both share the same `.json` file extension).
 
 ## 3. Identify the `id` attribute
 
 When we render the data we will need an ID to refer to each spatial feature within the dataset (boroughs in our case).
-GeoJson and topoJson files can have an optional `id` for each feature which we need to add as part of our workflow.
-The original shape file should have had one or more attributes associated with each feature and these get transferred to the `geoJson` as 'properties'.
+GeoJSON and topoJSON files can have an optional `id` for each feature which we need to add as part of our workflow.
+The original shape file should have had one or more attributes associated with each feature and these get transferred to the geoJSON as 'properties'.
 You can see these properties by viewing the .json file in a text editor.
 Choose the property you wish to make the id and then type the following:
 
@@ -106,17 +106,17 @@ ndjson-reduce < boroughs_id_geo.ndjson | ndjson-map '{type: "FeatureCollection",
 
 replacing `NAME` with the name of the attribute property you wish to become the ID (in this London boroughs example, the property is actually called `NAME`, representing the name of each borough).
 
-The first line splits the geoJson file so that each feature (borough boundary in this example) is on its own line in the file.
+The first line splits the geoJSON file so that each feature (borough boundary in this example) is on its own line in the file.
 The second line selects a property and adds it as an `id` to each line while deleting the other properties as they are no longer needed.
-The third line converts the split feature-per-line file back into a `geoJson` file with the new `id` as well as the original properties.
+The third line converts the split feature-per-line file back into a geoJSON file with the new `id` as well as the original properties.
 
 Note that if you wish to do more complex data manipulation such as combining attributes from multiple files or calculating new feature attributes, it is on these feature-per-line `ndjson` files that it is performed. See Mike Bostock's [command line cartography](https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3) for examples.
 
-## 4. Convert to topoJson
+## 4. Convert to topoJSON
 
 GeoJson files store each spatial object as a string of coordinates tracing its boundary (or boundaries for complex features).
 This is rather inefficient for adjacent areas that share a common boundary and it makes it difficult to infer topological relationships such as adjacency.
-By converting to the `topoJson` format we can use a much more efficient data structure that stores common boundary lines only once:
+By converting to the topoJSON format we can use a much more efficient data structure that stores common boundary lines only once:
 
 ```bash
 geo2topo boroughs=boroughs_id_geo.json > boroughs_topo.json
@@ -128,7 +128,7 @@ Again, as you are learning to use this workflow, it can be helpful to name the r
 
 ## 5. Simplify geometry
 
-If you compare the sizes you will see that the `topoJson` file is smaller than its `geoJson` equivalent thanks to its more efficient data structure.
+If you compare the sizes you will see that the topoJSON file is smaller than its geoJSON equivalent thanks to its more efficient data structure.
 We can however shrink the file size much more by (i) simplifying complex lines; (ii) reducing the precision with which we store coordinates.
 We can do this because our aim is to produce a file for rendering, not accurate geoprocessing.
 
@@ -136,7 +136,7 @@ To simplify the line we need to specify a _threshold_ that determines the degree
 You can think of this threshold as being the length of line details below which we attempt to make all boundary lines straight.
 The larger the threshold, the simpler the boundary lines look.
 Because we are dealing with latitude and longitude coordinates, that threshold is expressed as [steradians](https://en.wikipedia.org/wiki/Steradian).
-Tyically, useful thresholds will be in the order of 1e-9 steradians but it pays to experiment to find a suitable level of simplification.
+Typically, useful thresholds will be in the order of 1e-9 steradians but it pays to experiment to find a suitable level of simplification.
 
 To reduce the precision of coordinates we use `topoquantize` with a parameter typically of order 1e4 indicating 4 significant digits of precision.
 
@@ -146,7 +146,7 @@ Simplification and quantization can be combined by typing:
 toposimplify -s 1e-9 -f < boroughs_topo.json | topoquantize 1e4 > londonBoroughs.json
 ```
 
-Notice how this step radically reduces the size of the topoJson file for complex shapefiles, in this case from 2Mb down to 15k.
+Notice how this step radically reduces the size of the topoJSON file for complex shapefiles, in this case from 2Mb down to 15k.
 
 ### Combining conversion steps
 
@@ -352,12 +352,12 @@ boroughs =
     boroughsCustom 700 500
 ```
 
-topoJson files are not limited to areal units.
+topoJSON files are not limited to areal units.
 Here, for example, we can import a file containing the geographical routes of selected London Underground tube lines.
 The conversion of the [tfl_lines.json](https://github.com/oobrien/vis/tree/master/tube/data) follows a similar pattern to the conversion of the borough boundary files, but with some minor differences:
 
-- The file is already in unprojected `geoJson` format so does not need reprojecting or conversion from a shapefile.
-- `ndjson-cat` converts the original geoJson file to a single line necessary for further processing.
+- The file is already in unprojected geoJSON format so does not need reprojecting or conversion from a shapefile.
+- `ndjson-cat` converts the original geoJSON file to a single line necessary for further processing.
 - the file contains details of more rail lines than we need to map so `ndjson.filter` is used with a regular expression to select data for tube and DLR lines only.
 - the property we will use for the id (the tube line name) is inside the first element of an array so we reference it with `[0]` (where there is more than one element in the array it indicates more than one named tube line shares the same physical line).
 
@@ -370,7 +370,7 @@ ndjson-cat < tfl_lines.json \
   > londonTubeLines.json
 ```
 
-We can display the newly created topoJson file of the tube lines much as we did the original London map:
+We can display the newly created topoJSON file of the tube lines much as we did the original London map:
 
 ```elm {l v s}
 tubeLines : Spec
