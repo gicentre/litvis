@@ -98,7 +98,7 @@ Adding a random 5% uniform random perturbation to the results (which is not a me
 Small changes are most easily detected where the shift crosses the 50% boundary, but this is not generally a problem as these are the smallest circles, having the smallest majorities.
 
 As noted under _unambiguous data depiction_, systematic increases in either the remain or leave directions result in expected and detectable changes in size and colour.
-Because of the problems with _hallicinators_ combined with ordering from largest to smallest majority, there are occasionally red/blue reordering such as the Brighton region between the 15% and 20% increase in leave examples.
+Because of the problems with _hallucinators_ combined with ordering from largest to smallest majority, there are occasionally red/blue reordering such as the Brighton region between the 15% and 20% increase in leave examples.
 
 Overall there is no evidence of any _jumblers_.
 While not tested directly, there is no evidence to point towards _misleaders_ other than the re-ordering of two overlapping discs with similar majorities (size) but on opposite sides of leave-remain.
