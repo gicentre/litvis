@@ -69,7 +69,7 @@ This should generate formatted output similar to the following where you can exp
 If you are feeling confident with [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/) you can try further experiments with line charts by editing `incomeLineCharts.md`
 {|question )}
 
-Notice that the header of this new file doen't have the usual `elm dependencies` lines, nor does it import anything or create a `data` function.
+Notice that the header of this new file doesn't have the usual `elm dependencies` lines, nor does it import anything or create a `data` function.
 All of that was defined in `incomeRoot.md`.
 Instead we link this document to `incomeRoot.md` with the header
 
@@ -111,7 +111,7 @@ Depending on which approach we think the better one we can continue exploring in
 
 ![branching structure](images/branching.png)
 
-Alternatively we could continue to develop both branches to see if we can improve them futher.
+Alternatively we could continue to develop both branches to see if we can improve them further.
 Or perhaps a completely different approach might occur to us, in which case we simply add a new parallel branch.
 
 {(question |}
