@@ -18,7 +18,7 @@ _Litvis tutorials: Introducing Elm_
 
 # Lists and list processing
 
-Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/Tuple), but the most common approach and one used extensively in both elm-vega and elm-vegalite is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
+Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/latest/Tuple), but the most common approach and one used extensively in both elm-vega and elm-vegalite is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
 
 Lists comprise items of the same type and are immutable once created.
 They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
@@ -53,7 +53,7 @@ followers =
     List.tail names |> Maybe.withDefault []
 ```
 
-While lists are immutable, it is easy (and efficient) to create new lists by joining a new values and an existing list.
+While lists are immutable, it is easy (and efficient) to create new lists by joining new values and an existing list.
 This is achieved with the [cons operator `::`](http://package.elm-lang.org/packages/elm-lang/core/latest/List#::)
 
 ```elm {l siding}
@@ -62,7 +62,7 @@ newNames =
     "Pete" :: names
 ```
 
-The cons operator will always append an item to the head of a list, but items can be reordered with a number of the functions in the [List module](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List) such as `List.reverse`:
+The cons operator will always append an item to the head of a list, but items can be reordered with a number of the functions in the [List module](http://package.elm-lang.org/packages/elm-lang/core/latest/List) such as `List.reverse`:
 
 ```elm {l raw}
 newNames : List String
@@ -139,7 +139,7 @@ rev list =
 ```
 
 By convention, as with all functions, if a parameter of the reducing function is not actually used, it is given the name `_` rather than, say, `a` or `b`.
-For example this fold calculates the length of a list so doesn’t actually need to do anything with the value of the first parameter (elements of the list to fold):
+For example, this fold calculates the length of a list so doesn’t actually need to do anything with the value of the first parameter (elements of the list to fold):
 
 ```elm {l siding}
 len : List a -> Int
@@ -166,7 +166,7 @@ scanl fn b =
     List.foldl scan [ b ] >> List.reverse
 ```
 
-We can use it, for example, in a the generation of a triangular number sequence:
+We can use it, for example, in the generation of a triangular number sequence:
 
 ```elm {l siding }
 triList : Int -> List Int
@@ -218,7 +218,7 @@ doublerOutput =
 
 Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list).
 Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#window) available via elm-vegalite).
-For example, you could incease the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller.
+For example, you could increase the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller (effectively 'smoothing' the numbers in a list).
 
 To help do this, we can transform a list of numbers into a list of _tuples_.
 A tuple is an ordered sequence of values, indicated in Elm by comma separated values enclosed in brackets.
@@ -241,7 +241,7 @@ person =
     ( "Ada Lovelace", 1815 )
 ```
 
-We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/5.1.1/List#map2) that creates a new list based on the transformation of two other lists.
+We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map2) that creates a new list based on the transformation of two other lists.
 If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple construction function `Tuple.pair`:
 
 ```elm {l}
@@ -258,7 +258,7 @@ neighbourOutput =
 
 Notice that the new list is one shorter than the original because the last item in the original list has no value following it so cannot be transformed into a tuple.
 
-The final stage is to proces this list of tuples to perform our 'add one if smaller than next or subtract one if larger':
+The final stage is to process this list of tuples to perform our 'add one if smaller than next or subtract one if larger':
 
 ```elm {l}
 smooth : List Int -> List Int
