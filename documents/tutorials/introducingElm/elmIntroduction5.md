@@ -252,27 +252,25 @@ The example below shows how we might generate the tidy table above:
 tidyData : List DataColumn -> Data
 tidyData =
     let
-        numRows =
-            2
-
-        numCols =
-            4
-
-        numCats =
-            3
+        ( numRows, numCols, numCats ) =
+            ( 2, 4, 3 )
 
         rows =
-            List.concatMap (\x -> List.repeat (numCats * numCols) (toFloat x)) (List.range 1 numRows)
+            List.range 1 numRows
+                |> List.concatMap (\x -> List.repeat (numCats * numCols) (toFloat x))
                 |> nums
 
         cols =
-            List.concatMap (\x -> List.repeat numCats (toFloat x)) (List.range 1 numCols)
+            List.range 1 numCols
+                |> List.concatMap (\x -> List.repeat numCats (toFloat x))
                 |> List.repeat 2
                 |> List.concat
                 |> nums
 
         cats =
-            List.repeat (numRows * numCols) (List.range 1 numCats |> List.map toFloat)
+            List.range 1 numCats
+                |> List.map toFloat
+                |> List.repeat (numRows * numCols)
                 |> List.concat
                 |> nums
 
