@@ -27,14 +27,23 @@ We can use Elm to help with the visualization side of things by using the [elm-v
 In this tutorial we won't go into too much detail about how to use these packages – for that have a look at the [introduction to elm-vegalite](../introduction/intro1.md) and [elm-vegalite walkthrough](../elmVegaliteWalkthrough/elmVegaliteWalkthrough1.md).
 Instead we will consider how to use some of the ideas discussed in this Elm tutorial to help writing functions for visualization.
 
+As you learn to read and write your own code with elm-vegalite you will see and use many new functions as well as the ones we have already covered in this tutorial.
+It can be handy to have easy access to the documentation describing both the range of commonly used Elm functions and those specific to elm-vegalite:
+
+- [Elm core API documentation](https://package.elm-lang.org/packages/elm/core/latest/)
+- [elm-vegalite API documentation](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite)
+
 ## 1. Anatomy of an elm-vegalite specification
 
-Let's consider a simple but typical visualization specification in elm-vegalite:
+A document that contains any elm-vega code for rendering visualizations needs to import the relevant package functions with the line shown below. The `..` represent a wildcard indicating that we wish all functions in the package to be available to us. The line is only needed once and, more typically, is hidden (with `elm {l=hidden}`) as it adds little to the narrative in the formatted output.
 
-```elm {v l}
+```elm {l}
 import VegaLite exposing (..)
+```
 
+A typical code block for generating rendered output looks like this:
 
+```elm {l v}
 scatterplot : Spec
 scatterplot =
     let
@@ -50,22 +59,19 @@ scatterplot =
     toVegaLite [ cars, circle [], enc [] ]
 ```
 
-This particular example imports the `VegaLite` package in the same code block as the specification code, but more commonly the import line can be placed inside its own code block at the top of a document.
-This makes things a little neater, especially when a document contains several specifications.
-
 Note that the entire specification is declared inside a single function, here called `scatterplot`.
 It is necessary to provide a _type signature_ to the function indicating that it will return a `Spec`, which is the _type_ elm-vegalite uses for representing a visualization specification.
 
-The work of creating the JSON specification that is required by Vega-Lite is done by the `toVegaLite` function.
+The work of creating the JSON that is required by Vega-Lite is done by the [toVegaLite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#toVegaLite) function.
 To make the code readable, the elements of the specification are stored as named functions using `let`, typically separating the data (`cars`) from the visual encoding rules (`enc`) from the visual marks (`circle`) used.
 
 Encoding is often where most of the design details are represented.
 It represents the specification of which aspects of the data are represented by which visualization channels.
 Depending on the complexity of the design, encoding can incorporate many different elements such as size, position, colour and opacity.
 
-Each encoding function, such as `position` or `color` takes as one of its parameters a list of `LabelledSpec` types to which it adds a new `LabelledSpec` before returning the newly appended list of `LabelledSpec`.
+Each encoding function, such as [position](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#position) or [color](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#color) takes a list of [LabelledSpec](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#LabelledSpec) types as one of its parameters, to which it adds a new `LabelledSpec` before returning the newly appended list of `LabelledSpec`.
 
-Using the functional composition operator (`<<`) and point-free style keeps the code clean and simple (as above), but it should be noted that the same encoding could be represented by piping and empty list to an encoding channel function before piping that one to the next etc.
+Using the functional composition operator (`<<`) and point-free style keeps the code clean and simple (as above), but it should be noted that the same encoding could be represented by piping an empty list to an encoding channel function before piping that one to the next etc.
 So the following is exactly equivalent to the example above, but harder to read:
 
 ```elm {xl siding}
@@ -152,44 +158,80 @@ myVis2 =
 
 ## 3. Shaping Data
 
-While vega-lite provides a great deal of flexibility in specifying visualization design, it is less able to create or manipulate the data that are to be visualized.
-This is where Elm can be helpful in 'shaping' data to be in a format suitable for working with vega and vega-lite.
+While Vega-Lite provides a great deal of flexibility in specifying visualization design, it is less able to create or manipulate the data that are to be visualized.
+This is where Elm can be helpful in 'shaping' data to be in a format suitable for working with Vega and Vega-Lite.
 
 ### Generating Data Inline
 
 Rather than link to externally generated data sources, it is sometimes useful to use Elm to create data programmatically, especially if those data have some predictable structure or generatable content.
 [dataFromColumns](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromColumns), [dataFromRows](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromRows), [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn) and [dataRow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataRow) are useful elm-vega functions for doing this (see also the use of [dataFromJson](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) in the [Geospatial file format tutorial](../geoTutorials/geoFormats.md)).
 
-In the example below we use Elm's `List.range` function to generate a list of integers from 1 to 720, the `List.map` function to turn each of those integer into a floating point number and an anonymous function to generate a list of the cosines of each of those values.
+In the example below we use Elm's [List.range](https://package.elm-lang.org/packages/elm/core/latest/List#range) function to generate a list of integers from 1 to 800, the [List.map](https://package.elm-lang.org/packages/elm/core/latest/List#map) function to turn each of those integers into a floating point number and an anonymous function to generate a list of the cosines of each of those values.
 We then create two 'columns' of data for use in the visualization specification.
-When specifying a data column (with `dataColumn`) have to state the type of data, which in this case is a list of numbers indicated by [nums](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#nums).
+When specifying a data column (with [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn)) have to state the type of data, which in this case is a list of numbers indicated by [nums](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#nums).
 
-```elm {l v}
+```elm {l v siding}
 trigCurves : Spec
 trigCurves =
     let
-        xs =
-            List.range 0 720 |> List.map toFloat
+        angles =
+            List.range 0 800 |> List.map toFloat
 
         ys =
-            List.map (\x -> cos (degrees x)) xs
+            List.map (\x -> cos (degrees x)) angles
 
         data =
             dataFromColumns []
-                << dataColumn "x" (nums xs)
+                << dataColumn "angle" (nums angles)
                 << dataColumn "y" (nums ys)
 
         enc =
             encoding
-                << position X [ pName "x", pMType Quantitative ]
+                << position X [ pName "angle", pMType Quantitative, pAxis [ axTickStep 90 ] ]
                 << position Y [ pName "y", pMType Quantitative ]
     in
-    toVegaLite [ data [], line [], enc [] ]
+    toVegaLite [ width 400, data [], line [], enc [] ]
+```
+
+Elm's `List.range` can only generate a list of integers steps of 1.
+We could write our own range-generating function that is more flexible in allowing non-integer values and arbitrary steps between them:
+
+```elm {l}
+stepRange : Float -> Float -> Float -> List Float
+stepRange start end step =
+    let
+        numValues =
+            floor ((end - start) / step)
+    in
+    List.range 0 numValues
+        |> List.map (\x -> start + toFloat x * step)
+```
+
+We could use this, along with a 'point-free' declaration of the cosine calculation function, to provide a more concise specification of the cosine curve that increments in five-degree steps:
+
+```elm {l v siding}
+trigCurves : Spec
+trigCurves =
+    let
+        angles =
+            stepRange 0 800 5
+
+        data =
+            dataFromColumns []
+                << dataColumn "angle" (nums angles)
+                << dataColumn "y" (nums (List.map (cos << degrees) angles))
+
+        enc =
+            encoding
+                << position X [ pName "angle", pMType Quantitative, pAxis [ axTickStep 90 ] ]
+                << position Y [ pName "y", pMType Quantitative ]
+    in
+    toVegaLite [ width 400, data [], line [], enc [] ]
 ```
 
 {(question |}
 
-Can you modify the example above so it shows both the cosine and sine curves for angles between 0 and 720 degrees?
+Can you modify the example above so it shows both the cosine and sine curves for angles between 0 and 800 degrees?
 
 {|question )}
 
