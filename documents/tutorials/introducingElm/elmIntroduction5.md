@@ -237,9 +237,9 @@ Can you modify the example above so it shows both the cosine and sine curves for
 
 ### Tidy Data
 
-Suppose we have some data we wish to visualise that represents values in three categories (e.g. number of bronze, silver and gold medals won by a country). We might represent the data with three numbers, e.g. `30, 15, 12` indicating the tallies for bronze, silver and gold medals respectively.
+Suppose we have some data we wish to visualise that represents values in three categories (e.g. number of bronze, silver and gold medals won by a country). We might represent the data with three numbers, e.g. `30, 15, 12`, indicating the tallies for bronze, silver and gold medals respectively.
 
-If we had data for several countries, we might represent those triples grouped as a table, where each column contains the medal tally for a single country:
+If we had data for four countries, we might represent those triples grouped as a table, where each column contains the medal tally for a single country:
 
 | column 1 | column 2 | column 3 | column 4 |
 | -------- | -------- | -------- | -------- |
@@ -255,7 +255,7 @@ If we had such data for two years, we might add a further row to the table:
 This tabular structure is convenient when working with spreadsheets, or when displaying the data compactly in tabular form.
 However, it is not well suited for manipulating programmatically because much of the information is implicitly encoded by the order of numbers (e.g. whether a number represents a silver medal is dependent on its position in a triple of numbers).
 
-Instead it is much more reliable to express the data table in [tidy format](https://vita.had.co.nz/papers/tidy-data.pdf).
+Instead it is much more reliable to express the data table in [_tidy_ format](https://vita.had.co.nz/papers/tidy-data.pdf).
 That is, in such a way that the order of values in a table is independent of their meaning and that columns of data represent _variables_ and rows of data _observations_.
 In our medals example, we could restructure the data as follows:
 
@@ -286,7 +286,8 @@ In our medals example, we could restructure the data as follows:
 | 2   | 4      | 2       | 18    |
 | 2   | 4      | 3       | 28    |
 
-Here, the row and column positions are encoded explicitly so that even if we changed the order of rows or columns, the meaning of the data would not change.
+Here, the row and column positions are encoded explicitly so that even if we changed the order of rows or columns, the meaning of the data would not change (if this were a medal table, the values in `column` might be four country names rather than numbers 1 to 4 and the values in `row` might be the years 2012 and 2016 rather than 1 and 2).
+
 We can use Elm functions to reshape a data table into tidy format.
 The example below shows how we might generate the tidy table above:
 
@@ -298,20 +299,19 @@ tidyData =
             ( 2, 4, 3 )
 
         rows =
-            List.range 1 numRows
-                |> List.concatMap (\x -> List.repeat (numCats * numCols) (toFloat x))
+            stepRange 1 numRows 1
+                |> List.concatMap (List.repeat (numCats * numCols))
                 |> nums
 
         cols =
-            List.range 1 numCols
-                |> List.concatMap (\x -> List.repeat numCats (toFloat x))
+            stepRange 1 numCols 1
+                |> List.concatMap (List.repeat numCats)
                 |> List.repeat 2
                 |> List.concat
                 |> nums
 
         cats =
-            List.range 1 numCats
-                |> List.map toFloat
+            stepRange 1 numCats 1
                 |> List.repeat (numRows * numCols)
                 |> List.concat
                 |> nums
