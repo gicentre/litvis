@@ -313,7 +313,7 @@ tidyData =
         cols =
             stepRange 1 numCols 1
                 |> List.concatMap (List.repeat numCats)
-                |> List.repeat 2
+                |> List.repeat numRows
                 |> List.concat
                 |> nums
 
