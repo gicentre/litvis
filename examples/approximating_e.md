@@ -56,7 +56,7 @@ eSeries =
     scanl (+) 0 recips
 ```
 
-Replacing `scanl` with `foldl` would generate the approximated value of _e_ to a precision determined by the `listLen`.
+Replacing `scanl` with `foldl` generates the approximated value of _e_ to a precision determined by `listLength`.
 
 Compare the approximated value ^^^elm r=eApprox^^^ with Elm's constant _e_: ^^^elm r=eElm^^^.
 
