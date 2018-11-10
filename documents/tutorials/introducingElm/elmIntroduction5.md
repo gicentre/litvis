@@ -270,9 +270,9 @@ In our medals example, we could restructure the data as follows:
 | 1   | 3      | 1       | 10    |
 | 1   | 3      | 2       | 28    |
 | 1   | 3      | 3       | 11    |
-| 2   | 4      | 1       | 18    |
-| 2   | 4      | 2       | 24    |
-| 2   | 4      | 3       | 16    |
+| 1   | 4      | 1       | 18    |
+| 1   | 4      | 2       | 24    |
+| 1   | 4      | 3       | 16    |
 | 2   | 1      | 1       | 8     |
 | 2   | 1      | 2       | 8     |
 | 2   | 1      | 3       | 29    |
@@ -288,8 +288,15 @@ In our medals example, we could restructure the data as follows:
 
 Here, the row and column positions are encoded explicitly so that even if we changed the order of rows or columns, the meaning of the data would not change (if this were a medal table, the values in `column` might be four country names rather than numbers 1 to 4 and the values in `row` might be the years 2012 and 2016 rather than 1 and 2).
 
-We can use Elm functions to reshape a data table into tidy format.
-The example below shows how we might generate the tidy table above:
+The sequencing of numbers in the `row`, `column` and `category` columns show a clear structure that we can generate with Elm.
+
+- `row` contains `1` repeated (_number of columns_ \* _number of categories_) times, followed by `2` repeated the same number of times. We can use Elm's [List.repeat](https://package.elm-lang.org/packages/elm/core/latest/List#repeat) to generate this sequence by repeating values in the list `[1,2]` 12 times each. Because this will generate a list of lists (`[[1,1,1,1,1,1,1,1,1,1,1,1],[2,2,2,2,2,2,2,2,2,2,2,2]]`) we need to 'flatten' it into a single list with Elm's [List.concatMap](https://package.elm-lang.org/packages/elm/core/latest/List#concatMap).
+
+- 'column' contains `[1,2,3,4]` (for the four columns) with each column number repeated _number of categories_ times and then the whole sequence repeated _number of rows_ times. Using `List.repeat` with `List.map` would generate a list of lists of lists, so we need to use both `List.concatMap` and an additional [List.concat](https://package.elm-lang.org/packages/elm/core/latest/List#concat) to flatten into a single list.
+
+- `category` contains `[1,2,3]` (the three categories) repeated (_number of rows \* number of columns_) times, again computable with a combination of `stepRange`, `List.repeat` and `List.concat`.
+
+The example below shows how we might generate the tidy table:
 
 ```elm {l}
 tidyData : List DataColumn -> Data
@@ -334,12 +341,6 @@ This provides us with a tidy data table that we can use to generate a collection
 barGrid : Spec
 barGrid =
     let
-        cfg =
-            -- Styling to remove axis gridlines and labels
-            configure
-                << configuration (coHeader [ hdLabelFontSize 0.1 ])
-                << configuration (coView [ vicoStroke Nothing, vicoHeight 120 ])
-
         enc =
             encoding
                 << position X [ pName "cat", pMType Ordinal, pAxis [] ]
@@ -347,8 +348,7 @@ barGrid =
                 << color [ mName "cat", mMType Nominal, mLegend [] ]
     in
     toVegaLite
-        [ cfg []
-        , tidyData []
+        [ tidyData []
         , spacing 50
         , specification (asSpec [ width 120, height 120, bar [], enc [] ])
         , facet
@@ -360,7 +360,7 @@ barGrid =
 
 {(question |}
 
-Can you modify the example above so it facets by category for each row so it looks as follows?
+Can you modify the example so it facets by category for each row as below?
 
 ![Faceted bar grid](images/facetExample.png)
 
