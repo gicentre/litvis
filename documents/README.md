@@ -85,9 +85,9 @@ Literate code blocks support the following attributes:
 
 - `interactive` (or `interactive=true`) makes specs interactive if they include interactive elements such as [elm-vegalite selections](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#selection) and [elm-vega event handling](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/Vega#evHandler).
 
-The order of `l`, `v`, `r` or `j` in attributes determines the order of rendering.
+The order of `l`, `v`, `r`, `m` or `j` in attributes determines the order of rendering.
 
-Defining `l` to make the code block literate is not necessary if `v`, `r` or `j` are already given (this implies `l=hidden`).
+Defining `l` to make the code block literate is not necessary if `v`, `r`, `m` or `j` are already given (this implies `l=hidden`).
 
 #### Examples
 
