@@ -75,6 +75,19 @@ export default async function enhance(
           };
           resultText = text;
           break;
+        case BlockOutputFormat.H:
+          try {
+            $result = $(data);
+          } catch (e) {
+            $result = $(`<pre data-role="codeBlock" />`);
+            resultNormalizedInfo = {
+              language: "",
+              attributes: {},
+              style: "display: inline-block",
+            };
+            resultText = e.message;
+          }
+          break;
         case BlockOutputFormat.J:
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {

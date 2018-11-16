@@ -58,6 +58,11 @@ export function extractAttributeDerivatives(
           isLitVis = true;
           addOutputExpressions(result, OutputFormat.J, value);
           break;
+        case "h":
+        case "html":
+          isLitVis = true;
+          addOutputExpressions(result, OutputFormat.H, value);
+          break;
         case "interactive":
           result.interactive = !!value;
           break;
