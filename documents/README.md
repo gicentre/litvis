@@ -196,7 +196,7 @@ They use the same attribute syntax as literate code blocks and recognise the fol
 - `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
 
 The order of `v`, `r`, `m` and `j` determines the order of the output.
-It is considered a good practice to avoid multiple output formats and specs in a single triple hat reference as this helps control layout ofoutput.
+It is considered a good practice to avoid multiple output formats and specs in a single triple hat reference as this helps control layout of output.
 
 #### Examples
 
