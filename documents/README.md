@@ -93,7 +93,7 @@ Defining `l` to make the code block literate is not necessary if `v`, `r`, `m` o
 
 **Common ‘header’ to set up code blocks:**
 
-````elm
+````markdown
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
@@ -101,7 +101,7 @@ import VegaLite exposing (..)
 
 **Simple renderable spec:**
 
-````elm
+````markdown
 ```elm {l v}
 mySpec : Spec
 mySpec =
@@ -122,7 +122,7 @@ mySpec =
 
 **Raw output:**
 
-````elm
+````markdown
 ```elm {r}
 evenTotal : Bool
 evenTotal =
@@ -139,7 +139,7 @@ Generates the formatted output
 
 **Markdown output:**
 
-````elm
+````markdown
 ```elm {m}
 table : String
 table =
@@ -155,7 +155,7 @@ Generates the formatted output:
 
 **Branching:**
 
-````elm
+````markdown
 ```elm {l=hidden id=imports}
 import VegaLite exposing (..)
 ```
