@@ -14,6 +14,7 @@ import {
 } from "litvis";
 import * as _ from "lodash";
 import * as hash from "object-hash";
+import flattenJsonToRawMarkdown from "../lib/flattenJsonToRawMarkdown";
 import { LitvisEnhancerCache } from "../types";
 
 const escapeString = new Html5Entities().encode;
@@ -22,6 +23,7 @@ export default async function enhance(
   $: CheerioStatic,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
+  parseMD,
 ) {
   // search for all elm code blocks and surround them
   // with output items if they reference expressions to output
@@ -136,7 +138,8 @@ export default async function enhance(
   );
 
   // walk through all litvis output items and render them
-  $('[data-role="litvisOutputItem"]').each((i, el) => {
+  const $outputItems = $('[data-role="litvisOutputItem"]');
+  const mappedOutputItems = $outputItems.map(async (i, el) => {
     const $el = $(el);
     const contextName = $el.data("contextName");
     const outputFormat = $el.data("outputFormat");
@@ -203,6 +206,17 @@ export default async function enhance(
           $result.text(
             JSON.stringify(evaluatedOutputExpression.data.value, null, 2),
           );
+          break;
+        case BlockOutputFormat.M:
+          const { html } = await parseMD(
+            flattenJsonToRawMarkdown(evaluatedOutputExpression.data.value),
+            {
+              useRelativeFilePath: true,
+              isForPreview: false,
+              hideFrontMatter: true,
+            },
+          );
+          $result = $(html);
           break;
         case OutputFormat.V: {
           const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
@@ -281,6 +295,7 @@ export default async function enhance(
       $el.empty().append($error);
     }
   });
+  await Promise.all(mappedOutputItems.get());
 }
 
 function generate$output(arrayOf$outputItems) {
