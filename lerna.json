@@ -3,7 +3,6 @@
   "useWorkspaces": true,
   "command": {
     "publish": {
-      "allowBranch": "master",
       "ignoreChanges": ["*.md", "jest.config.js", "*.test.ts"]
     }
   },
