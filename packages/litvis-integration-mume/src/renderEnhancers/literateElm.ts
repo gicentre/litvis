@@ -217,6 +217,7 @@ export default async function enhance(
             },
           );
           $result = $(html);
+          $result.filter("h1,h2,h3,h4,h5,h6").removeClass("mume-header");
           break;
         case OutputFormat.V: {
           const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
