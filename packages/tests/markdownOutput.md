@@ -6,7 +6,7 @@ The following should generate formatted markdown output in the preview window.
 
 ## 1. Numeric Values
 
-These should be identical to `r`/`raw` output as they are simple numbers with no markdown-specifc content.
+These should be identical to `r`/`raw` output as they are simple numbers with no markdown-specific content.
 
 ### 1.1 Output from fenced code blocks
 
@@ -132,10 +132,23 @@ multiLineOutput1 =
 ```elm {m}
 multiLineOutput2 : String
 multiLineOutput2 =
-    """# Level 1 heading
+    """
+# Level 1 heading
+
+test
+
 ## Level 2 heading
+
+a
+
 ### Level 3 heading
-#### Level 4 heading"""
+
+b
+
+#### Level 4 heading
+
+c
+"""
 ```
 
 ---
@@ -215,15 +228,15 @@ multiLineOutput6 : String
 multiLineOutput6 =
     """1. Item One
 
-       With more than one sentence.
+    With more than one sentence.
 
-    2. Item Two
+2. Item Two
 
-       With more than one sentence.
+    With more than one sentence.
 
-    3. Item Three
+3. Item Three
 
-       With more than one sentence."""
+    With more than one sentence."""
 ```
 
 ---
@@ -239,7 +252,7 @@ This is text with a footnote.[^1]
 multiLineOutput7 : String
 multiLineOutput7 =
     """This is text with a footnote.[^2]
-    [^2]: And this is the footnote (with separate number so as not to clash)."""
+[^2]: And this is the footnote (with separate number so as not to clash)."""
 ```
 
 ---
