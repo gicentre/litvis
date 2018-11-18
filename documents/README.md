@@ -184,16 +184,16 @@ They use the same attribute syntax as literate code blocks and recognise the fol
 - `v` (or `visualize`) indicates what symbols and expressions to render.
   In the most common scenario the value is a single Elm constant of type [Spec](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#Spec), e.g. `v=myChart`.
 
-* `r` (or `raw`) indicates what symbols and expressions to output without formatting.
+- `r` (or `raw`) indicates what symbols and expressions to output without formatting.
 
 - `m` (or `markdown`) indicates symbols to output as markdown to be formatted.
 
-* `j` (or `json`) indicates what symbols and expressions to output as formatted JSON.
+- `j` (or `json`) indicates what symbols and expressions to output as formatted JSON.
 
 - `context` is an optional attribute to specify which code block context to refer to.
   The `default` context is assumed if the attribute is not defined.
 
-* `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
+- `interactive` (or `interactive=true`) makes visualised specs interactive if applicable.
 
 The order of `v`, `r`, `m` and `j` determines the order of the output.
 It is considered a good practice to avoid multiple output formats and specs in a single triple hat reference as this helps control layout ofoutput.
