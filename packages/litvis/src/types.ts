@@ -16,6 +16,8 @@ export enum OutputFormat {
   R = "r",
   /** json */
   J = "j",
+  /** markdown */
+  M = "m",
   /** visual */
   V = "v",
 }
@@ -28,6 +30,8 @@ export enum BlockOutputFormat {
   R = "r",
   /** json */
   J = "j",
+  /** markdown */
+  M = "m",
   /** visual */
   V = "v",
 

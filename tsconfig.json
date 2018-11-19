@@ -4,7 +4,7 @@
     "target": "es6",
     "sourceMap": true,
     "declaration": true,
-    "lib": ["es6"],
+    "lib": ["es2017"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "preserveWatchOutput": true,

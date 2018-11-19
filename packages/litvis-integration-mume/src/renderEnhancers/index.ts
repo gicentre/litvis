@@ -10,8 +10,9 @@ export default async function enhance(
   processedNarrative: LitvisNarrative,
   $: CheerioStatic,
   cache: LitvisEnhancerCache,
+  parseMD: any,
 ) {
   await enhanceWithLitvisNarrativeSchemas($, processedNarrative, cache);
-  await enhanceWithLitvisLiterateElm($, processedNarrative, cache);
+  await enhanceWithLitvisLiterateElm($, processedNarrative, cache, parseMD);
   await enhanceWithLitvisVegaBlockKeywords($, processedNarrative, cache);
 }
