@@ -21,6 +21,6 @@ export const engine = unified()
   .use(extractLabels);
 
 export default async (vFile: LitvisDocument) => {
-  vFile.data.root = await engine.parse(vFile);
+  vFile.data.root = (await engine.parse(vFile)) as Parent;
   await engine.run(vFile.data.root, vFile);
 };
