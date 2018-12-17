@@ -30,11 +30,11 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "lerna": "^3.4.3",
-    "prettier": "^1.15.2",
+    "lerna": "^3.6.0",
+    "prettier": "^1.15.3",
     "prettier-check": "^2.0.0",
     "prettier-plugin-elm": "^0.4.1",
-    "replace": "^1.0.0",
+    "replace": "^1.0.1",
     "rimraf": "^2.6.2"
   }
 }
