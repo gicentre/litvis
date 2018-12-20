@@ -16,6 +16,7 @@ const CACHE_SHAPE_VERSION = "v1";
 const CACHE_DIRECTORY_SALT = "v0.19";
 const DEFAULT_TIMEOUT = 30000;
 const PROJECT_EXPIRY_WITH_ERRORS = 1000 * 60;
+const PROJECT_EXPIRY_WITH_NO_ELM_FOUND = 1000 * 5;
 // const PROJECT_EXPIRY_WITH_LATEST = 1000 * 60 * 60 * 24 * 7;
 
 export async function ensureEnvironment(
@@ -103,11 +104,20 @@ export async function ensureEnvironment(
       };
     } catch (e) {
       await touch(resolve(workingDirectory, "ProgramFORGC"));
+      const isElmFound =
+        `${e.message}`.indexOf("ENOENT") === -1 &&
+        `${e.message}`.indexOf("No elm global binary available") === -1;
       metadata = {
         status: EnvironmentStatus.ERROR,
         createdAt: now,
-        expiresAt: now + PROJECT_EXPIRY_WITH_ERRORS,
-        errorMessage: e.message,
+        expiresAt:
+          now +
+          (isElmFound
+            ? PROJECT_EXPIRY_WITH_ERRORS
+            : PROJECT_EXPIRY_WITH_NO_ELM_FOUND),
+        errorMessage: isElmFound
+          ? e.message
+          : 'I am having trouble finding Elm on your machine. Is it installed? Check by opening a terminal window and typing "elm --version" (without quotation marks). If you have recently installed Elm, try restarting your machine.',
       };
     }
 
