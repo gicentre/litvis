@@ -16,6 +16,16 @@ const testCases: Array<{
     ],
   },
   {
+    title: "standard symbol followed by whitespace",
+    code: `spec : Spec   `,
+    introducedSymbols: [
+      {
+        name: "spec",
+        type: "Spec",
+      },
+    ],
+  },
+  {
     title: "partially applied function",
     code: `
 sparkline : String -> Spec
@@ -64,6 +74,38 @@ result =
       {
         name: "result",
         type: "Int",
+      },
+    ],
+  },
+  {
+    title: "literate records",
+    code: `fn1 : List ( Int, Int )
+fn2 : ( ( Int, Int ), ( String, String ) )
+fn3 : { x : Int }
+fn4 : ( Int, String )
+fn5 : List (List ( Int, Int ))
+fn6 : List { x : Int }
+fn7 : List (List { x : Int })
+fn8 : ( Int, List (List { x : Int }) )
+`,
+    introducedSymbols: [
+      { name: "fn1", type: "List ( Int, Int )" },
+      { name: "fn2", type: "( ( Int, Int ), ( String, String ) )" },
+      { name: "fn3", type: "{ x : Int }" },
+      { name: "fn4", type: "( Int, String )" },
+      { name: "fn5", type: "List (List ( Int, Int ))" },
+      { name: "fn6", type: "List { x : Int }" },
+      { name: "fn7", type: "List (List { x : Int })" },
+      { name: "fn8", type: "( Int, List (List { x : Int }) )" },
+    ],
+  },
+  {
+    title: "symbol followed by a comment",
+    code: `spec : Spec -- this is a comment`,
+    introducedSymbols: [
+      {
+        name: "spec",
+        type: "Spec",
       },
     ],
   },

@@ -14,13 +14,12 @@ import { ElmSymbol } from "./types";
 export function findIntroducedSymbols(code: string): ElmSymbol[] {
   const result: ElmSymbol[] = [];
   code.split("\n").forEach((line) => {
-    const match = line.match(
-      /^([_a-zA-Z][_a-zA-Z0-9]{0,})\s*\:\s*([_a-zA-Z].*)$/,
-    );
+    const match = line.match(/^([_a-zA-Z][_a-zA-Z0-9]{0,})\s*\:\s*(.*)\s*$/);
     if (match) {
+      const typeWithTrimmedComment = match[2].split("--")[0].trim();
       result.push({
         name: match[1],
-        type: match[2].trim(),
+        type: typeWithTrimmedComment,
       });
     }
   });
