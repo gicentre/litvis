@@ -29,6 +29,17 @@ export const testCases: Array<{
     },
   },
   {
+    input: ["{ x = True, y = False }"],
+    output: {
+      x: true,
+      y: false,
+    },
+  },
+  {
+    input: ['"{ x = True, y = False }"'],
+    output: "{ x = True, y = False }",
+  },
+  {
     input: [
       '{ type = "geoshape", filled = False, visible = True, stroke = "#000", strokeWidth = 0.1 }',
     ],
@@ -100,6 +111,32 @@ export const testCases: Array<{
     output: {
       "": "test",
       b: 42,
+    },
+  },
+  {
+    input: ["( 1, 2 )", "(1,2)"],
+    output: [1, 2],
+  },
+  {
+    input: ["[ ( 1, 2 ) ]", "[(1,2)]"],
+    output: [[1, 2]],
+  },
+  {
+    input: ["[ ( 1, 2, 3 ), ( 4, 5, 6 ) ]", "[(1,2,3),(4,5,6)]"],
+    output: [[1, 2, 3], [4, 5, 6]],
+  },
+  {
+    input: ['{ a = "test", b = (1, 2, 3) }'],
+    output: {
+      a: "test",
+      b: [1, 2, 3],
+    },
+  },
+  {
+    input: ['{ a = "(1, 2, 3)", b = (1, 2, 3) }'],
+    output: {
+      a: "(1, 2, 3)",
+      b: [1, 2, 3],
     },
   },
   {

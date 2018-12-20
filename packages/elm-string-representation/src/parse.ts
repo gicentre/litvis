@@ -20,21 +20,35 @@ export default (text: string): any => {
     return null;
   }
 
-  // Replacing using regexps is error-prone when searched
-  // strings are contained in values.
-  // The method should be rewritten as a tokenizer
+  // Replacing using regexps is potentially error-prone.
+  // The method may be rewritten as a tokenizer
   // and a grammar parser to avoid this.
-  const patchedInput =
-    text.charAt(0) !== "{"
-      ? text
-      : text
+  const inputChunks = text.split('"');
+  const outputChunks: string[] = [];
+
+  let insideString = false;
+  inputChunks.forEach((chunk) => {
+    if (insideString) {
+      outputChunks.push(chunk);
+      if (!chunk.endsWith("\\")) {
+        insideString = false;
+      }
+    } else {
+      outputChunks.push(
+        chunk
           .replace(/ = True/g, " = true")
           .replace(/ = False/g, " = false")
-          .replace(/(,|{)(| ([$a-zA-Z_0-9]+)) = /g, '$1 "$3": ');
+          .replace(/(,|{)(| ([$a-zA-Z_0-9]+)) = /g, '$1 "$3": ')
+          .replace(/\(/g, "[")
+          .replace(/\)/g, "]"),
+      );
+      insideString = true;
+    }
+  });
 
   try {
     return recursivelyConvertApplicableObjectsToArrays(
-      JSON.parse(patchedInput),
+      JSON.parse(outputChunks.join('"')),
     );
   } catch (e) {
     throw new Error(
