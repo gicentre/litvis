@@ -240,13 +240,19 @@ const runChunkifiedProgram = async (
         }
       });
 
-      if (!parsedErrorOutput || !_.isArray(parsedErrorOutput.errors)) {
+      if (parsedErrorOutput && _.isArray(parsedErrorOutput.errors)) {
+        return {
+          status: ProgramResultStatus.FAILED,
+          errors: parsedErrorOutput.errors,
+        };
+      } else if (parsedErrorOutput) {
+        return {
+          status: ProgramResultStatus.FAILED,
+          errors: [parsedErrorOutput],
+        };
+      } else {
         throw e;
       }
-      return {
-        status: ProgramResultStatus.FAILED,
-        errors: parsedErrorOutput.errors,
-      };
     }
 
     return {
