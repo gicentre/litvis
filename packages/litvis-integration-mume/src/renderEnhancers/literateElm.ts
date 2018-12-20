@@ -208,8 +208,11 @@ export default async function enhance(
           );
           break;
         case BlockOutputFormat.M:
+          const rawMarkdown = flattenJsonToRawMarkdown(
+            evaluatedOutputExpression.data.value,
+          );
           const { html } = await parseMD(
-            flattenJsonToRawMarkdown(evaluatedOutputExpression.data.value),
+            rawMarkdown.length ? rawMarkdown : " ", // parseMD accepts non-empty strings only
             {
               useRelativeFilePath: true,
               isForPreview: false,
