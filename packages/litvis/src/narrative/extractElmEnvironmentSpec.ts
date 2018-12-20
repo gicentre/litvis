@@ -1,4 +1,4 @@
-import { statSync } from "fs";
+import { stat } from "fs-extra";
 import * as _ from "lodash";
 import { resolve } from "path";
 import { LitvisNarrative } from "../types";
@@ -51,15 +51,14 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
             "litvis:elm-source-directories",
           );
         } else {
-          sourceDirectories.push(resolvedDir);
           checkDirectoryPromises.push(
             (async () => {
               try {
-                // FIXME: consider async version of stat to prevent thread blocking
-                const directoryStat = statSync(resolvedDir);
+                const directoryStat = await stat(resolvedDir);
                 if (!directoryStat.isDirectory()) {
                   throw new Error();
                 }
+                sourceDirectories.push(resolvedDir);
               } catch (e) {
                 document.info(
                   `‘elm.source-directories[${index}]:’ ${dir} is not an existing directory and is therefore ignored.`,
