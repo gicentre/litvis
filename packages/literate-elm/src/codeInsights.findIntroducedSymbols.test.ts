@@ -109,6 +109,33 @@ fn8 : ( Int, List (List { x : Int }) )
       },
     ],
   },
+  {
+    title: "code with false positives in multi-line strings",
+    code: `realSymbol : String
+    realSymbol =
+    """Some multiline text that looks a bit like some elm code
+fakeSymbol : Int
+fakeSymbol =
+    99
+"""
+anotherRealSymbol : String
+anotherRealSymbol =
+    """Some multiline text that looks a bit like some elm code
+anotherFakeSymbol : Int
+anotherFakeSymbol =
+    99
+"""`,
+    introducedSymbols: [
+      {
+        name: "realSymbol",
+        type: "String",
+      },
+      {
+        name: "anotherRealSymbol",
+        type: "String",
+      },
+    ],
+  },
 ];
 
 describe("findIntroducedSymbols()", () => {

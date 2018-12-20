@@ -13,7 +13,14 @@ import { ElmSymbol } from "./types";
  */
 export function findIntroducedSymbols(code: string): ElmSymbol[] {
   const result: ElmSymbol[] = [];
+  let insideMultiLineString = false;
   code.split("\n").forEach((line) => {
+    if (line.match('"""')) {
+      insideMultiLineString = !insideMultiLineString;
+    }
+    if (insideMultiLineString) {
+      return;
+    }
     const match = line.match(/^([_a-zA-Z][_a-zA-Z0-9]{0,})\s*\:\s*(.*)\s*$/);
     if (match) {
       const typeWithTrimmedComment = match[2].split("--")[0].trim();
