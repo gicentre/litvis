@@ -15,8 +15,8 @@
     "release": "yarn build-and-qa && lerna publish",
     "test": "jest",
     "test-by-package": "lerna run test",
-    "use-dev-typings": "lerna exec \"replace --quiet '\\\"types\\\":(.*),' '\\\"types\\\": \\\"src/index.ts\\\",' package.json\"",
-    "use-prod-typings": "lerna exec \"replace --quiet '\\\"types\\\":(.*),' '\\\"types\\\": \\\"dist/index.d.ts\\\",' package.json\""
+    "use-dev-typings": "lerna exec \"replace --quiet dist/index\\.d\\.ts src/index.ts package.json\"",
+    "use-prod-typings": "lerna exec \"replace --quiet src/index\\.ts dist/index.d.ts package.json\""
   },
   "workspaces": {
     "packages": [
