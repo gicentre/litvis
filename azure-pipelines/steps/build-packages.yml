@@ -1,0 +1,3 @@
+steps:
+  - script: yarn build
+    displayName: "Build packages"

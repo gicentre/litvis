@@ -1,5 +1,6 @@
 steps:
   - template: ../steps/prepare-environment.yml
   - template: ../steps/install-dependencies.yml
+  - template: ../steps/build-packages.yml
   - script: yarn test
     displayName: "Run tests"
