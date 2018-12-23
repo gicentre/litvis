@@ -2,7 +2,7 @@ labels:
   - name: binProcess
     paired:
       htmlTemplate: <div class="binP"><div class="binPHeader"><b>Rethinking binaries</b> Do my data impose a categorisation that denies the multiplicity of the phenomena being visualized?<br />How do I register characteristics that do not easily fall into my classification?</div>{{children}}</div>
- 
+
   - name: binOutput
     paired:
       htmlTemplate: <div class="binO"><div class="binOHeader"><b>Rethinking binaries</b> How do I communicate the limits of my categories in the final representation? How do I allow the user to refactor the categories presented for view?</div>{{children}}</div>
@@ -10,44 +10,43 @@ labels:
   - name: pluProcess
     paired:
       htmlTemplate: <div class="pluP"><div class="pluPHeader"><b>Embracing pluralism</b> Whose voices are not being represented in your design team but might be important in conceptualising the project?<br />Whose perspectives have been excluded from the data collection/categorization?</div>{{children}}</div>
- 
+
   - name: pluOutput
     paired:
       htmlTemplate: <div class="pluO"><div class="pluOHeader"><b>Embracing pluralism</b> Can the visualization communicate the subject positions of the researchers and designers in a transparent way?<br />Whose view of the world does the visualization represent?<br />Can the visualization communicate whose voices are missing?</div>{{children}}</div>
-      
+
   - name: powProcess
     paired:
       htmlTemplate: <div class="powP"><div class="powPHeader"><b>Examining power</b> How is power distributed across your design team?<br />Whose voice matters more and why?<br />How can end users’ voices be more fully integrated into the design process?</div>{{children}}</div>
- 
+
   - name: powOutput
     paired:
       htmlTemplate: <div class="powO"><div class="powOHeader"><b>Examining power</b> Can the visualization empower the end user and/or their community?<br />Can values assumed to be a social good, such as “choice” result in disempowerment?</div>{{children}}</div>
-      
+
   - name: conProcess
     paired:
       htmlTemplate: <div class="conP"><div class="conPHeader"><b>Considering context</b> Can you use user-centred and participatory design?<br />How do we let insights that follow shape our design practice?</div>{{children}}</div>
- 
+
   - name: conOutput
     paired:
       htmlTemplate: <div class="conO"><div class="conOHeader"><b>Considering context</b> What kinds of terminology, symbols and cultural artifacts have meaning to end users, and how can we incorporate those into our designs?<br />What might we learn if we were to visualize “messy” data?<br />How do we take context into account in the assessment of the visualization?</div>{{children}}</div>
-      
+
   - name: affProcess
     paired:
       htmlTemplate: <div class="affP"><div class="affPHeader"><b>Legitimising affect</b> How can we use embodied and affective experience to enhance visualization design and engage users?<br />Do we have sufficient expertise in our design team in order to do that?</div>{{children}}</div>
- 
+
   - name: affOutput
     paired:
       htmlTemplate: <div class="affO"><div class="affOHeader"><b>Legitimising affect</b> What kinds of embodied and affective experience has meaning to end users?<br />Should we consider tactile, experiential or social ways of accessing the data visualization?</div>{{children}}</div>
-      
+
   - name: labProcess
     paired:
       htmlTemplate: <div class="labP"><div class="labPHeader"><b>Exposing labour</b> Can the team work backwards from the data to document its provenance?<br />Has the team discussed roles, responsibilities and credit in advance of publication?</div>{{children}}</div>
- 
+
   - name: labOutput
     paired:
       htmlTemplate: <div class="labO"><div class="labOHeader"><b>Exposing labour</b> Is it feasible to provide a metadata visualization that shows the provenance of the data and their stakeholders (caregivers) at each step?<br />Have we properly attributed work on the project?</div>{{children}}</div>
- 
- 
+
 rules:
   - description: D'Ignazio and Klein's 'rethink binaries' design process questions.
     selector:
@@ -59,7 +58,7 @@ rules:
       label: binProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'rethink binaries' design output questions.
     selector:
       label: binOutput
@@ -70,7 +69,7 @@ rules:
       label: binOutput
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'embrace pluralism' design process questions.
     selector:
       label: pluProcess
@@ -81,7 +80,7 @@ rules:
       label: pluProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'embrace pluralism' design output questions.
     selector:
       label: pluOutput
@@ -92,7 +91,7 @@ rules:
       label: pluOutput
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'examine power' design process questions.
     selector:
       label: powProcess
@@ -103,7 +102,7 @@ rules:
       label: powProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'examine power' design output questions.
     selector:
       label: powOutput
@@ -114,7 +113,7 @@ rules:
       label: powOutput
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'consider context' design process questions.
     selector:
       label: conProcess
@@ -125,7 +124,7 @@ rules:
       label: conProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'consider context' design output questions.
     selector:
       label: conOutput
@@ -136,7 +135,7 @@ rules:
       label: conOutput
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'legitimise embodiment and affect' design process questions.
     selector:
       label: affProcess
@@ -147,7 +146,7 @@ rules:
       label: affProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'legitimise embodiment and affect' design output questions.
     selector:
       label: affOutput
@@ -169,7 +168,7 @@ rules:
       label: labProcess
     children:
       minimumTrimmedTextLength: 1
-      
+
   - description: D'Ignazio and Klein's 'make labour visible' design output questions.
     selector:
       label: labOutput
@@ -181,9 +180,8 @@ rules:
     children:
       minimumTrimmedTextLength: 1
 
-
 styling:
-   css: |
+  css: |
     .binP, .binO, .pluP, .pluO, .powP, .powO, .conP, .conO, .affP, .affO, .labP, .labO  {
         padding-left: 1em;
         padding-top: 1em;

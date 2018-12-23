@@ -12,14 +12,14 @@ rules:
       label: voiceA
     notFollowedBy:
       selector:
-         label: voiceA
+        label: voiceA
 
   - description: Dialogue should alternate between voices.
     selector:
       label: voiceB
     notFollowedBy:
       selector:
-         label: voiceB
+        label: voiceB
 
 styling:
   css: |
@@ -30,5 +30,5 @@ styling:
     .voiceB {
       font-style: italic;
     }
-    
+
     code,pre {font-style: normal;}

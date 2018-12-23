@@ -1,0 +1,5 @@
+coverage
+dist
+elm-stuff
+node_modules
+packages/data-with-position/src/fixtures/fromYaml

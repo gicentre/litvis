@@ -32,7 +32,7 @@ rules:
     followedBy:
       selector:
         label: invarianceAssessment
-  
+
   - description: assessment cannot be blank
     selector:
       label: invarianceAssessment
@@ -50,7 +50,7 @@ rules:
     followedBy:
       selector:
         label: unambiguityAssessment
-  
+
   - description: assessment cannot be blank
     selector:
       label: unambiguityAssessment
@@ -68,7 +68,7 @@ rules:
     followedBy:
       selector:
         label: correspondenceAssessment
-  
+
   - description: assessment cannot be blank
     selector:
       label: correspondenceAssessment

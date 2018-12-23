@@ -18,7 +18,7 @@ rules:
       label: aim
     minimumOccurrences: 1
     maximumOccurrences: 1
-    
+
   - description: Aims should be provided before the design is described.
     selector:
       label: aim
@@ -31,12 +31,12 @@ rules:
       label: desc
     minimumOccurrences: 1
     maximumOccurrences: 1
-  
+
   - description: Narrative must always contain at least one set of limitations.
     selector:
       label: limitations
     minimumOccurrences: 1
-        
+
   - description: An idiom's description should be provided before listing its limtitations.
     selector:
       label: desc

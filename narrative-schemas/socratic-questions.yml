@@ -43,7 +43,7 @@ styling:
       margin-top: 3em;
       padding-top:1em;
     }
-    
+
     .voiceB {
       font-style: normal;
     }

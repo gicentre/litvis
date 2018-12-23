@@ -11,7 +11,7 @@ rules:
       minimumTrimmedTextLength: 1
 
 styling:
-   css: |
+  css: |
     .todo {
       font-style: italic;
       background: yellow;
