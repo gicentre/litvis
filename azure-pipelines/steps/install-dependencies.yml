@@ -1,0 +1,3 @@
+steps:
+  - script: yarn install --frozen-lockfile
+    displayName: "Install dependencies"
