@@ -11,12 +11,10 @@
     "format:check": "prettier-check --ignore-path .gitignore \"**/{*.js,*.ts,*.md,*.json}\"",
     "format": "prettier --write --ignore-path .gitignore \"**/{*.js,*.ts,*.md,*.json}\"",
     "lint": "lerna run lint",
-    "qa": "yarn lint && yarn format:check && yarn test:coverage",
+    "qa": "yarn lint && yarn format:check && yarn test --coverage",
     "release": "yarn build-and-qa && lerna publish",
     "test": "jest",
-    "test:coverage": "jest --coverage",
     "test-by-package": "lerna run test",
-    "test-by-package:coverage": "lerna run test:coverage",
     "use-dev-typings": "lerna exec \"replace --quiet '\\\"types\\\":(.*),' '\\\"types\\\": \\\"src/index.ts\\\",' package.json\"",
     "use-prod-typings": "lerna exec \"replace --quiet '\\\"types\\\":(.*),' '\\\"types\\\": \\\"dist/index.d.ts\\\",' package.json\""
   },

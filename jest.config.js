@@ -1,4 +1,4 @@
-// this config is used in "test" and "test:coverage" npm scripts
+// this config is used in "test" npm script
 module.exports = {
   collectCoverageFrom: ["**/src/**/*.{ts,tsx,js}", "!**/fixtures/**"],
   projects: ["<rootDir>/packages/*"],
