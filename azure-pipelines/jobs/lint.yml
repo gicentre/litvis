@@ -2,7 +2,8 @@ steps:
   - template: ../steps/prepare-environment.yml
   - template: ../steps/install-dependencies.yml
   - template: ../steps/build-packages.yml
-  - script: yarn format:check
-    displayName: "Check formatting"
-  - script: yarn lint
-    displayName: "Lint"
+  - script: yarn lint:format
+    displayName: "Lint format"
+  - script: yarn lint:packages
+    displayName: "Lint packages"
+    condition: succeededOrFailed()
