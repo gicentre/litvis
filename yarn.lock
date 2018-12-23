@@ -4885,7 +4885,7 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
-object-hash@^1.3.0:
+object-hash@^1.3.0, object-hash@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-1.3.1.tgz#fde452098a951cb145f039bb7d455449ddc126df"
   integrity sha512-OSuu/pU4ENM9kmREg0BdNrUDIl1heYa4mBZacJc+vVWz4GtAwu7jO8s4AIt2aGRUTqxykpWzI3Oqnsm13tTMDA==
@@ -5285,15 +5285,15 @@ prettier-check@^2.0.0:
   dependencies:
     execa "^0.6.0"
 
-prettier-plugin-elm@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-elm/-/prettier-plugin-elm-0.4.1.tgz#adaac646a1e93cad666b87c1174c056112f048a8"
-  integrity sha512-tC4EfFnZE0tERYQys6lciJt+ejPJLbaM4LN5FMATX+RhSQV4ORnyEXmh5njRH/rz68cyrtftleiFW0GHmfQnyg==
+prettier-plugin-elm@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-elm/-/prettier-plugin-elm-0.4.2.tgz#73e742b0aa888ad0005920e9042f331bbf62803e"
+  integrity sha512-ux3JcE+YGoLRpceRCmAt44j1qknhRg8/UieGK8LA4j6rohaJeKh4RT3ubaIijI1gspxExP4duiVAevqrZ1AsZA==
   dependencies:
     elm-format "^0.8.1"
     execa "^1.0.0"
     make-dir "^1.3.0"
-    object-hash "^1.3.0"
+    object-hash "^1.3.1"
     serialize-error "^3.0.0"
     temp-dir "^1.0.0"
 
