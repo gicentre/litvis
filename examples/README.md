@@ -9,3 +9,4 @@
 - [feminist.md](feminist.md) – **Feminist Data Visualization Schema**
 - [lunarEclipse.md](lunarEclipse.md) – **Specification reuse:** Lunar Eclipse Mapping
 - [approximating_e.md](approximating_e.md) - **Literate elm:** Approximating e with factorials
+- [windVectors.md](windVectors.md) - **Calculating new data fields** for exploring vector field visualization
