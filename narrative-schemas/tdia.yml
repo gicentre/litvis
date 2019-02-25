@@ -1,0 +1,113 @@
+labels:
+  - name: overview
+    paired:
+      htmlTemplate: <div class="overview"><h2>Overview</h2><div class="annotation">How does my design provide an overview of the entire dataset?</div>{{children}}</fieldset></div>
+
+  - name: zoom
+    paired:
+      htmlTemplate: <div class="zoom"><h2>Zoom</h2><div class="annotation">How does my design allow the user to zoom in on items of interest?</div>{{children}}</fieldset></div>
+
+  - name: filter
+    paired:
+      htmlTemplate: <div class="filter"><h2>Filter</h2><div class="annotation">How does my design allow the user to filter out the uninteresting items in the dataset?</div>{{children}}</fieldset></div>
+
+  - name: dod
+    paired:
+      htmlTemplate: <div class="dod"><h2>Details on Demand</h2><div class="annotation">How does my design allow the user to select an item or group and retrieve the details when need?</div>{{children}}</fieldset></div>
+
+  - name: relate
+    paired:
+      htmlTemplate: <div class="relate"><h2>Relate</h2><div class="annotation">How does my design allow the user to view relationships among data items?</div>{{children}}</fieldset></div>
+
+  - name: history
+    paired:
+      htmlTemplate: <div class="history"><h2>History</h2><div class="annotation">Does my design allow the user to keep a history of actions to support undo, replay and progressive refinement?</div>{{children}}</fieldset></div>
+
+  - name: extract
+    paired:
+      htmlTemplate: <div class="extract"><h2>Extract</h2><div class="annotation">Does my design allow the user to extract sub-collections of data items and the query parameters that define those sub-collections?</div>{{children}}</fieldset></div>
+
+rules:
+  - description: Narrative must always contain a section on the 'overview' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: overview
+    minimumOccurrences: 1
+
+  - description: overview cannot be blank
+    selector:
+      label: overview
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'zoom' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: zoom
+    minimumOccurrences: 1
+
+  - description: zoom cannot be blank
+    selector:
+      label: zoom
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'filter' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: filter
+    minimumOccurrences: 1
+
+  - description: filter cannot be blank
+    selector:
+      label: filter
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'details-on-demand' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: dod
+    minimumOccurrences: 1
+
+  - description: dod (details-on-demand) cannot be blank
+    selector:
+      label: dod
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'relate' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: relate
+    minimumOccurrences: 1
+
+  - description: relate cannot be blank
+    selector:
+      label: relate
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'history' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: history
+    minimumOccurrences: 1
+
+  - description: history cannot be blank
+    selector:
+      label: history
+    children:
+      minimumTrimmedTextLength: 1
+
+  - description: Narrative must always contain a section on the 'extract' stage of Schneiderman's 7 task-domain information actions.
+    selector:
+      label: extract
+    minimumOccurrences: 1
+
+  - description: extract cannot be blank
+    selector:
+      label: extract
+    children:
+      minimumTrimmedTextLength: 1
+
+styling:
+  css: |
+    .annotation {
+      font-size: 1.2em;
+      font-family: caveat, cursive !important;
+    }
