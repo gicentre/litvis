@@ -375,6 +375,14 @@ const convertErrorsToMessages = (
 };
 
 const getErrorMessageText = (error): string => {
+  if (error.title === "UNKNOWN IMPORT") {
+    // Unknown imports form a special case. It is not reasonable to suggest looking into elm.json and source-directories
+    // as this is causing confusion in the literate-elm environment.
+    const failedImport = _.get(error, ["message", 1, "string"]);
+    if (failedImport) {
+      return `Could not ${failedImport}. Please make sure you have specified all dependencies on third-party Elm modules.`;
+    }
+  }
   if (_.isArray(error.message)) {
     const text = error.message
       .map((chunk) => {

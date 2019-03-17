@@ -31,5 +31,16 @@ export default (dataWithPosition, document: LitvisDocument): void => {
         );
       });
     }
+    if (dataWithPosition.dependencies && (!elm || !elm.dependencies)) {
+      const elmPosition = getPosition(dataWithPosition.elm);
+      const dependenciesPosition = getPosition(dataWithPosition.dependencies);
+      if (dependenciesPosition.start.line > elmPosition.end.line) {
+        document.message(
+          `It seems that you are missing indentation before ‘dependencies’ and its sub-nodes. Without leading spaces, the value is not considered as a child node of ‘elm’.`,
+          dependenciesPosition,
+          "litvis:frontmatter:elm:dependencies",
+        );
+      }
+    }
   }
 };
