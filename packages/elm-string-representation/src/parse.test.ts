@@ -107,9 +107,30 @@ export const testCases: Array<{
     },
   },
   {
-    input: ['{ = "test", b = 42 }', '{ b = 42, = "test" }'],
+    input: [
+      '{ = "test", b = 42 }',
+      '{ b = 42, = "test" }',
+      '{  = "test", b = 42 }',
+    ],
     output: {
       "": "test",
+      b: 42,
+    },
+  },
+  {
+    input: ['{ two words = "test", b = 42 }', '{ b = 42, two words = "test" }'],
+    output: {
+      "two words": "test",
+      b: 42,
+    },
+  },
+  {
+    input: [
+      '{ a lot of words = "test", b = 42 }',
+      '{ b = 42, a lot of words = "test" }',
+    ],
+    output: {
+      "a lot of words": "test",
       b: 42,
     },
   },

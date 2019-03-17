@@ -38,7 +38,7 @@ export default (text: string): any => {
         chunk
           .replace(/ = True/g, " = true")
           .replace(/ = False/g, " = false")
-          .replace(/(,|{)(| ([$a-zA-Z_0-9]+)) = /g, '$1 "$3": ')
+          .replace(/(,|{)\s*(|([$a-zA-Z_0-9 ]*)\s+)= /g, '$1 "$3": ')
           .replace(/\(/g, "[")
           .replace(/\)/g, "]"),
       );
