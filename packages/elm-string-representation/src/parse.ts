@@ -34,14 +34,21 @@ export default (text: string): any => {
         insideString = false;
       }
     } else {
-      outputChunks.push(
-        chunk
-          .replace(/ = True/g, " = true")
-          .replace(/ = False/g, " = false")
-          .replace(/(,|{)\s*(|([$a-zA-Z_0-9 ]*)\s+)= /g, '$1 "$3": ')
-          .replace(/\(/g, "[")
-          .replace(/\)/g, "]"),
-      );
+      if (chunk === "True") {
+        outputChunks.push("true");
+      } else if (chunk === "False") {
+        outputChunks.push("false");
+      } else {
+        outputChunks.push(
+          chunk
+            .replace(/\<function\>/g, '"<function>"')
+            .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")
+            .replace(/([^$a-zA-Z_0-9])False([^$a-zA-Z_0-9])/g, "$1false$2")
+            .replace(/(,|{)\s*(|([$a-zA-Z_0-9 ]*)\s+)= /g, '$1 "$3": ')
+            .replace(/\(/g, "[")
+            .replace(/\)/g, "]"),
+        );
+      }
       insideString = true;
     }
   });

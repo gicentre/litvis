@@ -18,6 +18,18 @@ export const testCases: Array<{
     output: "42",
   },
   {
+    input: ["True"],
+    output: true,
+  },
+  {
+    input: ["False"],
+    output: false,
+  },
+  {
+    input: ["<function>"],
+    output: "<function>",
+  },
+  {
     input: ['"Hello World"'],
     output: "Hello World",
   },
@@ -135,6 +147,10 @@ export const testCases: Array<{
     },
   },
   {
+    input: ["( False, True )", "(False,True)"],
+    output: [false, true],
+  },
+  {
     input: ["( 1, 2 )", "(1,2)"],
     output: [1, 2],
   },
@@ -158,6 +174,25 @@ export const testCases: Array<{
     output: {
       a: "(1, 2, 3)",
       b: [1, 2, 3],
+    },
+  },
+  {
+    input: [
+      '{ booItem = True, fnItem = <function>, intItem = 1, lstItem = [3,4,5], rcdItem = { nestedName = "fourteen", nestedValue = 15 }, strItem = "two", tLsItem = [(1,11),(1.2,13)], tp3Item = (False,8,"nine"), tplItem = (6,7) }',
+    ],
+    output: {
+      booItem: true,
+      fnItem: "<function>",
+      intItem: 1,
+      lstItem: [3, 4, 5],
+      rcdItem: {
+        nestedName: "fourteen",
+        nestedValue: 15,
+      },
+      strItem: "two",
+      tLsItem: [[1, 11], [1.2, 13]],
+      tp3Item: [false, 8, "nine"],
+      tplItem: [6, 7],
     },
   },
   {
