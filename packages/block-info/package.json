@@ -1,6 +1,6 @@
 {
   "name": "block-info",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Parses and normalizes code block info in markdown files",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "block-attributes": "^0.2.4"
+    "block-attributes": "^0.2.5"
   },
   "devDependencies": {
     "@types/jest": "^23.3.2",
