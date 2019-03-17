@@ -112,7 +112,7 @@ fn8 : ( Int, List (List { x : Int }) )
   {
     title: "code with false positives in multi-line strings",
     code: `realSymbol : String
-    realSymbol =
+realSymbol =
     """Some multiline text that looks a bit like some elm code
 fakeSymbol : Int
 fakeSymbol =
