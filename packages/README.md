@@ -123,9 +123,9 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
     cd mume-with-litvis
 
-    http https://cdnjs.cloudflare.com/ajax/libs/vega/${VEGA_VERSION}/vega.min.js > dependencies/vega/vega.min.js
-    http https://cdnjs.cloudflare.com/ajax/libs/vega-lite/${VEGA_LITE_VERSION}/vega-lite.min.js > dependencies/vega-lite/vega-lite.min.js
-    http https://cdnjs.cloudflare.com/ajax/libs/vega-embed/${VEGA_EMBED_VERSION}/vega-embed.min.js > dependencies/vega-embed/vega-embed.min.js
+    http https://cdn.jsdelivr.net/npm/vega@${VEGA_VERSION}/build/vega.min.js > dependencies/vega/vega.min.js
+    http https://cdn.jsdelivr.net/npm/vega-lite@${VEGA_LITE_VERSION}/build/vega-lite.min.js > dependencies/vega-lite/vega-lite.min.js
+    http https://cdn.jsdelivr.net/npm/vega-embed@${VEGA_EMBED_VERSION}/build/vega-embed.min.js > dependencies/vega-embed/vega-embed.min.js
     ```
 
 1.  Update `dependencies/README.md` with the picked library versions.
