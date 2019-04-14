@@ -44,7 +44,7 @@ export default (text: string): any => {
             .replace(/\<function\>/g, '"<function>"')
             .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")
             .replace(/([^$a-zA-Z_0-9])False([^$a-zA-Z_0-9])/g, "$1false$2")
-            .replace(/(,|{)\s*(|([$a-zA-Z_0-9 -]*)\s+)= /g, '$1 "$3": ')
+            .replace(/(,|{)\s*(|([-$a-zA-Z_0-9 ]*)\s+)= /g, '$1 "$3": ')
             .replace(/\(/g, "[")
             .replace(/\)/g, "]"),
         );
