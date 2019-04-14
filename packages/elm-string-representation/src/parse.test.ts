@@ -138,6 +138,16 @@ export const testCases: Array<{
   },
   {
     input: [
+      '{ dashed-key = "test", b = 42 }',
+      '{ b = 42, dashed-key = "test" }',
+    ],
+    output: {
+      "dashed-key": "test",
+      b: 42,
+    },
+  },
+  {
+    input: [
       '{ a lot of words = "test", b = 42 }',
       '{ b = 42, a lot of words = "test" }',
     ],
