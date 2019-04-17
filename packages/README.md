@@ -99,17 +99,17 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
 1.  Navigate to the latest pre-compiled versions of the libraries available via the CDN:
 
-    - https://cdnjs.com/libraries/vega
-    - https://cdnjs.com/libraries/vega-embed
-    - https://cdnjs.com/libraries/vega-lite
+    - https://www.jsdelivr.com/package/npm/vega
+    - https://www.jsdelivr.com/package/npm/vega-lite
+    - https://www.jsdelivr.com/package/npm/vega-embed
 
     These pages are usually updated within a few hours after the official release.
 
 1.  Replace the following local files with the corresponding CDN downloads:
 
     - `dependencies/vega/vega.min.js`
-    - `dependencies/vega-embed/vega-embed.min.js`
     - `dependencies/vega-lite/vega-lite.min.js`
+    - `dependencies/vega-embed/vega-embed.min.js`
 
     Opening minified JavaScripts in the browser and pasting their contents to the git repo may result in broken text encoding.
     Using the command line is safer:
