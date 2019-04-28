@@ -1,6 +1,6 @@
 {
   "name": "literate-elm",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Runs literate Elm code blocks and calculates Elm expressions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@kachkaev/run-elm": "^3.0.0-litvis-patch.3",
-    "elm-string-representation": "^1.1.8",
+    "elm-string-representation": "^1.1.9",
     "execa": "^1.0.0",
     "fs-extra": "^7.0.0",
     "globby": "^8.0.1",
