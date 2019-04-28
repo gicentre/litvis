@@ -148,6 +148,16 @@ export const testCases: Array<{
   },
   {
     input: [
+      '{ special-symbols +*/&|, = "test", key=with =equality= signs = 42 }',
+      '{ key=with =equality= signs = 42, special-symbols +*/&|, = "test" }',
+    ],
+    output: {
+      "special-symbols +*/&|,": "test",
+      "key=with =equality= signs": 42,
+    },
+  },
+  {
+    input: [
       '{ a lot of words = "test", b = 42 }',
       '{ b = 42, a lot of words = "test" }',
     ],
@@ -209,6 +219,7 @@ export const testCases: Array<{
     input: [
       "{ x = {",
       '{ x = { field = "x", type = "quantitative", axis = null }, y = { field = "y", type =',
+      "{ keyWithEquality = signAndSpaces = 1, a = 42 }",
     ],
     error: true,
   },
