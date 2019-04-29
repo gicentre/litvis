@@ -16,6 +16,7 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 1.  [Geospatial File Formats](geoFormats.md)
 2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
 3.  **Importing geographic datasets into elm-vegalite**
+4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
@@ -35,16 +36,19 @@ _For related tutorials, see Mike Bostock's series [Command-Line Cartography](htt
 
 ## 0. Setup
 
-Some of these steps involve using [Geospatial Abstraction Data Library (gdal)](http://www.gdal.org) and some d3 command line programs, so as a one-off setup stage you need to install the following with [homebrew](https://brew.sh) and [npm](https://docs.npmjs.com/getting-started/installing-node) (if you don't have them installed, do so first).
+To perform some of the file conversions you will need the [Geospatial Abstraction Data Library (gdal)](http://www.gdal.org), so if you do not have this already, as a one-off setup stage you should install it. Here are some installation instructions for [MacOS](https://medium.com/@vascofernandes_13322/how-to-install-gdal-on-macos-6a76fb5e24a4), for [Windows](https://sandbox.idre.ucla.edu/sandbox/tutorials/installing-gdal-for-windows), and for [Ubuntu](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)).
 
-Open a terminal and install the relevant packages with the following
+After installation, opening a command line window and typing
 
-[comment]: # "Don't need  `d3-geo-projection` as we use gdal instead for projection, which offers a more comprehensive set of transformations that account for ellipsoids."
+**`ogr2ogr --version`**
 
-```bash
-brew install gdal
-npm install -g shapefile ndjson-cli topojson d3-geo-centroid
-```
+should display a message similar to
+
+    GDAL 2.4.1, released 2019/03/15
+
+You will also need to install some d3 command-line utilities, so open a command line window and type
+
+**`npm install -g shapefile ndjson-cli topojson d3-geo-centroid`**
 
 The `-g` option ensures the installed packages are available globally from any directory.
 The `gdal` package will be used for the map projection work; `shapefile` for the conversion from shapefile to geoJSON; `ndjson-cli` splits JSON files into separate lines to ease processing; `topojson` does the conversion to topoJSON and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.

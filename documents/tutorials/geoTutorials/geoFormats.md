@@ -16,6 +16,7 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 1.  **Geospatial File Formats**
 2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
 3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
+4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
