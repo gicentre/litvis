@@ -131,7 +131,7 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 1.  Update `dependencies/README.md` with the picked library versions.
     This change is needed for documentation purposes only.
 
-1.  Find three occurrences of `https://cdnjs.cloudflare.com/ajax/libs/vega/...` in `src/markdown-engine.ts` and upgrade library versions accordingly.
+1.  Find three occurrences of `https://cdn.jsdelivr.net/npm/vega...` in `src/markdown-engine.ts` and upgrade library versions accordingly.
 
 1.  In the unlikely case of breaking changes that affect the lifecycle of vega-based visualizations, consider updating additional files in `src` folder.
     This may be necessary in a small subset of cases, and only when the major versions are bumped.
