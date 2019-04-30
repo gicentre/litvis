@@ -196,7 +196,7 @@ As an illustration of a more sophisticated extraction of OpenStreetMap data we w
 
 Some features contained in OpenStreetMap data don't have their own labels like _building_, _waterway_, _leisure_ as we used above. Instead they may be identified via its _name_ or _other_tags_ which can contain free text describing the features. This is the case for Paris's Metro stations and lines (as distinct from its mainline and RER stations). To extract these features we can use javascript _regular expressions_ to filter only the metro-relevant features.
 
-To extract the metro lines we filter the lineMap file, but not this time we will not drop the attribute table entirely as we need to retain the name of each metro line:
+To extract the metro lines we filter the lineMap file, but this time we will not drop the attribute table entirely as we need to retain the name of each metro line:
 
 - Refresh the mapshaper page, drag _lineMap.geojson_ into mapshaper and open the mapshaper console.
 - Clip to the bounding rectangle:
