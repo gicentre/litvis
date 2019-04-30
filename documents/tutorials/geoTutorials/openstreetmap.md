@@ -53,6 +53,7 @@ Visit [OpenStreetMap](https://www.openstreetmap.org) and navigate to a region of
 ## 2. Converting to GeoJSON format
 
 - Open a command line window and change to the folder containing your .osm file. Then type
+
   **`ogrinfo map.osm`**
 
 This should display something similar to
@@ -70,8 +71,11 @@ INFO: Open of `map.osm'
 This indicates that the OSM file contains 5 types of geometry. We will have to extract and convert the types were are interested in. For the purposes of this tutorial we will extract the point, line and polygon features:
 
 - In your command line window, type:
+
   **`ogr2ogr -f GeoJSON pointMap.geojson map.osm points`**
+
   **`ogr2ogr -f GeoJSON lineMap.geojson map.osm lines`**
+
   **`ogr2ogr -f GeoJSON polyMap.geojson map.osm multipolygons`**
 
 This should create three new files representing the point data (e.g. addresses, trees, stations); line data (e.g. cycleways, roads) and polygon data (e.g. buildings and administrative areas).
@@ -88,6 +92,7 @@ Notice that the bounds of some of the outer polygons extend beyond our defined r
 We can clip all polygons to our region of interest using one of mapshaper's extensive editing commands accessible via the _mapshaper console_:
 
 - In mapshaper, click the **Console** button (top-right) and type:
+
   **`clip bbox=2.2909,48.8350,2.3902,48.8777`** (the bounding coordinates noted above)
 
 ![Polygons before and after clipping](images/clipping.jpg)
@@ -96,7 +101,9 @@ _Polygons displayed in mapshaper before and after clipping._
 Next we will select just the features of interest for use with Vega-Lite. In this case we will select just the building and bridge outlines. We can do this with mapshaper's _filter_ command.
 
 - In the mapshaper console, type:
+
   **`filter 'building != undefined || man_made == "bridge"'`**
+
   **`o 'buildings.json' format=topojson drop-table`**
 
 The `o` (output) command saves the current file and in this case we add the `drop-table` option to remove all the attributes associated with each geometric feature as we will be simply displaying the building outlines.
@@ -107,20 +114,30 @@ Parks:
 
 - Refresh the mapshaper page in your browser, drag and drop _polyMap.geojson_ into mapshaper, and open the mapshaper console.
 - Clip to the bounding rectangle:
+
   **`clip bbox=2.2909,48.8350,2.3902,48.8777`** (you can use the up arrow to cycle through previous commands to recall this command)
+
 - extract the parks features:
+
   **`filter 'leisure == "park"'`**
+
 - Save the filtered features as a topojson file:
+
   **`o 'parks.json' format=topojson drop-table`**
 
 River Seine:
 
 - Again refresh the mapshaper page, but this time drag _lineMap.geojson_ into mapshaper and open the mapshaper console.
 - Clip to the bounding rectangle:
+
   **`clip bbox=2.2909,48.8350,2.3902,48.8777`**
+
 - extract the river features:
+
   **`filter 'waterway == "river"'`**
+
 - Save the filtered features as a topojson file:
+
   **`o 'rivers.json' format=topojson drop-table`**
 
 ## 4. Displaying the map layers in Vega-Lite
@@ -129,7 +146,7 @@ Now that we have our three topoJSON files (buildings.json, parks.json and rivers
 
 Make sure you have the three topojson files in a `data` folder located in the same place as your litvis document.
 
-\_For this version of the tutorial we define a path to online versions of the data files, but you may wish to edit the path to point to your local files.
+_For this version of the tutorial we define a path to online versions of the data files, but you may wish to edit the path to point to your local files._
 
 ```elm {l}
 dataPath : String
@@ -183,24 +200,38 @@ To extract the metro lines we filter the lineMap file, but not this time we will
 
 - Refresh the mapshaper page, drag _lineMap.geojson_ into mapshaper and open the mapshaper console.
 - Clip to the bounding rectangle:
+
   **`clip bbox=2.2909,48.8350,2.3902,48.8777`**
+
 - extract the metro line features with a regular expression:
+
   **`filter 'RegExp(".*Métro.*").test(name)'`**
+
 - Store only the 'name' field associated with each line feature:
+
   **`filter-fields 'name'`**
+
 - Save the filtered features as a topojson file:
+
   **`o 'metroLines.json' format=topojson`**
 
 For the Metro stations themselves we need to extract them from the _pointMap.geojson_ file and filter them by examining the _other_tags_ content. And because we will by styling these point features in our map we will save the points as a CSV file rather than topoJSON file. Storing as a CSV file can also be useful if you wish to visualize other properties of a point-located dataset.
 
 - Refresh the mapshaper page, drag _pointMap.geojson_ into mapshaper and open the mapshaper console.
 - Clip to the bounding rectangle:
+
   **`clip bbox=2.2909,48.8350,2.3902,48.8777`**
+
 - extract the metro station features with a regular expression:
+
   **`filter 'RegExp(".*métro.*").test(other_tags)'`**
+
 - Store only the 'name' field associated with each line feature:
+
   **`filter-fields 'name'`**
+
 - save the longitude,latitude and station name of the points as a CSV file:
+
   **`each 'longitude=this.x, latitude=this.y' -o 'metroStations.csv'`**
 
 The resulting CSV file representing metro station names and locations includes every point associated with a station which means in some cases we have multiple points for a station with several entrances. For mapping purposes you may decide to manually edit the CSV file removing these duplicate entries along with any others you do not wish to map.
