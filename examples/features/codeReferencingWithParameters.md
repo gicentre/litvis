@@ -20,6 +20,7 @@ sparkline groupName =
 
         data =
             dataFromUrl "https://gicentre.github.io/data/randomWalk.csv"
+                [ parse [ ( "x", foNum ), ( "y", foNum ) ] ]
 
         trans =
             transform << filter (fiExpr ("datum.group == " ++ groupName))
@@ -30,7 +31,7 @@ sparkline groupName =
                 << position Y [ pName "y", pMType Quantitative, pAxis [], pScale [ scZero False ] ]
                 << color [ mStr "black" ]
     in
-    toVegaLite [ config [], data [], trans [], enc [], line [] ]
+    toVegaLite [ config [], data, trans [], enc [], line [ maStrokeWidth 1 ] ]
 ```
 
 1.  ^^^elm v=(sparkline "1")^^^
