@@ -29,9 +29,8 @@ sparkline groupName =
             encoding
                 << position X [ pName "x", pMType Quantitative, pAxis [] ]
                 << position Y [ pName "y", pMType Quantitative, pAxis [], pScale [ scZero False ] ]
-                << color [ mStr "black" ]
     in
-    toVegaLite [ config [], data, trans [], enc [], line [ maStrokeWidth 1 ] ]
+    toVegaLite [ config [], data, trans [], enc [], line [ maColor "black", maStrokeWidth 1 ] ]
 ```
 
 1.  ^^^elm v=(sparkline "1")^^^
