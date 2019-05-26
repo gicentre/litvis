@@ -120,6 +120,23 @@ export const testCases: Array<{
   },
   {
     input: [
+      '{ $schema = "https://vega.github.io/schema/vega-lite/v3.json", data = { values = { 0 = { speed (m/s) = 1 }, 1 = { speed (m/s) = 2 }, 2 = { speed (m/s) = 3 } } }, encoding = { x = { field = "speed (m/s)", type = "quantitative" } }, mark = "circle" }',
+    ],
+    output: {
+      $schema: "https://vega.github.io/schema/vega-lite/v3.json",
+      data: {
+        values: [
+          { "speed (m/s)": 1 },
+          { "speed (m/s)": 2 },
+          { "speed (m/s)": 3 },
+        ],
+      },
+      encoding: { x: { field: "speed (m/s)", type: "quantitative" } },
+      mark: "circle",
+    },
+  },
+  {
+    input: [
       '{ = "test", b = 42 }',
       '{ b = 42, = "test" }',
       '{  = "test", b = 42 }',
