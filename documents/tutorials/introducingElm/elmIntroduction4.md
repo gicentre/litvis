@@ -40,7 +40,7 @@ mySequence =
 ```
 
 Unlike arrays there is no random access to list items, but the _head_ and _tail_ of any list can be easily found.
-Because a list can be empty (`[]`), there is no guarantee that a list will be sepraable into a head and tail, so these functions return a `Maybe` value:
+Because a list can be empty (`[]`), there is no guarantee that a list will be separable into a head and tail, so these functions return a `Maybe` value:
 
 ```elm {l raw}
 leader : String
@@ -290,6 +290,33 @@ smoothOutput =
 2.  The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
 
 {|question )}
+
+```elm {l=hidden}
+smooth2 : List Int -> List Int
+smooth2 =
+    let
+        equalise ( a, b ) =
+            if a > b then
+                a - 1
+
+            else if a < b then
+                a + 1
+
+            else
+                a
+    in
+    neighbours >> List.map equalise
+
+
+neighbours2 : List a -> List ( a, a )
+neighbours2 items =
+    case items of
+        x :: xs ->
+            List.map2 Tuple.pair (x :: items) items
+
+        _ ->
+            []
+```
 
 ---
 
