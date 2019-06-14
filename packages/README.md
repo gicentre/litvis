@@ -110,6 +110,8 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
     - `dependencies/vega/vega.min.js`
     - `dependencies/vega-lite/vega-lite.min.js`
     - `dependencies/vega-embed/vega-embed.min.js`
+    - `dependencies/apache-arrow/apache-arrow.min.js`
+    - `dependencies/vega-loader-arrow/vega-loader-arrow.min.js`
 
     Opening minified JavaScripts in the browser and pasting their contents to the git repo may result in broken text encoding.
     Using the command line is safer:
@@ -117,15 +119,29 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
     ```bash
     brew install http
 
-    VEGA_VERSION=x.x.x
-    VEGA_LITE_VERSION=y.y.y
-    VEGA_EMBED_VERSION=z.z.z
-
     cd mume-with-litvis
 
-    http https://cdn.jsdelivr.net/npm/vega@${VEGA_VERSION}/build/vega.min.js > dependencies/vega/vega.min.js
-    http https://cdn.jsdelivr.net/npm/vega-lite@${VEGA_LITE_VERSION}/build/vega-lite.min.js > dependencies/vega-lite/vega-lite.min.js
-    http https://cdn.jsdelivr.net/npm/vega-embed@${VEGA_EMBED_VERSION}/build/vega-embed.min.js > dependencies/vega-embed/vega-embed.min.js
+    NAME=vega
+    VERSION=5.4.0
+    BUILD_PATH=
+
+    NAME=vega-lite
+    VERSION=3.2.1
+    BUILD_PATH=
+
+    NAME=vega-embed
+    VERSION=4.2.0
+    BUILD_PATH=
+
+    NAME=apache-arrow
+    VERSION=0.13.0
+    BUILD_PATH=Arrow.es5.min.js
+
+    NAME=vega-loader-arrow
+    VERSION=0.0.6
+    BUILD_PATH=
+
+    http https://cdn.jsdelivr.net/npm/${NAME}@${VERSION}/${BUILD_PATH:-build/${NAME}.min.js} > dependencies/${NAME}/${NAME}.min.js
     ```
 
 1.  Update `dependencies/README.md` with the picked library versions.

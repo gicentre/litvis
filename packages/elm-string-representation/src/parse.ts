@@ -1,3 +1,25 @@
+const processChunksOutsideQuotedStrings = (
+  input: string,
+  processChunk: (chunk: string) => string,
+) => {
+  let insideString = false;
+  const inputChunks = input.split('"');
+  const outputChunks: string[] = [];
+
+  inputChunks.forEach((chunk) => {
+    if (insideString) {
+      outputChunks.push(chunk);
+      if (!chunk.endsWith("\\")) {
+        insideString = false;
+      }
+    } else {
+      outputChunks.push(processChunk(chunk));
+      insideString = true;
+    }
+  });
+  return outputChunks.join('"');
+};
+
 /**
  * Parses Elm string representation into a corresponding JS value.
  *
@@ -23,40 +45,29 @@ export default (text: string): any => {
   // Replacing using regexps is potentially error-prone.
   // The method may be rewritten as a tokenizer
   // and a grammar parser to avoid this.
-  const inputChunks = text.split('"');
-  const outputChunks: string[] = [];
-
-  let insideString = false;
-  inputChunks.forEach((chunk) => {
-    if (insideString) {
-      outputChunks.push(chunk);
-      if (!chunk.endsWith("\\")) {
-        insideString = false;
-      }
-    } else {
-      if (chunk === "True") {
-        outputChunks.push("true");
-      } else if (chunk === "False") {
-        outputChunks.push("false");
-      } else {
-        outputChunks.push(
-          chunk
-            .replace(/\<function\>/g, '"<function>"')
-            .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")
-            .replace(/([^$a-zA-Z_0-9])False([^$a-zA-Z_0-9])/g, "$1false$2")
-            .replace(/(,|{) (((?! = ).)*) = /g, '$1 "$2": ')
-            .replace(/(,|{) = /g, '$1 "": ')
-            .replace(/\(/g, "[")
-            .replace(/\)/g, "]"),
-        );
-      }
-      insideString = true;
-    }
-  });
+  const processedText = processChunksOutsideQuotedStrings(text, (chunk) =>
+    processChunksOutsideQuotedStrings(
+      chunk.replace(/(,|{) (((?! = ).)*) = /g, '$1 "$2": '), // wrap keys into quotes to avoid character replacement within
+      (subChunk) => {
+        if (subChunk === "True") {
+          return "true";
+        } else if (subChunk === "False") {
+          return "false";
+        }
+        return subChunk
+          .replace(/\<function\>/g, '"<function>"')
+          .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")
+          .replace(/([^$a-zA-Z_0-9])False([^$a-zA-Z_0-9])/g, "$1false$2")
+          .replace(/(,|{) = /g, '$1 "": ')
+          .replace(/\(/g, "[")
+          .replace(/\)/g, "]");
+      },
+    ),
+  );
 
   try {
     return recursivelyConvertApplicableObjectsToArrays(
-      JSON.parse(outputChunks.join('"')),
+      JSON.parse(processedText),
     );
   } catch (e) {
     throw new Error(
