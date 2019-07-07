@@ -114,7 +114,7 @@ gridMapSpec w op =
 
                 UserOpacity ->
                     transform
-                        << filter (fiSelection "userOpacity")
+                        << filter (fiExpr "datum.opacity == userOpacity_opacity")
                         << calculateAs "11 - datum.gridY" "gridN"
                         << calculateAs "datum.gridX - 1" "gridE"
 
@@ -130,6 +130,7 @@ gridMapSpec w op =
                 << select "userOpacity"
                     seSingle
                     [ seFields [ "opacity" ]
+                    , seInit [ ( "opacity", num 70 ) ]
                     , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
                     , seEmpty
                     ]
