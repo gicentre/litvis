@@ -2,14 +2,14 @@
   "name": "narrative-schema-rule",
   "version": "0.1.4",
   "description": "Narrative schema rule validation",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

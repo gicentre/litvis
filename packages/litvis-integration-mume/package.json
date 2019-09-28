@@ -2,18 +2,18 @@
   "name": "litvis-integration-mume",
   "version": "0.8.6",
   "description": "Enables litvis functionality in mume and markdown-preview-enhanced",
+  "keywords": [
+    "elm",
+    "literate-programming",
+    "litvis",
+    "lp",
+    "markdown",
+    "mume"
+  ],
+  "license": "BSD-3-Clause",
+  "author": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "keywords": [
-    "literate-programming",
-    "lp",
-    "litvis",
-    "elm",
-    "mume",
-    "markdown"
-  ],
-  "author": "",
-  "license": "BSD-3-Clause",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

@@ -18,9 +18,7 @@ export default async function enhance(
         (cssChunk) => {
           const $tag = $("<style />");
           $tag.text(
-            `\n/* narrative schema: ${cssChunk.comment} */\n${
-              cssChunk.content
-            }`,
+            `\n/* narrative schema: ${cssChunk.comment} */\n${cssChunk.content}`,
           );
           return $tag;
         },

@@ -47,9 +47,7 @@ _.forEach(yamlPaths, (yamlPath) => {
       }
 
       if (nodeDefinition.expectedObjectKeys) {
-        test(`path ${pathAsStr} has object keys ${
-          nodeDefinition.expectedObjectKeys
-        }`, () => {
+        test(`path ${pathAsStr} has object keys ${nodeDefinition.expectedObjectKeys}`, () => {
           expect(Object.keys(node)).toEqual(nodeDefinition.expectedObjectKeys);
           let count = 0;
           for (const key in node) {

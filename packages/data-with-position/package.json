@@ -2,21 +2,21 @@
   "name": "data-with-position",
   "version": "0.3.3",
   "description": "Pseudo AST that contains data with its positions attached.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [
-    "yaml",
     "ast",
     "parse",
     "position",
-    "yaml-ast-parser",
-    "unist"
+    "unist",
+    "yaml",
+    "yaml-ast-parser"
   ],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

@@ -1,5 +1,13 @@
 {
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/@types/**"
+    ]
+  },
   "scripts": {
     "build": "yarn use-prod-typings && yarn clean:coverage && yarn clean:dist && lerna run build",
     "build-and-qa": "yarn build && yarn qa",
@@ -19,14 +27,6 @@
     "test-by-package": "lerna run test",
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
     "use-prod-typings": "lerna exec \"replace --quiet src\\/index\\.ts dist/index.d.ts package.json\""
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ],
-    "nohoist": [
-      "**/@types/**"
-    ]
   },
   "dependencies": {},
   "devDependencies": {

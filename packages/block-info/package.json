@@ -2,14 +2,14 @@
   "name": "block-info",
   "version": "0.2.5",
   "description": "Parses and normalizes code block info in markdown files",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

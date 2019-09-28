@@ -2,14 +2,14 @@
   "name": "litvis",
   "version": "0.8.6",
   "description": "Literate Visualization, http://litvis.org/",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

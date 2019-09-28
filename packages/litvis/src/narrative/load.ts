@@ -47,18 +47,14 @@ export default async (
           fileStat = await stat(currentFilePath);
         } catch (e) {
           document.fail(
-            `Document to follow ‘${
-              document.data.litvisFollowsPath
-            }’ does not exist`,
+            `Document to follow ‘${document.data.litvisFollowsPath}’ does not exist`,
             document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
         if (!fileStat.isFile()) {
           document.fail(
-            `Document to follow ‘${
-              document.data.litvisFollowsPath
-            }’ is not a file`,
+            `Document to follow ‘${document.data.litvisFollowsPath}’ is not a file`,
             document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );

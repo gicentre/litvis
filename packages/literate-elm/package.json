@@ -2,21 +2,21 @@
   "name": "literate-elm",
   "version": "0.7.6",
   "description": "Runs literate Elm code blocks and calculates Elm expressions",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [
-    "literate-programming",
-    "lp",
-    "litvis",
-    "run-elm",
     "elm",
-    "markdown"
+    "literate-programming",
+    "litvis",
+    "lp",
+    "markdown",
+    "run-elm"
   ],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --project .",
     "build:watch": "tsc --project . --watch",

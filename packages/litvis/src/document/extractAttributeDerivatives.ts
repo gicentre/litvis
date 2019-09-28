@@ -42,9 +42,7 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
         return;
       }
       vFile.message(
-        `Could not extract attribute derivatives from ${
-          tripleHatReferenceNode.data.info
-        }`,
+        `Could not extract attribute derivatives from ${tripleHatReferenceNode.data.info}`,
         tripleHatReferenceNode,
         "litvis:triple-hat-reference-syntax",
       );
