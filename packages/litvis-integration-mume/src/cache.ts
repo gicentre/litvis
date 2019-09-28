@@ -10,6 +10,6 @@ export async function initLitvisEnhancerCache({
     litvisCache: initCache({
       literateElmDirectory: path.resolve(mumeWorkingDirectory, "literate-elm"),
     }),
-    successfulRenders: LRU(50),
+    successfulRenders: new LRU(50),
   };
 }

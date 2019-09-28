@@ -1,3 +1,7 @@
+import { BlockAttributes } from "block-attributes";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Node } from "unist";
+
 export enum LabelType {
   SINGLE = "single",
   PAIRED_OPENING = "paired_opening",
@@ -33,4 +37,19 @@ export enum LabelErrorType {
   HTML_TEMPLATE_EXCEPTION,
   BROKEN_PAIR,
   BROKEN_NESTING,
+}
+
+export interface LabelNode extends Node {
+  type: "narrativeSchemaLabel";
+  data: {
+    errorType?: LabelErrorType;
+    html?: string;
+    id?: string;
+    info: string;
+    labelAttributes: BlockAttributes;
+    labelName: string;
+    labelType: LabelType;
+    pairedId?: string;
+    placement?: LabelPlacement;
+  };
 }

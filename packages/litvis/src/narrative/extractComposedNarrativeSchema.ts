@@ -1,12 +1,12 @@
 import { getPosition } from "data-with-position";
 import _ from "lodash";
 import { loadAndCompose } from "narrative-schema";
-import { VFileBase } from "vfile";
+import { VFile } from "vfile";
 import { LitvisDocument, LitvisNarrative } from "../types";
 
 export default async (
   narrative: LitvisNarrative,
-  filesInMemory: Array<VFileBase<any>> = [],
+  filesInMemory: VFile[] = [],
 ): Promise<void> => {
   _.forEach(narrative.documents, (document: LitvisDocument, fileIndex) => {
     const narrativeSchemasWithPosition =

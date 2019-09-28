@@ -9,7 +9,6 @@ import {
   LitvisNarrative,
   OutputFormat,
   ProcessedLitvisContext,
-  ProcessedLitvisContextStatus,
   resolveExpressions,
 } from "litvis";
 import _ from "lodash";
@@ -161,7 +160,7 @@ export default async function enhance(
       if (!context) {
         throw new Error(`Non-existing context ${contextName}`);
       }
-      if (context.status !== ProcessedLitvisContextStatus.SUCCEEDED) {
+      if (context.status !== "succeeded") {
         throw new Error(
           `Code execution in context ${contextName} was not successful`,
         );
@@ -258,7 +257,7 @@ export default async function enhance(
           .html() || "",
       );
       // ...and then as data
-      $result.attr("data-normalized-info", null);
+      $result.removeAttr("data-normalized-info");
       $result.data("normalizedInfo", JSON.stringify(resultNormalizedInfo));
       $el.replaceWith($result);
     } catch (e) {

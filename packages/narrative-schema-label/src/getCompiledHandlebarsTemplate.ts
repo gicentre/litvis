@@ -1,7 +1,7 @@
 import { compile } from "handlebars";
 import LRU from "lru-cache";
 
-const cache = LRU(1000);
+const cache = new LRU(1000);
 
 export default (htmlTemplate: string) => {
   if (!cache[htmlTemplate]) {

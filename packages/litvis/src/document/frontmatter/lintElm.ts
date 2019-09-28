@@ -3,9 +3,6 @@ import kindOf from "kind-of";
 import _ from "lodash";
 import { LitvisDocument } from "../../types";
 
-// @ts-ignore
-import { Parent, Position, VFileBase } from "../../types";
-
 const supportedProperties = ["dependencies", "source-directories"];
 
 export default (dataWithPosition, document: LitvisDocument): void => {

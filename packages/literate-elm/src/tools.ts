@@ -6,9 +6,11 @@ import { resolve } from "path";
 export async function initializeElmProject(projectDirectory: string) {
   const childProcess = execa("elm", ["init"], {
     cwd: projectDirectory,
-    stdin: null,
+    stdin: undefined,
   });
-  childProcess.stdin.write("\n");
+  if (childProcess.stdin) {
+    childProcess.stdin.write("\n");
+  }
   await childProcess;
 }
 
@@ -61,9 +63,11 @@ export async function installElmPackage(
   }
   const childProcess = execa("elm", ["install", packageName], {
     cwd: projectDirectory,
-    stdin: null,
+    stdin: undefined,
   });
-  childProcess.stdin.write("\n");
+  if (childProcess.stdin) {
+    childProcess.stdin.write("\n");
+  }
   await childProcess;
   // TODO: return meaningful error when elm package is not installed
   // see https://github.com/jwoLondon/litvis/issues/27

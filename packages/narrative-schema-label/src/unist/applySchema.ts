@@ -1,7 +1,4 @@
 import { ComposedNarrativeSchema } from "narrative-schema-common";
-
-// @ts-ignore
-import { NarrativeSchemaData, VFileBase } from "narrative-schema-common";
 import visitAndExtractHtml from "./visitAndExtractHtml";
 
 export default (composedNarrativeSchema: ComposedNarrativeSchema) => () => {

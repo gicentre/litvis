@@ -2,7 +2,7 @@ import hash from "object-hash";
 import { VFile } from "vfile";
 import { LabelErrorType, LabelFence, LabelType } from "./types";
 
-export const getLabelIdPrefix = (vFile: VFile<any>) =>
+export const getLabelIdPrefix = (vFile: VFile) =>
   hash(vFile.path).substring(0, 8);
 
 export const deriveLabelType = (start: string, end: string): LabelType => {
@@ -19,7 +19,7 @@ export const deriveLabelType = (start: string, end: string): LabelType => {
 };
 
 export const markLabelNodeAsErroneous = (
-  vFile: VFile<any>,
+  vFile: VFile,
   labelNode,
   errorType: LabelErrorType,
   errorCaption: string,

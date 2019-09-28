@@ -16,16 +16,13 @@ import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-r
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import vfile from "vfile";
+import vfile, { VFile } from "vfile";
 import traceParents from "./traceParents";
-
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
 
 const load = async (
   dependenciesWithPosition: DataWithPosition,
   parents: Array<ParentDocument | NarrativeSchema>,
-  filesInMemory: Array<vfile.VFileBase<any>>,
+  filesInMemory: VFile[],
   schemasAlreadyLoaded: NarrativeSchema[],
 ): Promise<NarrativeSchema[]> => {
   const kind = getKind(dependenciesWithPosition);
@@ -160,8 +157,8 @@ const load = async (
 export default load;
 
 const resolveNarrativeSchemaPath = async (
-  path,
-  file: NarrativeSchema,
+  path: string,
+  file: VFile,
 ): Promise<string> => {
   let result = resolve(file.dirname!, path);
   if (

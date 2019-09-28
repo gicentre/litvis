@@ -5,12 +5,6 @@ import extractElmEnvironmentSpec from "./extractElmEnvironmentSpec";
 import load from "./load";
 import processElmContexts from "./processElmContexts";
 
-// @ts-ignore
-// tslint:disable-next-line:no-implicit-dependencies
-import { Parent, Position } from "unist";
-// @ts-ignore
-import { VFileBase } from "vfile";
-
 export default async (
   filePath,
   filesInMemory: LitvisDocument[] = [],

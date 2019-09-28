@@ -55,16 +55,9 @@ export interface Program {
   expressionNodes: ExpressionNode[];
 }
 
-export enum ProgramResultStatus {
-  SUCCEEDED = "succeeded",
-  FAILED = "fail",
-}
+export type ProgramResultStatus = "succeeded" | "failed";
 
-export enum MessageSeverity {
-  ERROR = "error",
-  WARNING = "warning",
-  INFO = "info",
-}
+export type MessageSeverity = "error" | "warning" | "info";
 
 export interface Message {
   text: string;
@@ -76,7 +69,7 @@ export interface Message {
 
 export interface SucceededProgramResult {
   program: Program;
-  status: ProgramResultStatus.SUCCEEDED;
+  status: ProgramResultStatus & "succeeded";
   messages: Message[];
   evaluatedExpressions: EvaluatedExpression[];
   debugLog: string[];
@@ -84,7 +77,7 @@ export interface SucceededProgramResult {
 
 export interface FailedProgramResult {
   program: Program;
-  status: ProgramResultStatus.FAILED;
+  status: ProgramResultStatus & "failed";
   messages: Message[];
 }
 

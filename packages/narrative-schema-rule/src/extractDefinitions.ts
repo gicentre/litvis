@@ -1,10 +1,4 @@
-import {
-  // @ts-ignore
-  NarrativeSchemaData,
-  stringifyDataPath,
-} from "narrative-schema-common";
-// @ts-ignore
-import { VFileBase } from "vfile";
+import { stringifyDataPath } from "narrative-schema-common";
 
 import {
   DataWithPosition,

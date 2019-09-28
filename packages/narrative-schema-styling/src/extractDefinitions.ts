@@ -10,11 +10,6 @@ import {
   reportUnusedDataKeys,
 } from "narrative-schema-common";
 
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
-// @ts-ignore
-import { VFileBase } from "vfile";
-
 export default (
   dataWithPosition: DataWithPosition,
   narrativeSchema: NarrativeSchema,

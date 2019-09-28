@@ -1,8 +1,3 @@
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
-// @ts-ignore
-import { VFileBase } from "vfile";
-
 import {
   DataWithPosition,
   getKind,

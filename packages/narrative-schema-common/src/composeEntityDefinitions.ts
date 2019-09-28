@@ -1,8 +1,3 @@
-// @ts-ignore
-import { VFileBase } from "vfile";
-// @ts-ignore
-import { NarrativeSchemaData } from "./types";
-
 import { EntityDefinitionWithOrigin, NarrativeSchema } from "./types";
 
 export default (

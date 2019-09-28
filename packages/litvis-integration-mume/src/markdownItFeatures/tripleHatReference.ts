@@ -1,6 +1,6 @@
 import { parse as parseBlockInfo } from "block-info";
 import { Html5Entities } from "html-entities";
-import { MarkdownIt } from "markdown-it";
+import MarkdownIt from "markdown-it";
 
 const escapeString = new Html5Entities().encode;
 
@@ -10,7 +10,6 @@ export default (md: MarkdownIt) => {
   md.inline.ruler.before(
     "escape",
     "litvis:triple-hat-reference",
-    // @ts-ignore
     (state, silent) => {
       let openTag: string | null = null;
       let closeTag: string | null = null;
@@ -51,11 +50,16 @@ export default (md: MarkdownIt) => {
         trimmedContent.length === content.length &&
         !silent
       ) {
-        const token = state.push("litvis:triple-hat-reference");
+        const token = state.push(
+          "litvis:triple-hat-reference",
+          "litvis:triple-hat-reference",
+          0,
+        );
         token.content = trimmedContent;
-        token.openTag = openTag;
-        token.closeTag = closeTag;
-        token.displayMode = false;
+        token.meta = {
+          openTag,
+          closeTag,
+        };
 
         state.pos += content.length + openTag.length + closeTag.length;
         return true;
@@ -74,7 +78,7 @@ export default (md: MarkdownIt) => {
     )}" data-parsedInfo="${escapeString(
       JSON.stringify(parsedInfo),
     )}"><code>${escapeString(
-      token.openTag + token.content + token.closeTag,
+      token.meta.openTag + token.content + token.meta.closeTag,
     )}</code></span>`;
   };
 };

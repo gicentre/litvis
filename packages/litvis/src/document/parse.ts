@@ -2,14 +2,13 @@ import { processUnist as extractLabels } from "narrative-schema-label";
 import frontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import unified from "unified";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Parent } from "unist";
 import { LitvisDocument } from "../types";
 import extractAttributeDerivatives from "./extractAttributeDerivatives";
 import extractOutputItems from "./extractOutputItems";
 import findTripleHatReference from "./findTripleHatReferences";
 import processFrontmatter from "./processFrontmatter";
-
-// @ts-ignore
-import { Parent, Position, VFileBase } from "../types";
 
 export const engine = unified()
   .use(remarkParse)

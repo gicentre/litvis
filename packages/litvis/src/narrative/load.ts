@@ -2,7 +2,7 @@ import { stat } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import vfile from "vfile";
+import vfile, { VFile } from "vfile";
 import parseDocument from "../document/parse";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
@@ -10,7 +10,7 @@ const MAX_CHAIN_LENGTH = 20;
 
 export default async (
   filePath: string,
-  filesInMemory: Array<vfile.VFile<{}>> = [],
+  filesInMemory: VFile[] = [],
   cache: Cache,
 ): Promise<LitvisNarrative> => {
   // build a chain of files [0]: root,

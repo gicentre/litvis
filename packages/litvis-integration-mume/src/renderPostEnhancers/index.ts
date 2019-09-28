@@ -3,21 +3,17 @@ import { Position } from "unist";
 
 import cheerio from "cheerio";
 import { Html5Entities } from "html-entities";
-import {
-  listNarrativeFiles,
-  LitvisDocument,
-  LitvisNarrative,
-  VFileBase,
-} from "litvis";
+import { listNarrativeFiles, LitvisDocument, LitvisNarrative } from "litvis";
 import _ from "lodash";
 import { EntityDefinitionWithOrigin } from "narrative-schema-common";
+import { VFile } from "vfile";
 
 const unescapeString = new Html5Entities().decode;
 
 export default (
   processedNarrative: LitvisNarrative,
   html: string,
-  updateLintingReport: (vFiles: Array<VFileBase<any>>) => void,
+  updateLintingReport: (vFiles: VFile[]) => void,
 ) => {
   // hack labels
   // TODO: replace with a cleaner implementation

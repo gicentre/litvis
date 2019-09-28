@@ -2,15 +2,15 @@ import { EntityDefinition } from "narrative-schema-common";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 import renderHtmlTemplate from "../renderHtmlTemplate";
-import { LabelErrorType, LabelType } from "../types";
+import { LabelErrorType, LabelNode, LabelType } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export default (
   ast,
-  vFile: VFile<any>,
+  vFile: VFile,
   labelDefinitionsByName: { [name: string]: EntityDefinition },
 ) => {
-  return visit(ast, "narrativeSchemaLabel", (labelNode) => {
+  return visit(ast, "narrativeSchemaLabel", (labelNode: LabelNode) => {
     if (labelNode.data.errorType) {
       return;
     }
