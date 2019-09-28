@@ -1,7 +1,7 @@
 // tslint:disable-next-line:no-implicit-dependencies
 import { Position } from "unist";
 
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import { Html5Entities } from "html-entities";
 import {
   listNarrativeFiles,
@@ -9,7 +9,7 @@ import {
   LitvisNarrative,
   VFileBase,
 } from "litvis";
-import * as _ from "lodash";
+import _ from "lodash";
 import { EntityDefinitionWithOrigin } from "narrative-schema-common";
 
 const unescapeString = new Html5Entities().decode;

@@ -1,8 +1,8 @@
 import { stat } from "fs-extra";
-import * as _ from "lodash";
+import _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import * as vfile from "vfile";
+import vfile from "vfile";
 import parseDocument from "../document/parse";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 

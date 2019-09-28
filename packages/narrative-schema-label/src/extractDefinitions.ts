@@ -9,7 +9,7 @@ import {
   getPosition,
   getValue,
 } from "data-with-position";
-import * as _ from "lodash";
+import _ from "lodash";
 import {
   EntityDefinition,
   extractArrayOfEntities,

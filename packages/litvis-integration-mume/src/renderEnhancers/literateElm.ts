@@ -1,5 +1,5 @@
 import { BlockInfo } from "block-info";
-import * as cheerio from "cheerio";
+import cheerio from "cheerio";
 import { Html5Entities } from "html-entities";
 import {
   AttributeDerivatives,
@@ -12,8 +12,8 @@ import {
   ProcessedLitvisContextStatus,
   resolveExpressions,
 } from "litvis";
-import * as _ from "lodash";
-import * as hash from "object-hash";
+import _ from "lodash";
+import hash from "object-hash";
 import flattenJsonToRawMarkdown from "../lib/flattenJsonToRawMarkdown";
 import { LitvisEnhancerCache } from "../types";
 

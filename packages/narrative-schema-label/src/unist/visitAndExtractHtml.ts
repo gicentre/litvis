@@ -1,5 +1,5 @@
 import { EntityDefinition } from "narrative-schema-common";
-import * as visit from "unist-util-visit";
+import visit from "unist-util-visit";
 import { VFile } from "vfile";
 import renderHtmlTemplate from "../renderHtmlTemplate";
 import { LabelErrorType, LabelType } from "../types";

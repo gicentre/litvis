@@ -1,5 +1,5 @@
 import { getPosition } from "data-with-position";
-import * as _ from "lodash";
+import _ from "lodash";
 import { loadAndCompose } from "narrative-schema";
 import { VFileBase } from "vfile";
 import { LitvisDocument, LitvisNarrative } from "../types";

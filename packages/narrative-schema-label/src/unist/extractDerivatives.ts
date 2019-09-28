@@ -1,6 +1,6 @@
 import { parse as parseBlockInfo } from "block-info";
-import * as _ from "lodash";
-import * as visit from "unist-util-visit";
+import _ from "lodash";
+import visit from "unist-util-visit";
 import { VFile } from "vfile";
 import { LabelErrorType, LabelType } from "../types";
 import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";

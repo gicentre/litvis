@@ -1,8 +1,8 @@
 import { LitvisNarrative } from "litvis";
-import * as _ from "lodash";
+import _ from "lodash";
 import { getLabelIdPrefix } from "narrative-schema-label";
 import { getCssChunks } from "narrative-schema-styling";
-import * as select from "unist-util-select";
+import select from "unist-util-select";
 import { LitvisEnhancerCache } from "../types";
 
 export default async function enhance(

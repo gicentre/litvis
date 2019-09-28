@@ -1,5 +1,5 @@
-import * as _ from "lodash";
-import * as visit from "unist-util-visit";
+import _ from "lodash";
+import visit from "unist-util-visit";
 import { resolveExpressions } from "../attributeDerivatives";
 import {
   AttributeDerivatives,

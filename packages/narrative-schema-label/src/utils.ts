@@ -1,4 +1,4 @@
-import * as hash from "object-hash";
+import hash from "object-hash";
 import { VFile } from "vfile";
 import { LabelErrorType, LabelFence, LabelType } from "./types";
 

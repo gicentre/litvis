@@ -5,7 +5,7 @@ import {
   getPosition,
   getValue,
 } from "data-with-position";
-import * as _ from "lodash";
+import _ from "lodash";
 import {
   NarrativeSchema,
   ParentDocument,
@@ -16,7 +16,7 @@ import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-r
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import * as vfile from "vfile";
+import vfile from "vfile";
 import traceParents from "./traceParents";
 
 // @ts-ignore

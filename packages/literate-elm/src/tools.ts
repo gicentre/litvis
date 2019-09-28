@@ -1,5 +1,5 @@
 import executeRunElm from "@kachkaev/run-elm";
-import * as execa from "execa";
+import execa from "execa";
 import { readFile, writeFile } from "fs-extra";
 import { resolve } from "path";
 

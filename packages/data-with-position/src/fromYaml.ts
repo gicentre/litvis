@@ -1,5 +1,5 @@
-import * as isNull from "lodash.isnull";
-import * as ast from "yaml-ast-parser";
+import isNull from "lodash.isnull";
+import ast from "yaml-ast-parser";
 import { kindKey, positionKey } from "./keys";
 import { DataWithPosition, Kind, Position } from "./types";
 

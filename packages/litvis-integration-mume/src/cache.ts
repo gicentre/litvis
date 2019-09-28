@@ -1,6 +1,6 @@
 import { initCache } from "litvis";
-import * as LRU from "lru-cache";
-import * as path from "path";
+import LRU from "lru-cache";
+import path from "path";
 import { LitvisEnhancerCache } from "./types";
 
 export async function initLitvisEnhancerCache({

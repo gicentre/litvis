@@ -1,5 +1,5 @@
-import * as fs from "fs-extra";
-import * as sleep from "sleep-promise";
+import fs from "fs-extra";
+import sleep from "sleep-promise";
 
 const CHECK_INTERVAL = 100;
 const DEFAULT_LOCK_TIMEOUT = 5000;

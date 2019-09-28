@@ -20,21 +20,24 @@
     "block-attributes": "^0.2.5",
     "block-info": "^0.2.5",
     "data-with-position": "^0.3.3",
-    "fs-extra": "^7.0.0",
-    "immer": "^1.6.0",
-    "is-whitespace-character": "^1.0.2",
+    "fs-extra": "^8.1.0",
+    "immer": "^4.0.0",
+    "is-whitespace-character": "^1.0.3",
     "kind-of": "^6.0.2",
     "literate-elm": "^0.7.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "narrative-schema": "^0.3.2",
     "narrative-schema-label": "^0.3.2",
-    "remark-frontmatter": "^1.2.1",
-    "remark-parse": "^5.0.0",
-    "temp-dir": "^1.0.0",
-    "to-vfile": "^5.0.1",
-    "unified": "^7.0.0",
-    "unist-util-select": "^1.5.0",
-    "unist-util-visit": "^1.4.0",
-    "vfile": "^3.0.0"
+    "remark-frontmatter": "^1.3.2",
+    "remark-parse": "^7.0.1",
+    "temp-dir": "^2.0.0",
+    "to-vfile": "^6.0.0",
+    "unified": "^8.4.0",
+    "unist-util-select": "^2.0.2",
+    "unist-util-visit": "^2.0.0",
+    "vfile": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/temp-dir": "^2.0.2"
   }
 }

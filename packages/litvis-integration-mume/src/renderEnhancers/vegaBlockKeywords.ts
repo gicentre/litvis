@@ -1,4 +1,4 @@
-import * as YAML from "yamljs";
+import YAML from "yamljs";
 
 import { BlockInfo } from "block-info";
 import {

@@ -1,7 +1,7 @@
 import { parseUsingCache } from "elm-string-representation";
 import { remove, writeFile } from "fs-extra";
-import * as _ from "lodash";
-import * as hash from "object-hash";
+import _ from "lodash";
+import hash from "object-hash";
 import { resolve } from "path";
 import * as auxFiles from "./auxFiles";
 import { runElm } from "./tools";

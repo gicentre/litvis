@@ -1,6 +1,6 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import { applySchemaToLabels } from "narrative-schema-label";
-import * as unified from "unified";
+import unified from "unified";
 import { LitvisNarrative } from "../types";
 
 import { Parent } from "../types";

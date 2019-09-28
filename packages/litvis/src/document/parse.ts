@@ -1,7 +1,7 @@
 import { processUnist as extractLabels } from "narrative-schema-label";
-import * as frontmatter from "remark-frontmatter";
-import * as remarkParse from "remark-parse";
-import * as unified from "unified";
+import frontmatter from "remark-frontmatter";
+import remarkParse from "remark-parse";
+import unified from "unified";
 import { LitvisDocument } from "../types";
 import extractAttributeDerivatives from "./extractAttributeDerivatives";
 import extractOutputItems from "./extractOutputItems";

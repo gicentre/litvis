@@ -1,4 +1,4 @@
-import * as visit from "unist-util-visit-parents";
+import visit from "unist-util-visit-parents";
 import { VFile } from "vfile";
 import { LabelPlacement } from "../types";
 

@@ -32,6 +32,7 @@
     "@types/html-entities": "^1.2.16",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.141",
+    "@types/lodash.isnull": "^3.0.6",
     "@types/lodash.snakecase": "^4.1.6",
     "@types/lru-cache": "^5.1.0",
     "@types/markdown-it": "^0.0.9",

@@ -1,5 +1,5 @@
 import { ensureDir, pathExists, readFile, writeFile } from "fs-extra";
-import * as hash from "object-hash";
+import hash from "object-hash";
 import { resolve } from "path";
 import { ensureUnlocked, lock, touch, unlock } from "./auxFiles";
 import { collectGarbageIfNeeded } from "./gc";

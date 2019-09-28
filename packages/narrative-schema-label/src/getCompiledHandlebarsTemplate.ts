@@ -1,5 +1,5 @@
 import { compile } from "handlebars";
-import * as LRU from "lru-cache";
+import LRU from "lru-cache";
 
 const cache = LRU(1000);
 

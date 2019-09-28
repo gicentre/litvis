@@ -1,4 +1,4 @@
-// import * as _ from "lodash";
+// import _ from "lodash";
 import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
 
 // @ts-ignore

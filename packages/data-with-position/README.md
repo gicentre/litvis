@@ -76,7 +76,7 @@ if (getKind(dataWithPosition) === "object") {
 The results of `getKind()` are compatible with [`kind-of`](https://www.npmjs.com/package/kind-of).
 
 ```js
-import * as kindOf from "kind-of";
+import kindOf from "kind-of";
 import { getKind, getValue } from "data-with-position";
 
 kindOf(getValue(dataWithPosition.element)) ===

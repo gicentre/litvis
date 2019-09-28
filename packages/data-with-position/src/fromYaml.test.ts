@@ -1,11 +1,11 @@
-import * as fs from "fs";
+import fs from "fs";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as globby from "globby";
+import globby from "globby";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as kindOf from "kind-of";
+import kindOf from "kind-of";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as _ from "lodash";
-import * as path from "path";
+import _ from "lodash";
+import path from "path";
 import { FromYamlTestCaseConfig } from "./fixtures/types";
 import fromYaml from "./fromYaml";
 import getKind from "./getKind";

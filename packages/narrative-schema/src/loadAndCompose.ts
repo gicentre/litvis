@@ -1,6 +1,6 @@
 import { DataWithPosition } from "data-with-position";
 import { ComposedNarrativeSchema } from "narrative-schema-common";
-import * as vfile from "vfile";
+import vfile from "vfile";
 import compose from "./compose";
 import load from "./load";
 

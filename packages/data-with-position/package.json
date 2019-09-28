@@ -25,6 +25,6 @@
   },
   "dependencies": {
     "lodash.isnull": "^3.0.0",
-    "yaml-ast-parser": "^0.0.41"
+    "yaml-ast-parser": "^0.0.43"
   }
 }
