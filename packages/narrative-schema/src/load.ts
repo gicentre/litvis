@@ -65,9 +65,16 @@ const load = async (
         filesInMemory,
         (f) => f.path === resolvedPath,
       );
-      narrativeSchema = fileInMemory
+
+      // TODO Improve type casting
+      narrativeSchema = (fileInMemory
         ? vfile(fileInMemory)
-        : await readVFile(resolvedPath, "utf8");
+        : await readVFile(resolvedPath, "utf8")) as NarrativeSchema;
+      narrativeSchema.data = {
+        labels: [],
+        rules: [],
+        styling: [],
+      };
     } catch (e) {
       parents[0].message(
         `Unable to load narrative schema dependency ${pathWithPosition}${traceParents(
@@ -78,12 +85,6 @@ const load = async (
       );
       continue;
     }
-
-    narrativeSchema.data = {
-      labels: [],
-      rules: [],
-      styling: [],
-    };
 
     result.push(narrativeSchema);
 

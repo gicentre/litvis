@@ -1,4 +1,5 @@
-import { Cache, LitvisDocument, LitvisNarrative } from "../types";
+import { VFile } from "vfile";
+import { Cache, LitvisNarrative } from "../types";
 import applySchemaToLabels from "./applySchemaToLabels";
 import extractComposedNarrativeSchema from "./extractComposedNarrativeSchema";
 import extractElmEnvironmentSpec from "./extractElmEnvironmentSpec";
@@ -7,7 +8,7 @@ import processElmContexts from "./processElmContexts";
 
 export default async (
   filePath,
-  filesInMemory: LitvisDocument[] = [],
+  filesInMemory: VFile[] = [],
   cache: Cache,
 ): Promise<LitvisNarrative> => {
   const narrative = await load(filePath, filesInMemory, cache);

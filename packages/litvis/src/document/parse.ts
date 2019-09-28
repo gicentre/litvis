@@ -4,6 +4,7 @@ import remarkParse from "remark-parse";
 import unified from "unified";
 // tslint:disable-next-line:no-implicit-dependencies
 import { Parent } from "unist";
+import { VFile } from "vfile";
 import { LitvisDocument } from "../types";
 import extractAttributeDerivatives from "./extractAttributeDerivatives";
 import extractOutputItems from "./extractOutputItems";
@@ -19,7 +20,9 @@ export const engine = unified()
   .use(processFrontmatter)
   .use(extractLabels);
 
-export default async (vFile: LitvisDocument) => {
-  vFile.data.root = (await engine.parse(vFile)) as Parent;
-  await engine.run(vFile.data.root, vFile);
+export default async (vFile: VFile): Promise<LitvisDocument> => {
+  const result = vFile as LitvisDocument;
+  result.data.root = engine.parse(vFile) as Parent;
+  await engine.run(result.data.root, vFile);
+  return result;
 };
