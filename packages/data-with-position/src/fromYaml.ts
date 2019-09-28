@@ -1,4 +1,3 @@
-import isNull from "lodash.isnull";
 import {
   Kind,
   load,
@@ -78,7 +77,7 @@ const visitorByNodeKind: Record<
   ) => void
 > = {
   [Kind.MAP]: (node: YamlMap, input, ctx) => {
-    Object.assign(walk(node.mappings, input), {
+    return Object.assign(walk(node.mappings, input), {
       [positionKey]: calculatePosition(input, {
         start: node.startPosition,
         end: node.endPosition,
@@ -89,7 +88,7 @@ const visitorByNodeKind: Record<
   [Kind.MAPPING]: (node: YAMLMapping, input, ctx) => {
     const value = walk([node.value], input);
 
-    if (isNull(node.value)) {
+    if (node.value === null) {
       return Object.assign(ctx, {
         [node.key.value]: wrappedNull(
           calculatePosition(input, {
@@ -113,6 +112,7 @@ const visitorByNodeKind: Record<
     if (!node) {
       return;
     }
+
     const position = calculatePosition(input, {
       start: node.startPosition,
       end: node.endPosition,
@@ -122,7 +122,7 @@ const visitorByNodeKind: Record<
       return wrappedScalar(Boolean, "boolean", node.valueObject, position);
     } else if (typeof node.valueObject === "number") {
       return wrappedScalar(Number, "number", node.valueObject, position);
-    } else if (isNull(node.valueObject) || isNull(node.value)) {
+    } else if (node.valueObject === null || node.value === null) {
       return wrappedNull(position);
     }
     return wrappedScalar(String, "string", node.value, position);
@@ -145,6 +145,7 @@ const walk = (nodes: YAMLNode[], input, ctx = {}) => {
     const visitor = node
       ? visitorByNodeKind[node.kind]
       : visitorByNodeKind[Kind.SCALAR];
+
     return visitor ? visitor(node, input, ctx2) : fallback;
   };
 

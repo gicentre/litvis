@@ -1245,13 +1245,6 @@
   resolved "https://registry.yarnpkg.com/@types/linkify-it/-/linkify-it-2.1.0.tgz#ea3dd64c4805597311790b61e872cbd1ed2cd806"
   integrity sha512-Q7DYAOi9O/+cLLhdaSvKdaumWyHbm7HAk/bFwwyTuU0arR5yyCeW5GOoqt4tJTpDRxhpx9Q8kQL6vMpuw9hDSw==
 
-"@types/lodash.isnull@^3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@types/lodash.isnull/-/lodash.isnull-3.0.6.tgz#7b0cbf534d338541d12ee51597e26cd16a3e0eb0"
-  integrity sha512-396jIu9bQqOo41wjCsmzVXuW5xGBGf6hzSrkeTOwuMbKaRz1uWtE+rdmnVshKewJa4vEKx/dC60tdKlg/ZX+4w==
-  dependencies:
-    "@types/lodash" "*"
-
 "@types/lodash.snakecase@^4.1.6":
   version "4.1.6"
   resolved "https://registry.yarnpkg.com/@types/lodash.snakecase/-/lodash.snakecase-4.1.6.tgz#85f2b68f67b36c39875f26484b3a78b158ebf060"
