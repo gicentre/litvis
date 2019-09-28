@@ -1,7 +1,6 @@
 import {
   CodeNode,
   ensureEnvironment,
-  EnvironmentStatus,
   ExpressionNode,
   ProgramResult,
   runProgram,
@@ -15,7 +14,6 @@ import {
   FailedLitvisContext,
   LitvisCodeBlock,
   OutputExpression,
-  OutputFormat,
   SucceededLitvisContext,
 } from "../types";
 import { LitvisNarrative, ProcessedLitvisContext } from "../types";
@@ -206,7 +204,7 @@ export default async (
       cache.literateElmDirectory,
     );
 
-    if (literateElmEnvironment.metadata.status !== EnvironmentStatus.READY) {
+    if (literateElmEnvironment.metadata.status !== "ready") {
       try {
         lastDocument.fail(
           literateElmEnvironment.metadata.errorMessage!,
@@ -307,7 +305,7 @@ export default async (
                 evaluatedExpressionInProgram.valueStringRepresentation;
 
               if (
-                evaluatedExpression.data.outputFormat !== OutputFormat.R &&
+                evaluatedExpression.data.outputFormat !== "r" &&
                 evaluatedExpression.data.value instanceof Error
               ) {
                 document.message(

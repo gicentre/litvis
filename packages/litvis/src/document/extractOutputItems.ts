@@ -3,7 +3,6 @@ import visit from "unist-util-visit";
 import { resolveExpressions } from "../attributeDerivatives";
 import {
   AttributeDerivatives,
-  BlockOutputFormat,
   CodeBlock,
   LitvisDocument,
   OutputExpression,
@@ -42,7 +41,7 @@ function visitCodeBlock(ast, vFile) {
 
       derivatives.outputFormats.forEach((outputFormat) => {
         switch (outputFormat) {
-          case BlockOutputFormat.L:
+          case "l":
             nodes = nodesAfter;
             break;
           default:
@@ -98,7 +97,7 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
         tripleHatReferenceNode.data.litvisAttributeDerivatives;
       derivatives.outputFormats.forEach((outputFormat) => {
         switch (outputFormat) {
-          case BlockOutputFormat.L:
+          case "l":
             vFile.message(
               "Use of l is not allowed in triple hat references.",
               tripleHatReferenceNode,

@@ -2,7 +2,7 @@ import { EntityDefinition } from "narrative-schema-common";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 import renderHtmlTemplate from "../renderHtmlTemplate";
-import { LabelErrorType, LabelNode, LabelType } from "../types";
+import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export default (
@@ -24,18 +24,18 @@ export default (
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.MISSING_DEFINITION,
+        "missingDefinition",
         `Label ${labelName} cannot be used because it does not exist in the linked narrative schemas or is not valid.`,
       );
       return;
     }
 
-    if (labelType === LabelType.SINGLE) {
+    if (labelType === "single") {
       if (!labelDefinition.data.single) {
         markLabelNodeAsErroneous(
           vFile,
           labelNode,
-          LabelErrorType.KIND_MISUSE,
+          "kindMisuse",
           `Label ${labelName} cannot be used as single (no-paired), according to the linked narrative schemas.`,
         );
         return;
@@ -52,7 +52,7 @@ export default (
         markLabelNodeAsErroneous(
           vFile,
           labelNode,
-          LabelErrorType.HTML_TEMPLATE_EXCEPTION,
+          "htmlTemplateException",
           `Label ${labelName} cannot be converted to html. Is htmlTemplate correct?`,
         );
       }
@@ -63,7 +63,7 @@ export default (
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.KIND_MISUSE,
+        "kindMisuse",
         `Label ${labelName} cannot be used as paired, according to the linked narrative schemas.`,
       );
       return;
@@ -81,7 +81,7 @@ export default (
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.HTML_TEMPLATE_EXCEPTION,
+        "htmlTemplateException",
         `Label ${labelName} cannot be converted to html. Is htmlTemplate correct?`,
       );
     }

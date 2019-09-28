@@ -8,33 +8,20 @@ import { VFile } from "vfile";
 
 export type ProcessedLitvisContextStatus = ProgramResultStatus;
 
-export enum OutputFormat {
+export type OutputFormat =
   /** raw */
-  R = "r",
+  | "r"
   /** json */
-  J = "j",
+  | "j"
   /** markdown */
-  M = "m",
+  | "m"
   /** visual */
-  V = "v",
-}
+  | "v";
 
-export enum BlockOutputFormat {
-  // pending https://github.com/Microsoft/TypeScript/issues/17592
-  // ...OutputFormat,
-
-  /** raw */
-  R = "r",
-  /** json */
-  J = "j",
-  /** markdown */
-  M = "m",
-  /** visual */
-  V = "v",
-
+export type BlockOutputFormat =
+  | OutputFormat
   /** literate */
-  L = "l",
-}
+  | "l";
 
 export interface AttributeDerivatives {
   contextName: string;

@@ -3,7 +3,6 @@ import cheerio from "cheerio";
 import { Html5Entities } from "html-entities";
 import {
   AttributeDerivatives,
-  BlockOutputFormat,
   EvaluatedOutputExpression,
   extractAttributeDerivatives,
   LitvisNarrative,
@@ -44,7 +43,7 @@ export default async function enhance(
     }
 
     $container.data("executor", "litvis");
-    if (derivatives.outputFormats.indexOf(BlockOutputFormat.L) === -1) {
+    if (derivatives.outputFormats.indexOf("l") === -1) {
       $container.data("hiddenByEnhancer", true);
     }
     mumeContextNames.push(derivatives.contextName);
@@ -59,7 +58,7 @@ export default async function enhance(
     let currentArrayOf$outputItems = arrayOf$outputItemsBeforeCodeBlock;
     derivativesWithResolvedExpressions.outputFormats.forEach((outputFormat) => {
       switch (outputFormat) {
-        case BlockOutputFormat.L:
+        case "l":
           currentArrayOf$outputItems = arrayOf$outputItemsAfterCodeBlock;
           break;
         default:
@@ -103,7 +102,7 @@ export default async function enhance(
     const arrayOf$outputItems: Cheerio[] = [];
     derivatives.outputFormats.forEach((outputFormat) => {
       switch (outputFormat) {
-        case BlockOutputFormat.L:
+        case "l":
           break;
         default:
           const expressions =
@@ -141,7 +140,7 @@ export default async function enhance(
   const mappedOutputItems = $outputItems.map(async (i, el) => {
     const $el = $(el);
     const contextName = $el.data("contextName");
-    const outputFormat = $el.data("outputFormat");
+    const outputFormat: OutputFormat | undefined = $el.data("outputFormat");
     const expressionText = $el.data("expression");
     const interactive = $el.data("interactive");
     const renderKey = hash({
@@ -182,7 +181,7 @@ export default async function enhance(
         throw new Error(`Could not evaluate expression ${expressionText}`);
       }
       if (
-        outputFormat !== OutputFormat.R &&
+        outputFormat !== "r" &&
         evaluatedOutputExpression.data.value instanceof Error
       ) {
         throw new Error(`Could not parse value of ${expressionText}`);
@@ -190,12 +189,12 @@ export default async function enhance(
       let $result: Cheerio;
       let resultNormalizedInfo: BlockInfo | null = null;
       switch (outputFormat) {
-        case OutputFormat.R:
+        case "r":
           $result = $("<span/>").text(
             evaluatedOutputExpression.data.valueStringRepresentation,
           );
           break;
-        case OutputFormat.J:
+        case "j":
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
             language: "json",
@@ -206,7 +205,7 @@ export default async function enhance(
             JSON.stringify(evaluatedOutputExpression.data.value, null, 2),
           );
           break;
-        case BlockOutputFormat.M:
+        case "m":
           const rawMarkdown = flattenJsonToRawMarkdown(
             evaluatedOutputExpression.data.value,
           );
@@ -221,7 +220,7 @@ export default async function enhance(
           $result = $(html);
           $result.filter("h1,h2,h3,h4,h5,h6").removeClass("mume-header");
           break;
-        case OutputFormat.V: {
+        case "v": {
           const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
           const language =
             _.get(vegaOrVegaLiteJson, "$schema", "")

@@ -9,7 +9,6 @@ import {
   Environment,
   EnvironmentMetadata,
   EnvironmentSpec,
-  EnvironmentStatus,
 } from "./types";
 
 const CACHE_SHAPE_VERSION = "v1";
@@ -55,7 +54,7 @@ export async function ensureEnvironment(
       workingDirectory: specDirectory,
       metadata: {
         createdAt: now,
-        status: EnvironmentStatus.ERROR,
+        status: "error",
         errorMessage: `Could not create directory ${specDirectory}`,
       },
     };
@@ -99,7 +98,7 @@ export async function ensureEnvironment(
         spec.sourceDirectories,
       );
       metadata = {
-        status: EnvironmentStatus.READY,
+        status: "ready",
         createdAt: now,
       };
     } catch (e) {
@@ -108,7 +107,7 @@ export async function ensureEnvironment(
         `${e.message}`.indexOf("ENOENT") === -1 &&
         `${e.message}`.indexOf("No elm global binary available") === -1;
       metadata = {
-        status: EnvironmentStatus.ERROR,
+        status: "error",
         createdAt: now,
         expiresAt:
           now +
@@ -142,7 +141,7 @@ export async function ensureEnvironment(
       workingDirectory: specDirectory,
       metadata: {
         createdAt: now,
-        status: EnvironmentStatus.ERROR,
+        status: "error",
         errorMessage: e.message,
       },
     };

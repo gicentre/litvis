@@ -2,7 +2,7 @@
 import { Parent } from "unist";
 import visit from "unist-util-visit-parents";
 import { VFile } from "vfile";
-import { LabelNode, LabelPlacement } from "../types";
+import { LabelNode } from "../types";
 
 export default () => (ast, vFile: VFile) => {
   return visit<LabelNode>(
@@ -10,7 +10,7 @@ export default () => (ast, vFile: VFile) => {
     "narrativeSchemaLabel",
     (labelNode, parents: Parent[]) => {
       if (labelNode.data.errorType) {
-        labelNode.data.placement = LabelPlacement.NA;
+        labelNode.data.placement = "na";
         return;
       }
       const parent = parents[parents.length - 1];
@@ -18,9 +18,9 @@ export default () => (ast, vFile: VFile) => {
       if (parent.type === "paragraph" && parent.children.length === 1) {
         const parentIndex = grandparent.children.indexOf(parent);
         grandparent.children[parentIndex] = labelNode;
-        labelNode.data.placement = LabelPlacement.BLOCK;
+        labelNode.data.placement = "block";
       } else {
-        labelNode.data.placement = LabelPlacement.INLINE;
+        labelNode.data.placement = "inline";
       }
     },
   );

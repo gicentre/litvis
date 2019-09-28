@@ -31,10 +31,7 @@ export interface EnvironmentSpec {
   sourceDirectories: string[];
 }
 
-export enum EnvironmentStatus {
-  READY = "ready",
-  ERROR = "error",
-}
+export type EnvironmentStatus = "ready" | "error";
 
 export interface EnvironmentMetadata {
   status: EnvironmentStatus;

@@ -26,10 +26,7 @@ export default (
     // .attr("ns-position-start-column", labelPosition.start.column)
     // .attr("ns-position-end-column", labelPosition.end.column)
     // .attr("ns-position-end-line", labelPosition.end.line)
-    .attr(
-      "ns-label-kind",
-      labelType === LabelType.SINGLE ? "single" : "paired",
-    );
+    .attr("ns-label-kind", labelType === "single" ? "single" : "paired");
   // .attr(
   //   "data-narrativeSchemaLabelAttributes",
   //   JSON.stringify(labelAttributes),
@@ -38,7 +35,7 @@ export default (
 
   const positionOfFakeChildren = rawHtml.indexOf(FAKE_CHILDREN_CONTENTS);
   let html;
-  if (labelType === LabelType.SINGLE) {
+  if (labelType === "single") {
     if (positionOfFakeChildren !== -1) {
       throw new Error("Single label cannot have children");
     }
@@ -47,7 +44,7 @@ export default (
     if (positionOfFakeChildren === -1) {
       throw new Error("Paired label must have children");
     }
-    if (labelType === LabelType.PAIRED_OPENING) {
+    if (labelType === "paired_opening") {
       html = rawHtml.substr(0, positionOfFakeChildren);
     } else {
       html = rawHtml.substr(

@@ -2,7 +2,7 @@
 import { Parent } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
-import { LabelErrorType, LabelNode, LabelType } from "../types";
+import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export default () => (ast, vFile: VFile) => {
@@ -12,7 +12,7 @@ export default () => (ast, vFile: VFile) => {
     (labelNode, index, parent: Parent) => {
       if (
         labelNode.data.errorType ||
-        labelNode.data.labelType !== LabelType.PAIRED_OPENING
+        labelNode.data.labelType !== "paired_opening"
       ) {
         return;
       }
@@ -23,7 +23,7 @@ export default () => (ast, vFile: VFile) => {
           continue;
         }
         if (
-          possibleMatch.data.labelType === LabelType.PAIRED_CLOSING &&
+          possibleMatch.data.labelType === "paired_closing" &&
           possibleMatch.data.labelName === labelNode.data.labelName &&
           !possibleMatch.data.errorType &&
           !possibleMatch.data.pairedId
@@ -33,21 +33,21 @@ export default () => (ast, vFile: VFile) => {
           break;
         }
 
-        if (possibleMatch.data.labelType === LabelType.PAIRED_OPENING) {
+        if (possibleMatch.data.labelType === "paired_opening") {
           if (possibleMatch.data.pairedId) {
             nestedOpenLabelNodes.unshift(possibleMatch);
           } else {
             markLabelNodeAsErroneous(
               vFile,
               labelNode,
-              LabelErrorType.BROKEN_NESTING,
+              "brokenNesting",
               "There is an issue with pairing labels with each other. Make sure all labels are correctly nested and spelled.",
             );
             break;
           }
         }
 
-        if (possibleMatch.data.labelType === LabelType.PAIRED_CLOSING) {
+        if (possibleMatch.data.labelType === "paired_closing") {
           if (
             !nestedOpenLabelNodes.length ||
             nestedOpenLabelNodes[0].data.pairedId !== possibleMatch.data.id
@@ -55,7 +55,7 @@ export default () => (ast, vFile: VFile) => {
             markLabelNodeAsErroneous(
               vFile,
               labelNode,
-              LabelErrorType.BROKEN_NESTING,
+              "brokenNesting",
               "There is an issue with pairing labels with each other. Make sure all labels are correctly nested and spelled.",
             );
             break;
