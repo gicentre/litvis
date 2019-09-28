@@ -1,5 +1,24 @@
+## extensions
+*.*
+!*.css
+!*.js
+!*.json
+!*.less
+!*.md
+!*.ts
+!*.yaml
+!*.yml
+
+
+## same as in .gitignore
+# elm-package generated files
+elm-stuff
+# elm-repl generated files
+repl-temp-*
+
+# node-related files
 coverage
 dist
-elm-stuff
+lerna-debug.log
 node_modules
-packages/data-with-position/src/fixtures/fromYaml
+yarn-error.log
