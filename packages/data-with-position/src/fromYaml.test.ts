@@ -12,7 +12,10 @@ import getKind from "./getKind";
 import getPosition from "./getPosition";
 import getValue from "./getValue";
 
-const yamlPaths = globby.sync(`${__dirname}/fixtures/fromYaml/*.yaml`);
+const yamlPaths = globby.sync(`fixtures/fromYaml/*.yaml`, {
+  cwd: __dirname,
+  absolute: true,
+});
 _.forEach(yamlPaths, (yamlPath) => {
   const fixtureName = path.basename(yamlPath, ".yaml");
   describe(`fromYaml() for fixture ${fixtureName}`, () => {
