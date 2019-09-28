@@ -20,6 +20,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "lru-cache": "^4.1.2"
+    "lru-cache": "^5.1.1"
   }
 }

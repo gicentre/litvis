@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es6",
-    "sourceMap": true,
     "declaration": true,
+    "esModuleInterop": true,
     "lib": ["es2017"],
+    "module": "commonjs",
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "preserveWatchOutput": true,
-    "strictNullChecks": true
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "target": "es6"
   }
 }
