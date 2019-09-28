@@ -26,19 +26,5 @@
   "dependencies": {
     "lodash.isnull": "^3.0.0",
     "yaml-ast-parser": "^0.0.41"
-  },
-  "devDependencies": {
-    "@types/globby": "^8.0.0",
-    "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.116",
-    "@types/node": "^10.9.4",
-    "globby": "^8.0.1",
-    "jest": "^23.6.0",
-    "kind-of": "^6.0.2",
-    "lodash": "^4.17.11",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.3"
   }
 }

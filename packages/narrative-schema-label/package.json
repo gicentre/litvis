@@ -30,19 +30,5 @@
     "unist-util-visit": "^1.4.0",
     "unist-util-visit-parents": "^2.0.1",
     "vfile": "^3.0.0"
-  },
-  "devDependencies": {
-    "@types/handlebars": "^4.0.39",
-    "@types/html-entities": "^1.2.16",
-    "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.116",
-    "@types/lru-cache": "^4.1.0",
-    "@types/object-hash": "^1.2.0",
-    "@types/vfile": "^2.2.2",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.3"
   }
 }

@@ -21,7 +21,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/yamljs": "^0.2.30",
     "block-attributes": "^0.2.5",
     "block-info": "^0.2.5",
     "cheerio": "0.15.0",
@@ -40,21 +39,5 @@
     "unist-util-select": "^1.5.0",
     "vfile": "^3.0.0",
     "yamljs": "^0.3.0"
-  },
-  "devDependencies": {
-    "@types/cheerio": "^0.22.9",
-    "@types/html-entities": "^1.2.16",
-    "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.116",
-    "@types/lru-cache": "^4.1.0",
-    "@types/markdown-it": "0.0.5",
-    "@types/object-hash": "^1.2.0",
-    "@types/vfile": "^2.2.2",
-    "@types/yamljs": "^0.2.30",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.3"
   }
 }
