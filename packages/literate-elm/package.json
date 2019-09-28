@@ -17,12 +17,6 @@
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc --project .",
-    "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest"
-  },
   "dependencies": {
     "@kachkaev/run-elm": "^3.0.0-litvis-patch.3",
     "elm-string-representation": "^1.1.10",

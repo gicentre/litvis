@@ -10,12 +10,6 @@
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc --project .",
-    "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest"
-  },
   "dependencies": {
     "data-with-position": "^0.3.3",
     "kind-of": "^6.0.2",

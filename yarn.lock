@@ -1233,6 +1233,13 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/kind-of@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/kind-of/-/kind-of-6.0.0.tgz#593c38a268b203a9b736a1c3a32e902a91b6db24"
+  integrity sha512-OBts6MHCrq558cvND5nsWhoThwJaNu5lmGnSp3H0gFzQQc5QYM9p7HajIdS+2bgDquGX1qLZCPlyuYSxMDffAg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/linkify-it@*":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/linkify-it/-/linkify-it-2.1.0.tgz#ea3dd64c4805597311790b61e872cbd1ed2cd806"

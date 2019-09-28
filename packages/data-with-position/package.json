@@ -17,12 +17,6 @@
   "license": "BSD-3-Clause",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc --project .",
-    "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest"
-  },
   "dependencies": {
     "lodash.isnull": "^3.0.0",
     "yaml-ast-parser": "^0.0.43"

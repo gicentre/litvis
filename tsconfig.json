@@ -9,6 +9,8 @@
     "preserveWatchOutput": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es6"
-  }
+    "target": "es6",
+    "noEmit": true
+  },
+  "exclude": ["**/dist/**"]
 }
