@@ -1,7 +1,7 @@
 import { kindKey } from "./keys";
-import { DataWithPosition, Kind } from "./types";
+import { DataKind, DataWithPosition } from "./types";
 
-export default (dataWithPosition?: DataWithPosition): Kind => {
+export default (dataWithPosition?: DataWithPosition): DataKind => {
   if (!dataWithPosition) {
     return "undefined";
   }

@@ -1,12 +1,21 @@
 import isNull from "lodash.isnull";
-import ast from "yaml-ast-parser";
+import {
+  Kind,
+  load,
+  YamlMap,
+  YAMLMapping,
+  YAMLNode,
+  YAMLScalar,
+  YAMLSequence,
+} from "yaml-ast-parser";
 import { kindKey, positionKey } from "./keys";
-import { DataWithPosition, Kind, Position } from "./types";
+import { DataKind, DataWithPosition, Position } from "./types";
 
 // The following code is inspired by
 // https://github.com/yldio/pseudo-yaml-ast
 
-const isBetween = (start, pos, end) => pos <= end && pos >= start;
+const isBetween = (start: number, pos: number, end: number) =>
+  pos <= end && pos >= start;
 
 const calculatePosition = (input: string, { start, end }) => {
   const lines = input.split(/\n/);
@@ -45,7 +54,7 @@ const calculatePosition = (input: string, { start, end }) => {
   return position;
 };
 
-const wrappedScalar = (Constructor, kind: Kind, value, position) => {
+const wrappedScalar = (Constructor, kind: DataKind, value, position) => {
   const v = new Constructor(value);
   v[positionKey] = position;
   v[kindKey] = kind;
@@ -59,16 +68,25 @@ const wrappedNull = (position) => ({
   valueOf: returnNull as any,
 });
 
-const visitors = {
-  MAP: (node: ast.YamlMap, input, ctx) =>
+const visitorByNodeKind: Record<
+  number,
+  // Kind,
+  (
+    node: YAMLNode,
+    input: string,
+    ctx: unknown[] | Record<string, unknown> | undefined,
+  ) => void
+> = {
+  [Kind.MAP]: (node: YamlMap, input, ctx) => {
     Object.assign(walk(node.mappings, input), {
       [positionKey]: calculatePosition(input, {
         start: node.startPosition,
         end: node.endPosition,
       }),
       [kindKey]: "object",
-    }),
-  MAPPING: (node: ast.YAMLMapping, input, ctx) => {
+    });
+  },
+  [Kind.MAPPING]: (node: YAMLMapping, input, ctx) => {
     const value = walk([node.value], input);
 
     if (isNull(node.value)) {
@@ -91,7 +109,10 @@ const visitors = {
       [node.key.value]: value,
     });
   },
-  SCALAR: (node: ast.YAMLScalar, input) => {
+  [Kind.SCALAR]: (node: YAMLScalar, input) => {
+    if (!node) {
+      return;
+    }
     const position = calculatePosition(input, {
       start: node.startPosition,
       end: node.endPosition,
@@ -106,7 +127,7 @@ const visitors = {
     }
     return wrappedScalar(String, "string", node.value, position);
   },
-  SEQ: (node: ast.YAMLSequence, input) => {
+  [Kind.SEQ]: (node: YAMLSequence, input) => {
     const items = walk(node.items, input, []);
 
     items[positionKey] = calculatePosition(input, {
@@ -119,11 +140,11 @@ const visitors = {
   },
 };
 
-const walk = (nodes: ast.YAMLNode[], input, ctx = {}) => {
-  const onNode = (node, ctx2, fallback) => {
+const walk = (nodes: YAMLNode[], input, ctx = {}) => {
+  const onNode = (node: YAMLNode, ctx2, fallback) => {
     const visitor = node
-      ? visitors[ast.Kind[node.kind]]
-      : visitors[ast.Kind.SCALAR];
+      ? visitorByNodeKind[node.kind]
+      : visitorByNodeKind[Kind.SCALAR];
     return visitor ? visitor(node, input, ctx2) : fallback;
   };
 
@@ -138,5 +159,4 @@ const walk = (nodes: ast.YAMLNode[], input, ctx = {}) => {
   return Array.isArray(ctx) ? walkArr() : walkObj();
 };
 
-export default (input: string): DataWithPosition =>
-  walk([ast.load(input)], input);
+export default (input: string): DataWithPosition => walk([load(input)], input);
