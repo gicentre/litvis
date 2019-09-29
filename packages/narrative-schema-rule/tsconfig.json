@@ -1,8 +1,8 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "noEmit": false,
     "outDir": "dist",
-    "rootDir": "src",
-    "typeRoots": ["node_modules/@types"]
+    "rootDir": "src"
   }
 }

@@ -1,9 +1,9 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import { applySchemaToLabels } from "narrative-schema-label";
-import * as unified from "unified";
+import unified from "unified";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Parent } from "unist";
 import { LitvisNarrative } from "../types";
-
-import { Parent } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {
   const lastFile = _.last(narrative.documents);

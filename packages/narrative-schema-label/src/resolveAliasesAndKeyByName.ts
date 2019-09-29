@@ -16,14 +16,10 @@ export default (
         const definedWhere =
           alreadyExistingLabelDefinition.origin === labelDefinition.origin
             ? "above"
-            : `in narrative schema ${
-                alreadyExistingLabelDefinition.origin.path
-              }`;
+            : `in narrative schema ${alreadyExistingLabelDefinition.origin.path}`;
 
         labelDefinition.origin.message(
-          `Label ${
-            labelDefinition.data.name
-          } is ignored because it has already been defined ${definedWhere}`,
+          `Label ${labelDefinition.data.name} is ignored because it has already been defined ${definedWhere}`,
           getPosition(labelDefinition.dataWithPosition),
           "narrative-schema:label",
         );
@@ -50,9 +46,7 @@ export default (
 
   remainingDefinitions.forEach((labelDefinition) => {
     labelDefinition.origin.message(
-      `Label alias ${
-        labelDefinition.data.name
-      } could not be resolved to an actual label. Please check the integrity of narrative schemas that you are using.`,
+      `Label alias ${labelDefinition.data.name} could not be resolved to an actual label. Please check the integrity of narrative schemas that you are using.`,
       getPosition(labelDefinition.dataWithPosition),
       "narrative-schema:label",
     );

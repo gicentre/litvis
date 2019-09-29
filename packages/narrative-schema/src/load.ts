@@ -5,7 +5,7 @@ import {
   getPosition,
   getValue,
 } from "data-with-position";
-import * as _ from "lodash";
+import _ from "lodash";
 import {
   NarrativeSchema,
   ParentDocument,
@@ -16,16 +16,13 @@ import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-r
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import * as vfile from "vfile";
+import vfile, { VFile } from "vfile";
 import traceParents from "./traceParents";
-
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
 
 const load = async (
   dependenciesWithPosition: DataWithPosition,
   parents: Array<ParentDocument | NarrativeSchema>,
-  filesInMemory: Array<vfile.VFileBase<any>>,
+  filesInMemory: VFile[],
   schemasAlreadyLoaded: NarrativeSchema[],
 ): Promise<NarrativeSchema[]> => {
   const kind = getKind(dependenciesWithPosition);
@@ -68,9 +65,16 @@ const load = async (
         filesInMemory,
         (f) => f.path === resolvedPath,
       );
-      narrativeSchema = fileInMemory
+
+      // TODO Improve type casting
+      narrativeSchema = (fileInMemory
         ? vfile(fileInMemory)
-        : await readVFile(resolvedPath, "utf8");
+        : await readVFile(resolvedPath, "utf8")) as NarrativeSchema;
+      narrativeSchema.data = {
+        labels: [],
+        rules: [],
+        styling: [],
+      };
     } catch (e) {
       parents[0].message(
         `Unable to load narrative schema dependency ${pathWithPosition}${traceParents(
@@ -81,12 +85,6 @@ const load = async (
       );
       continue;
     }
-
-    narrativeSchema.data = {
-      labels: [],
-      rules: [],
-      styling: [],
-    };
 
     result.push(narrativeSchema);
 
@@ -160,8 +158,8 @@ const load = async (
 export default load;
 
 const resolveNarrativeSchemaPath = async (
-  path,
-  file: NarrativeSchema,
+  path: string,
+  file: VFile,
 ): Promise<string> => {
   let result = resolve(file.dirname!, path);
   if (

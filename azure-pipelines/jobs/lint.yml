@@ -2,8 +2,10 @@ steps:
   - template: ../steps/prepare-environment.yml
   - template: ../steps/install-dependencies.yml
   - template: ../steps/build-packages.yml
-  - script: yarn lint:format
-    displayName: "Lint format"
-  - script: yarn lint:packages
-    displayName: "Lint packages"
+  - script: yarn lint:prettier
+    displayName: "Lint with prettier"
+  - script: yarn lint:tsc
+    displayName: "Lint with tsc"
+  - script: yarn lint:tslint
+    displayName: "Lint with tslint"
     condition: succeededOrFailed()

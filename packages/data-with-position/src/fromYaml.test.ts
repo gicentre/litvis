@@ -1,18 +1,21 @@
-import * as fs from "fs";
+import fs from "fs";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as globby from "globby";
+import globby from "globby";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as kindOf from "kind-of";
+import kindOf from "kind-of";
 // tslint:disable-next-line:no-implicit-dependencies
-import * as _ from "lodash";
-import * as path from "path";
+import _ from "lodash";
+import path from "path";
 import { FromYamlTestCaseConfig } from "./fixtures/types";
 import fromYaml from "./fromYaml";
 import getKind from "./getKind";
 import getPosition from "./getPosition";
 import getValue from "./getValue";
 
-const yamlPaths = globby.sync(`${__dirname}/fixtures/fromYaml/*.yaml`);
+const yamlPaths = globby.sync(`fixtures/fromYaml/*.yaml`, {
+  cwd: __dirname,
+  absolute: true,
+});
 _.forEach(yamlPaths, (yamlPath) => {
   const fixtureName = path.basename(yamlPath, ".yaml");
   describe(`fromYaml() for fixture ${fixtureName}`, () => {
@@ -47,9 +50,7 @@ _.forEach(yamlPaths, (yamlPath) => {
       }
 
       if (nodeDefinition.expectedObjectKeys) {
-        test(`path ${pathAsStr} has object keys ${
-          nodeDefinition.expectedObjectKeys
-        }`, () => {
+        test(`path ${pathAsStr} has object keys ${nodeDefinition.expectedObjectKeys}`, () => {
           expect(Object.keys(node)).toEqual(nodeDefinition.expectedObjectKeys);
           let count = 0;
           for (const key in node) {

@@ -1,29 +1,26 @@
 import {
   CodeNode,
   ensureEnvironment,
-  EnvironmentStatus,
   ExpressionNode,
-  MessageSeverity,
   ProgramResult,
-  ProgramResultStatus,
   runProgram,
 } from "literate-elm";
-import * as _ from "lodash";
-import * as visit from "unist-util-visit";
+import _ from "lodash";
+import visit from "unist-util-visit";
 import {
   Cache,
+  CodeBlock,
   EvaluatedOutputExpression,
   FailedLitvisContext,
+  LitvisCodeBlock,
   OutputExpression,
-  OutputFormat,
   SucceededLitvisContext,
 } from "../types";
 import { LitvisNarrative, ProcessedLitvisContext } from "../types";
-import { CodeBlock } from "../types";
 
 interface WrappedCodeBlock {
   documentIndex: number;
-  subject: CodeBlock;
+  subject: LitvisCodeBlock;
 }
 
 interface WrappedOutputExpression {
@@ -63,10 +60,10 @@ export default async (
     const wrappedCodeBlocksInAllDocuments: WrappedCodeBlock[] = [];
     const wrappedCodeBlocksInLastDocument: WrappedCodeBlock[] = [];
     _.forEach(narrative.documents, (document, documentIndex) => {
-      visit(document.data.root, "code", (codeBlock: CodeBlock) => {
+      visit<CodeBlock>(document.data.root, "code", (codeBlock) => {
         if (codeBlock.data && codeBlock.data.litvisAttributeDerivatives) {
-          const wrappedCodeBlock = {
-            subject: codeBlock,
+          const wrappedCodeBlock: WrappedCodeBlock = {
+            subject: codeBlock as LitvisCodeBlock,
             documentIndex,
           };
           wrappedCodeBlocksInAllDocuments.push(wrappedCodeBlock);
@@ -98,6 +95,7 @@ export default async (
       (wrappedCodeBlock, index) => {
         const derivatives =
           wrappedCodeBlock.subject.data.litvisAttributeDerivatives;
+
         const contextName = derivatives.contextName;
         // skip if a code block belongs to a context that is already considered
         if (foundContextsByName[contextName]) {
@@ -206,7 +204,7 @@ export default async (
       cache.literateElmDirectory,
     );
 
-    if (literateElmEnvironment.metadata.status !== EnvironmentStatus.READY) {
+    if (literateElmEnvironment.metadata.status !== "ready") {
       try {
         lastDocument.fail(
           literateElmEnvironment.metadata.errorMessage!,
@@ -245,10 +243,10 @@ export default async (
       const message = messageGroup[0];
       const document = narrative.documents[message.fileIndex];
       switch (message.severity) {
-        case MessageSeverity.INFO: {
+        case "info": {
           document.info(message.text, message.position, "literate-elm:compile");
         }
-        case MessageSeverity.WARNING: {
+        case "warning": {
           document.message(
             message.text,
             message.position,
@@ -274,10 +272,10 @@ export default async (
       ({ contextName }, index) => {
         const literateElmProgramResult = literateElmProgramResults[index];
         const context = foundContextsByName[contextName];
-        if (literateElmProgramResult.status === ProgramResultStatus.FAILED) {
+        if (literateElmProgramResult.status === "failed") {
           const processedContext: FailedLitvisContext = {
             name: contextName,
-            status: ProgramResultStatus.FAILED,
+            status: "failed",
           };
           return processedContext;
         } else {
@@ -307,7 +305,7 @@ export default async (
                 evaluatedExpressionInProgram.valueStringRepresentation;
 
               if (
-                evaluatedExpression.data.outputFormat !== OutputFormat.R &&
+                evaluatedExpression.data.outputFormat !== "r" &&
                 evaluatedExpression.data.value instanceof Error
               ) {
                 document.message(

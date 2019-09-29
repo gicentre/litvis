@@ -8,8 +8,8 @@ jobs:
       vmImage: "Ubuntu 16.04"
     strategy:
       matrix:
-        (Node 10):
-          NODE_VERSION: 10
+        (Node 12):
+          NODE_VERSION: 12
     steps:
       - template: jobs/lint.yml
 
@@ -19,25 +19,23 @@ jobs:
       vmImage: "Ubuntu 16.04"
     strategy:
       matrix:
-        (Node 6):
-          NODE_VERSION: 6
         (Node 8):
           NODE_VERSION: 8
         (Node 10):
           NODE_VERSION: 10
-        (Node 11):
-          NODE_VERSION: 11
+        (Node 12):
+          NODE_VERSION: 12
     steps:
       - template: jobs/test.yml
 
   - job: Test_macOS
     displayName: Test on macOS
     pool:
-      vmImage: macos-10.13
+      vmImage: macos-10.14
     strategy:
       matrix:
-        (Node 10):
-          NODE_VERSION: 10
+        (Node 12):
+          NODE_VERSION: 12
     steps:
       - template: jobs/test.yml
 
@@ -47,7 +45,7 @@ jobs:
       vmImage: vs2017-win2016
     strategy:
       matrix:
-        (Node 10):
-          NODE_VERSION: 10
+        (Node 12):
+          NODE_VERSION: 12
     steps:
       - template: jobs/test.yml

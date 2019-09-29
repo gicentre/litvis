@@ -1,21 +1,16 @@
-export enum LabelType {
-  SINGLE = "single",
-  PAIRED_OPENING = "paired_opening",
-  PAIRED_CLOSING = "paired_closing",
-  INVALID = "invalid",
-}
+import { BlockAttributes } from "block-attributes";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Node } from "unist";
 
-export enum LabelKind {
-  SINGLE = "single",
-  PAIRED = "paired",
-  INVALID = "invalid",
-}
+export type LabelType =
+  | "single"
+  | "paired_opening"
+  | "paired_closing"
+  | "invalid";
 
-export enum LabelPlacement {
-  INLINE = "inline",
-  BLOCK = "block",
-  NA = "na",
-}
+export type LabelKind = "single" | "paired" | "invalid";
+
+export type LabelPlacement = "inline" | "block" | "na";
 
 export enum LabelFence {
   START = "{(",
@@ -23,14 +18,28 @@ export enum LabelFence {
   START_CLOSING = "{|",
   END_OPENING = "|}",
 }
+export type LabelErrorType =
+  | "blank"
+  | "brokenNesting"
+  | "brokenPair"
+  | "closingWithAttributes"
+  | "htmlTemplateException"
+  | "invalid"
+  | "kindMisuse"
+  | "missingDefinition";
 
-export enum LabelErrorType {
-  BLANK,
-  INVALID,
-  CLOSING_WITH_ATTRIBUTES,
-  MISSING_DEFINITION,
-  KIND_MISUSE,
-  HTML_TEMPLATE_EXCEPTION,
-  BROKEN_PAIR,
-  BROKEN_NESTING,
+export interface LabelNode extends Node {
+  type: "narrativeSchemaLabel";
+  data: {
+    errorType?: LabelErrorType;
+    errorCaption?: string;
+    html?: string;
+    id?: string;
+    info: string;
+    labelAttributes: BlockAttributes;
+    labelName: string;
+    labelType: LabelType;
+    pairedId?: string;
+    placement?: LabelPlacement;
+  };
 }

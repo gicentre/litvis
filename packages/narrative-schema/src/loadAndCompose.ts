@@ -1,13 +1,13 @@
 import { DataWithPosition } from "data-with-position";
 import { ComposedNarrativeSchema } from "narrative-schema-common";
-import * as vfile from "vfile";
+import { VFile } from "vfile";
 import compose from "./compose";
 import load from "./load";
 
-export default async <Document extends vfile.VFileBase<any>>(
+export default async <Document extends VFile>(
   dependenciesWithPosition: DataWithPosition,
   parent: Document,
-  filesInMemory: Array<vfile.VFileBase<{}>>,
+  filesInMemory: VFile[],
 ): Promise<ComposedNarrativeSchema> => {
   const narrativeSchemas = await load(
     dependenciesWithPosition,

@@ -1,6 +1,6 @@
 // inspired by https://github.com/zestedesavoir/zmarkdown/blob/master/packages/remark-kbd/src/index.js
 
-import * as whitespace from "is-whitespace-character";
+import whitespace from "is-whitespace-character";
 
 const HAT = "^";
 const TRIPLE_HAT = "^^^";

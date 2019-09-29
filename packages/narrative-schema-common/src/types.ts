@@ -1,7 +1,5 @@
 import { DataWithPosition } from "data-with-position";
-import { VFileBase } from "vfile";
-
-export { VFileBase } from "vfile";
+import { VFile } from "vfile";
 
 export interface EntityDefinition {
   data: any;
@@ -13,7 +11,7 @@ export interface EntityDefinitionWithOrigin extends EntityDefinition {
   origin: NarrativeSchema;
 }
 
-export type ParentDocument = VFileBase<any>;
+export type ParentDocument = VFile;
 
 export interface NarrativeSchemaData {
   labels: EntityDefinition[];
@@ -21,10 +19,10 @@ export interface NarrativeSchemaData {
   styling: EntityDefinition[];
 }
 
-export type NarrativeSchema = VFileBase<{
+export interface NarrativeSchema extends VFile {
   data: NarrativeSchemaData;
   parents: Array<NarrativeSchema | ParentDocument>;
-}>;
+}
 
 export interface ComposedNarrativeSchema {
   components: NarrativeSchema[];

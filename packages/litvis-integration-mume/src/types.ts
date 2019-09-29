@@ -1,11 +1,10 @@
-import { Cache } from "lru-cache";
+import LRU from "lru-cache";
 
-// import { Cache as LitvisCache } from "litvis";
+import { Cache as LitvisCache } from "litvis";
 
 export interface LitvisEnhancerCache {
-  // litvisCache: LitvisCache;
-  litvisCache: any;
-  successfulRenders: Cache<string, string>;
+  litvisCache: LitvisCache;
+  successfulRenders: LRU<string, string>;
 }
 
 export interface LitvisEnhancerCacheInitOptions {

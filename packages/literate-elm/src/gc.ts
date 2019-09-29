@@ -1,6 +1,6 @@
-import * as fs from "fs-extra";
-import * as globby from "globby";
-import * as _ from "lodash";
+import fs from "fs-extra";
+import globby from "globby";
+import _ from "lodash";
 import { resolve } from "path";
 import {
   getLastTouchedAt,

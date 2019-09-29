@@ -1,5 +1,5 @@
 import { stat } from "fs-extra";
-import * as _ from "lodash";
+import _ from "lodash";
 import { resolve } from "path";
 import { LitvisNarrative } from "../types";
 

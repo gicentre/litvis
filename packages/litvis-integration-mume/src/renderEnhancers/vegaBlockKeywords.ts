@@ -1,11 +1,7 @@
-import * as YAML from "yamljs";
+import YAML from "yamljs";
 
 import { BlockInfo } from "block-info";
-import {
-  BlockOutputFormat,
-  extractAttributeDerivatives,
-  LitvisNarrative,
-} from "litvis";
+import { extractAttributeDerivatives, LitvisNarrative } from "litvis";
 import { LitvisEnhancerCache } from "../types";
 
 /**
@@ -66,7 +62,7 @@ export default async function enhance(
       let resultNormalizedInfo;
       let resultText;
       switch (outputFormat) {
-        case BlockOutputFormat.R:
+        case "r":
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
             language: "",
@@ -75,7 +71,7 @@ export default async function enhance(
           };
           resultText = text;
           break;
-        case BlockOutputFormat.J:
+        case "j":
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
             language: "json",
@@ -89,7 +85,7 @@ export default async function enhance(
             resultText = JSON.stringify(data, null, 2);
             break;
           }
-        case BlockOutputFormat.V: {
+        case "v": {
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
             language: normalizedInfo.language,
@@ -105,9 +101,9 @@ export default async function enhance(
       if (!$result) {
         return;
       }
-      const stringifiedNormalizedInfo = JSON.stringify(resultNormalizedInfo);
+      // const stringifiedNormalizedInfo = JSON.stringify(resultNormalizedInfo);
       $result.text(resultText);
-      $result.data("normalizedInfo", stringifiedNormalizedInfo);
+      $result.data("normalizedInfo", resultNormalizedInfo);
       $container.before($result);
     });
     $container.remove();

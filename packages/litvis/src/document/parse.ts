@@ -1,15 +1,15 @@
 import { processUnist as extractLabels } from "narrative-schema-label";
-import * as frontmatter from "remark-frontmatter";
-import * as remarkParse from "remark-parse";
-import * as unified from "unified";
+import frontmatter from "remark-frontmatter";
+import remarkParse from "remark-parse";
+import unified from "unified";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Parent } from "unist";
+import { VFile } from "vfile";
 import { LitvisDocument } from "../types";
 import extractAttributeDerivatives from "./extractAttributeDerivatives";
 import extractOutputItems from "./extractOutputItems";
 import findTripleHatReference from "./findTripleHatReferences";
 import processFrontmatter from "./processFrontmatter";
-
-// @ts-ignore
-import { Parent, Position, VFileBase } from "../types";
 
 export const engine = unified()
   .use(remarkParse)
@@ -20,7 +20,9 @@ export const engine = unified()
   .use(processFrontmatter)
   .use(extractLabels);
 
-export default async (vFile: LitvisDocument) => {
-  vFile.data.root = (await engine.parse(vFile)) as Parent;
-  await engine.run(vFile.data.root, vFile);
+export default async (vFile: VFile): Promise<LitvisDocument> => {
+  const result = vFile as LitvisDocument;
+  result.data.root = engine.parse(vFile) as Parent;
+  await engine.run(result.data.root, vFile);
+  return result;
 };

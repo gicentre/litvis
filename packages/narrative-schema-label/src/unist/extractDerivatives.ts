@@ -1,14 +1,14 @@
 import { parse as parseBlockInfo } from "block-info";
-import * as _ from "lodash";
-import * as visit from "unist-util-visit";
+import _ from "lodash";
+import visit from "unist-util-visit";
 import { VFile } from "vfile";
-import { LabelErrorType, LabelType } from "../types";
+import { LabelNode } from "../types";
 import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";
 
-export default () => (ast, vFile: VFile<any>) => {
+export default () => (ast, vFile: VFile) => {
   const idPrefix = getLabelIdPrefix(vFile);
   let idIndex = 0;
-  return visit(ast, "narrativeSchemaLabel", (labelNode) => {
+  return visit<LabelNode>(ast, "narrativeSchemaLabel", (labelNode) => {
     const parsedInfo = parseBlockInfo(labelNode.data.info);
     const labelName = parsedInfo.language;
     const labelType = labelNode.data.labelType;
@@ -27,26 +27,26 @@ export default () => (ast, vFile: VFile<any>) => {
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.BLANK,
+        "blank",
         `Label cannot be blank.`,
       );
       return;
     }
-    if (labelType === LabelType.INVALID) {
+    if (labelType === "invalid") {
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.INVALID,
+        "invalid",
         `Label ${labelName} is neither single nor paired, please change the endings.`,
       );
       return;
     }
 
-    if (labelType === LabelType.PAIRED_CLOSING && !_.isEmpty(labelAttributes)) {
+    if (labelType === "paired_closing" && !_.isEmpty(labelAttributes)) {
       markLabelNodeAsErroneous(
         vFile,
         labelNode,
-        LabelErrorType.CLOSING_WITH_ATTRIBUTES,
+        "closingWithAttributes",
         `A closing paired label cannot have attributes.`,
       );
       return;

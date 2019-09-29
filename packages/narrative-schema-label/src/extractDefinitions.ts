@@ -1,15 +1,10 @@
-// @ts-ignore
-import { NarrativeSchemaData } from "narrative-schema-common";
-// @ts-ignore
-import { VFileBase } from "vfile";
-
 import {
   DataWithPosition,
   getKind,
   getPosition,
   getValue,
 } from "data-with-position";
-import * as _ from "lodash";
+import _ from "lodash";
 import {
   EntityDefinition,
   extractArrayOfEntities,

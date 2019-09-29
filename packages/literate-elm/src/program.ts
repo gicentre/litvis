@@ -1,7 +1,7 @@
 import { parseUsingCache } from "elm-string-representation";
 import { remove, writeFile } from "fs-extra";
-import * as _ from "lodash";
-import * as hash from "object-hash";
+import _ from "lodash";
+import hash from "object-hash";
 import { resolve } from "path";
 import * as auxFiles from "./auxFiles";
 import { runElm } from "./tools";
@@ -10,7 +10,6 @@ import {
   EvaluatedExpression,
   ExpressionNode,
   Message,
-  MessageSeverity,
   Program,
   ProgramResult,
   ProgramResultStatus,
@@ -50,7 +49,7 @@ interface ChunkifiedProgram {
 }
 
 interface CachedProgramResult {
-  status: ProgramResultStatus.SUCCEEDED | ProgramResultStatus.FAILED;
+  status: ProgramResultStatus;
   errors: any[];
   evaluatedExpressionTextMap?: { [expressionText: string]: string };
   debugLog?: string[];
@@ -83,7 +82,7 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
     await auxFiles.unlock(programBasePath);
   }
 
-  if (cachedResult && cachedResult.status === ProgramResultStatus.SUCCEEDED) {
+  if (cachedResult && cachedResult.status === "succeeded") {
     const evaluatedExpressions = program.expressionNodes.map(
       (expressionNode): EvaluatedExpression => {
         const valueStringRepresentation =
@@ -105,7 +104,7 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
     );
     return {
       program,
-      status: ProgramResultStatus.SUCCEEDED,
+      status: "succeeded",
       evaluatedExpressions,
       messages: convertErrorsToMessages(
         chunkifiedProgram,
@@ -117,7 +116,7 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
   } else {
     return {
       program,
-      status: ProgramResultStatus.FAILED,
+      status: "failed",
       messages: convertErrorsToMessages(
         chunkifiedProgram,
         (cachedResult && cachedResult.errors) || [],
@@ -242,12 +241,12 @@ const runChunkifiedProgram = async (
 
       if (parsedErrorOutput && _.isArray(parsedErrorOutput.errors)) {
         return {
-          status: ProgramResultStatus.FAILED,
+          status: "failed",
           errors: parsedErrorOutput.errors,
         };
       } else if (parsedErrorOutput) {
         return {
-          status: ProgramResultStatus.FAILED,
+          status: "failed",
           errors: [parsedErrorOutput],
         };
       } else {
@@ -256,7 +255,7 @@ const runChunkifiedProgram = async (
     }
 
     return {
-      status: ProgramResultStatus.SUCCEEDED,
+      status: "succeeded",
       errors: [],
       evaluatedExpressionTextMap: JSON.parse(runElmResult.output || "{}"),
       debugLog: runElmResult.debugLog,
@@ -278,7 +277,7 @@ const runChunkifiedProgram = async (
         : "";
 
     return {
-      status: ProgramResultStatus.FAILED,
+      status: "failed",
       errors: [
         {
           overview,
@@ -339,7 +338,7 @@ const convertErrorsToMessages = (
       result.push({
         text: getErrorMessageText(error),
         position,
-        severity: MessageSeverity.ERROR,
+        severity: "error",
         fileIndex: currentChunk.ref.fileIndex || 0,
         node: currentChunk.ref,
       });
@@ -354,14 +353,14 @@ const convertErrorsToMessages = (
           text: messageText,
           position: expressionNode.position,
           fileIndex: expressionNode.fileIndex || 0,
-          severity: MessageSeverity.ERROR,
+          severity: "error",
           node: expressionNode,
         });
       });
     } else {
       result.push({
         text: getErrorMessageText(error),
-        severity: MessageSeverity.ERROR,
+        severity: "error",
         position: {
           start: { line: 1, column: 1 },
           end: { line: 1, column: 1 },

@@ -16,7 +16,7 @@ export interface Point {
 
 export type DataWithPosition = any;
 
-export type Kind =
+export type DataKind =
   | "array"
   | "boolean"
   | "null"

@@ -40,28 +40,28 @@ export function extractAttributeDerivatives(
           }
           isLitVis = true;
           if (value !== "hidden" && attributesWithMixIns["hide"] !== true) {
-            result.outputFormats.push(BlockOutputFormat.L);
+            result.outputFormats.push("l");
           }
           break;
         case "v":
         case "visualize":
           isLitVis = true;
-          addOutputExpressions(result, OutputFormat.V, value);
+          addOutputExpressions(result, "v", value);
           break;
         case "r":
         case "raw":
           isLitVis = true;
-          addOutputExpressions(result, OutputFormat.R, value);
+          addOutputExpressions(result, "r", value);
           break;
         case "j":
         case "json":
           isLitVis = true;
-          addOutputExpressions(result, OutputFormat.J, value);
+          addOutputExpressions(result, "j", value);
           break;
         case "m":
         case "markdown":
           isLitVis = true;
-          addOutputExpressions(result, OutputFormat.M, value);
+          addOutputExpressions(result, "m", value);
           break;
         case "interactive":
           result.interactive = !!value;
@@ -91,7 +91,7 @@ export function resolveExpressions(
   return produce(derivatives, (draft: AttributeDerivatives) => {
     draft.outputFormats.forEach((referenceFormat) => {
       if (
-        referenceFormat !== BlockOutputFormat.L &&
+        referenceFormat !== "l" &&
         !draft.outputExpressionsByFormat[referenceFormat]
       ) {
         draft.outputExpressionsByFormat[referenceFormat] = introducedNames;

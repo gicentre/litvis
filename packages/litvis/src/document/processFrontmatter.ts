@@ -1,5 +1,6 @@
-import { fromYaml } from "data-with-position";
-import { NodeWithPosition } from "vfile";
+import { DataWithPosition, fromYaml } from "data-with-position";
+// tslint:disable-next-line:no-implicit-dependencies
+import { Node } from "unist";
 import { LitvisDocument } from "../types";
 import extractElmDependencies from "./frontmatter/extractElmDependencies";
 import extractElmSourceDirectories from "./frontmatter/extractElmSourceDirectories";
@@ -8,7 +9,7 @@ import extractNarrativeSchemas from "./frontmatter/extractNarrativeSchemas";
 import lintElm from "./frontmatter/lintElm";
 
 function visitFrontmatter(mdAst, document: LitvisDocument) {
-  const frontmatterNode: NodeWithPosition = mdAst.children[0];
+  const frontmatterNode: Node = mdAst.children[0];
   if (!frontmatterNode) {
     return;
   }
@@ -22,12 +23,12 @@ function visitFrontmatter(mdAst, document: LitvisDocument) {
     return;
   }
 
-  if (frontmatterNode.type !== "yaml") {
+  if (frontmatterNode.type !== "yaml" || !frontmatterNode.position) {
     return;
   }
 
   // extract yaml pseudo ast
-  let dataWithPosition;
+  let dataWithPosition: DataWithPosition;
   try {
     const valueWithOffset =
       "\n".repeat(frontmatterNode.position.start.line) + frontmatterNode.value;

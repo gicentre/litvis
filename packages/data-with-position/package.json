@@ -2,43 +2,22 @@
   "name": "data-with-position",
   "version": "0.3.3",
   "description": "Pseudo AST that contains data with its positions attached.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "keywords": [
-    "yaml",
     "ast",
     "parse",
     "position",
-    "yaml-ast-parser",
-    "unist"
+    "unist",
+    "yaml",
+    "yaml-ast-parser"
   ],
-  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gicentre/litvis.git"
   },
-  "scripts": {
-    "build": "tsc --project .",
-    "build:watch": "tsc --project . --watch",
-    "lint": "tsc --project . --noEmit && tslint --project .",
-    "test": "jest"
-  },
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
-    "lodash.isnull": "^3.0.0",
-    "yaml-ast-parser": "^0.0.41"
-  },
-  "devDependencies": {
-    "@types/globby": "^8.0.0",
-    "@types/jest": "^23.3.2",
-    "@types/lodash": "^4.14.116",
-    "@types/node": "^10.9.4",
-    "globby": "^8.0.1",
-    "jest": "^23.6.0",
-    "kind-of": "^6.0.2",
-    "lodash": "^4.17.11",
-    "ts-jest": "^23.1.4",
-    "tslint": "^5.11.0",
-    "tslint-config-prettier": "^1.15.0",
-    "typescript": "^3.0.3"
+    "yaml-ast-parser": "^0.0.43"
   }
 }

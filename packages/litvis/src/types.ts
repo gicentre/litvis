@@ -1,43 +1,27 @@
 import { DataWithPosition } from "data-with-position";
 import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
-import { VFileBase } from "vfile";
 
 // tslint:disable-next-line:no-implicit-dependencies
-import { Parent, Position, Text } from "unist";
+import { Node, Parent, Position } from "unist";
+import { VFile } from "vfile";
 
-// tslint:disable-next-line:no-implicit-dependencies
-export { Parent, Position, Text } from "unist";
-export { VFileBase } from "vfile";
-export import ProcessedLitvisContextStatus = ProgramResultStatus;
+export type ProcessedLitvisContextStatus = ProgramResultStatus;
 
-export enum OutputFormat {
+export type OutputFormat =
   /** raw */
-  R = "r",
+  | "r"
   /** json */
-  J = "j",
+  | "j"
   /** markdown */
-  M = "m",
+  | "m"
   /** visual */
-  V = "v",
-}
+  | "v";
 
-export enum BlockOutputFormat {
-  // pending https://github.com/Microsoft/TypeScript/issues/17592
-  // ...OutputFormat,
-
-  /** raw */
-  R = "r",
-  /** json */
-  J = "j",
-  /** markdown */
-  M = "m",
-  /** visual */
-  V = "v",
-
+export type BlockOutputFormat =
+  | OutputFormat
   /** literate */
-  L = "l",
-}
+  | "l";
 
 export interface AttributeDerivatives {
   contextName: string;
@@ -48,7 +32,7 @@ export interface AttributeDerivatives {
   follows?: string;
 }
 
-export type LitvisDocument = VFileBase<{
+export interface LitvisDocument extends VFile {
   data: {
     root: Parent;
     litvisFollowsPath?: string;
@@ -60,7 +44,7 @@ export type LitvisDocument = VFileBase<{
     litvisNarrativeSchemasWithPosition?: DataWithPosition;
     renderedHtml?: string;
   };
-}>;
+}
 
 export interface LitvisNarrative {
   documents: LitvisDocument[];
@@ -72,27 +56,45 @@ export interface LitvisNarrative {
 
 export interface SucceededLitvisContext {
   name: string;
-  status: ProcessedLitvisContextStatus.SUCCEEDED;
+  status: ProcessedLitvisContextStatus & "succeeded";
   evaluatedOutputExpressions: EvaluatedOutputExpression[];
   debugLog: string[];
 }
 
 export interface FailedLitvisContext {
   name: string;
-  status: ProcessedLitvisContextStatus.FAILED;
+  status: ProcessedLitvisContextStatus & "failed";
 }
 
 export type ProcessedLitvisContext =
   | SucceededLitvisContext
   | FailedLitvisContext;
 
-export interface CodeBlock extends Text {
+export interface CodeBlock extends Node {
+  lang?: string;
+  value: string;
+  data: {
+    info?: string;
+    litvisAttributeDerivatives?: AttributeDerivatives;
+    visitedByExtractOutputItems?: true;
+  };
+}
+
+export interface LitvisCodeBlock extends CodeBlock {
   data: {
     litvisAttributeDerivatives: AttributeDerivatives;
   };
 }
 
-export interface OutputExpression extends Text {
+export interface TripleHatReferenceNode extends Node {
+  type: "tripleHatReference";
+  data: {
+    info?: string;
+    litvisAttributeDerivatives?: AttributeDerivatives;
+  };
+}
+
+export interface OutputExpression extends Node {
   type: string;
   data: {
     text: string;
@@ -101,7 +103,7 @@ export interface OutputExpression extends Text {
   };
 }
 
-export interface EvaluatedOutputExpression extends Text {
+export interface EvaluatedOutputExpression extends Node {
   type: string;
   data: {
     text: string;

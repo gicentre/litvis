@@ -1,8 +1,8 @@
-import { stat } from "fs-extra";
-import * as _ from "lodash";
+import { stat, Stats } from "fs-extra";
+import _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import * as vfile from "vfile";
+import vfile, { VFile } from "vfile";
 import parseDocument from "../document/parse";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
@@ -10,7 +10,7 @@ const MAX_CHAIN_LENGTH = 20;
 
 export default async (
   filePath: string,
-  filesInMemory: Array<vfile.VFile<{}>> = [],
+  filesInMemory: VFile[] = [],
   cache: Cache,
 ): Promise<LitvisNarrative> => {
   // build a chain of files [0]: root,
@@ -30,11 +30,12 @@ export default async (
         filesInMemory,
         (f: LitvisDocument) => f.path === currentFilePath,
       );
-      const document: LitvisDocument = fileInMemory
+      const rawDocument: VFile = fileInMemory
         ? vfile(fileInMemory)
         : await readVFile(currentFilePath, "utf8");
+
+      const document: LitvisDocument = await parseDocument(rawDocument);
       documents.unshift(document);
-      await parseDocument(document);
       currentFilePath = document.data.litvisFollowsPath
         ? resolve(document.dirname || "", document.data.litvisFollowsPath)
         : "";
@@ -42,23 +43,19 @@ export default async (
         if (!currentFilePath.match(/\.md$/i)) {
           currentFilePath = `${currentFilePath}.md`;
         }
-        let fileStat;
+        let fileStat: Stats;
         try {
           fileStat = await stat(currentFilePath);
         } catch (e) {
           document.fail(
-            `Document to follow ‘${
-              document.data.litvisFollowsPath
-            }’ does not exist`,
+            `Document to follow ‘${document.data.litvisFollowsPath}’ does not exist`,
             document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
-        if (!fileStat.isFile()) {
+        if (!fileStat!.isFile()) {
           document.fail(
-            `Document to follow ‘${
-              document.data.litvisFollowsPath
-            }’ is not a file`,
+            `Document to follow ‘${document.data.litvisFollowsPath}’ is not a file`,
             document.data.litvisFollowsPosition,
             "litvis:cross-document",
           );

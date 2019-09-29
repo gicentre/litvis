@@ -1,14 +1,16 @@
 import { parse as parseBlockInfo } from "block-info";
-import * as visit from "unist-util-visit";
+import visit from "unist-util-visit";
 import { extractAttributeDerivatives } from "../attributeDerivatives";
-import { LitvisDocument } from "../types";
+import { CodeBlock, LitvisDocument } from "../types";
 
 function visitCodeBlock(ast, vFile) {
-  return visit(ast, "code", (codeBlockNode) => {
+  return visit<CodeBlock>(ast, "code", (codeBlockNode) => {
     if (!codeBlockNode.data) {
       codeBlockNode.data = {};
     }
-    const parsedInfo = parseBlockInfo(codeBlockNode.lang || "");
+    const parsedInfo = parseBlockInfo(
+      `${codeBlockNode.lang || ""} ${codeBlockNode.meta || ""}`,
+    );
     const normalizedLanguage = (parsedInfo.language || "").trim().toLowerCase();
     if (normalizedLanguage === "elm") {
       const attributeDerivatives = extractAttributeDerivatives(
@@ -31,31 +33,33 @@ function visitCodeBlock(ast, vFile) {
 }
 
 function visitTripleHatReference(ast, vFile: LitvisDocument) {
-  return visit(ast, "tripleHatReference", (tripleHatReferenceNode) => {
-    const parsedInfo = parseBlockInfo(tripleHatReferenceNode.data.info);
-    if ((parsedInfo.language || "").toLowerCase() === "elm") {
-      const attributeDerivatives = extractAttributeDerivatives(
-        parsedInfo.attributes,
-      );
-      if (attributeDerivatives) {
-        tripleHatReferenceNode.data.litvisAttributeDerivatives = attributeDerivatives;
+  return visit<CodeBlock>(
+    ast,
+    "tripleHatReference",
+    (tripleHatReferenceNode) => {
+      const parsedInfo = parseBlockInfo(tripleHatReferenceNode.data.info);
+      if ((parsedInfo.language || "").toLowerCase() === "elm") {
+        const attributeDerivatives = extractAttributeDerivatives(
+          parsedInfo.attributes,
+        );
+        if (attributeDerivatives) {
+          tripleHatReferenceNode.data.litvisAttributeDerivatives = attributeDerivatives;
+          return;
+        }
+        vFile.message(
+          `Could not extract attribute derivatives from ${tripleHatReferenceNode.data.info}`,
+          tripleHatReferenceNode,
+          "litvis:triple-hat-reference-syntax",
+        );
         return;
       }
       vFile.message(
-        `Could not extract attribute derivatives from ${
-          tripleHatReferenceNode.data.info
-        }`,
+        `^^^ must be followed by elm (^^^elm)`,
         tripleHatReferenceNode,
         "litvis:triple-hat-reference-syntax",
       );
-      return;
-    }
-    vFile.message(
-      `^^^ must be followed by elm (^^^elm)`,
-      tripleHatReferenceNode,
-      "litvis:triple-hat-reference-syntax",
-    );
-  });
+    },
+  );
 }
 
 export default function() {

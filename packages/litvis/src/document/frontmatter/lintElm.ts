@@ -1,10 +1,7 @@
 import { getPosition, getValue } from "data-with-position";
-import * as kindOf from "kind-of";
-import * as _ from "lodash";
+import kindOf from "kind-of";
+import _ from "lodash";
 import { LitvisDocument } from "../../types";
-
-// @ts-ignore
-import { Parent, Position, VFileBase } from "../../types";
 
 const supportedProperties = ["dependencies", "source-directories"];
 
