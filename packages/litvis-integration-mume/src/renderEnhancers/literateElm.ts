@@ -89,7 +89,7 @@ export default async function enhance(
   // search for all triple hat references and turn them into output items
   $('[data-role="litvis:triple-hat-reference"]').each((i, el) => {
     const $el = $(el);
-    const info: BlockInfo = $el.data("parsedInfo");
+    const info: BlockInfo = JSON.parse($el.attr("data-parsedinfo"));
     if (`${info.language}`.toLowerCase() !== "elm") {
       return;
     }

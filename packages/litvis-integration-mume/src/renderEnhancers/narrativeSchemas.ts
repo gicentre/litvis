@@ -26,7 +26,7 @@ export default async function enhance(
     );
   }
   if (arrayOf$StyleTags.length) {
-    $.root().prepend("", ...arrayOf$StyleTags);
+    $("head").prepend("", ...arrayOf$StyleTags);
   }
 
   const labelNodesInAst: LabelNode[] = selectAll(
