@@ -1,6 +1,6 @@
 {
   "name": "block-info",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Parses and normalizes code block info in markdown files",
   "keywords": [],
   "repository": {
@@ -11,6 +11,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "block-attributes": "^0.2.5"
+    "block-attributes": "^0.3.0"
   }
 }
