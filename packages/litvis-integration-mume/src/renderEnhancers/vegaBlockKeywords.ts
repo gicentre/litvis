@@ -101,9 +101,9 @@ export default async function enhance(
       if (!$result) {
         return;
       }
-      const stringifiedNormalizedInfo = JSON.stringify(resultNormalizedInfo);
+      // const stringifiedNormalizedInfo = JSON.stringify(resultNormalizedInfo);
       $result.text(resultText);
-      $result.data("normalizedInfo", stringifiedNormalizedInfo);
+      $result.data("normalizedInfo", resultNormalizedInfo);
       $container.before($result);
     });
     $container.remove();

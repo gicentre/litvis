@@ -1,8 +1,8 @@
 import { LitvisNarrative } from "litvis";
 import _ from "lodash";
-import { getLabelIdPrefix } from "narrative-schema-label";
+import { getLabelIdPrefix, LabelNode } from "narrative-schema-label";
 import { getCssChunks } from "narrative-schema-styling";
-import select from "unist-util-select";
+import { selectAll } from "unist-util-select";
 import { LitvisEnhancerCache } from "../types";
 
 export default async function enhance(
@@ -29,11 +29,14 @@ export default async function enhance(
     $.root().prepend("", ...arrayOf$StyleTags);
   }
 
-  const labelNodesInAst = select(
-    processedNarrative.combinedAst,
+  const labelNodesInAst: LabelNode[] = selectAll(
     "narrativeSchemaLabel",
+    processedNarrative.combinedAst,
   );
-  const labelNodeInAstById = _.keyBy(labelNodesInAst, (node) => node.data.id);
+  const labelNodeInAstById = _.keyBy(
+    labelNodesInAst,
+    (node) => `${node.data.id}`,
+  );
 
   const labelIdPrefix = getLabelIdPrefix(
     processedNarrative.documents[processedNarrative.documents.length - 1],
@@ -64,7 +67,9 @@ export default async function enhance(
     }
 
     $el.replaceWith(
-      $("<litvis-narrative-schema-label/>").text(labelNodeInAst.data.html),
+      $("<litvis-narrative-schema-label/>").text(
+        labelNodeInAst.data.html || "",
+      ),
     );
   });
 }

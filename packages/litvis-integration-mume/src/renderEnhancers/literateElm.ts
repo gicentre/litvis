@@ -257,7 +257,7 @@ export default async function enhance(
       );
       // ...and then as data
       $result.removeAttr("data-normalized-info");
-      $result.data("normalizedInfo", JSON.stringify(resultNormalizedInfo));
+      $result.data("normalizedInfo", resultNormalizedInfo);
       $el.replaceWith($result);
     } catch (e) {
       const $error = $("<span/>").attr(
