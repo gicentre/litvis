@@ -102,6 +102,8 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
     - https://www.jsdelivr.com/package/npm/vega
     - https://www.jsdelivr.com/package/npm/vega-lite
     - https://www.jsdelivr.com/package/npm/vega-embed
+    - https://www.jsdelivr.com/package/npm/apache-arrow
+    - https://www.jsdelivr.com/package/npm/vega-loader-arrow
 
     These pages are usually updated within a few hours after the official release.
 
@@ -122,23 +124,23 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
     cd mume-with-litvis
 
     NAME=vega
-    VERSION=5.4.0
+    VERSION=5.7.0
     BUILD_PATH=
 
     NAME=vega-lite
-    VERSION=3.2.1
+    VERSION=4.0.0-beta.8
     BUILD_PATH=
 
     NAME=vega-embed
-    VERSION=4.2.0
+    VERSION=5.1.3
     BUILD_PATH=
 
     NAME=apache-arrow
-    VERSION=0.13.0
+    VERSION=0.14.1
     BUILD_PATH=Arrow.es5.min.js
 
     NAME=vega-loader-arrow
-    VERSION=0.0.6
+    VERSION=0.0.7
     BUILD_PATH=
 
     http https://cdn.jsdelivr.net/npm/${NAME}@${VERSION}/${BUILD_PATH:-build/${NAME}.min.js} > dependencies/${NAME}/${NAME}.min.js
