@@ -23,29 +23,33 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
     _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
 
-3.  Install either the [Atom](https://atom.io) (recommended) or [VS Code](https://code.visualstudio.com) editor.
+3.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 
-4.  From within the editor, install _litvis_ and _Prettier_ extensions:
+4.  Depending on which editor you wish to use, install the litvis extensions:
 
-    - _In Atom:_ `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
-      _In VSCode:_ `View → Extensions`
+    **If using Atom:**
 
-    - Search for `markdown-preview-enhanced-with-litvis` and then click the `install` button next to the returned result.
-      _This may take a few minutes on a slow network connection._
+    - Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
 
-    - Search for `prettier-atom` (Atom) or `prettier - Code formatter` (VSCode) and then click the `install` button.
-      This extension will help you format litvis documents as you edit them.
+    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
 
-    - Search for `language-elm` (Atom) or `elm` (VSCode) and then click the `install` button.
-      This extension enables syntax highlighting for Elm source in code blocks.
+    - Search for `prettier-atom` and install _(auto-formats code)_.
 
-    - Atom users should also search for `language-markdown` and click the `install` button.
+    - Search for `language-elm` and install _(syntax highlighting of Elm code)_.
 
-    > **Atom users:** you may want to disable Atom’s standard markdown preview tool by going to `Preferences → Packages` (or `File → Settings → Packages`), searching for `markdown-preview` and clicking `disable`.
+    - Search for `language-markdown` and install _(markdown syntax highlighting)_.
 
-    > **VSCode users:** The Prettier extension does not currently work with a global instance of Prettier ([#232](https://github.com/prettier/prettier-vscode/issues/232), [#395](https://github.com/prettier/prettier-vscode/issues/395)). Until this is fixed, please consider installing `prettier` and `prettier-plugin-elm` in your project folder (i.e. without `--global` flag in step 2 above).
+    - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
 
-5.  When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
+    **If using VS Code:**
+
+    - Select `View → Extensions`
+
+    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
+
+    - Search for `prettier - Code formatter` and install _(auto-formats code)_.
+
+    - Search for `elm` and install _(syntax highlighting of Elm code)_.
 
 <!-- 5.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
     There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
