@@ -1,4 +1,4 @@
-# Literate Visualization &middot; [![License: BSD 3-Clause](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE) [![Azure Pipelines status](https://img.shields.io/azure-devops/build/gicentre/github-pipelines/1/master.svg)](https://dev.azure.com/gicentre/github-pipelines/_build?definitionId=1) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
+# Literate Visualization &middot; [![License: BSD 3-Clause](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE) [![Azure Pipelines status](https://img.shields.io/azure-devops/build/gicentre/github-pipelines/1/master.svg)](https://dev.azure.com/gicentre/github-pipelines/_build?definitionId=1) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/) [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 A light-touch approach to designing, building and describing visualization.
 Here you will find
