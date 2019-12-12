@@ -124,19 +124,19 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
     cd mume-with-litvis
 
     NAME=vega
-    VERSION=5.7.0
+    VERSION=5.9.0
     BUILD_PATH=
 
     NAME=vega-lite
-    VERSION=4.0.0-beta.8
+    VERSION=4.0.0
     BUILD_PATH=
 
     NAME=vega-embed
-    VERSION=5.1.3
+    VERSION=6.2.1
     BUILD_PATH=
 
     NAME=apache-arrow
-    VERSION=0.14.1
+    VERSION=0.15.1
     BUILD_PATH=Arrow.es5.min.js
 
     NAME=vega-loader-arrow
@@ -149,7 +149,7 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 1.  Update `dependencies/README.md` with the picked library versions.
     This change is needed for documentation purposes only.
 
-1.  Find three occurrences of `https://cdn.jsdelivr.net/npm/vega...` in `src/markdown-engine.ts` and upgrade library versions accordingly.
+1.  Find `dependentLibraryMaterials` in `src/markdown-engine.ts` and upgrade library versions accordingly.
 
 1.  In the unlikely case of breaking changes that affect the lifecycle of vega-based visualizations, consider updating additional files in `src` folder.
     This may be necessary in a small subset of cases, and only when the major versions are bumped.
