@@ -41,7 +41,7 @@ Here is a candidate design:
 
 ^^^elm {v=(brexitMap Large NoChange BySize Desc)}^^^
 
-Does it satisfy the princples of _invariance_, _unambiguity_ and _correspondence_?
+Does it satisfy the principles of _invariance_, _unambiguity_ and _correspondence_?
 
 ## Principle of Representation Invariance
 
@@ -53,7 +53,7 @@ Does it satisfy the princples of _invariance_, _unambiguity_ and _correspondence
 
 {( invarianceAssessment |}
 
-Varying the order in which data rows are plotted shows noticable differences, especially in the London region.
+Varying the order in which data rows are plotted shows noticeable differences, especially in the London region.
 Therefore failing this principle introduces _hallucinators_.
 This is due to considerable overlap of the proportional circles.
 
@@ -148,13 +148,13 @@ brexitMap mapSize dChange orderType oDirection =
             in
             case orderType of
                 ByLongitude ->
-                    [ oName "Longitude", oMType Quantitative, sortOrder ]
+                    [ oName "Longitude", oQuant, sortOrder ]
 
                 ByLatitude ->
-                    [ oName "Latitude", oMType Quantitative, sortOrder ]
+                    [ oName "Latitude", oQuant, sortOrder ]
 
                 BySize ->
-                    [ oName "majority %", oMType Quantitative, sortOrder ]
+                    [ oName "majority %", oQuant, sortOrder ]
 
         titleText =
             let
@@ -248,13 +248,13 @@ brexitMap mapSize dChange orderType oDirection =
 
         votingEnc =
             encoding
-                << position Longitude [ pName "Longitude", pMType Quantitative ]
-                << position Latitude [ pName "Latitude", pMType Quantitative ]
-                << size ([ mName "majority %", mMType Quantitative ] ++ legend)
+                << position Longitude [ pName "Longitude", pQuant ]
+                << position Latitude [ pName "Latitude", pQuant ]
+                << size ([ mName "majority %", mQuant ] ++ legend)
                 << order orderParams
                 << color
                     ([ mName "majority decision"
-                     , mMType Nominal
+                     , mNominal
                      , mScale (categoricalDomainMap [ ( "remain", "rgb(50,50,200)" ), ( "leave", "rgb(200,50,50)" ) ])
                      ]
                         ++ legend
@@ -269,7 +269,7 @@ brexitMap mapSize dChange orderType oDirection =
     toVegaLite
         [ width w
         , height h
-        , title titleText
+        , title titleText []
         , layer [ gbSpec, votingSpec ]
         , config []
         ]
