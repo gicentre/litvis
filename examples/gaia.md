@@ -6,7 +6,7 @@ elm:
 id: "litvis"
 ---
 
-@import "../css/litvis.less"
+@import "assets/litvis.less"
 
 ```elm {l=hidden}
 import VegaLite exposing (..)
@@ -28,7 +28,7 @@ _Adapted from this [hVega notebook](https://github.com/DougBurke/hvega/blob/mast
 
 ## 1. Gaia Satellite Data
 
-The data set I'm going to use is from the [Gaia satellite](http://sci.esa.int/gaia/), which has radically-improved our knowledge of our Galaxy. I had planned to do something with the [Hertzzprung-Russell (HR) diagram](https://en.wikipedia.org/wiki/Hertzsprung–Russell_diagram), since Gaia has produced some remarkable results: for example [Gaia's second data release (DR2)](http://sci.esa.int/gaia/60198-gaia-hertzsprung-russell-diagram). However, I got side-tracked when trying to investigate the data used in this [look at different data cuts of the HR diagram from DR2 data](https://www.cosmos.esa.int/web/gaia/gaiadr2_hrd), which is taken from the paper [Gaia Data Release 2: Observational Hertzsprung-Russell diagrams(https://arxiv.org/abs/1804.09378).
+The data set I'm going to use is from the [Gaia satellite](http://sci.esa.int/gaia/), which has radically-improved our knowledge of our Galaxy. I had planned to do something with the [Hertzzprung-Russell (HR) diagram](https://en.wikipedia.org/wiki/Hertzsprung–Russell_diagram), since Gaia has produced some remarkable results: for example [Gaia's second data release (DR2)](http://sci.esa.int/gaia/60198-gaia-hertzsprung-russell-diagram). However, I got side-tracked when trying to investigate the data used in this [look at different data cuts of the HR diagram from DR2 data](https://www.cosmos.esa.int/web/gaia/gaiadr2_hrd), which is taken from the paper [Gaia Data Release 2: Observational Hertzsprung-Russell diagrams](https://arxiv.org/abs/1804.09378).
 
 I ended up playing around with some of the "ancillary" data from this paper, in particular the contents of Table 1a, which was downloaded from the [VizieR archive](http://vizier.u-strasbg.fr/viz-bin/VizieR-3?-source=J/A%2bA/616/A10/tablea1a) as a _tsv_ file. It contains basic measurements for a number of stars in nine open clusters that all lie within 250 parsecs of the Earth (please note, a parsec is a measure of distance, not time, no matter what some ruggedly-handsome ex-carpenter might claim).
 
@@ -74,7 +74,7 @@ starPos =
     let
         axOpts lbl mn mx rev =
             [ pName lbl
-            , pMType Quantitative
+            , pQuant
             , pScale [ scDomain (doNums [ mn, mx ]), scNice niFalse ]
             , pSort
                 [ if rev then
@@ -89,7 +89,7 @@ starPos =
             encoding
                 << position X (axOpts "RA_ICRS" 0 360 True)
                 << position Y (axOpts "DE_ICRS" -90 90 False)
-                << color [ mName "Cluster", mMType Nominal ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite [ data, width 300, height 300, enc [], circle [] ]
 ```
@@ -145,12 +145,12 @@ graticule =
 
         enc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "y", pMType Quantitative, pAxis [] ]
+                << position X [ pName "x", pQuant, pAxis [] ]
+                << position Y [ pName "y", pQuant, pAxis [] ]
 
         encParallel =
             enc
-                << detail [ dName "lat", dMType Nominal ]
+                << detail [ dName "lat", dNominal ]
 
         specParallel =
             asSpec
@@ -162,8 +162,8 @@ graticule =
 
         encMeridian =
             enc
-                << detail [ dName "lng", dMType Nominal ]
-                << order [ oName "lat", oMType Quantitative ]
+                << detail [ dName "lng", dNominal ]
+                << order [ oName "lat", oQuant ]
 
         specMeridian =
             asSpec
@@ -176,7 +176,7 @@ graticule =
     [ specParallel, specMeridian ]
 ```
 
-And let's configure plots so they have no axes or bounding box and any legend is displayed along the bottom.
+And let's configure the plots so they have no axes or bounding boxes and any legend is displayed along the bottom.
 
 ```elm {l}
 cfgNoBorder =
@@ -213,9 +213,9 @@ starPosAitoff =
 
         enc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pScale [ scNice niFalse ] ]
-                << position Y [ pName "y", pMType Quantitative, pScale [ scNice niFalse ] ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << position X [ pName "x", pQuant, pScale [ scNice niFalse ] ]
+                << position Y [ pName "y", pQuant, pScale [ scNice niFalse ] ]
+                << color [ mName "Cluster", mNominal ]
 
         spec =
             asSpec [ trans [], enc [], circle [ maSize 9 ] ]
@@ -250,10 +250,10 @@ starCentroids =
 
         enc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pScale [ scNice niFalse ] ]
-                << position Y [ pName "y", pMType Quantitative, pScale [ scNice niFalse ] ]
-                << color [ mName "Cluster", mMType Nominal, mLegend [] ]
-                << text [ tName "Cluster", tMType Nominal ]
+                << position X [ pName "x", pQuant, pScale [ scNice niFalse ] ]
+                << position Y [ pName "y", pQuant, pScale [ scNice niFalse ] ]
+                << color [ mName "Cluster", mNominal, mLegend [] ]
+                << text [ tName "Cluster", tNominal ]
 
         clusterSpec =
             asSpec [ clusterTrans [], enc [], circle [ maSize 90 ] ]
@@ -289,24 +289,24 @@ clusterCount =
             encoding
                 << position X
                     [ pName "Cluster"
-                    , pMType Nominal
+                    , pNominal
                     , pSort [ soByChannel chY, soDescending ]
                     , pTitle ""
                     ]
                 << position Y
                     [ pAggregate opCount
-                    , pMType Quantitative
+                    , pQuant
                     , pAxis [ axTitle "Number of stars", axGrid False ]
                     ]
 
         barEnc =
-            enc << color [ mName "Cluster", mMType Nominal, mLegend [] ]
+            enc << color [ mName "Cluster", mNominal, mLegend [] ]
 
         barSpec =
             asSpec [ barEnc [], bar [] ]
 
         labelEnc =
-            enc << text [ tAggregate opCount, tMType Quantitative ]
+            enc << text [ tAggregate opCount, tQuant ]
 
         labelSpec =
             asSpec [ labelEnc [], textMark [ maDy -6 ] ]
@@ -324,7 +324,7 @@ So, actually it looks like Pleiades has the most stars, it is just that they app
 
 ## 5. Parallaxes
 
-Parallalax can tell us how far away from Earth an object is. Let's firstly examine the parallax values of all stars, coloured by the cluster in which they belong:
+Parallax can tell us how far away from Earth an object is. Let's firstly examine the parallax values of all stars, coloured by the cluster in which they belong:
 
 ```elm {l v}
 parTicks : Spec
@@ -332,8 +332,8 @@ parTicks =
     let
         enc =
             encoding
-                << position X [ pName "plx", pMType Quantitative, pTitle "parallax (mas)" ]
-                << color [ mName "Cluster", mMType Nominal, mLegend [] ]
+                << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
+                << color [ mName "Cluster", mNominal, mLegend [] ]
     in
     toVegaLite [ width 400, data, enc [], tick [ maOpacity 0.1 ] ]
 ```
@@ -346,9 +346,9 @@ parTicksSeparated =
     let
         enc =
             encoding
-                << position X [ pName "plx", pMType Quantitative, pTitle "parallax (mas)" ]
-                << position Y [ pName "Cluster", pMType Nominal ]
-                << color [ mName "Cluster", mMType Nominal, mLegend [] ]
+                << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
+                << position Y [ pName "Cluster", pNominal ]
+                << color [ mName "Cluster", mNominal, mLegend [] ]
     in
     toVegaLite [ width 400, data, enc [], tick [ maOpacity 0.1 ] ]
 ```
@@ -363,9 +363,9 @@ parDist =
     let
         enc =
             encoding
-                << position X [ pName "plx", pMType Quantitative, pTitle "parallax (mas)" ]
-                << row [ fName "Cluster", fMType Nominal, fSort [ soByField "plx" opMedian ] ]
-                << color [ mName "Cluster", mMType Nominal, mLegend [] ]
+                << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
+                << row [ fName "Cluster", fNominal, fSort [ soByField "plx" opMedian ] ]
+                << color [ mName "Cluster", mNominal, mLegend [] ]
     in
     toVegaLite
         [ cfgNoBorder []
@@ -389,21 +389,21 @@ parErrs =
             encoding
                 << position X
                     [ pName "plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pTitle "parallax (milli-arcsecond)"
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
                 << position Y
                     [ pName "e_plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pTitle "error (milli-arcsecond)"
                     ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite [ width 400, data, enc [], circle [ maOpacity 0.2 ] ]
 ```
 
-It would appear that there are some parallax errors of 0, which seems unlikey, so we can filter them out and show low error values more effectively on a log scale:
+It would appear that there are some parallax errors of 0, which seems unlikely, so we can filter them out and show low error values more effectively on a log scale:
 
 ```elm {l v}
 parErrsNoZero : Spec
@@ -417,17 +417,17 @@ parErrsNoZero =
             encoding
                 << position X
                     [ pName "plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pTitle "parallax (milli-arcsecond)"
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
                 << position Y
                     [ pName "e_plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pScale [ scType scLog ]
                     , pTitle "error (milli-arcsecond)"
                     ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite
         [ width 400
@@ -454,11 +454,11 @@ sigPlots =
             encoding
                 << position X
                     [ pName "plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
-                << position Y [ pName "sig_plx", pMType Quantitative, pScale [ scType scLog ] ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << position Y [ pName "sig_plx", pQuant, pScale [ scType scLog ] ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite [ width 400, data, trans [], enc [], point [ maOpacity 0.5 ] ]
 ```
@@ -467,7 +467,7 @@ All distances have a signal-to-noise ratio of at least 10, which is reassuring
 
 ## 6. Magnitudes
 
-The remaining field to look at is `Gmag`, which gives the "magnitude" of a star. This is a measure of how bright it is, but – as with most things Astronomical – it's [not completely simple](https://en.wikipedia.org/wiki/Magnitude_%28astronomy%29):
+The remaining field to look at is `Gmag`, which stores the "magnitude" of a star. This is a measure of how bright it is, but – as with most things Astronomical – it's [not completely simple](https://en.wikipedia.org/wiki/Magnitude_%28astronomy%29):
 
 - the scale used is logarithmic;
 - it's not just that it's logarithmic, but there's a scaling factor applied to the logarithm too;
@@ -475,7 +475,7 @@ The remaining field to look at is `Gmag`, which gives the "magnitude" of a star.
 - the measurement is over a fixed "band", that is range of wavelengths, and so does not reflect all the light emitted by the star, but just a small part of its optical output (as an X-ray astronomer I feel honor-bound to point out that [stars emit in X-rays](http://xrt.cfa.harvard.edu/xpow/20190226.html) as well as the optical)
 - we have "apparent" and "absolute" magnitudes, which refer to "how much light reaches us (well, really, the telescope)" and "how bright is the object intrinsically", which is flux and luminosity, respectively. In this case we have apparent magnitudes.
 
-As we have apparent magnitudes, then the distribution of magnitudes should not vary strongly with distance <sup>$\dagger$</sup>. Note that this assumes that the distribution of absolue magnitudes of the stars does not vary with cluster, which is actually not true, but it's a good enough for this quick look.
+As we have apparent magnitudes, then the distribution of magnitudes should not vary strongly with distance <sup>$\dagger$</sup>. Note that this assumes that the distribution of absolute magnitudes of the stars does not vary with cluster, which is actually not true, but it's a good enough for this quick look.
 
 $\dagger$ The assumption here is that the catalog has a near-to-uniform flux limit $f_{\rm lim}$; that is, as Gaia looks at different stellar clusters the apparent magnitude of the faintest star we can reliably measure is similar. This then means that the faintest luminosity, $L_{\rm min}$ we can measure depends on the cluster, since $L_{\rm min} = 4 \pi d^2 f_{\rm min}$, where $d$ is the distance to the star. This then gets converted to magnitudes with a logarithm and a scaling factor, but the correlation between flux (apparent magnitude), luminosity (absolute magnitude), and distance measurements still holds. However, there are plenty of reasons why the flux limit can depend on the cluster being observed – for instance, it becomes harder to disentangle two stars as their projected separation (how close they appear to be in the plane of the sky) decreases, and this becomes more important the more-distant the cluster – so you have to understand the biases in your data before drawing too many conclusions.
 
@@ -485,13 +485,13 @@ magVsParallax =
     let
         enc =
             encoding
-                << position X [ pName "Gmag", pMType Quantitative ]
+                << position X [ pName "Gmag", pQuant ]
                 << position Y
                     [ pName "plx"
-                    , pMType Quantitative
+                    , pQuant
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite [ width 400, height 300, data, enc [], square [ maOpacity 0.5 ] ]
 ```
@@ -504,13 +504,13 @@ gmagDist =
     let
         enc =
             encoding
-                << position X [ pName "Gmag", pMType Quantitative, pBin [ biMaxBins 20 ] ]
+                << position X [ pName "Gmag", pQuant, pBin [ biMaxBins 20 ] ]
                 << position Y
                     [ pAggregate opCount
-                    , pMType Quantitative
+                    , pQuant
                     , pTitle "Number of stars"
                     ]
-                << color [ mName "Cluster", mMType Nominal ]
+                << color [ mName "Cluster", mNominal ]
     in
     toVegaLite [ width 500, height 500, data, enc [], bar [] ]
 ```
@@ -528,14 +528,14 @@ perCluster =
 
         enc =
             encoding
-                << position X [ pName "Gmag", pMType Quantitative, pBin [ biMaxBins 20 ] ]
+                << position X [ pName "Gmag", pQuant, pBin [ biMaxBins 20 ] ]
                 << position Y
                     [ pAggregate opCount
-                    , pMType Quantitative
+                    , pQuant
                     , pScale [ scType scSymLog ]
                     ]
-                << color [ mName "Cluster", mMType Nominal, mLegend [] ]
-                << row [ fName "Cluster", fMType Nominal ]
+                << color [ mName "Cluster", mNominal, mLegend [] ]
+                << row [ fName "Cluster", fNominal ]
     in
     toVegaLite [ cfgFacet [], width 300, height 100, data, enc [], bar [] ]
 ```
@@ -556,10 +556,10 @@ crossfilter =
 
         enc =
             encoding
-                << position X [ pRepeat arFlow, pBin [ biMaxBins 20 ], pMType Quantitative ]
+                << position X [ pRepeat arFlow, pBin [ biMaxBins 20 ], pQuant ]
                 << position Y
                     [ pAggregate opCount
-                    , pMType Quantitative
+                    , pQuant
                     , pTitle "Number of Stars"
                     ]
 
