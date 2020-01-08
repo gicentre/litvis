@@ -20,8 +20,7 @@ _This is an example of a dynamic design document where design options are offere
 ## Representing Signals Geographically
 
 Here is a map of the reporting areas with familiar colours representing the eight different NPUs.
-The sizes of the units vary considerably.
-To show a summary visualization in each area requires us to make all reporting areas the same size. We can do this with a tile map, which will distort the familiar geography.
+The sizes of the units vary considerably. To show a summary visualization in each area requires us to make all reporting areas the same size. We can do this with a tile map, which will distort the familiar geography.
 
 ```elm {v}
 fig1 : Spec
@@ -29,9 +28,7 @@ fig1 =
     toVegaLite [ config, layer [ geoMap 300 ] ]
 ```
 
-This tile map uses the same colours to show NPUs.
-The reporting areas are well aligned, and the overall layout represents the original geography well.
-There is now room to add information for each reporting area in the map.
+This tile map uses the same colours to show NPUs. The reporting areas are well aligned, and the overall layout represents the original geography well. There is now room to add information for each reporting area in the map.
 
 ```elm {v}
 fig2 : Spec
@@ -41,13 +38,11 @@ fig2 =
 
 ## Comparing Multiple Maps
 
-Since we have made the graphics in the neighbourhoods quite simple, we are able to make them small, and view crime signals in multiple maps simultaneously. Here we facet on crime type.
-We have have added an opacity slider for the background.
+Since we have made the graphics in the neighbourhoods quite simple, we are able to make them small, and view crime signals in multiple maps simultaneously. Here we facet on crime type. We have have added an opacity slider for the background.
 
 {(userQuestion|}
 
-What opacity levels work for you?
-Is there a mid-point between NPU legibility and signal pop-out?
+What opacity levels work for you? Is there a mid-point between NPU legibility and signal pop-out?
 
 {|userQuestion)}
 
@@ -76,7 +71,7 @@ gridmapCrimes =
         [ config
         , crimeData
         , crimeTrans []
-        , facet [ rowBy [ fName "crimeType", fMType Ordinal, fHeader [ hdTitle "" ] ] ]
+        , facet [ rowBy [ fName "crimeType", fOrdinal, fHeader [ hdTitle "" ] ] ]
         , specification (asSpec [ res [], layer [ gridMapSpec w UserOpacity, crimeOverlay w ] ])
         ]
 ```
@@ -91,7 +86,7 @@ geoMap w =
         , height (w / 1.54)
         , dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsTopo.json" [ topojsonFeature "NPU" ]
         , geoshape [ maStroke "white", maStrokeWidth (w * 0.00214) ]
-        , encoding (color [ mName "id", mMType Nominal, mScale npuColours, mLegend [] ] [])
+        , encoding (color [ mName "id", mNominal, mScale npuColours, mLegend [] ] [])
         ]
 
 
@@ -120,9 +115,9 @@ gridMapSpec w op =
 
         gridEnc =
             encoding
-                << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
-                << color [ mName "NPU", mMType Nominal, mScale npuColours, mLegend [] ]
+                << position X [ pName "gridE", pQuant, pAxis [] ]
+                << position Y [ pName "gridN", pQuant, pAxis [] ]
+                << color [ mName "NPU", mNominal, mScale npuColours, mLegend [] ]
                 << size [ mNum ((gSize - 1) * (gSize - 1)) ]
 
         gridSel =
@@ -156,7 +151,7 @@ gridMapSpec w op =
                 , (gridEnc
                     << opacity
                         [ mName "opacity"
-                        , mMType Quantitative
+                        , mQuant
                         , mScale [ scDomain (doNums [ 40, 100 ]) ]
                         , mLegend []
                         ]
@@ -171,10 +166,10 @@ crimeOverlay w =
     let
         crimeEnc =
             encoding
-                << position X [ pName "gridE", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "gridN", pMType Quantitative, pAxis [] ]
-                << shape [ mName "crimeCats", mMType Nominal, mScale crimeSymbols, mLegend [] ]
-                << color [ mName "crimeCats", mMType Nominal, mScale crimeColours, mLegend [] ]
+                << position X [ pName "gridE", pQuant, pAxis [] ]
+                << position Y [ pName "gridN", pQuant, pAxis [] ]
+                << shape [ mName "crimeCats", mNominal, mScale crimeSymbols, mLegend [] ]
+                << color [ mName "crimeCats", mNominal, mScale crimeColours, mLegend [] ]
                 << opacity [ mNum 1 ]
                 << size [ mNum (w / 3) ]
     in
