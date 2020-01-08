@@ -136,12 +136,12 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         quadEnc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "y", pMType Quantitative, pAxis [] ]
-                << shape [ mName "quadrant", mMType Nominal, mScale quadPaths, mLegend [] ]
+                << position X [ pName "x", pQuant, pAxis [] ]
+                << position Y [ pName "y", pQuant, pAxis [] ]
+                << shape [ mName "quadrant", mNominal, mScale quadPaths, mLegend [] ]
                 << size
                     [ mName "magnitude"
-                    , mMType Quantitative
+                    , mQuant
                     , mScale [ scRange (raNums [ 0, w * 2 ]) ]
                     , mLegend []
                     ]
@@ -154,19 +154,19 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         axisEnc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "y", pMType Quantitative, pAxis [] ]
+                << position X [ pName "x", pQuant, pAxis [] ]
+                << position Y [ pName "y", pQuant, pAxis [] ]
                 << size [ mNum (w * 2) ]
-                << shape [ mName "quadrant", mMType Nominal, mScale quadPaths, mLegend [] ]
+                << shape [ mName "quadrant", mNominal, mScale quadPaths, mLegend [] ]
 
         axisSpec =
             asSpec [ point [ maStroke "#fff" ], axisEnc [] ]
 
         numLabelEnc =
             encoding
-                << position X [ pName "numLabelX", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "numLabelY", pMType Quantitative, pAxis [] ]
-                << text [ tName "magnitude", tMType Nominal ]
+                << position X [ pName "numLabelX", pQuant, pAxis [] ]
+                << position Y [ pName "numLabelY", pQuant, pAxis [] ]
+                << text [ tName "magnitude", tNominal ]
 
         numLabelSpec =
             asSpec
@@ -182,9 +182,9 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         labelEnc =
             encoding
-                << position X [ pName "labelX", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "labelY", pMType Quantitative, pAxis [] ]
-                << text [ tName "label", tMType Nominal ]
+                << position X [ pName "labelX", pQuant, pAxis [] ]
+                << position Y [ pName "labelY", pQuant, pAxis [] ]
+                << text [ tName "label", tNominal ]
 
         labelSpec =
             asSpec
