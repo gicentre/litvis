@@ -13,17 +13,14 @@ elm:
 import VegaLite exposing (..)
 ```
 
-> LitVis note: This is an example of some literate visualization we might use to think about a 'Socratic dialogue' schema to encourage design justicication.
+> LitVis note: This is an example of some literate visualization we might use to think about a 'Socratic dialogue' schema to encourage design justification.
 > The narrative form of Socratic dialogue is an imaginary conversation between two people, one, often playing the 'simple man' (Socrates) querying the 'wise man'.
 
 # London Air Pollution
 
-In July 2017, [Cyclists In The City](https://twitter.com/citycyclists/status/891926308833382400?ref_src=twsrc%5Etfw) observed a 'rare low pollition day' in London while a small number of roads were closed for a mass participation cycling event.
+In July 2017, [Cyclists In The City](https://twitter.com/citycyclists/status/891926308833382400?ref_src=twsrc%5Etfw) observed a 'rare low pollution day' in London while a small number of roads were closed for a mass participation cycling event.
 
-They showed a line chart representing concentration levels of Oxides of Nitrogen (NOx) in the air at Putney High Street during the Sunday when the road was closed along with the levels for the preceding 6 days as well as the day after the event.
-They claimed this provided evidence of the benifical effect of the road closure.
-
-The concentration of pollutants certainly seemed lower on the Sunday, but with a sample of only eight days covering only one Sunday, it wasn't clear how representative this contrast was.
+They showed a line chart representing concentration levels of Oxides of Nitrogen (NOx) in the air at Putney High Street during the Sunday when the road was closed along with the levels for the preceding 6 days as well as the day after the event. They claimed this provided evidence of the beneficial effect of the road closure. The concentration of pollutants certainly seemed lower on the Sunday, but with a sample of only eight days covering only one Sunday, it wasn't clear how representative this contrast was.
 
 {( question |} What are you trying to achieve with this visualization?{| question )}
 
@@ -45,10 +42,7 @@ This was also the source used by Cyclists In The City, so provides a basis for c
 
 ### Temporal Sample
 
-Data to be sampled for Sundays through the year including the Sundays of closed roads.
-The annual 'Ride London' events that result in closed roads are always on Sundays, so can compare like-with-like.
-It is possible that it might be more comparable to compare only Sundays in July so as to adjust for seasonal changes, but this would reduce the sample size significantly.
-Initial inspection suggests there is no strong seasonal effect.
+Data to be sampled for Sundays through the year including the Sundays of closed roads. The annual 'Ride London' events that result in closed roads are always on Sundays, so can compare like-with-like. It is possible that it might be more comparable to compare only Sundays in July so as to adjust for seasonal changes, but this would reduce the sample size significantly. Initial inspection suggests there is no strong seasonal effect.
 
 ### Spatial Sample
 
@@ -56,16 +50,15 @@ Initially selected just Putney 'High Street Facade' which was also the location 
 
 ### Measurement Sample
 
-Some readings are 'unratified' and subject to measurement error.
-No evidence of systematic bias in errors has been uncovered.
-The only filtering was to remove erroneous negative values.
+Some readings are 'unratified' and subject to measurement error. No evidence of systematic bias in errors has been uncovered. The only filtering was to remove erroneous negative values.
 
 ```elm {l v siding}
 airPollution : Spec
 airPollution =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
+            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+                [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         trans =
             transform
@@ -75,11 +68,11 @@ airPollution =
 
         enc =
             encoding
-                << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pName "reading", pMType Quantitative ]
-                << detail [ dName "day", dMType Ordinal ]
+                << position X [ pName "time of day", pQuant ]
+                << position Y [ pName "reading", pQuant ]
+                << detail [ dName "day", dOrdinal ]
     in
-    toVegaLite [ data, trans [], line [], enc [] ]
+    toVegaLite [ data, trans [], enc [], line [] ]
 ```
 
 {| answer )}
@@ -112,15 +105,15 @@ airPollution =
             encoding
                 << position X
                     [ pName "time of day"
-                    , pMType Quantitative
-                    , pAxis [ axValues [ 0, 4, 8, 12, 16, 20, 24 ], axFormat "05.2f" ]
+                    , pQuant
+                    , pAxis [ axValues (nums [ 0, 4, 8, 12, 16, 20, 24 ]), axFormat "05.2f" ]
                     ]
                 << position Y
                     [ pName "reading"
-                    , pMType Quantitative
-                    , pAxis [ axValues [ 250, 500, 750, 1000 ], axTitle "Oxides of Nitrogen (μg m-3 )" ]
+                    , pQuant
+                    , pAxis [ axValues (nums [ 250, 500, 750, 1000 ]), axTitle "Oxides of Nitrogen (μg m-3 )" ]
                     ]
-                << detail [ dName "day", dMType Ordinal ]
+                << detail [ dName "day", dOrdinal ]
                 << color [ mStr "#200" ]
                 << opacity [ mNum 0.5 ]
 
@@ -135,13 +128,13 @@ airPollution =
 
         avEnc =
             encoding
-                << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pAggregate opMean, pName "reading", pMType Quantitative ]
+                << position X [ pName "time of day", pQuant ]
+                << position Y [ pAggregate opMean, pName "reading", pQuant ]
                 << color [ mStr "#000" ]
                 << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate miMonotone ], avEnc [] ]
+            asSpec [ avTrans [], avEnc [], line [ maStrokeWidth 4, maInterpolate miMonotone ] ]
 
         rideTrans =
             transform
@@ -152,15 +145,21 @@ airPollution =
 
         rideEnc =
             encoding
-                << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pName "reading", pMType Quantitative ]
-                << detail [ dName "day", dMType Ordinal ]
+                << position X [ pName "time of day", pQuant ]
+                << position Y [ pName "reading", pQuant ]
+                << detail [ dName "day", dOrdinal ]
                 << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
-            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate miMonotone ], rideEnc [] ]
+            asSpec [ rideTrans [], rideEnc [], line [ maStrokeWidth 1, maInterpolate miMonotone ] ]
     in
-    toVegaLite [ width 500, height 300, background "white", data, layer [ backgroundSpec, avSpec, rideSpec ] ]
+    toVegaLite
+        [ width 500
+        , height 300
+        , background "white"
+        , data
+        , layer [ backgroundSpec, avSpec, rideSpec ]
+        ]
 ```
 
 ### Iteration 3
@@ -170,15 +169,15 @@ airPollution =
 - Most of the variation is in the 0-300 μg m-3 range, but the less frequent peaks dominate the scaling.
   Perhaps better to scale to the lower part of the range.
 - Maximum EU NO2 limits are 200 μg m-3 in an hour and 40 μg m-3 average over the year.
-  Would be good to show these, and by implication, how far above the limits 'normal' Sundays are, helping to meet objective II.
-  It would be good to somehow anchor the chart to these legal limits in order to frame the data.
+  Would be good to show these, and by implication, how far above the limits 'normal' Sundays are, helping to meet objective II. It would be desirable to somehow anchor the chart to these legal limits in order to frame the data.
 
 ```elm {v siding}
 airPollution : Spec
 airPollution =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv" [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
+            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+                [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         backgroundTrans =
             transform
@@ -190,21 +189,25 @@ airPollution =
             encoding
                 << position X
                     [ pName "time of day"
-                    , pMType Quantitative
-                    , pAxis [ axValues [ 0, 4, 8, 12, 16, 20, 24 ], axFormat "05.2f", axTitle "Time of day" ]
+                    , pQuant
+                    , pAxis
+                        [ axValues (nums [ 0, 4, 8, 12, 16, 20, 24 ])
+                        , axFormat "05.2f"
+                        , axTitle "Time of day"
+                        ]
                     ]
                 << position Y
                     [ pName "reading"
-                    , pMType Quantitative
+                    , pQuant
                     , pScale [ scDomain (doNums [ 0, 600 ]) ]
                     , pAxis [ axTitle "Oxides of Nitrogen (μg m-3 )" ]
                     ]
-                << detail [ dName "day", dMType Ordinal ]
+                << detail [ dName "day", dOrdinal ]
                 << color [ mStr "#200" ]
                 << opacity [ mNum 0.5 ]
 
         backgroundSpec =
-            asSpec [ backgroundTrans [], line [ maClip True, maStrokeWidth 0.1 ], backgroundEnc [] ]
+            asSpec [ backgroundTrans [], backgroundEnc [], line [ maClip True, maStrokeWidth 0.1 ] ]
 
         avTrans =
             transform
@@ -214,8 +217,8 @@ airPollution =
 
         avEnc =
             encoding
-                << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pAggregate opMean, pName "reading", pMType Quantitative, pAxis [] ]
+                << position X [ pName "time of day", pQuant ]
+                << position Y [ pAggregate opMean, pName "reading", pQuant, pAxis [] ]
                 << color [ mStr "#000" ]
                 << opacity [ mNum 0.2 ]
 
@@ -231,13 +234,13 @@ airPollution =
             encoding
                 << position Y
                     [ pName "EULimits"
-                    , pMType Quantitative
+                    , pQuant
                     , pAxis
-                        [ axTitle "EU limits: : 40 μg m-3 annaul average, 200 μg m-3 maximum in any hour"
-                        , axValues [ 40, 200 ]
+                        [ axTitle "EU limits: : 40 μg m-3 annual average\n200 μg m-3 maximum in any hour"
+                        , axValues (nums [ 40, 200 ])
                         ]
                     ]
-                << position Y2 [ pName "max", pMType Quantitative ]
+                << position Y2 [ pName "max", pQuant ]
                 << color [ mStr "rgb(173,118,66)" ]
                 << opacity [ mNum 0.15 ]
 
@@ -253,9 +256,9 @@ airPollution =
 
         rideEnc =
             encoding
-                << position X [ pName "time of day", pMType Quantitative ]
-                << position Y [ pName "reading", pMType Quantitative, pAxis [] ]
-                << detail [ dName "day", dMType Ordinal ]
+                << position X [ pName "time of day", pQuant ]
+                << position Y [ pName "reading", pQuant, pAxis [] ]
+                << detail [ dName "day", dOrdinal ]
                 << color [ mStr "rgb(202,0,0)" ]
 
         rideSpec =
@@ -264,42 +267,19 @@ airPollution =
         res =
             resolve
                 << resolution (reAxis [ ( chY, reIndependent ) ])
-
-        annotationData =
-            dataFromColumns []
-                << dataColumn "text"
-                    (strs
-                        [ "Airborne Pollution, Putney High Street Facade"
-                        , "All Sundays between 2013 and 2017"
-                        , "Ride London Sundays 2013-2016"
-                        ]
-                    )
-                << dataColumn "x" (nums [ 0.5, 0.5, 0.5 ])
-                << dataColumn "y" (nums [ 570, 550, 530 ])
-                << dataColumn "titleType" (strs [ "title", "subtitle1", "subtitle2" ])
-
-        annotationEnc =
-            encoding
-                << position X [ pName "x", pMType Quantitative ]
-                << position Y [ pName "y", pMType Quantitative ]
-                << color
-                    [ mName "titleType"
-                    , mMType Nominal
-                    , mScale (categoricalDomainMap [ ( "title", "#000" ), ( "subtitle1", "#666" ), ( "subtitle2", "#b00" ) ])
-                    , mLegend []
-                    ]
-                << size [ mNum 14 ]
-                << text [ tName "text", tMType Nominal ]
-
-        annotationSpec =
-            asSpec [ annotationData [], textMark [ maAlign haLeft ], annotationEnc [] ]
     in
     toVegaLite
         [ width 500
         , height 300
+        , title "Airborne Pollution, Putney High Street Facade\nAll Sundays between 2013 and 2017"
+            [ tiAnchor anStart
+            , tiFontWeight Normal
+            , tiSubtitle "Ride London Sundays 2013-2016"
+            , tiSubtitleColor "#b00"
+            ]
         , data
         , res []
-        , layer [ limitsSpec, backgroundSpec, avSpec, rideSpec, annotationSpec ]
+        , layer [ limitsSpec, backgroundSpec, avSpec, rideSpec ]
         ]
 ```
 
