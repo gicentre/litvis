@@ -27,7 +27,7 @@ Here are the same regions shown with Orthographic (left), Stereographic (middle)
 
 ^^^elm v=[(eclipse Square orthographic 0 -15 False ),(eclipse Square stereographic 40 -30 False),(eclipse Square transverseMercator 0 -15 False )]^^^
 
-And here is the effect of rotating the centre of a sterographic projection by 0, 20 and 40 degrees of longitude:
+And here is the effect of rotating the centre of a stereographic projection by 0, 20 and 40 degrees of longitude:
 
 ^^^elm v=[(eclipse Square stereographic 0 0 False),(eclipse Square stereographic 20 0 False),(eclipse Square stereographic 40 0 False)]^^^
 
@@ -108,7 +108,7 @@ eclipse aspect proj lonRotate latRotate showLabels =
                     encoding
                         << position Longitude [ pName "lon" ]
                         << position Latitude [ pName "lat" ]
-                        << text [ tName "label", tMType Nominal ]
+                        << text [ tName "label", tNominal ]
                         << size [ mNum 9 ]
                         << color [ mStr "#333" ]
             in
