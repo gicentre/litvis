@@ -20,8 +20,7 @@ _Litvis tutorials: Introducing Elm_
 
 Elm provides several ways of representing collections of items including [records](http://elm-lang.org/docs/records), [arrays](http://package.elm-lang.org/packages/elm-lang/core/latest/Array) and [tuples](http://package.elm-lang.org/packages/elm-lang/core/latest/Tuple), but the most common approach and one used extensively in both elm-vega and elm-vegalite is the [list](http://package.elm-lang.org/packages/elm-lang/core/latest/List).
 
-Lists comprise items of the same type and are immutable once created.
-They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
+Lists comprise items of the same type and are immutable once created. They are represented as values separated by commas inside square brackets and can be created by explicitly naming their contents, or as returned values from other functions:
 
 ```elm {l raw}
 ages : List Int
@@ -39,8 +38,7 @@ mySequence =
     List.range 3 13
 ```
 
-Unlike arrays there is no random access to list items, but the _head_ and _tail_ of any list can be easily found.
-Because a list can be empty (`[]`), there is no guarantee that a list will be separable into a head and tail, so these functions return a `Maybe` value:
+Unlike arrays there is no random access to list items, but the _head_ and _tail_ of any list can be easily found. Because a list can be empty (`[]`), there is no guarantee that a list will be separable into a head and tail, so these functions return a `Maybe` value:
 
 ```elm {l raw}
 leader : String
@@ -53,8 +51,7 @@ followers =
     List.tail names |> Maybe.withDefault []
 ```
 
-While lists are immutable, it is easy (and efficient) to create new lists by joining new values and an existing list.
-This is achieved with the [cons operator `::`](http://package.elm-lang.org/packages/elm-lang/core/latest/List#::)
+While lists are immutable, it is easy (and efficient) to create new lists by joining new values and an existing list. This is achieved with the [cons operator `::`](http://package.elm-lang.org/packages/elm-lang/core/latest/List#::)
 
 ```elm {l siding}
 newNames : List String
@@ -70,15 +67,13 @@ newNames =
     "Pete" :: List.reverse names |> List.reverse
 ```
 
-Here we have created a new list by adding 'Pete' to a reversed copy of the previous list of names and then creating a reversed copy of that new list.
-The effect of which is to add 'Pete' to the end of the original list.
+Here we have created a new list by adding 'Pete' to a reversed copy of the previous list of names and then creating a reversed copy of that new list. The effect of which is to add 'Pete' to the end of the original list.
 
 Note that as with all elm values, lists are _immutable_ so can never change their contents. What we are doing above is to create a completely new list (`newNames`) based on the contents of an existing one (`names`). At no point does `names` ever contain `"Pete"`.
 
 ### Processing lists with recursion
 
-The cons operator is particularly useful when pattern matching as it allows us to name the head and tail of a list (if it has any contents) and do something with each of them.
-When combined with a recursive call to itself, this allows a function to process the individual elements in a list one by one:
+The cons operator is particularly useful when pattern matching. It allows us to name the head and tail of a list (if it has any contents) and do something with each of them. When combined with a recursive call to itself, this allows a function to process the individual elements in a list one by one:
 
 ```elm {l raw siding}
 sum : number -> List number -> number
@@ -96,17 +91,13 @@ sumList =
     sum 0 (List.range 1 10)
 ```
 
-The example above uses _tail call recursion_ where the recursion to the next level (a call to `sum`) is the last and only operation of the function.
-If the last line of the example above was instead `0 + sum (acc+hd) tl`, this would be much slower as the stack needs to keep track of every recursive call in order to complete the succession of `+` operations (even though we are not changing anything by adding zero in this example).
+The example above uses _tail call recursion_ where the recursion to the next level (a call to `sum`) is the last and only operation of the function. If the last line of the example above was instead `0 + sum (acc+hd) tl`, this would be much slower as the stack needs to keep track of every recursive call in order to complete the succession of `+` operations (even though we are not changing anything by adding zero in this example).
 
 ### Folding lists
 
-Folding (sometimes referred to as 'reducing') lists can be used as an alternative to recursing to process list elements and will generally be clearer, more compact and sometimes faster (e.g. by ensuring tail-call recursion).
-The result of the processing might be another list or some reduced representation (such as the sum or concatenated value).
-Folds can proceed from left to right with [List.foldl](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldl) (most efficient) or right to left with [List.foldr](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldr).
+Folding (sometimes referred to as 'reducing') lists can be used as an alternative to recursing to process list elements and will generally be clearer, more compact and sometimes faster (e.g. by ensuring tail-call recursion). The result of the processing might be another list or some reduced representation (such as the sum or concatenated value). Folds can proceed from left to right with [List.foldl](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldl) (most efficient) or right to left with [List.foldr](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldr).
 
-The general form is `(a -> b -> b) b List a` where `a` is the type of element in the source list and `b` is the type of the resulting fold.
-The first parameter `(a -> b -> b)` is a reducing function which itself takes parameters representing the source and result types and returns an evaluated result.
+The general form is `(a -> b -> b) b List a` where `a` is the type of element in the source list and `b` is the type of the resulting fold. The first parameter `(a -> b -> b)` is a reducing function which itself takes parameters representing the source and result types and returns an evaluated result.
 
 For example, to create a function that calculates the sum of a list of numbers:
 
@@ -129,8 +120,7 @@ sumList =
     List.range 1 1000 |> sum
 ```
 
-Addition is commutative so `foldl` and `foldr` would produce the same result in the examples above and therefore, for efficiency, `foldl` should be preferred.
-But below is an example of reversing the contents of a list using the `::` (cons) operator where only `foldl` would give the expected result,
+Addition is commutative so `foldl` and `foldr` would produce the same result in the examples above and therefore, for efficiency, `foldl` should be preferred. But below is an example of reversing the contents of a list using the `::` (cons) operator where only `foldl` would give the expected result,
 
 ```elm {l siding}
 rev : List a -> List a
@@ -138,8 +128,7 @@ rev list =
     List.foldl (::) [] list
 ```
 
-By convention, as with all functions, if a parameter of the reducing function is not actually used, it is given the name `_` rather than, say, `a` or `b`.
-For example, this fold calculates the length of a list so doesn’t actually need to do anything with the value of the first parameter (elements of the list to fold):
+By convention, as with all functions, if a parameter of the reducing function is not actually used, it is given the name `_` rather than, say, `a` or `b`. For example, this fold calculates the length of a list so doesn’t actually need to do anything with the value of the first parameter (elements of the list to fold):
 
 ```elm {l siding}
 len : List a -> Int
@@ -216,14 +205,9 @@ doublerOutput =
 
 ### Using tuples to compare adjacent list items
 
-Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list).
-Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#window) available via elm-vegalite).
-For example, you could increase the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller (effectively 'smoothing' the numbers in a list).
+Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list). Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#window) available via elm-vegalite). For example, you could increase the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller (effectively 'smoothing' the numbers in a list).
 
-To help do this, we can transform a list of numbers into a list of _tuples_.
-A tuple is an ordered sequence of values, indicated in Elm by comma separated values enclosed in brackets.
-Unlike a list, a tuple does not have to contain elements all of the same type.
-The following are all valid tuples:
+To help do this, we can transform a list of numbers into a list of _tuples_. A tuple is an ordered sequence of values, indicated in Elm by comma separated values enclosed in brackets. Unlike a list, a tuple does not have to contain elements all of the same type. The following are all valid tuples:
 
 ```elm {l siding}
 myPair : ( Int, Int )
@@ -241,8 +225,7 @@ person =
     ( "Ada Lovelace", 1815 )
 ```
 
-We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map2) that creates a new list based on the transformation of two other lists.
-If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple construction function `Tuple.pair`:
+We can use a variation of `map`, called [map2](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map2) that creates a new list based on the transformation of two other lists.If those two lists consist of the original list and original list without the first item, we can combine them as a list of tuples using the tuple construction function `Tuple.pair`:
 
 ```elm {l}
 neighbours : List a -> List ( a, a )
