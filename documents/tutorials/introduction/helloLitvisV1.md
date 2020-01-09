@@ -25,10 +25,10 @@ helloLitvis =
             encoding
                 << position X
                     [ pName "language"
-                    , pMType Nominal
+                    , pNominal
                     , pSort [ soByField "rating" opMean, soDescending ]
                     ]
-                << position Y [ pName "rating", pMType Quantitative ]
+                << position Y [ pName "rating", pQuant ]
     in
     toVegaLite [ data [], bar [], enc [] ]
 ```

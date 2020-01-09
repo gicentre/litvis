@@ -25,8 +25,12 @@ helloLitvis =
     let
         enc =
             encoding
-                << position X [ pName "language", pMType Nominal, pSort [ soByField "rating" opMean, soDescending ] ]
-                << position Y [ pName "rating", pMType Quantitative ]
+                << position X
+                    [ pName "language"
+                    , pNominal
+                    , pSort [ soByField "rating" opMean, soDescending ]
+                    ]
+                << position Y [ pName "rating", pQuant ]
     in
     toVegaLite [ data [], bar [], enc [] ]
 ```
@@ -39,8 +43,8 @@ helloLitvis =
     let
         enc =
             encoding
-                << position Y [ pName "language", pMType Nominal ]
-                << position X [ pName "rating", pMType Quantitative ]
+                << position Y [ pName "language", pNominal ]
+                << position X [ pName "rating", pQuant ]
     in
     toVegaLite [ data [], bar [], enc [] ]
 ```
