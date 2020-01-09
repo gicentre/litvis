@@ -36,8 +36,7 @@ npm install -g  ndjson-cli topojson d3-geo
 
 For details of what `d3-geo` provides, see the [d3-geo documentation](https://github.com/d3/d3-geo).
 
-To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored.
-You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored. You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
 
 ```elm {l}
 path : String -> String
@@ -48,7 +47,7 @@ path fileName =
 ## 1. Generate a graticule file
 
 The lines of longitude (running north-south from pole to pole) and the latitude (running east-west) form a grid or _graticule_ that we can use to view the globe as it is projected onto a 2d plane.
-We can use d3 to generate the graticule for us and convert it into a topoJson file for display:
+We can use d3 to generate the graticule for us and convert it into a topoJSON file for display:
 
 ```bash
 echo "{}"  \
@@ -126,12 +125,9 @@ For other options for customising graticule generation, see the [geoGraticule do
 
 ## 2. Generating Small Circles
 
-A _great circle_ on a sphere is any circle whose centre is also the centre of the sphere.
-For example, the equator or any cirlce crossing both poles along lines of longitude.
-Any other circle on a sphere is a known as _small circle_ and is useful in representing a fixed distance away from a point (at the small circle's centre).
+A _great circle_ on a sphere is any circle whose centre is also the centre of the sphere. For example, the equator or any circle crossing both poles along lines of longitude. Any other circle on a sphere is a known as _small circle_ and is useful in representing a fixed distance away from a point (at the small circle's centre).
 
-d3's `geoCircle` function can be used to generate small circles centred at any location on the globe with any radius.
-The following, for example, generates a circle of 30 degrees radius centred on Paris by providing a two-element array of Paris's longitude and latitude:
+d3's `geoCircle` function can be used to generate small circles centred at any location on the globe with any radius. The following, for example, generates a circle of 30 degrees radius centred on Paris by providing a two-element array of Paris's longitude and latitude:
 
 ```bash
 echo "{}"  \
@@ -178,7 +174,7 @@ paris projName proj =
                 )
     in
     toVegaLite
-        [ title (projName ++ " projection")
+        [ title (projName ++ " projection") []
         , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , layer [ graticuleSpec, countrySpec, circleSpec ]
         ]
@@ -188,8 +184,7 @@ paris projName proj =
 
 ^^^elm v=(paris "Equirectangular" (projection [ prType equirectangular ]))^^^
 
-Note how the small circle is no longer circular when projected onto a plane.
-We can see the distortion effect by viewing the same circle with different map projections
+Note how the small circle is no longer circular when projected onto a plane. We can see the distortion effect by viewing the same circle with different map projections
 
 ^^^elm v=(paris "Albers" (projection [ prType albers ]))^^^
 ^^^elm v=(paris "Conic equal area" (projection [ prType conicEqualArea ]))^^^
@@ -205,10 +200,7 @@ We can see the distortion effect by viewing the same circle with different map p
 
 ## 3. Generate a Tissot's Indicatrix file.
 
-The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes.
-We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion.
-_Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude,latitude) space to projected space.
-We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
+The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes. We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion. _Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude,latitude) space to projected space. We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
 
 <details><summary>click to see Tissot generating code</summary>
 

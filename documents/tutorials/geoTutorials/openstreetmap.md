@@ -144,7 +144,7 @@ River Seine:
 
 Now that we have our three topoJSON files (buildings.json, parks.json and rivers.json), we can create a simple Vega-Lite specification to show them, with one set of features per layer. As it is common to use such mapping data as a background over which is displayed other data, we will use a subdued colour scheme to show the three sets of features. Note also that because the rivers are linear not areal features, we use a wide stroke width to show the Seine at approximately its correct scaled width.
 
-Make sure you have the three topojson files in a `data` folder located in the same place as your litvis document.
+Make sure you have the three topoJSON files in a `data` folder located in the same place as your litvis document.
 
 _For this version of the tutorial we define a path to online versions of the data files, but you may wish to edit the path to point to your local files._
 
@@ -211,7 +211,7 @@ To extract the metro lines we filter the lineMap file, but this time we will not
 
   **`filter-fields 'name'`**
 
-- Save the filtered features as a topojson file:
+- Save the filtered features as a topoJSON file:
 
   **`o 'metroLines.json' format=topojson`**
 
@@ -302,7 +302,7 @@ metroMap =
             encoding
                 << color
                     [ mName "properties.name"
-                    , mMType Nominal
+                    , mNominal
                     , mScale metroColours
                     , mLegend
                         [ leTitle ""
@@ -325,8 +325,8 @@ metroMap =
 
         encStations =
             encoding
-                << position Longitude [ pName "longitude", pMType Quantitative ]
-                << position Latitude [ pName "latitude", pMType Quantitative ]
+                << position Longitude [ pName "longitude", pQuant ]
+                << position Latitude [ pName "latitude", pQuant ]
 
         specStations =
             asSpec
@@ -337,7 +337,7 @@ metroMap =
 
         encStationNames =
             encStations
-                << text [ tName "name", tMType Nominal ]
+                << text [ tName "name", tNominal ]
 
         specStationNames =
             asSpec
@@ -363,7 +363,7 @@ metroMap =
     in
     toVegaLite
         [ cfg []
-        , title "\u{00A0}\u{00A0}Les stations de métro de Paris"
+        , title "\u{00A0}\u{00A0}Les stations de métro de Paris" []
         , width 1220
         , height 800
         , layer [ specRivers, specParks, specBuildings, specMetroLines, specStations, specStationNames ]

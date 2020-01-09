@@ -22,9 +22,7 @@ _This is one of a series of 'geo' tutorials for use with litvis._
 
 # Geospatial File Formats
 
-Geospatial features can be represented either with conventional (x,y) coordinates or with 'speherical' longitude, latitude angles.
-While the planar (x,y) coordinate system is simpler and probably more familiar, it provides a poor representation of larger regions of the earth where its spheroidal shape cannot be accurately represented as a flat surface.
-This tutorial considers the [geoJson](http://geojson.org) and [topoJson](https://github.com/topojson/topojson/wiki) file formats that can be used for more faithful representation of geographic data.
+Geospatial features can be represented either with conventional (x,y) coordinates or with 'spherical' longitude, latitude angles. While the planar (x,y) coordinate system is simpler and probably more familiar, it provides a poor representation of larger regions of the earth where its spheroidal shape cannot be accurately represented as a flat surface. This tutorial considers the [geoJson](http://geojson.org) and [topoJson](https://github.com/topojson/topojson/wiki) file formats that can be used for more faithful representation of geographic data.
 
 ## 1. Planar and Spherical Coordinates
 
@@ -39,8 +37,7 @@ myRegion =
         << dataColumn "northing" (nums [ 52, 52, 45, 45, 52 ])
 ```
 
-Note that we need to provide an `order` field to define the order in which the coordinates representing each point of the boundary are to be linked with a line mark.
-Note also that while the region has only 4 corners, we provide 5 sets of coordinate pairs, the last one matching the first one to _close_ the shape.
+Note that we need to provide an `order` field to define the order in which the coordinates representing each point of the boundary are to be linked with a line mark. Note also that while the region has only 4 corners, we provide 5 sets of coordinate pairs, the last one matching the first one to _close_ the shape.
 
 With the boundary region defined we can encode it as a `line` mark using the `X` and `Y` `position` channels:
 
@@ -50,9 +47,9 @@ planar =
     let
         enc =
             encoding
-                << position X [ pName "easting", pMType Quantitative, pScale [ scZero False ] ]
-                << position Y [ pName "northing", pMType Quantitative, pScale [ scZero False ] ]
-                << order [ oName "order", oMType Ordinal ]
+                << position X [ pName "easting", pQuant, pScale [ scZero False ] ]
+                << position Y [ pName "northing", pQuant, pScale [ scZero False ] ]
+                << order [ oName "order", oOrdinal ]
     in
     toVegaLite [ myRegion [], enc [], line [] ]
 ```
@@ -70,15 +67,14 @@ geo =
 
         enc =
             encoding
-                << position Longitude [ pName "easting", pMType Quantitative ]
-                << position Latitude [ pName "northing", pMType Quantitative ]
-                << order [ oName "order", oMType Ordinal ]
+                << position Longitude [ pName "easting", pQuant ]
+                << position Latitude [ pName "northing", pQuant ]
+                << order [ oName "order", oOrdinal ]
     in
     toVegaLite [ width 250, height 250, myRegion [], proj, enc [], line [] ]
 ```
 
-The `orthographic` map projection function used above gives a more accurate indication of the east-west distances of region's corners, here demonstrating the northern boundary is shorter than the southern one.
-Viewing it in a global context makes it clearer why this is the case:
+The `orthographic` map projection function used above gives a more accurate indication of the east-west distances of region's corners, here demonstrating the northern boundary is shorter than the southern one. Viewing it in a global context makes it clearer why this is the case:
 
 ```elm {v l=hidden}
 globe : Spec
@@ -117,14 +113,11 @@ globe =
         ]
 ```
 
-We have established that there can be good reason to represent geographic regions with spherical coordinates.
-But how do we represent boundaries more complex than simple squares?
-This is where the 'geoJSON' and 'topoJSON' file formats are useful.
+We have established that there can be good reason to represent geographic regions with spherical coordinates. But how do we represent boundaries more complex than simple squares? This is where the 'geoJSON' and 'topoJSON' file formats are useful.
 
 ## 2. Simple Geometry Files
 
-Let's first consider the [geoJson](http://geojson.org) file format which is commonly used for representing geo data.
-The simple rectangle above can be represented by the following geoJSON file:
+Let's first consider the [geoJson](http://geojson.org) file format which is commonly used for representing geo data. The simple rectangle above can be represented by the following geoJSON file:
 
 ```Javascript
 {
@@ -138,14 +131,12 @@ The simple rectangle above can be represented by the following geoJSON file:
 }
 ```
 
-Again, we see the 5 coordinate pairs representing the points along the region's boundary including a duplicated first and last point to close the region.
-GeoJSON files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
+Again, we see the 5 coordinate pairs representing the points along the region's boundary including a duplicated first and last point to close the region. GeoJSON files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
 But for the moment let's just stick with the simple polygon.
 
 To display the file, simply load it as any normal data file and encode it with the `geoshape` function.
 
-To keep things flexible, we'll define a `path` function in Elm pointing to the base directory where all data are stored.
-You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+To keep things flexible, we'll define a `path` function in Elm pointing to the base directory where all data are stored. You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
 
 ```elm {l}
 path : String -> String
@@ -167,9 +158,7 @@ geo =
 
 Notice that not only is the `geoshape` a more concise specification than the region boundary as a `line`, but also the bounding lines themselves are not straight, more accurately reflecting the projection from the sphere onto the plane.
 
-As we shall see, larger geo data are more efficiently stored not as geoJSON, but as [topoJson](https://github.com/topojson/topojson/wiki) files.
-These store the same geometric information as their geoJSON counterparts but additionally represent the _topology_ of the features.
-Here is the equivalent topoJSON file representing the geoJSON above:
+As we shall see, larger geo data are more efficiently stored not as geoJSON, but as [topoJson](https://github.com/topojson/topojson/wiki) files. These store the same geometric information as their geoJSON counterparts but additionally represent the _topology_ of the features. Here is the equivalent topoJSON file representing the geoJSON above:
 
 ```Javascript
 {
@@ -186,12 +175,7 @@ Here is the equivalent topoJSON file representing the geoJSON above:
 }
 ```
 
-Similarly, we can display this file directly in elm-vegalite with `geoshape`.
-Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`).
-Objects themselves can be treated either as _meshes_ or _features_.
-A `topojsonMesh` treats the entire object as a single entity and is quicker to render.
-On the other hand, a `topojsonFeature` allows individual features within the object to be handled separately.
-In this simple example, we can store the object as a `topojsonMesh`:
+Similarly, we can display this file directly in elm-vegalite with `geoshape`. Because topojson files can contain many `objects`, we have to specify which object we are loading (in this case `myRegion`). Objects themselves can be treated either as _meshes_ or _features_. A `topojsonMesh` treats the entire object as a single entity and is quicker to render. On the other hand, a `topojsonFeature` allows individual features within the object to be handled separately. In this simple example, we can store the object as a `topojsonMesh`:
 
 ```elm {s l}
 geo : Spec
@@ -205,8 +189,7 @@ geo =
         ]
 ```
 
-But why do we use a topoJSON file rather than what looks like a simpler geoJSON file?
-The answer is clearer if we consider a file representing two adjacent regions:
+But why do we use a topoJSON file rather than what looks like a simpler geoJSON file? The answer is clearer if we consider a file representing two adjacent regions:
 
 ```elm {s v l=hidden}
 geo : Spec
@@ -247,13 +230,9 @@ Here is its geoJSON representation:
 }
 ```
 
-This file contains not one but two `Polygon` features.
-Both are nested within an outer `features` array which in this case contains two elements, but could contain many more.
-Notice how the common edge between these two adjacent regions is duplicated (the boundary between (-3,52) and (4,52)).
-In this case that duplication isn't a big problem, but imagine that boundary was a complex meandering line with many hundreds of coordinate pairs.
+This file contains not one but two `Polygon` features. Both are nested within an outer `features` array which in this case contains two elements, but could contain many more. Notice how the common edge between these two adjacent regions is duplicated (the boundary between (-3,52) and (4,52)). In this case that duplication isn't a big problem, but imagine that boundary was a complex meandering line with many hundreds of coordinate pairs.
 
-The topoJSON format instead stores all boundaries as distinct _arcs_ that are then reassembled to form area boundaries.
-If more than one feature shares a common arc, it is only stored once:
+The topoJSON format instead stores all boundaries as distinct _arcs_ that are then reassembled to form area boundaries. If more than one feature shares a common arc, it is only stored once:
 
 ```javascript
 {
@@ -280,13 +259,11 @@ If more than one feature shares a common arc, it is only stored once:
 
 The arcs are referenced by their array position (0, 1 and 2 in this example) to form the two polygons.
 
-_Why do you think arc 1 is referenced by `-1` rather than `1` for the second polygon?
-Try drawing out the vertices, boundary lines and regions if you are not sure._
+_Why do you think arc 1 is referenced by `-1` rather than `1` for the second polygon? Try drawing out the vertices, boundary lines and regions if you are not sure._
 
 ## 3. Feature IDs
 
-So far, we have only considered the geometry of features.
-Each feature can additionally have an `id` that stores some property to be associated with the feature, for example a country name, or population count.
+So far, we have only considered the geometry of features. Each feature can additionally have an `id` that stores some property to be associated with the feature, for example a country name, or population count.
 
 Keeping with our simple two-region example, let's attach a text `id` with each of the features (in the objects placed in the `geometries` array):
 
@@ -325,16 +302,14 @@ geo =
         , height 200
         , dataFromUrl (path "topoJson3.json") [ topojsonFeature "myRegions" ]
         , projection [ prType orthographic ]
-        , encoding (color [ mName "id", mMType Nominal ] [])
+        , encoding (color [ mName "id", mNominal ] [])
         , geoshape []
         ]
 ```
 
 ## 4. Feature Properties
 
-The `id` is a useful and concise way of identifying a single property in a topoJSON file, but only one `id` is permitted for each feature.
-TopoJSON and GeoJSON files that need to store multiple attributes for each feature may store `properties` objects that can have any number of json objects associated with them.
-Here is an example of our two-region topoJSON file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
+The `id` is a useful and concise way of identifying a single property in a topoJSON file, but only one `id` is permitted for each feature. TopoJSON and GeoJSON files that need to store multiple attributes for each feature may store `properties` objects that can have any number of JSON objects associated with them. Here is an example of our two-region topoJSON file where each feature contains no `id` but instead the properties `myRegionName` and `myPopulationCount`:
 
 ```Javascript
 {
@@ -367,9 +342,7 @@ Here is an example of our two-region topoJSON file where each feature contains n
 }
 ```
 
-We can access any of the properties by using dot notation to identify nested json elements.
-For example to access `myRegionName` for each feature we would use `properties.myRegionName` in its specification instead of `id`.
-Below we access all instances of the `myPopulationCount` property to colour each feature:
+We can access any of the properties by using dot notation to identify nested json elements. For example to access `myRegionName` for each feature we would use `properties.myRegionName` in its specification instead of `id`. Below we access all instances of the `myPopulationCount` property to colour each feature:
 
 ```elm {s l v}
 geo : Spec
@@ -379,15 +352,14 @@ geo =
         , height 200
         , dataFromUrl (path "topoJson4.json") [ topojsonFeature "myRegions" ]
         , projection [ prType orthographic ]
-        , encoding (color [ mName "properties.myPopulationCount", mMType Quantitative ] [])
+        , encoding (color [ mName "properties.myPopulationCount", mQuant ] [])
         , geoshape []
         ]
 ```
 
 ## 5. Complex Geometry
 
-So far, the features we have considered have been 'simple polygons', i.e. each polygon is defined by a single ring of coordinates.
-Features can be more complex than this though, for example, a single feature might be made up of a collection of simple polygons in a geoJSON file:
+So far, the features we have considered have been 'simple polygons', i.e. each polygon is defined by a single ring of coordinates. Features can be more complex than this though, for example, a single feature might be made up of a collection of simple polygons in a geoJSON file:
 
 ```Javascript
 {
@@ -417,8 +389,7 @@ Features can be more complex than this though, for example, a single feature mig
 }
 ```
 
-Notice that the coordinates array for the northern region now contains two elements, each of which is a ring of 5 coordinate pairs.
-Its equivalent topoJSON file looks like this:
+Notice that the coordinates array for the northern region now contains two elements, each of which is a ring of 5 coordinate pairs. Its equivalent topoJSON file looks like this:
 
 ```Javascript
 {
@@ -446,7 +417,7 @@ Its equivalent topoJSON file looks like this:
 }
 ```
 
-We can display topojson in much the same way as for the simple polygons:
+We can display topoJSON in much the same way as for the simple polygons:
 
 ```elm {s l v}
 geo : Spec
@@ -456,13 +427,12 @@ geo =
         , height 200
         , dataFromUrl (path "topoJson5.json") [ topojsonFeature "myRegions" ]
         , projection [ prType orthographic ]
-        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , encoding (color [ mName "properties.myRegionName", mNominal ] [])
         , geoshape []
         ]
 ```
 
-Finally, it is possible to have 'holes' within polygons and even 'islands' within those holes in cases where one polygon ring is within another.
-Here is the geoJSON that defines two further rings within the southern region.
+Finally, it is possible to have 'holes' within polygons and even 'islands' within those holes in cases where one polygon ring is within another. Here is the geoJSON that defines two further rings within the southern region.
 Note that in order to specify a hole, the order of coordinates is anti-clockwise whereas the outer ring and inner island, bounding 'positive' areas are in clockwise order.
 
 ```Javascript
@@ -533,17 +503,14 @@ geo =
         , height 200
         , dataFromUrl (path "topoJson6.json") [ topojsonFeature "myRegions" ]
         , projection [ prType orthographic ]
-        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , encoding (color [ mName "properties.myRegionName", mNominal ] [])
         , geoshape []
         ]
 ```
 
-## 6. Creating JSON files programatically
+## 6. Creating JSON files programmatically
 
-In all the examples above the topoJSON and geoJSON has been read from external files.
-This is likely the most common use-case, but sometimes it can be useful to generate the content programatically.
-This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function.
-Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programatically:
+In all the examples above the topoJSON and geoJSON has been read from external files. This is likely the most common use-case, but sometimes it can be useful to generate the content programatically. This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function. Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
 
 ```elm {s l}
 geo : Spec
@@ -590,8 +557,7 @@ geo =
         ]
 ```
 
-Feature properties can be added to the last parameter of each `geometry` call and are expressed as a list of key, value pairs in the same way as they are when calling `dataRow`.
-For example:
+Feature properties can be added to the last parameter of each `geometry` call and are expressed as a list of key, value pairs in the same way as they are when calling `dataRow`. For example:
 
 ```elm {s l v}
 geo : Spec
@@ -608,14 +574,14 @@ geo =
         , height 200
         , dataFromJson geojson [ jsonProperty "features" ]
         , projection [ prType orthographic ]
-        , encoding (color [ mName "properties.myRegionName", mMType Nominal ] [])
+        , encoding (color [ mName "properties.myRegionName", mNominal ] [])
         , geoshape []
         ]
 ```
 
-### Programatically Generated Graticule
+### Programmatically Generated Graticule
 
-Generating geo data programatically allows us to create features that contain regular structures quite easily.
+Generating geo data programmatically allows us to create features that contain regular structures quite easily.
 The following creates a graticule (lines of longitude and latitude):
 
 ```elm {l}
@@ -654,7 +620,7 @@ geo =
         ]
 ```
 
-### Programatically Generated Tissot's Indicatrices
+### Programmatically Generated Tissot's Indicatrices
 
 We can add a grid of small circles to simulate _Tissot's Indicatrices_ for showing local map projection distortion properties:
 

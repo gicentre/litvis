@@ -50,11 +50,9 @@ You will also need to install some d3 command-line utilities, so open a command 
 
 **`npm install -g shapefile ndjson-cli topojson d3-geo-centroid`**
 
-The `-g` option ensures the installed packages are available globally from any directory.
-The `gdal` package will be used for the map projection work; `shapefile` for the conversion from shapefile to geoJSON; `ndjson-cli` splits JSON files into separate lines to ease processing; `topojson` does the conversion to topoJSON and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.
+The `-g` option ensures the installed packages are available globally from any directory. The `gdal` package will be used for the map projection work; `shapefile` for the conversion from shapefile to geoJSON; `ndjson-cli` splits JSON files into separate lines to ease processing; `topojson` does the conversion to topoJSON and the topology-preserving simplification; and `d3-geo-centroid` is used for generating centroid locations from polygons.
 
-To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored.
-You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
+To keep things flexible, we'll also define a `path` function in Elm pointing to the base directory where all data for this tutorial are stored. You can leave the default as shown below to load the data from the giCentre data repository or replace it with a local folder if you have your own copy of the data.
 
 ```elm {l}
 path : String -> String
@@ -66,15 +64,9 @@ path fileName =
 
 _If your data already use longitude/latitude with WGS84, you can skip this step._
 
-Download the shapefiles, noting that you will need the geometry (_something_.shp), attribute (_something_.dbf) and index (_something_.shx) and projection (_something_.prj) files.
-For this tutorial we will use `London_Borough_Excluding_MHW` from the [London Data Store](https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london).
+Download the shapefiles, noting that you will need the geometry (_something_.shp), attribute (_something_.dbf) and index (_something_.shx) and projection (_something_.prj) files. For this tutorial we will use `London_Borough_Excluding_MHW` from the [London Data Store](https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london).
 
-As part of the conversion we will convert the geometry from the projected coordinates it currently uses into 'unprojected' longitude/latitude spherical coordinates.
-This requires us to know what the projection the source data are using.
-Typically a shapefile collection will come with a `.proj` file that will contain the projection information.
-We need to provide these projection parameters to `gdal`, but thankfully most standard projections have a [EPSG code](http://epsg.io) referencing this information which we can pass to the converter.
-In our case the data use the Ordnance Survey National Grid with an [EPSG of 27700](http://epsg.io/27700).
-The EPSG code for unprojected longitude/latitude using the WGS84 ellipsoid is [4326](http://epsg.io/4326).
+As part of the conversion we will convert the geometry from the projected coordinates it currently uses into 'unprojected' longitude/latitude spherical coordinates. This requires us to know what the projection the source data are using. Typically a shapefile collection will come with a `.proj` file that will contain the projection information. We need to provide these projection parameters to `gdal`, but thankfully most standard projections have a [EPSG code](http://epsg.io) referencing this information which we can pass to the converter. In our case the data use the Ordnance Survey National Grid with an [EPSG of 27700](http://epsg.io/27700). The EPSG code for unprojected longitude/latitude using the WGS84 ellipsoid is [4326](http://epsg.io/4326).
 
 To convert the shapefile, open a terminal and `cd` to the folder containing the downloaded shapefiles, then type
 
@@ -96,11 +88,7 @@ While you are getting used to this workflow it can be helpful to append a `_geo`
 
 ## 3. Identify the `id` attribute
 
-When we render the data we will need an ID to refer to each spatial feature within the dataset (boroughs in our case).
-GeoJSON and topoJSON files can have an optional `id` for each feature which we need to add as part of our workflow.
-The original shape file should have had one or more attributes associated with each feature and these get transferred to the geoJSON as 'properties'.
-You can see these properties by viewing the .json file in a text editor.
-Choose the property you wish to make the id and then type the following:
+When we render the data we will need an ID to refer to each spatial feature within the dataset (boroughs in our case). GeoJSON and topoJSON files can have an optional `id` for each feature which we need to add as part of our workflow. The original shape file should have had one or more attributes associated with each feature and these get transferred to the geoJSON as 'properties'. You can see these properties by viewing the .json file in a text editor. Choose the property you wish to make the id and then type the following:
 
 ```bash
 ndjson-split 'd.features' < boroughs_geo.json > boroughs_geo.ndjson
@@ -110,17 +98,13 @@ ndjson-reduce < boroughs_id_geo.ndjson | ndjson-map '{type: "FeatureCollection",
 
 replacing `NAME` with the name of the attribute property you wish to become the ID (in this London boroughs example, the property is actually called `NAME`, representing the name of each borough).
 
-The first line splits the geoJSON file so that each feature (borough boundary in this example) is on its own line in the file.
-The second line selects a property and adds it as an `id` to each line while deleting the other properties as they are no longer needed.
-The third line converts the split feature-per-line file back into a geoJSON file with the new `id` as well as the original properties.
+The first line splits the geoJSON file so that each feature (borough boundary in this example) is on its own line in the file. The second line selects a property and adds it as an `id` to each line while deleting the other properties as they are no longer needed. The third line converts the split feature-per-line file back into a geoJSON file with the new `id` as well as the original properties.
 
 Note that if you wish to do more complex data manipulation such as combining attributes from multiple files or calculating new feature attributes, it is on these feature-per-line `ndjson` files that it is performed. See Mike Bostock's [command line cartography](https://medium.com/@mbostock/command-line-cartography-part-2-c3a82c5c0f3) for examples.
 
 ## 4. Convert to topoJSON
 
-GeoJson files store each spatial object as a string of coordinates tracing its boundary (or boundaries for complex features).
-This is rather inefficient for adjacent areas that share a common boundary and it makes it difficult to infer topological relationships such as adjacency.
-By converting to the topoJSON format we can use a much more efficient data structure that stores common boundary lines only once:
+GeoJson files store each spatial object as a string of coordinates tracing its boundary (or boundaries for complex features). This is rather inefficient for adjacent areas that share a common boundary and it makes it difficult to infer topological relationships such as adjacency. By converting to the topoJSON format we can use a much more efficient data structure that stores common boundary lines only once:
 
 ```bash
 geo2topo boroughs=boroughs_id_geo.json > boroughs_topo.json
@@ -132,15 +116,10 @@ Again, as you are learning to use this workflow, it can be helpful to name the r
 
 ## 5. Simplify geometry
 
-If you compare the sizes you will see that the topoJSON file is smaller than its geoJSON equivalent thanks to its more efficient data structure.
-We can however shrink the file size much more by (i) simplifying complex lines; (ii) reducing the precision with which we store coordinates.
-We can do this because our aim is to produce a file for rendering, not accurate geoprocessing.
+If you compare the sizes you will see that the topoJSON file is smaller than its geoJSON equivalent thanks to its more efficient data structure. We can however shrink the file size much more by (i) simplifying complex lines; (ii) reducing the precision with which we store coordinates. We can do this because our aim is to produce a file for rendering, not accurate geoprocessing.
 
-To simplify the line we need to specify a _threshold_ that determines the degree of simplification.
-You can think of this threshold as being the length of line details below which we attempt to make all boundary lines straight.
-The larger the threshold, the simpler the boundary lines look.
-Because we are dealing with latitude and longitude coordinates, that threshold is expressed as [steradians](https://en.wikipedia.org/wiki/Steradian).
-Typically, useful thresholds will be in the order of 1e-9 steradians but it pays to experiment to find a suitable level of simplification.
+To simplify the line we need to specify a _threshold_ that determines the degree of simplification. You can think of this threshold as being the length of line details below which we attempt to make all boundary lines straight.
+The larger the threshold, the simpler the boundary lines look. Because we are dealing with latitude and longitude coordinates, that threshold is expressed as [steradians](https://en.wikipedia.org/wiki/Steradian). Typically, useful thresholds will be in the order of 1e-9 steradians but it pays to experiment to find a suitable level of simplification.
 
 To reduce the precision of coordinates we use `topoquantize` with a parameter typically of order 1e4 indicating 4 significant digits of precision.
 
@@ -154,9 +133,7 @@ Notice how this step radically reduces the size of the topoJSON file for complex
 
 ### Combining conversion steps
 
-Steps 2 to 5 above have been separated in order to explain the various stages of file conversion.
-But the piping model of the d3 programs means that they can be combined into a more compact set of operations that avoid generating the intermediate files.
-The following therefore can be used as a compact alternative to all 4 steps:
+Steps 2 to 5 above have been separated in order to explain the various stages of file conversion. But the piping model of the d3 programs means that they can be combined into a more compact set of operations that avoid generating the intermediate files. The following therefore can be used as a compact alternative to all 4 steps:
 
 ```bash
 shp2json -n boroughs.shp \
@@ -187,15 +164,13 @@ boroughs =
             )
         , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
         , geoshape []
-        , encoding (color [ mName "id", mMType Nominal ] [])
+        , encoding (color [ mName "id", mNominal ] [])
         ]
 ```
 
 # Generating New Data
 
-We can use the d3 command line tools to generate some additional files that may be useful for rendering.
-For example, suppose we wished to create a custom colour scheme to associate with each of the 33 boroughs in the dataset.
-In elm-vegalite, custom categorical colours are generated with
+We can use the d3 command line tools to generate some additional files that may be useful for rendering. For example, suppose we wished to create a custom colour scheme to associate with each of the 33 boroughs in the dataset. In elm-vegalite, custom categorical colours are generated with
 
 ```elm
 categoricalDomainMap
@@ -205,8 +180,7 @@ categoricalDomainMap
       ]
 ```
 
-We might generate a list of 33 categorical colours with some external service such [IWantHue](http://tools.medialab.sciences-po.fr/iwanthue).
-To generate the equivalent list of category names we need to extract those IDs from the imported dataset, which we can do with
+We might generate a list of 33 categorical colours with some external service such [IWantHue](http://tools.medialab.sciences-po.fr/iwanthue). To generate the equivalent list of category names we need to extract those IDs from the imported dataset, which we can do with
 
 ```bash
 shp2json -n boroughs.shp | ndjson-map 'd.properties.NAME'
@@ -265,12 +239,11 @@ boroughs =
         , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
         , geoshape [ maStroke "white", maStrokeWidth 2 ]
-        , encoding (color [ mName "id", mMType Nominal, mScale boroughColors ] [])
+        , encoding (color [ mName "id", mNominal, mScale boroughColors ] [])
         ]
 ```
 
-We can use this approach to extract any of the properties (attributes) from the original shapefile.
-For example, the following will extract the name and GSS code of each spatial feature:
+We can use this approach to extract any of the properties (attributes) from the original shapefile. For example, the following will extract the name and GSS code of each spatial feature:
 
 ```bash
 shp2json -n boroughs.shp | ndjson-map '[d.properties.NAME,d.properties.GSS_CODE]'
@@ -287,9 +260,7 @@ giving
     :
 ```
 
-But suppose we wished to label each borough directly on the map rather than via a colour legend.
-We would need to generate a new dataset that contained the label position for each borough.
-We can do that by calculating the centroid of each borough polygon using the d3's `geoCentroid()`:
+But suppose we wished to label each borough directly on the map rather than via a colour legend. We would need to generate a new dataset that contained the label position for each borough. We can do that by calculating the centroid of each borough polygon using the d3's `geoCentroid()`:
 
 ```bash
 shp2json -n boroughs.shp \
@@ -309,8 +280,7 @@ This generates the following json file which we can load into our visualization 
    ]
 ```
 
-We create two layers, one for the coloured polygons, the other for the name labels placed at centroid locations.
-Note also the use of the `transform` to display only the first word in a multi-word borough name.
+We create two layers, one for the coloured polygons, the other for the name labels placed at centroid locations. Note also the use of the `transform` to display only the first word in a multi-word borough name.
 
 ```elm {l}
 boroughsCustom : Float -> Float -> Spec
@@ -318,7 +288,7 @@ boroughsCustom w h =
     let
         polyEnc =
             encoding
-                << color [ mName "id", mMType Nominal, mScale boroughColors, mLegend [] ]
+                << color [ mName "id", mNominal, mScale boroughColors, mLegend [] ]
 
         polySpec =
             asSpec
@@ -331,7 +301,7 @@ boroughsCustom w h =
             encoding
                 << position Longitude [ pName "cx" ]
                 << position Latitude [ pName "cy" ]
-                << text [ tName "bLabel", tMType Nominal ]
+                << text [ tName "bLabel", tNominal ]
                 << size [ mNum (8 * w / 700) ]
                 << opacity [ mNum 0.6 ]
 
@@ -356,9 +326,7 @@ boroughs =
     boroughsCustom 700 500
 ```
 
-topoJSON files are not limited to areal units.
-Here, for example, we can import a file containing the geographical routes of selected London Underground tube lines.
-The conversion of the [tfl_lines.json](https://github.com/oobrien/vis/tree/master/tube/data) follows a similar pattern to the conversion of the borough boundary files, but with some minor differences:
+topoJSON files are not limited to areal units. Here, for example, we can import a file containing the geographical routes of selected London Underground tube lines. The conversion of the [tfl_lines.json](https://github.com/oobrien/vis/tree/master/tube/data) follows a similar pattern to the conversion of the borough boundary files, but with some minor differences:
 
 - The file is already in unprojected geoJSON format so does not need reprojecting or conversion from a shapefile.
 - `ndjson-cat` converts the original geoJSON file to a single line necessary for further processing.
@@ -384,7 +352,7 @@ tubeLines =
         , height 400
         , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
         , geoshape [ maFilled False ]
-        , encoding (color [ mName "id", mMType Nominal ] [])
+        , encoding (color [ mName "id", mNominal ] [])
         ]
 ```
 
@@ -417,7 +385,7 @@ tubeLines =
             encoding
                 << color
                     [ mName "id"
-                    , mMType Nominal
+                    , mNominal
                     , mLegend [ leTitle "", leOrient loBottomRight ]
                     , mScale tubeLineColors
                     ]
@@ -427,8 +395,8 @@ tubeLines =
         , height 500
         , configure (configuration (coView [ vicoStroke Nothing ]) [])
         , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
-        , geoshape [ maFilled False, maStrokeWidth 2 ]
         , enc []
+        , geoshape [ maFilled False, maStrokeWidth 2 ]
         ]
 ```
 
@@ -449,7 +417,7 @@ tubeLines =
             encoding
                 << position Longitude [ pName "cx" ]
                 << position Latitude [ pName "cy" ]
-                << text [ tName "bLabel", tMType Nominal ]
+                << text [ tName "bLabel", tNominal ]
                 << size [ mNum 8 ]
                 << opacity [ mNum 0.6 ]
 
@@ -464,7 +432,7 @@ tubeLines =
             encoding
                 << color
                     [ mName "id"
-                    , mMType Nominal
+                    , mNominal
                     , mLegend [ leTitle "", leOrient loBottomRight, leOffset 0 ]
                     , mScale tubeLineColors
                     ]
@@ -472,8 +440,8 @@ tubeLines =
         routeSpec =
             asSpec
                 [ dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
-                , geoshape [ maFilled False, maStrokeWidth 2 ]
                 , tubeEnc []
+                , geoshape [ maFilled False, maStrokeWidth 2 ]
                 ]
     in
     toVegaLite
