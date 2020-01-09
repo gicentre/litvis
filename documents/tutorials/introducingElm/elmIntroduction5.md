@@ -21,14 +21,11 @@ _Litvis tutorials: Introducing Elm_
 
 # Elm and elm-vegalite
 
-The primary goal of litvis is to allow visualizations to be easily integrated into narratives that can describe their design or use.
-We can use Elm to help with the visualization side of things by using the [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/) and, for more flexible but verbose specifications, [elm-vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/) packages.
+The primary goal of litvis is to allow visualizations to be easily integrated into narratives that can describe their design or use. We can use Elm to help with the visualization side of things by using the [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/) and, for more flexible but verbose specifications, [elm-vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/) packages.
 
-In this tutorial we won't go into too much detail about how to use these packages – for that have a look at the [introduction to elm-vegalite](../introduction/intro1.md) and [elm-vegalite walkthrough](../elmVegaliteWalkthrough/elmVegaliteWalkthrough1.md).
-Instead we will consider how to use some of the ideas discussed in this Elm tutorial to help writing functions for visualization.
+In this tutorial we won't go into too much detail about how to use these packages – for that have a look at the [introduction to elm-vegalite](../introduction/intro1.md) and [elm-vegalite walkthrough](../elmVegaliteWalkthrough/elmVegaliteWalkthrough1.md). Instead we will consider how to use some of the ideas discussed in this Elm tutorial to help writing functions for visualization.
 
-As you learn to read and write your own code with elm-vegalite you will see and use many new functions as well as the ones we have already covered in this tutorial.
-It can be handy to have easy access to the documentation describing both the range of commonly used Elm functions and those specific to elm-vegalite:
+As you learn to read and write your own code with elm-vegalite you will see and use many new functions as well as the ones we have already covered in this tutorial. It can be handy to have easy access to the documentation describing both the range of commonly used Elm functions and those specific to elm-vegalite:
 
 - [Elm core API documentation](https://package.elm-lang.org/packages/elm/core/latest/)
 - [elm-vegalite API documentation](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite)
@@ -52,27 +49,22 @@ scatterplot =
 
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
-                << color [ mName "Origin", mMType Nominal ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
+                << color [ mName "Origin", mNominal ]
     in
-    toVegaLite [ cars, circle [], enc [] ]
+    toVegaLite [ cars, enc [], circle [] ]
 ```
 
-Note that the entire specification is declared inside a single function, here called `scatterplot`.
-It is necessary to provide a _type signature_ to the function indicating that it will return a `Spec`, which is the _type_ elm-vegalite uses for representing a visualization specification.
+Note that the entire specification is declared inside a single function, here called `scatterplot`. It is necessary to provide a _type signature_ to the function indicating that it will return a `Spec`, which is the _type_ elm-vegalite uses for representing a visualization specification.
 
-The work of creating the JSON that is required by Vega-Lite is done by the [toVegaLite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#toVegaLite) function.
-To make the code readable, the elements of the specification are stored as named functions using `let`, typically separating the data (`cars`) from the visual encoding rules (`enc`) from the visual marks (`circle`) used.
+The work of creating the JSON that is required by Vega-Lite is done by the [toVegaLite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#toVegaLite) function. To make the code readable, the elements of the specification are stored as named functions using `let`, typically separating the data (`cars`) from the visual encoding rules (`enc`) from the visual marks (`circle`) used.
 
-Encoding is often where most of the design details are represented.
-It represents the specification of which aspects of the data are represented by which visualization channels.
-Depending on the complexity of the design, encoding can incorporate many different elements such as size, position, colour and opacity.
+Encoding is often where most of the design details are represented. It represents the specification of which aspects of the data are represented by which visualization channels. Depending on the complexity of the design, encoding can incorporate many different elements such as size, position, colour and opacity.
 
 Each encoding function, such as [position](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#position) or [color](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#color) takes a list of [LabelledSpec](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#LabelledSpec) types as one of its parameters, to which it adds a new `LabelledSpec` before returning the newly appended list of `LabelledSpec`.
 
-Using the functional composition operator (`<<`) and point-free style keeps the code clean and simple (as above), but it should be noted that the same encoding could be represented by piping an empty list to an encoding channel function before piping that one to the next etc.
-So the following is exactly equivalent to the example above, but harder to read:
+Using the functional composition operator (`<<`) and point-free style keeps the code clean and simple (as above), but it should be noted that the same encoding could be represented by piping an empty list to an encoding channel function before piping that one to the next etc. So the following is exactly equivalent to the example above, but harder to read:
 
 ```elm {xl siding}
 scatterplot2 : Spec
@@ -83,13 +75,13 @@ scatterplot2 =
 
         enc =
             encoding
-                (position X [ pName "Horsepower", pMType Quantitative ] <|
-                    position Y [ pName "Miles_per_Gallon", pMType Quantitative ] <|
-                        color [ mName "Origin", mMType Nominal ] <|
+                (position X [ pName "Horsepower", pQuant ] <|
+                    position Y [ pName "Miles_per_Gallon", pMQuant ] <|
+                        color [ mName "Origin", mNominal ] <|
                             []
                 )
     in
-    toVegaLite [ cars, circle [], enc ]
+    toVegaLite [ cars, enc, circle [] ]
 ```
 
 Or with brackets rather than the `<|` operator (again exactly the equivalent of the previous examples):
@@ -104,25 +96,23 @@ scatterplot3 =
         enc =
             encoding
                 (position X
-                    [ pName "Horsepower", pMType Quantitative ]
+                    [ pName "Horsepower", pQuant ]
                     (position Y
-                        [ pName "Miles_per_Gallon", pMType Quantitative ]
-                        (color [ mName "Origin", mMType Nominal ]
+                        [ pName "Miles_per_Gallon", pQuant ]
+                        (color [ mName "Origin", mNominal ]
                             []
                         )
                     )
                 )
     in
-    toVegaLite [ cars, circle [], enc ]
+    toVegaLite [ cars, enc, circle [] ]
 ```
 
 It should be clear why functional composition is the preferred style for this kind of chaining of related functions.
 
 ## 2. Functions for reuse
 
-One common way in which we can use Elm to ease visualization generation is to abstract repeated or changeable specifications into their own parameterised functions.
-For example, we might have several visualizations in a document that each load (a different) dataset from the same source.
-If we create a function to store the base location of the data (`dataPath` in the example below), we would only need to change that location once should we wish to use a different data source.
+One common way in which we can use Elm to ease visualization generation is to abstract repeated or changeable specifications into their own parameterised functions. For example, we might have several visualizations in a document that each load (a different) dataset from the same source. If we create a function to store the base location of the data (`dataPath` in the example below), we would only need to change that location once should we wish to use a different data source.
 
 ```elm {l}
 dataPath : String -> Data
@@ -136,9 +126,9 @@ myVis1 =
     let
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
-                << color [ mName "Origin", mMType Nominal ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
+                << color [ mName "Origin", mNominal ]
     in
     toVegaLite [ dataPath "cars.json", circle [], enc [] ]
 ```
@@ -149,26 +139,22 @@ myVis2 =
     let
         enc =
             encoding
-                << position X [ pName "date", pMType Temporal ]
-                << position Y [ pName "price", pMType Quantitative ]
-                << color [ mName "symbol", mMType Nominal ]
+                << position X [ pName "date", pTemporal ]
+                << position Y [ pName "price", pQuant ]
+                << color [ mName "symbol", mNominal ]
     in
-    toVegaLite [ dataPath "stocks.csv", line [], enc [] ]
+    toVegaLite [ dataPath "stocks.csv", enc [], line [] ]
 ```
 
 ## 3. Shaping Data
 
-While Vega-Lite provides a great deal of flexibility in specifying visualization design, it is less able to create or manipulate the data that are to be visualized.
-This is where Elm can be helpful in 'shaping' data to be in a format suitable for working with Vega and Vega-Lite.
+While Vega-Lite provides a great deal of flexibility in specifying visualization design, it is less able to create or manipulate the data that are to be visualized. This is where Elm can be helpful in 'shaping' data to be in a format suitable for working with Vega and Vega-Lite.
 
 ### Generating Data Inline
 
-Rather than link to externally generated data sources, it is sometimes useful to use Elm to create data programmatically, especially if those data have some predictable structure or generatable content.
-[dataFromColumns](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromColumns), [dataFromRows](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromRows), [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn) and [dataRow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataRow) are useful elm-vega functions for doing this (see also the use of [dataFromJson](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) in the [Geospatial file format tutorial](../geoTutorials/geoFormats.md)).
+Rather than link to externally generated data sources, it is sometimes useful to use Elm to create data programmatically, especially if those data have some predictable structure or generatable content. [dataFromColumns](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromColumns), [dataFromRows](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromRows), [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn) and [dataRow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataRow) are useful elm-vega functions for doing this (see also the use of [dataFromJson](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) in the [Geospatial file format tutorial](../geoTutorials/geoFormats.md)).
 
-In the example below we use Elm's [List.range](https://package.elm-lang.org/packages/elm/core/latest/List#range) function to generate a list of integers from 1 to 800, the [List.map](https://package.elm-lang.org/packages/elm/core/latest/List#map) function to turn each of those integers into a floating point number and an anonymous function to generate a list of the cosines of each of those values.
-We then create two 'columns' of data for use in the visualization specification.
-When specifying a data column (with [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn)) have to state the type of data, which in this case is a list of numbers indicated by [nums](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#nums).
+In the example below we use Elm's [List.range](https://package.elm-lang.org/packages/elm/core/latest/List#range) function to generate a list of integers from 1 to 800, the [List.map](https://package.elm-lang.org/packages/elm/core/latest/List#map) function to turn each of those integers into a floating point number and an anonymous function to generate a list of the cosines of each of those values. We then create two 'columns' of data for use in the visualization specification. When specifying a data column (with [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn)) have to state the type of data, which in this case is a list of numbers indicated by [nums](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#nums).
 
 ```elm {l v siding}
 trigCurves : Spec
@@ -187,14 +173,13 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pMType Quantitative, pAxis [ axTickStep 90 ] ]
-                << position Y [ pName "y", pMType Quantitative ]
+                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position Y [ pName "y", pQuant ]
     in
-    toVegaLite [ width 400, data [], line [], enc [] ]
+    toVegaLite [ width 400, data [], enc [], line [] ]
 ```
 
-Elm's `List.range` can only generate a list of integers steps of 1.
-We could write our own range-generating function that is more flexible in allowing non-integer values and arbitrary steps between them:
+Elm's `List.range` can only generate a list of integers steps of 1. We could write our own range-generating function that is more flexible in allowing non-integer values and arbitrary steps between them:
 
 ```elm {l}
 stepRange : Float -> Float -> Float -> List Float
@@ -223,10 +208,10 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pMType Quantitative, pAxis [ axTickStep 90 ] ]
-                << position Y [ pName "y", pMType Quantitative ]
+                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position Y [ pName "y", pQuant ]
     in
-    toVegaLite [ width 400, data [], line [], enc [] ]
+    toVegaLite [ width 400, data [], enc [], line [] ]
 ```
 
 {(question |}
@@ -237,7 +222,7 @@ Can you modify the example above so it shows both the cosine and sine curves for
 
 ### Tidy Data
 
-Suppose we have some data we wish to visualise that represents values in three categories (e.g. number of bronze, silver and gold medals won by a country). We might represent the data with three numbers, e.g. `30, 15, 12`, indicating the tallies for bronze, silver and gold medals respectively.
+Suppose we have some data we wish to visualize that represents values in three categories (e.g. number of bronze, silver and gold medals won by a country). We might represent the data with three numbers, e.g. `30, 15, 12`, indicating the tallies for bronze, silver and gold medals respectively.
 
 If we had data for four countries, we might represent those triples grouped as a table, where each column contains the medal tally for a single country:
 
@@ -252,12 +237,9 @@ If we had such data for two years, we might add a further row to the table:
 | **row 1** | 30,15,12 | 25,30,25 | 10,28,11 | 18,24,16 |
 | **row 2** | 8,8,29   | 11,24,12 | 26,32,9  | 8,18,28  |
 
-This tabular structure is convenient when working with spreadsheets, or when displaying the data compactly in tabular form.
-However, it is not well suited for manipulating programmatically because much of the information is implicitly encoded by the order of numbers (e.g. whether a number represents a silver medal is dependent on its position in a triple of numbers).
+This tabular structure is convenient when working with spreadsheets, or when displaying the data compactly in tabular form. However, it is not well suited for manipulating programmatically because much of the information is implicitly encoded by the order of numbers (e.g. whether a number represents a silver medal is dependent on its position in a triple of numbers).
 
-Instead it is much more reliable to express the data table in [_tidy_ format](https://vita.had.co.nz/papers/tidy-data.pdf).
-That is, in such a way that the order of values in a table is independent of their meaning and that columns of data represent _variables_ and rows of data _observations_.
-In our medals example, we could restructure the data as follows:
+Instead it is much more reliable to express the data table in [_tidy_ format](https://vita.had.co.nz/papers/tidy-data.pdf). That is, in such a way that the order of values in a table is independent of their meaning and that columns of data represent _variables_ and rows of data _observations_. In our medals example, we could restructure the data as follows:
 
 | row | column | categoy | value |
 | --- | ------ | ------- | ----- |
@@ -343,17 +325,17 @@ barGrid =
     let
         enc =
             encoding
-                << position X [ pName "cat", pMType Ordinal, pAxis [] ]
-                << position Y [ pName "val", pMType Quantitative, pAxis [] ]
-                << color [ mName "cat", mMType Nominal, mLegend [] ]
+                << position X [ pName "cat", pOrdinal, pAxis [] ]
+                << position Y [ pName "val", pQuant, pAxis [] ]
+                << color [ mName "cat", mNominal, mLegend [] ]
     in
     toVegaLite
         [ tidyData []
         , spacing 50
         , specification (asSpec [ width 120, height 120, bar [], enc [] ])
         , facet
-            [ rowBy [ fName "row", fMType Ordinal, fHeader [ hdTitle "" ] ]
-            , columnBy [ fName "col", fMType Ordinal, fHeader [ hdTitle "" ] ]
+            [ rowBy [ fName "row", fOrdinal, fHeader [ hdTitle "" ] ]
+            , columnBy [ fName "col", fOrdinal, fHeader [ hdTitle "" ] ]
             ]
         ]
 ```
