@@ -22,35 +22,17 @@ smallMultiples =
     let
         enc =
             encoding
-                << position X
-                    [ pName "temp_max"
-                    , pMType Quantitative
-                    , pBin []
-                    , pAxis [ axTitle "" ]
-                    ]
-                << position Y
-                    [ pAggregate opCount
-                    , pMType Quantitative
-                    ]
-                << color
-                    [ mName "weather"
-                    , mMType Nominal
-                    , mLegend []
-                    , mScale weatherColors
-                    ]
-                << column
-                    [ fName "weather"
-                    , fMType Nominal
-                    ]
+                << position X [ pName "temp_max", pQuant, pBin [], pTitle "" ]
+                << position Y [ pAggregate opCount, pQuant ]
+                << color [ mName "weather", mNominal, mLegend [], mScale weatherColors ]
+                << column [ fName "weather", fNominal ]
     in
     toVegaLite [ width 110, height 110, seattleData, bar [], enc [] ]
 ```
 
-There are only two additions in order to create these small multiples.
-Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to.
-Note that the `f` prefix for `fName` and `fMType` refers to _facet_ – a form of data selection and grouping standard in data visualization.
+There are only two additions in order to create these small multiples. Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to. Note that the `f` prefix for `fName` and `fNominal` refers to _facet_ – a form of data selection and grouping standard in data visualization.
 
-The second, minor change, is to include an `mLegend` specification in the color encoding. The legend can be customised with its parametmer list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
+The second, minor change, is to include an `mLegend` specification in the color encoding. The legend can be customised with its parameter list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
 
 ### Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
 
@@ -79,16 +61,8 @@ barChart =
     let
         enc =
             encoding
-                << position X
-                    [ pName "date"
-                    , pMType Ordinal
-                    , pTimeUnit month
-                    ]
-                << position Y
-                    [ pName "precipitation"
-                    , pMType Quantitative
-                    , pAggregate opMean
-                    ]
+                << position X [ pName "date", pOrdinal, pTimeUnit month ]
+                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
     in
     toVegaLite [ seattleData, bar [], enc [] ]
 ```
@@ -103,8 +77,8 @@ temporalBarSpec pField w =
     let
         enc =
             encoding
-                << position X [ pName "date", pMType Ordinal, pTimeUnit month ]
-                << position Y [ pField, pMType Quantitative, pAggregate opMean ]
+                << position X [ pName "date", pOrdinal, pTimeUnit month ]
+                << position Y [ pField, pQuant, pAggregate opMean ]
     in
     asSpec [ width w, height w, bar [], enc [] ]
 ```
@@ -119,8 +93,7 @@ barChart =
 
 ### Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
 
-We can annotate the chart by placing the bar chart specification in a layer and adding another layer with the annotation.
-In this example we will add a layer showing the average precipitation for the entire period:
+We can annotate the chart by placing the bar chart specification in a layer and adding another layer with the annotation. In this example we will add a layer showing the average precipitation for the entire period:
 
 ```elm {v l s}
 barChart : Spec
@@ -130,7 +103,7 @@ barChart =
             pName "precipitation"
 
         enc =
-            encoding << position Y [ dataField, pMType Quantitative, pAggregate opMean ]
+            encoding << position Y [ dataField, pQuant, pAggregate opMean ]
     in
     toVegaLite
         [ seattleData
@@ -138,9 +111,7 @@ barChart =
         ]
 ```
 
-The temporal bar encoding is as it was previously.
-We add a similar average line specification but only need to encode the y-position as we wish to span the entire chart space with the `rule` mark.
-The two specifications are combined as layers with the `layer` function which we add to the list of specifications passed to `toVegaLite` in place of the original bar specification.
+The temporal bar encoding is as it was previously. We add a similar average line specification but only need to encode the y-position as we wish to span the entire chart space with the `rule` mark. The two specifications are combined as layers with the `layer` function which we add to the list of specifications passed to `toVegaLite` in place of the original bar specification.
 
 Again it becomes a simple job to refactor this bar chart and average marker so that it will work with any named data field and width:
 
@@ -149,7 +120,7 @@ temporalAvBarSpec : PositionChannel -> Float -> Spec
 temporalAvBarSpec dataField w =
     let
         enc =
-            encoding << position Y [ dataField, pMType Quantitative, pAggregate opMean ]
+            encoding << position Y [ dataField, pQuant, pAggregate opMean ]
     in
     asSpec
         [ layer [ temporalBarSpec dataField w, asSpec [ enc [], rule [] ] ] ]
@@ -175,8 +146,7 @@ Concatenated views are specified in the same way as layered views expect that we
 
 ### Repeated Views ([11:08](https://youtu.be/9uaHRWj04D4?t=11m08s))
 
-Noting that juxtaposing similar charts is a common operation, and the specification for each of them often is very similar, the repeat operator allows us to streamline the specification required to do this.
-We might, for example, wish to show three data fields from the Seattle weather dataset:
+Noting that juxtaposing similar charts is a common operation, and the specification for each of them often is very similar, the repeat operator allows us to streamline the specification required to do this. We might, for example, wish to show three data fields from the Seattle weather dataset:
 
 ```elm {v l s}
 barCharts : Spec
@@ -198,8 +168,8 @@ splom =
     let
         enc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pRepeat arRow, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pRepeat arRow, pQuant ]
 
         spec =
             asSpec
@@ -221,7 +191,7 @@ splom =
 
 ### Building A Dashboard ([12:40](https://youtu.be/9uaHRWj04D4?t=12m40s))
 
-We can compose more complex 'dashboards' by assembling single views but varying either their encoding or the data that is encoded. To illustrate, let's first identify the four single view types that we will compose with (all of these we have considered above, but are shown here again for clarity).
+We can compose more complex 'dashboards' by assembling single views but varying either their encoding or the data that are encoded. To illustrate, let's first identify the four single view types that we will compose with (all of these we have considered above, but are shown here again for clarity).
 
 ```elm {v}
 histogram : Spec
@@ -232,31 +202,31 @@ histogram =
 
         histoEnc =
             encoding
-                << position X [ pName "temp_max", pMType Quantitative, pBin [] ]
-                << position Y [ pAggregate opCount, pMType Quantitative ]
+                << position X [ pName "temp_max", pQuant, pBin [] ]
+                << position Y [ pAggregate opCount, pQuant ]
 
         histoSpec =
             asSpec [ width w, height w, bar [], histoEnc [] ]
 
         scatterEnc =
             encoding
-                << position X [ pName "temp_max", pMType Quantitative ]
-                << position Y [ pName "precipitation", pMType Quantitative ]
+                << position X [ pName "temp_max", pQuant ]
+                << position Y [ pName "precipitation", pQuant ]
 
         scatterSpec =
             asSpec [ width w, height w, point [ maStrokeWidth 0.3 ], scatterEnc [] ]
 
         barEnc =
             encoding
-                << position X [ pName "date", pMType Ordinal, pTimeUnit month ]
-                << position Y [ pName "precipitation", pMType Quantitative, pAggregate opMean ]
+                << position X [ pName "date", pOrdinal, pTimeUnit month ]
+                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
 
         barSpec =
             asSpec [ width w, height w, bar [], barEnc [] ]
 
         lineEnc =
             encoding
-                << position Y [ pName "precipitation", pMType Quantitative, pAggregate opMean ]
+                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
 
         lineSpec =
             asSpec [ width w, height w, rule [], lineEnc [] ]
@@ -279,8 +249,8 @@ dashboard data =
     let
         scatterEnc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pRepeat arRow, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pRepeat arRow, pQuant ]
 
         scatterSpec =
             asSpec [ point [ maStrokeWidth 0.4 ], scatterEnc [] ]
@@ -302,10 +272,10 @@ dashboard data =
 
         histoEnc =
             encoding
-                << position X [ pName "temp_max", pMType Quantitative, pBin [], pAxis [ axTitle "Max temp" ] ]
-                << position Y [ pAggregate opCount, pMType Quantitative ]
-                << color [ mName "weather", mMType Nominal, mLegend [], mScale weatherColors ]
-                << column [ fName "weather", fMType Nominal ]
+                << position X [ pName "temp_max", pQuant, pBin [], pAxis [ axTitle "Max temp" ] ]
+                << position Y [ pAggregate opCount, pQuant ]
+                << color [ mName "weather", mNominal, mLegend [], mScale weatherColors ]
+                << column [ fName "weather", fNominal ]
 
         histoSpec =
             asSpec [ width 120, height 120, bar [], histoEnc [] ]
@@ -319,9 +289,7 @@ dashboard data =
 ^^^elm {v=(dashboard seattleData)}^^^
 
 There is nothing new in this example – we have simply assembled a range of views with the composition operators.
-It is worth noting that the data source (`seattle-weather.csv`) need only be identified once so can be removed from the component view specifications.
-This has the advantage that if we were to replace the reference to the data file with another, we only need do it once.
-Here, for example is exactly the same specification but with `newYork-weather` given as the data source.
+It is worth noting that the data source (`seattle-weather.csv`) need only be identified once so can be removed from the component view specifications. This has the advantage that if we were to replace the reference to the data file with another, we only need do it once. Here, for example is exactly the same specification but with `newYork-weather` given as the data source.
 
 ```elm {l}
 newYorkData : Data

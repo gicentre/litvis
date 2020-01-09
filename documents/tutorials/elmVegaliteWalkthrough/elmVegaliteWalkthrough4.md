@@ -14,8 +14,7 @@ id: litvis
 
 ## Interaction ([14:35](https://youtu.be/9uaHRWj04D4?t=14m35s))
 
-Interaction is enabled by creating _selections_ that may be combined with the kinds of specifications already described.
-Selections involve three components:
+Interaction is enabled by creating _selections_ that may be combined with the kinds of specifications already described. Selections involve three components:
 
 - **Events** are those actions that trigger the interaction such as clicking at a location on screen or pressing a key.
 
@@ -33,11 +32,11 @@ scatterplot =
     let
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
-                        [ mName "Origin", mMType Nominal ]
+                        [ mName "Origin", mNominal ]
                         [ mStr "grey" ]
                     ]
 
@@ -55,11 +54,9 @@ scatterplot =
 
 In comparison to the static specifications we have already seen, the addition here is the new function `selection` that is added to the spec passed to Vega-Lite and a new `mSelectionCondition` used to encode color.
 
-Previously when encoding color (or any other channel) we have provided a list of properties.
-Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
+Previously when encoding color (or any other channel) we have provided a list of properties. Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
 
-The name `"picked"` is just one we have chosen to call the selection.
-The type of selection here is `seSingle` meaning we can only select one item at a time.
+The name `"picked"` is just one we have chosen to call the selection. The type of selection here is `seSingle` meaning we can only select one item at a time.
 
 Because we will reuse the scatterplot specification in several examples, we can declare the basic specification in its own Elm function:
 
@@ -69,19 +66,18 @@ scatterProps =
     let
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
-                        [ mName "Origin", mMType Nominal ]
+                        [ mName "Origin", mNominal ]
                         [ mStr "grey" ]
                     ]
     in
     [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], circle [], enc [] ]
 ```
 
-This allows us to add the selection specification separately.
-So the previous example can now be created by adding the selection function and passing the complete list to `toVegaLite`:
+This allows us to add the selection specification separately. So the previous example can now be created by adding the selection function and passing the complete list to `toVegaLite`:
 
 ```elm {v l s interactive}
 scatterplot : Spec
@@ -119,10 +115,7 @@ scatterplot =
 
 ### Selection Transformations ([16:39](https://youtu.be/9uaHRWj04D4?t=16m39s))
 
-Simple selections as described above create sets of selected data marks based directly on what was interacted with by the user.
-Selection transformations allow us to _project_ that direct selection onto other parts of our dataset.
-For example, suppose we wanted to know what effect the number of engine cylinders has on the relationship between engine power and engine efficiency.
-We can invoke a _selection projection_ on `Cylinders` in our dataset that says 'when a single point is selected, extend that selection to all other points in the dataset that share the same number of cylinders' (_click on any point to select all with the same number of cylinders_):
+Simple selections as described above create sets of selected data marks based directly on what was interacted with by the user. Selection transformations allow us to _project_ that direct selection onto other parts of our dataset. For example, suppose we wanted to know what effect the number of engine cylinders has on the relationship between engine power and engine efficiency. We can invoke a _selection projection_ on `Cylinders` in our dataset that says 'when a single point is selected, extend that selection to all other points in the dataset that share the same number of cylinders' (_click on any point to select all with the same number of cylinders_):
 
 ```elm {v l s interactive}
 scatterplot : Spec
@@ -134,13 +127,9 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-This is invoked simply by adding a parameterised `seFields` function to the `select` parameters naming the fields onto which we wish to project our selection.
-Additionally, we have set the default selection with `seEmpty` here so that if nothing is selected, the selection is empty (without this the default selection is the entire encoded dataset.)
+This is invoked simply by adding a parameterised `seFields` function to the `select` parameters naming the fields onto which we wish to project our selection. Additionally, we have set the default selection with `seEmpty` here so that if nothing is selected, the selection is empty (without this the default selection is the entire encoded dataset.)
 
-Selection need not be limited to direct interaction with the visualization marks.
-We can also _bind_ the selection to other user-interface components.
-For example we could select all those cars with a chosen number of cylinders with a slider by binding the selection to an HTML _input range_ component.
-Clicking on a point projects the selection as before, but also updates the slider; moving the slider updates the selected points:
+Selection need not be limited to direct interaction with the visualization marks. We can also _bind_ the selection to other user-interface components. For example we could select all those cars with a chosen number of cylinders with a slider by binding the selection to an HTML _input range_ component. Clicking on a point projects the selection as before, but also updates the slider; moving the slider updates the selected points:
 
 ```elm {v l s interactive}
 scatterplot : Spec
@@ -160,9 +149,7 @@ scatterplot =
 The binding to the slider is added with the parameterised `seBind` function followed by a function generating the HTML input element (`iRange` in this example), the data field to which it is to be bound and then a list of optional input element parameters (here just setting the limits of the slider and step between slider values).
 The binding is two-way, so directly selecting points on the scatterplot updates the sliders and moving the sliders updates the selected (and therefore highlighted) points.
 
-Binding need not be limited to single input element.
-We could, for example, bind another input slider to the year of manufacture to see if there are any trends in engine efficiency over time.
-Here the selection projection matches both number of cylinders and year of manufacture either selected by clicking on a mark or adjusting the sliders:
+Binding need not be limited to single input element. We could, for example, bind another input slider to the year of manufacture to see if there are any trends in engine efficiency over time. Here the selection projection matches both number of cylinders and year of manufacture either selected by clicking on a mark or adjusting the sliders:
 
 ```elm {v l s interactive}
 scatterplot : Spec
@@ -182,8 +169,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-The `seInterval` selection type is useful for rapidly choosing a region of a view.
-Simply providing an unparameterised selection allows both the width and the height of the selection to be chosen:
+The `seInterval` selection type is useful for rapidly choosing a region of a view. Simply providing an unparameterised selection allows both the width and the height of the selection to be chosen:
 
 ```elm {v l s interactive}
 scatterplot : Spec
@@ -236,11 +222,11 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pRepeat arRow, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pRepeat arRow, pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
-                        [ mName "Origin", mMType Nominal ]
+                        [ mName "Origin", mNominal ]
                         [ mStr "grey" ]
                     ]
 
@@ -264,8 +250,7 @@ linkedScatterplots =
         ]
 ```
 
-There is nothing new in the specification here other than combining the `repeat` function with the `selection`.
-The selection is projected across all views as it is duplicated by the `repeat` operator.
+There is nothing new in the specification here other than combining the `repeat` function with the `selection`. The selection is projected across all views as it is duplicated by the `repeat` operator.
 
 It is a simple step to bind the scales of the scatterplots in the same way to coordinate zooming and panning across views.
 
@@ -277,9 +262,9 @@ linkedScatterplots =
     let
         enc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pRepeat arRow, pMType Quantitative ]
-                << color [ mName "Origin", mMType Nominal ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pRepeat arRow, pQuant ]
+                << color [ mName "Origin", mNominal ]
 
         sel =
             selection << select "picked" seInterval [ seBindScales ]
@@ -303,9 +288,7 @@ linkedScatterplots =
 
 The only difference between this and the previous example is that we now call `seBindScales` based on the selection rather than provide a conditional encoding of color.
 
-The ability to determine the scale of a chart based on a selection is useful in implementing a common visualization design pattern, that of 'context and focus' (or sometimes referred to as 'overview and detail on demand').
-We can achieve this by setting the scale of one view based on the selection in another.
-The detail view is updated whenever the selected region is changed through interaction.
+The ability to determine the scale of a chart based on a selection is useful in implementing a common visualization design pattern, that of 'context and focus' (or sometimes referred to as 'overview and detail on demand'). We can achieve this by setting the scale of one view based on the selection in another. The detail view is updated whenever the selected region is changed through interaction.
 
 _Try selecting and dragging a selection in the upper chart to see the selection projected to the lower chart:_
 
@@ -321,7 +304,7 @@ linkedTimeSeries =
                 << position X [ pName "date", pMType Temporal, pAxis [ axFormat "%Y" ] ]
                 << position Y
                     [ pName "price"
-                    , pMType Quantitative
+                    , pQuant
                     , pAxis [ axTickCount 3, axGrid False ]
                     ]
 
@@ -336,7 +319,7 @@ linkedTimeSeries =
                     , pScale [ scDomain (doSelection "brush") ]
                     , pAxis [ axTitle "" ]
                     ]
-                << position Y [ pName "price", pMType Quantitative ]
+                << position Y [ pName "price", pQuant ]
 
         specDetail =
             asSpec [ width 400, area [], encDetail [] ]
@@ -374,13 +357,13 @@ crossFilter =
 
         totalEnc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pAggregate opCount, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pAggregate opCount, pQuant ]
 
         selectedEnc =
             encoding
-                << position X [ pRepeat arColumn, pMType Quantitative ]
-                << position Y [ pAggregate opCount, pMType Quantitative ]
+                << position X [ pRepeat arColumn, pQuant ]
+                << position Y [ pAggregate opCount, pQuant ]
                 << color [ mStr "goldenrod" ]
     in
     toVegaLite
