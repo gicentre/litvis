@@ -14,7 +14,7 @@ config =
     in
     configure
         << configuration (coAxis [ axcoTitleFont font, axcoLabelFont font, axcoGrid False ])
-        << configuration (coView [ vicoStroke Nothing, vicoWidth 300, vicoHeight 300 ])
+        << configuration (coView [ vicoStroke Nothing, vicoWidth 500, vicoHeight 500 ])
         << configuration (coText [ maAlign haRight, maFontSize 7, maAngle 20, maDx -4 ])
 ```
 
@@ -23,17 +23,17 @@ enc =
     encoding
         << position X
             [ pName "5pcIncome"
-            , pMType Quantitative
+            , pQuant
             , pAxis [ axTitle "Poorest 5% (£)" ]
             , pScale [ scZero True ]
             ]
         << position Y
             [ pName "95pcIncome"
-            , pMType Quantitative
+            , pQuant
             , pAxis [ axTitle "Richest 5% (£)" ]
             , pScale [ scZero True ]
             ]
-        << order [ oName "Year", oMType Temporal ]
+        << order [ oName "Year", oTemporal ]
 ```
 
 ```elm {v siding}
@@ -64,9 +64,9 @@ The plot still lacks important context (which dots refer to which years), so we 
 ```elm {l=hidden}
 labelEnc =
     encoding
-        << position X [ pName "5pcIncome", pMType Quantitative ]
-        << position Y [ pName "95pcIncome", pMType Quantitative ]
-        << text [ tName "PMLabel", tMType Nominal ]
+        << position X [ pName "5pcIncome", pQuant ]
+        << position Y [ pName "95pcIncome", pQuant ]
+        << text [ tName "PMLabel", tNominal ]
 ```
 
 ```elm {v siding}

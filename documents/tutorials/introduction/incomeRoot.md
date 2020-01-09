@@ -15,5 +15,5 @@ import VegaLite exposing (..)
 
 data : Data
 data =
-    dataFromUrl "https://gicentre.github.io/data/incomeInequality2017.csv" []
+    dataFromUrl "https://gicentre.github.io/data/incomeInequality2018.csv" []
 ```
