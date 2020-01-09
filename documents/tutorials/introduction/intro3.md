@@ -22,15 +22,11 @@ import VegaLite exposing (..)
 
 # Narrative Schemas
 
-The elm compiler used by litvis should do a good job at highlighting errors your code for generating visualizations.
-But what about the textual narratives you write along with the code?
+The elm compiler used by litvis should do a good job at highlighting errors your code for generating visualizations. But what about the textual narratives you write along with the code?
 
-This is where you can use _narrative schemas_ to guide you in writing text.
-A narrative schema is simply a set of rules you define (either yourself or by using an existing schema) that specifies the structure or content of your litvis document.
-These rules might be as simple as 'if you define a section of text with this heading, it must contain some content', or more complex such as 'this document must contain these 6 sections in this order, each with at least 300 characters of text'.
+This is where you can use _narrative schemas_ to guide you in writing text. A narrative schema is simply a set of rules you define (either yourself or by using an existing schema) that specifies the structure or content of your litvis document. These rules might be as simple as 'if you define a section of text with this heading, it must contain some content', or more complex such as 'this document must contain these 6 sections in this order, each with at least 300 characters of text'.
 
-Their value comes in providing you with _scaffold_ to guide the writing of litvis documents so they have some desired structure.
-Documents that are validated against a narrative schema will be flagged in litvis with a warning message if they don't follow the rules defined in the schema.
+Their value comes in providing you with _scaffold_ to guide the writing of litvis documents so they have some desired structure. Documents that are validated against a narrative schema will be flagged in litvis with a warning message if they don't follow the rules defined in the schema.
 
 ## A simple example
 
@@ -60,14 +56,11 @@ styling:
 
 The schema definition comprises three parts: a set of named _labels_ which you are able to insert into your litvis document (here we have just one we've called `todo`); a set of _rules_ that determine how those labels should be used; and a set of _stylings_ (using normal CSS syntax) that determine how any labels or content within them should appear when formatted.
 
-In this example, `todo` is a _paired label_ meaning that when used it has an opening label and a corresponding closing label, between which can be some content.
-In the schema this content is always referenced with the name `children` and in this case we insert some html (a `div`) to allow the content to be styled.
+In this example, `todo` is a _paired label_ meaning that when used it has an opening label and a corresponding closing label, between which can be some content. In the schema this content is always referenced with the name `children` and in this case we insert some html (a `div`) to allow the content to be styled.
 
-Each rule should contain a `description` to be reported if the rule is broken, the label the rule applies to and then the rule itself.
-In this example we specify that the content between the paired labels must be at least 1 character long.
+Each rule should contain a `description` to be reported if the rule is broken, the label the rule applies to and then the rule itself. In this example we specify that the content between the paired labels must be at least 1 character long.
 
-Finally, we can apply standard 'CSS' styling to the html described in the `htmlTemplate`.
-Here we create a yellow background and italic text for any such content.
+Finally, we can apply standard 'CSS' styling to the html described in the `htmlTemplate`. Here we create a yellow background and italic text for any such content.
 
 To see the schema in action, copy the schema above into a file `todo.yaml` then create a new litvis document into which you copy the following code:
 
@@ -92,21 +85,17 @@ This work is going to revolutionise data visualization as we know it.
 {(todo|}Create awesome new type of datavis.{|todo)}
 ````
 
-Notice that the header now contains the line `narrative-schemas:` followed by the name, without extension, of the schema file `todo.yaml`.
-This will ensure that the document is always validated against the referenced schema.
+Notice that the header now contains the line `narrative-schemas:` followed by the name, without extension, of the schema file `todo.yaml`. This will ensure that the document is always validated against the referenced schema.
 
-Within the main body of the litvis document the labels are inserted by enclosing the opening label in `{( |}` and the closing label in `{| )}`.
-Between the two we can write the content that will be processed when referenced by `children` in the schema rules.
+Within the main body of the litvis document the labels are inserted by enclosing the opening label in `{( |}` and the closing label in `{| )}`. Between the two we can write the content that will be processed when referenced by `children` in the schema rules.
 
-{(question|} Check to see that the text that begins `This work is going to...` is highlighted in yellow in the preview pane (as below).
-Try deleting the content between the `todo` labels to check that the editor flags the warning: `There should always be some content between 'todo' labels. (narrative-schema:rule-validation)`. {|question)}
+{(question|} Check to see that the text that begins `This work is going to...` is highlighted in yellow in the preview pane (as below). Try deleting the content between the `todo` labels to check that the editor flags the warning: `There should always be some content between 'todo' labels. (narrative-schema:rule-validation)`. {|question)}
 
 ![Example validated document](images/todoSchema.png)
 
 ## Controlling Narrative Sequencing
 
-A common form of schema is to require a litvis document to include a number of specific headings that are to be presented in a fixed order.
-For example, when exploring a new form of data visualization, we might force ourselves to ask and answer the following questions and prompts:
+A common form of schema is to require a litvis document to include a number of specific headings that are to be presented in a fixed order. For example, when exploring a new form of data visualization, we might force ourselves to ask and answer the following questions and prompts:
 
 1.  What is the aim of your visualization design?
 2.  Describe how your design works.
@@ -163,8 +152,7 @@ rules:
         label: limitations
 ```
 
-Here we add a few more rules that specify that there must be one `aim` label in the document, one `desc` label and at least one `limitations`.
-Additionally, we specify the order of labels by requiring `aim` must occur before `dec` which itself must occur before `limitations`.
+Here we add a few more rules that specify that there must be one `aim` label in the document, one `desc` label and at least one `limitations`. Additionally, we specify the order of labels by requiring `aim` must occur before `dec` which itself must occur before `limitations`.
 
 Below is an example litvis document that conforms to this narrative schema:
 
@@ -218,7 +206,6 @@ This generates output as follows:
 
 ![idiom schema](images/idiomSchema.png)
 
-{(question|}Try creating your own simple narrative-schema that encourages a _Socratic dialogue_.
-That is, a 'conversation' between two voices, one asking naive questions about a design, the other answering those questions (e.g. "Why are you using a bar chart to show these data?" / "It makes it easy to compare magnitudes and is a compact representation"). {|question)}
+{(question|}Try creating your own simple narrative-schema that encourages a _Socratic dialogue_. That is, a 'conversation' between two voices, one asking naive questions about a design, the other answering those questions (e.g. "Why are you using a bar chart to show these data?" / "It makes it easy to compare magnitudes and is a compact representation"). {|question)}
 
 ---
