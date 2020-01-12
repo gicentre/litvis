@@ -15,9 +15,7 @@ import VegaLite exposing (..)
 
 # Kindlmann and Scheidegger Visualization Algebra Schema Example
 
-Uses a schema for considering the Kindlmann and Scheidegger (2014) algebra in visualization design.
-As a reminder, we consider the transformations between data (D) and visualization (V) through an intermediate stage of data representation on computer (R).
-_α_ represents some transform in data and _ω_ some transform in visualization.
+Uses a schema for considering the Kindlmann and Scheidegger (2014) algebra in visualization design. As a reminder, we consider the transformations between data (D) and visualization (V) through an intermediate stage of data representation on computer (R). _α_ represents some transform in data and _ω_ some transform in visualization.
 
 In a good visualization design we would expect:
 
@@ -25,19 +23,19 @@ In a good visualization design we would expect:
 - that if α is the identity transform (i.e. no change in data), two different data representations should yield identical visualizations (therefore ω is also an identity transform).
 - that if ω is the identity transform (i.e. two similar looking visualizations), this should only arise when α is also an identity transform (i.e. two similar data sources).
 
-This can be summarised by saying that the paths from the D in the top left corner to the V in the bottom right should be equivalent either by traversing right then down _(r1 >> v >> ω)_ or down then right _(α >> r2 >> v )_.
-That is, the diagram is _commutative_.
+This can be summarised by saying that the paths from the D in the top left corner to the V in the bottom right should be equivalent either by traversing right then down _(r1 >> v >> ω)_ or down then right _(α >> r2 >> v )_. That is, the diagram is _commutative_.
 
-![Visualization albegra transforms](assets/visAlgebraTransforms.png)
+![Visualization algebra transforms](assets/visAlgebraTransforms.png)
 
-Failures in the invariance principle result in _hallicinators_ (unimportant change in R results in salient changes in V).
-Failures in the unambiguity principle result in _confusers_ (meaninful changes in D cannot be seen in V).
-Failures in the correspondence princple result in _jumblers_ (change in D does not result in an equivalent change in V) or _misleaders_ (change in V don't reflect equivalent change in D).
+- Failures in the invariance principle result in _hallicinators_ (unimportant change in R results in salient changes in V).
+
+* Failures in the unambiguity principle result in _confusers_ (meaningful changes in D cannot be seen in V).
+
+- Failures in the correspondence principle result in _jumblers_ (change in D does not result in an equivalent change in V) or _misleaders_ (change in V don't reflect equivalent change in D).
 
 ## Brexit Voting Map
 
-We wish to construct a map of regional preferences in the 2016 UK referendum on leaving the EU ('brexit').
-Here is a candidate design:
+We wish to construct a map of regional preferences in the 2016 UK referendum on leaving the EU ('Brexit'). Here is a candidate design:
 
 ^^^elm {v=(brexitMap Large NoChange BySize Desc)}^^^
 
@@ -53,9 +51,7 @@ Does it satisfy the principles of _invariance_, _unambiguity_ and _correspondenc
 
 {( invarianceAssessment |}
 
-Varying the order in which data rows are plotted shows noticeable differences, especially in the London region.
-Therefore failing this principle introduces _hallucinators_.
-This is due to considerable overlap of the proportional circles.
+Varying the order in which data rows are plotted shows noticeable differences, especially in the London region. Therefore failing this principle introduces _hallucinators_. This is due to considerable overlap of the proportional circles.
 
 - [ ] passed?
 
@@ -71,10 +67,7 @@ This is due to considerable overlap of the proportional circles.
 
 {( unambiguityAssessment |}
 
-Systematic shifts by 5% of votes cast towards leave or remain are easily detectable where they affect the majorty (shift between red and blue).
-Systematic shifts that don't cross the 50% boundary are also detectable, although less obvious.
-See for example size of blue circles in Scotland or red circles in Midlands/Northern England.
-Therefore, no evidence for _confusers_ in design.
+Systematic shifts by 5% of votes cast towards leave or remain are easily detectable where they affect the majority (shift between red and blue). Systematic shifts that don't cross the 50% boundary are also detectable, although less obvious. See for example size of blue circles in Scotland or red circles in Midlands/Northern England. Therefore, no evidence for _confusers_ in design.
 
 - [x] passed?
 
