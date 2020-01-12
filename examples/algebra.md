@@ -225,15 +225,16 @@ brexitMap mapSize dChange orderType oDirection =
         trans =
             transform
                 << dataFilter
-                << calculateAs ("datum.RemainVotes*1 - " ++ multiplier ++ "*datum.LeaveVotes") "remain"
-                << calculateAs ("datum.LeaveVotes*1 + " ++ multiplier ++ "*datum.LeaveVotes") "leave"
+                << calculateAs ("datum.RemainVotes - " ++ multiplier ++ "*datum.LeaveVotes") "remain"
+                << calculateAs ("datum.LeaveVotes + " ++ multiplier ++ "*datum.LeaveVotes") "leave"
                 << calculateAs "100 * datum.leave / (datum.remain + datum.leave)" "percLeave"
                 << calculateAs "abs(datum.percLeave-50)" "majority %"
                 << calculateAs "datum.remain > datum.leave ? 'remain' : 'leave'" "majority decision"
 
         votingSpec =
             asSpec
-                [ dataFromUrl "https://gicentre.github.io/data/brexit.tsv" []
+                [ dataFromUrl "https://gicentre.github.io/data/brexit.tsv"
+                    [ parse [ ( "RemainVotes", foNum ), ( "LeaveVotes", foNum ) ] ]
                 , trans []
                 , circle [ maStroke "white", maStrokeWidth 0.5 ]
                 , votingEnc []
