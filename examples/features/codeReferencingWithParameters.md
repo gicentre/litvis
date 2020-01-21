@@ -16,7 +16,8 @@ sparkline : String -> Spec
 sparkline groupName =
     let
         config =
-            configure << configuration (coView [ vicoStroke Nothing, vicoHeight 15, vicoWidth 80 ])
+            configure
+                << configuration (coView [ vicoStroke Nothing, vicoHeight 15, vicoWidth 80 ])
 
         data =
             dataFromUrl "https://gicentre.github.io/data/randomWalk.csv"
@@ -27,10 +28,16 @@ sparkline groupName =
 
         enc =
             encoding
-                << position X [ pName "x", pMType Quantitative, pAxis [] ]
-                << position Y [ pName "y", pMType Quantitative, pAxis [], pScale [ scZero False ] ]
+                << position X [ pName "x", pQuant, pAxis [] ]
+                << position Y [ pName "y", pQuant, pAxis [], pScale [ scZero False ] ]
     in
-    toVegaLite [ config [], data, trans [], enc [], line [ maColor "black", maStrokeWidth 1 ] ]
+    toVegaLite
+        [ config []
+        , data
+        , trans []
+        , enc []
+        , line [ maColor "black", maStrokeWidth 1 ]
+        ]
 ```
 
 1.  ^^^elm v=(sparkline "1")^^^

@@ -11,13 +11,16 @@ import VegaLite exposing (..)
 globe : Projection -> List ProjectionProperty -> Spec
 globe proj props =
     let
+        path file =
+            "https://gicentre.github.io/data/geoTutorials/" ++ file
+
         pDetails =
             [ width 300, height 150, projection (prType proj :: props) ]
 
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/graticule.json" [ topojsonMesh "graticule" ]
+                    ++ [ dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
                        , geoshape [ maFilled False, maStroke "#000", maStrokeWidth 0.1 ]
                        ]
                 )
@@ -25,7 +28,7 @@ globe proj props =
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
+                    ++ [ dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
                        , geoshape [ maStroke "white", maFill "#232", maOpacity 0.7, maStrokeWidth 0.1 ]
                        ]
                 )

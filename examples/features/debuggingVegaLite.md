@@ -19,8 +19,8 @@ barChart =
 
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pMType Quantitative, pAggregate opCount ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pAggregate opCount, pQuant ]
     in
     toVegaLite [ data, enc [], bar [] ]
 ```

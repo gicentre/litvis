@@ -8,6 +8,12 @@ elm:
 import VegaLite exposing (..)
 ```
 
+```elm {l=hidden}
+data : Data
+data =
+    dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
+```
+
 ```elm {v interactive}
 interactive1 : Spec
 interactive1 =
@@ -17,15 +23,15 @@ interactive1 =
 
         enc =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "myBrush")
-                        [ mName "Cylinders", mMType Ordinal ]
+                        [ mName "Cylinders", mOrdinal ]
                         [ mStr "grey" ]
                     ]
     in
-    toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], point [], sel [], enc [] ]
+    toVegaLite [ width 300, height 150, data, point [], sel [], enc [] ]
 ```
 
 ```elm {v interactive}
@@ -49,11 +55,11 @@ binding1 =
 
         enc1 =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "CylYr")
-                        [ mName "Origin", mMType Nominal ]
+                        [ mName "Origin", mNominal ]
                         [ mStr "grey" ]
                     ]
 
@@ -66,13 +72,13 @@ binding1 =
 
         enc2 =
             encoding
-                << position X [ pName "Horsepower", pMType Quantitative ]
-                << position Y [ pName "Miles_per_Gallon", pMType Quantitative ]
-                << color [ mName "Origin", mMType Nominal ]
+                << position X [ pName "Horsepower", pQuant ]
+                << position Y [ pName "Miles_per_Gallon", pQuant ]
+                << color [ mName "Origin", mNominal ]
                 << size [ mNum 100 ]
 
         spec2 =
             asSpec [ trans2 [], circle [], enc2 [] ]
     in
-    toVegaLite [ width 300, height 150, dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], trans [], layer [ spec1, spec2 ] ]
+    toVegaLite [ width 300, height 150, data, trans [], layer [ spec1, spec2 ] ]
 ```
