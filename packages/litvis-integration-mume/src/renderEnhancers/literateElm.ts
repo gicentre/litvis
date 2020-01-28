@@ -143,6 +143,7 @@ export default async function enhance(
     const outputFormat: OutputFormat | undefined = $el.data("outputFormat");
     const expressionText = $el.data("expression");
     const interactive = $el.data("interactive");
+    const archive = $el.data("archive");
     const renderKey = hash({
       contextName,
       outputFormat,
@@ -232,7 +233,7 @@ export default async function enhance(
           resultNormalizedInfo = {
             language,
             attributes: {
-              interactive: interactive === true,
+              interactive: (archive || !interactive) === false,
               style: "display: inline-block",
             },
           };
@@ -319,6 +320,8 @@ function generateArrayOf$outputItems(
         outputExpression,
       )}" data-interactive="${
         derivatives.interactive
+      }" data-archive="${
+        derivatives.archive
       }" data-output-format="${escapeString(
         outputFormat,
       )}"><code>${escapeString(outputFormat)}=${escapeString(
