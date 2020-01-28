@@ -318,9 +318,7 @@ function generateArrayOf$outputItems(
         derivatives.contextName,
       )}" data-expression="${escapeString(
         outputExpression,
-      )}" data-interactive="${
-        derivatives.interactive
-      }" data-archive="${
+      )}" data-interactive="${derivatives.interactive}" data-archive="${
         derivatives.archive
       }" data-output-format="${escapeString(
         outputFormat,

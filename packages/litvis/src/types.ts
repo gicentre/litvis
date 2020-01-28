@@ -28,7 +28,7 @@ export interface AttributeDerivatives {
   outputFormats: BlockOutputFormat[];
   outputExpressionsByFormat: { [TKey in OutputFormat]?: string[] };
   interactive?: boolean;
-  archive?: boolean;  
+  archive?: boolean;
   id?: string;
   follows?: string;
 }
