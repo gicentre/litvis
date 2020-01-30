@@ -78,6 +78,51 @@ yarn build-and-qa
 ## (i.e. when packages have not been built previously)
 ```
 
+### Local development pipeline and testing with Atom
+
+This section is based on the assumption that at least one package in this repo is being worked on.
+
+First step is to clone the three repositories (this one, plus [gicentre/mume-with-litvis](https://github.com/gicentre/mume-with-litvis) and [gicentre/markdown-preview-enhanced-with-litvis](https://github.com/gicentre/markdown-preview-enhanced-with-litvis).
+
+Open a terminal in the folder of this repo (gicentre/litvis),
+
+1. Run `yarn`/`yarn install`
+
+1. For each package being worked on, go the folder of the package (e.g. `cd packages\narrative-schema`) and run `npm link`. This will create a symlink in a global/user node_modules folder.
+
+1. Back in the main folder, run `yarn build:watch`
+
+Open a new terminal and navigate to the _mume-with-litvis_ folder.
+
+1. Run `npm install`
+
+1. Open the `node_modules` folder and check the modules that are dependencies from the litvis repository (e.g. litvis-integration-mume). Now, for those packages that were linked in the previous step, run `npm link package_name`. For example, if working on litvis-integration-mume, run `npm link litvis-integration-mume`.
+
+1. Back in the main folder, run `npm run build:watch`
+
+Lastly, open a new terminal in the _markdown-preview-enhanced-with-litvis_ folder.
+
+1. Run `npm install`
+
+1. Open the `node_modules` folder and find modules that are dependencies from the previous two repositories (mume-with-litivs and any of the packages in this repo). For each of them, run `npm link package_name` as previously.
+
+1. Back in the main folder, run `npm run build`.
+
+1. Run `apm link -d`. This will create a link from the package (in the repo) to the development folder of atom.
+
+1. Run again `npm run build:watch`.
+
+Finally, in a separate terminal, run `atom -d` to open the development version of Atom. This will ensure that the markdown preview litvis-enhanced package is taken from the development folder and will not conflict with the release version. Now, every time a file in this repo is changed and saved, a chain of build commands will be triggered, ensuring that the Markdown Preview package is (locally) updated. To reload Atom and the packages to actually see the changes, go to View -> Developer -> Reload Window. When committing and merging changes, don't forget to use `yarn lint` to pass the github checks.
+
+**Potential issues in local development**
+
+MacOS related:
+
+1.  `coreutils` might be required (`npm install -g coreutils`).
+
+2. There might be a problem with `fsevents` when building the packages or loading Atom. `npm install -g fsevents@1.2.9` and rebuilding the package when requested, in Atom, should solve it.
+
+
 ## Releasing new versions
 
 ### Publishing packages declared in `gicentre/litvis`
