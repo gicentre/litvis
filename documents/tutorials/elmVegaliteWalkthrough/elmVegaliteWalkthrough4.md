@@ -301,7 +301,7 @@ linkedTimeSeries =
 
         encContext =
             encoding
-                << position X [ pName "date", pMType Temporal, pAxis [ axFormat "%Y" ] ]
+                << position X [ pName "date", pTemporal, pAxis [ axFormat "%Y" ] ]
                 << position Y
                     [ pName "price"
                     , pQuant
@@ -315,7 +315,7 @@ linkedTimeSeries =
             encoding
                 << position X
                     [ pName "date"
-                    , pMType Temporal
+                    , pTemporal
                     , pScale [ scDomain (doSelection "brush") ]
                     , pAxis [ axTitle "" ]
                     ]
