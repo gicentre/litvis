@@ -120,8 +120,7 @@ MacOS related:
 
 1.  `coreutils` might be required (`npm install -g coreutils`).
 
-2. There might be a problem with `fsevents` when building the packages or loading Atom. `npm install -g fsevents@1.2.9` and rebuilding the package when requested, in Atom, should solve it.
-
+2.  There might be a problem with `fsevents` when building the packages or loading Atom. `npm install -g fsevents@1.2.9` and rebuilding the package when requested, in Atom, should solve it.
 
 ## Releasing new versions
 
