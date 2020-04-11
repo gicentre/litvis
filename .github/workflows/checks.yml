@@ -1,0 +1,68 @@
+name: Checks
+
+on: [push]
+
+jobs:
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Lint with prettier
+        run: yarn lint:prettier
+
+      - name: Lint with tsc
+        run: yarn lint:tsc
+
+      - name: Lint with tslint
+        run: yarn lint:tslint
+
+      - name: Lint with yarn-deduplicate
+        run: yarn lint:yarn-deduplicate
+
+  unit-tests:
+    name: Unit tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        node: [10, 12, 13]
+        exclude:
+          - os: macos-latest
+            node: 10
+          - os: macos-latest
+            node: 13
+          - os: windows-latest
+            node: 10
+          - os: windows-latest
+            node: 13
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build packages
+        run: yarn build
+
+      - name: Run unit tests
+        run: yarn test
