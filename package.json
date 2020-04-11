@@ -13,12 +13,14 @@
     "clean:coverage": "rimraf coverage packages/*/coverage",
     "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
-    "fix": "yarn fix:prettier",
+    "fix": "yarn fix:prettier; yarn fix:yarn-deduplicate",
     "fix:prettier": "prettier --write .",
-    "lint": "yarn lint:prettier && yarn lint:tsc && yarn lint:tslint",
+    "fix:yarn-deduplicate": "yarn install && yarn-deduplicate --strategy=fewer && yarn install",
+    "lint": "yarn lint:prettier && yarn lint:tsc && yarn lint:tslint && yarn lint:yarn-deduplicate",
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --project .",
     "lint:tslint": "lerna exec \"tslint --project .\"",
+    "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "qa": "yarn lint && yarn test --coverage",
     "release": "yarn build-and-qa && lerna publish",
     "test": "jest",
@@ -53,6 +55,7 @@
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.6.3"
+    "typescript": "^3.6.3",
+    "yarn-deduplicate": "^2.0.0"
   }
 }
