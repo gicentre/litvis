@@ -163,10 +163,10 @@ const ruleIsNotFollowed = (position?: Position): Error => {
 };
 
 const elementPosition = ($el: Cheerio): Position | undefined => {
-  const startColumn = parseInt($el.attr("ns-position-start-column"), 10);
-  const startLine = parseInt($el.attr("ns-position-start-line"), 10);
-  const endColumn = parseInt($el.attr("ns-position-end-column"), 10);
-  const endLine = parseInt($el.attr("ns-position-end-line"), 10);
+  const startColumn = parseInt($el.attr("ns-position-start-column") || "0", 10);
+  const startLine = parseInt($el.attr("ns-position-start-line") || "0", 10);
+  const endColumn = parseInt($el.attr("ns-position-end-column") || "0", 10);
+  const endLine = parseInt($el.attr("ns-position-end-line") || "0", 10);
   if (
     Number.isFinite(startColumn) &&
     Number.isFinite(startLine) &&
