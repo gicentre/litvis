@@ -222,8 +222,9 @@ const extractDataFromRule = (
   // + selector,
   if (!ruleIsBroken && Object.keys(ruleData).length < 3) {
     narrativeSchema.message(
-      `Rule ${(_.last(ruleDataPath) as number) * 1 +
-        1} does not defile any valid constrains`,
+      `Rule ${
+        (_.last(ruleDataPath) as number) * 1 + 1
+      } does not defile any valid constrains`,
       getPosition(ruleDataWithPosition),
       "narrative-schema:rule",
     );

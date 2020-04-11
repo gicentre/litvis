@@ -1,7 +1,7 @@
 import { normalize as normalizeBlockAttributes } from "block-attributes";
 import { BlockInfo } from ".";
 
-export default function(blockInfo: BlockInfo): BlockInfo {
+export default function (blockInfo: BlockInfo): BlockInfo {
   const normalizedAttributes = normalizeBlockAttributes(blockInfo.attributes);
   const normalizedLanguage = normalizeLanguage(blockInfo.language);
   if (

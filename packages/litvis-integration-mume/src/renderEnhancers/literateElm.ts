@@ -251,9 +251,7 @@ export default async function enhance(
       );
       cache.successfulRenders.set(
         renderKey,
-        $("<div/>")
-          .append($result)
-          .html() || "",
+        $("<div/>").append($result).html() || "",
       );
       // ...and then as data
       $result.removeAttr("data-normalized-info");

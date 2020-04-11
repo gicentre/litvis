@@ -197,7 +197,10 @@ export const testCases: Array<{
   },
   {
     input: ["[ ( 1, 2, 3 ), ( 4, 5, 6 ) ]", "[(1,2,3),(4,5,6)]"],
-    output: [[1, 2, 3], [4, 5, 6]],
+    output: [
+      [1, 2, 3],
+      [4, 5, 6],
+    ],
   },
   {
     input: ['{ a = "test", b = (1, 2, 3) }'],
@@ -227,7 +230,10 @@ export const testCases: Array<{
         nestedValue: 15,
       },
       strItem: "two",
-      tLsItem: [[1, 11], [1.2, 13]],
+      tLsItem: [
+        [1, 11],
+        [1.2, 13],
+      ],
       tp3Item: [false, 8, "nine"],
       tplItem: [6, 7],
     },

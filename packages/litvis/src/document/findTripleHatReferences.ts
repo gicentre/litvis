@@ -77,7 +77,7 @@ export default function plugin() {
   // Stringify
   if (Compiler) {
     const visitors = Compiler.prototype.visitors;
-    visitors.tripleHatReference = function(node) {
+    visitors.tripleHatReference = function (node) {
       return `${TRIPLE_HAT}${this.all(node).join("")}${TRIPLE_HAT}`;
     };
   }

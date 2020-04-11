@@ -148,10 +148,7 @@ const findOrFilter = ($: CheerioStatic, func, selector: any): Cheerio => {
   let $result = func(cheerioSelectorParts.join(""));
   if (selector.trimmedContent) {
     $result = $result.filter(
-      (i, element) =>
-        $(element)
-          .text()
-          .trim() === selector.trimmedContent,
+      (i, element) => $(element).text().trim() === selector.trimmedContent,
     );
   }
   return $result;

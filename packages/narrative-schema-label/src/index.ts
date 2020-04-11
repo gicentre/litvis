@@ -14,13 +14,9 @@ export const processUnist = [
 export { default as applySchemaToLabels } from "./unist/applySchema";
 
 export { default as extractDefinitions } from "./extractDefinitions";
-export {
-  default as getCompiledHandlebarsTemplate,
-} from "./getCompiledHandlebarsTemplate";
+export { default as getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
 export { default as renderHtmlTemplate } from "./renderHtmlTemplate";
 export { getLabelIdPrefix, isValidLabelName } from "./utils";
-export {
-  default as resolveAliasesAndKeyByName,
-} from "./resolveAliasesAndKeyByName";
+export { default as resolveAliasesAndKeyByName } from "./resolveAliasesAndKeyByName";
 
 export * from "./types";

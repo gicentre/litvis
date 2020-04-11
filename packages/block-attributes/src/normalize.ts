@@ -5,7 +5,7 @@ import { BlockAttributes } from ".";
  * Walks through attribute keys and makes them snakeCase if needed
  * @param attributes
  */
-export default function(attributes: BlockAttributes): BlockAttributes {
+export default function (attributes: BlockAttributes): BlockAttributes {
   if (typeof attributes !== "object") {
     return {};
   }

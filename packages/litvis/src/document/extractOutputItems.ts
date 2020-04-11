@@ -134,7 +134,7 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
   );
 }
 
-export default function() {
+export default function () {
   return function transformer(ast, vFile, next) {
     visitCodeBlock(ast, vFile);
     visitTripleHatReference(ast, vFile);

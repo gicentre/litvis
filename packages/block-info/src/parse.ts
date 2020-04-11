@@ -4,7 +4,7 @@ import {
 } from "block-attributes";
 import { BlockInfo } from ".";
 
-export default function(raw: string = ""): BlockInfo {
+export default function (raw: string = ""): BlockInfo {
   let language;
   let attributesAsString: string;
   let attributes: BlockAttributes;

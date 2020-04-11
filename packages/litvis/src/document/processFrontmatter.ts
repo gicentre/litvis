@@ -75,7 +75,7 @@ function visitFrontmatter(mdAst, document: LitvisDocument) {
   document.data.litvisNarrativeSchemasWithPosition = narrativeSchemasWithPosition;
 }
 
-export default function() {
+export default function () {
   return function transformer(ast, vFile, next) {
     // try {
     visitFrontmatter(ast, vFile);

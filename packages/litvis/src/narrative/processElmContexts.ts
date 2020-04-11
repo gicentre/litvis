@@ -217,9 +217,9 @@ export default async (
       return;
     }
 
-    const literateElmProgramPromises: Array<
-      Promise<ProgramResult>
-    > = literateElmJobs.map(({ codeNodes, expressionNodes }) =>
+    const literateElmProgramPromises: Array<Promise<
+      ProgramResult
+    >> = literateElmJobs.map(({ codeNodes, expressionNodes }) =>
       runProgram({
         environment: literateElmEnvironment,
         codeNodes,
