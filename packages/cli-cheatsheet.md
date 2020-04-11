@@ -1,32 +1,26 @@
-```bash
-export NPM_CONFIG_OTP=
+# CLI cheatsheet
 
-cd block-attributes; npm publish; cd ..
-cd block-info; npm publish; cd ..
-cd data-with-position; npm publish; cd ..
-cd elm-string-representation; npm publish; cd ..
-cd literate-elm; npm publish; cd ..
-cd litvis; npm publish; cd ..
-cd litvis-integration-mume; npm publish; cd ..
-cd narrative-schema; npm publish; cd ..
-cd narrative-schema-common; npm publish; cd ..
-cd narrative-schema-label; npm publish; cd ..
-cd narrative-schema-rule; npm publish; cd ..
-cd narrative-schema-styling; npm publish; cd ..
+## Publishing litvis packages manually if `lerna publish` has failed
 
-cd block-attributes; yarn link; cd ..
-cd block-info; yarn link; cd ..
-cd data-with-position; yarn link; cd ..
-cd elm-string-representation; yarn link; cd ..
-cd literate-elm; yarn link; cd ..
-cd litvis; yarn link; cd ..
-cd litvis-integration-mume; yarn link; cd ..
-cd narrative-schema; yarn link; cd ..
-cd narrative-schema-common; yarn link; cd ..
-cd narrative-schema-label; yarn link; cd ..
-cd narrative-schema-rule; yarn link; cd ..
-cd narrative-schema-styling; yarn link; cd ..
+```sh
+## one-time password for two-factor auth
+export NPM_CONFIG_OTP=??
 
+yarn lerna exec npm publish
+```
+
+## Registering litvis packages using `yarn link` for local development
+
+```sh
+yarn lerna exec yarn link
+
+## to unregister
+# yarn lerna exec --no-bail yarn unlink
+```
+
+## Using local versions of
+
+```sh
 yarn link block-attributes
 yarn link block-info
 yarn link data-with-position
