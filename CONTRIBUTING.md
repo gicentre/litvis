@@ -25,10 +25,10 @@ Before getting started, please make sure you have the latest `node` and the late
 
 ```bash
 node --version
-## >= 9.11
+## ≥ 12.15
 
 yarn --version
-## >= 1.6.0
+## ≥ 1.22
 ```
 
 ### Installing dependencies
@@ -46,6 +46,24 @@ yarn build
 
 ## continuously
 yarn build:watch
+```
+
+### Publishing litvis packages manually if `lerna publish` has failed
+
+```sh
+## one-time password for two-factor auth
+export NPM_CONFIG_OTP=??
+
+yarn lerna exec npm publish
+```
+
+### Registering litvis packages using `yarn link` for local development
+
+```sh
+yarn lerna exec yarn link
+
+## to unregister
+# yarn lerna exec --no-bail yarn unlink
 ```
 
 ### Quality control
