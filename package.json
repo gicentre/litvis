@@ -28,6 +28,9 @@
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
     "use-prod-typings": "lerna exec \"replace --quiet src\\/index\\.ts dist/index.d.ts package.json\""
   },
+  "resolutions": {
+    "lodash": "^4.17.19"
+  },
   "dependencies": {},
   "devDependencies": {
     "@types/cheerio": "^0.22.13",
