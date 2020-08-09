@@ -194,13 +194,13 @@ These pages are usually updated within a few hours after the official release.
 
     ```sh
     NAME=vega-lite
-    VERSION=4.13.1
+    VERSION=4.14.1
     BUILD_PATH=
     ```
 
     ```sh
     NAME=vega-embed
-    VERSION=6.9.0
+    VERSION=6.10.0
     BUILD_PATH=
     ```
 
