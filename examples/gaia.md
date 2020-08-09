@@ -18,13 +18,13 @@ _Adapted from this [hVega notebook](https://github.com/DougBurke/hvega/blob/mast
 
 ## Table of Contents
 
-1. [Gaia satellite data](#1-gaia-satellite-data)
-2. [Loading the data](#2-loading-the-data)
-3. [Plotting the data](#3-plotting-the-data)
-4. [How many stars are there?](#4-how-many-stars-are-there)
-5. [Parallaxes](#5-parallaxes)
-6. [Magnitudes](#6-magnitudes)
-7. [Adding interactivity](#7-adding-interactivity)
+1.  [Gaia satellite data](#1-gaia-satellite-data)
+1.  [Loading the data](#2-loading-the-data)
+1.  [Plotting the data](#3-plotting-the-data)
+1.  [How many stars are there?](#4-how-many-stars-are-there)
+1.  [Parallaxes](#5-parallaxes)
+1.  [Magnitudes](#6-magnitudes)
+1.  [Adding interactivity](#7-adding-interactivity)
 
 ## 1. Gaia Satellite Data
 
@@ -277,7 +277,7 @@ starCentroids =
         ]
 ```
 
-## 4. How many stars are there?
+## 4. How many stars are there
 
 Through visual inspection it appears that the Hyades cluster has the most stars, but by how much? Let's confirm with a count of the number of stars in each cluster:
 

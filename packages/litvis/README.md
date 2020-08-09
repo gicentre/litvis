@@ -1,3 +1,3 @@
 # Literate Visualization
 
-See https://github.com/gicentre/litvis.
+See <https://github.com/gicentre/litvis>.

@@ -8,8 +8,8 @@ narrative-schemas:
 @import "../css/tutorial.less"
 
 1.  **Writing your first litvis documents**
-2.  [Branching narratives](intro2.md)
-3.  [Narrative schemas](intro3.md)
+1.  [Branching narratives](intro2.md)
+1.  [Narrative schemas](intro3.md)
 
 ---
 
@@ -24,7 +24,7 @@ But litvis is more than a markdown editor for text. You can also write, edit and
 Let's start with a simple litvis document that displays a bar chart.
 Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the following into it.
 
-````
+````markdown
 ---
 elm:
   dependencies:
@@ -65,7 +65,7 @@ If you open the preview pane (in Atom, select `Packages->Markdown Preview Enhanc
 
 The top of the document is the _header_ fenced with a pair of `---` lines:
 
-```
+```markdown
 ---
 elm:
   dependencies:
@@ -77,7 +77,7 @@ We will be using the [elm-vegalite](https://package.elm-lang.org/packages/gicent
 
 Litvis documents allow you to write and code directly within them but also to control whether or not the code should be displayed in the formatted output. The code block
 
-````
+````markdown
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
@@ -104,7 +104,7 @@ Try changing the values inside the curly braces of `elm {v}` in `helloLitvis.md`
 You can mix normal markdown text with fenced code blocks throughout a litvis document.
 For example, try adding the following text and code to the bottom of [`helloLitvis.md`](helloLitvisV2.md):
 
-````
+````markdown
 Here are the same data but displayed as horizontal bars arranged in alphabetical order:
 
 ```elm {v}
@@ -136,7 +136,7 @@ But notice that we have some repetition between the two code blocks that share a
 By default, functions that are defined in fenced code blocks are visible throughout the entire document (which is why we had to give both rendering functions different names).
 We can use this to clean things up a little by putting the common code inside its own function to be used by other functions:
 
-````
+````markdown
 ```elm {l=hidden}
 data =
     dataFromColumns []
@@ -148,7 +148,7 @@ data =
 Additionally, we can give our two visualization specification-generating functions the same name by making them _sidings_ – blocks of code that are not accessible to the other parts of the litvis document.
 This can be useful when you want to create 'one-off' functions that are not referenced elsewhere in your document:
 
-````
+````markdown
 Top 5 programming languages according to the [TIOBE index](https://www.tiobe.com/tiobe-index).
 
 ```elm {v siding}
@@ -184,7 +184,7 @@ Not only are these blocks of code now shorter, we only have a single place where
 
 Try changing the `data` function so that instead of defining the dataset inline, it loads a larger dataset from an external URL:
 
-````
+````markdown
 ```elm {l=hidden}
 data =
     dataFromUrl "https://gicentre.github.io/data/tiobeIndexMay2018.csv"

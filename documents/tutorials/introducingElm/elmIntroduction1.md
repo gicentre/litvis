@@ -5,10 +5,10 @@ id: "litvis"
 @import "../css/tutorial.less"
 
 1.  **Introduction**
-2.  [Functions, functions, functions](elmIntroduction2.md)
-3.  [Types and pattern matching](elmIntroduction3.md)
-4.  [Lists and list processing](elmIntroduction4.md)
-5.  [Elm and elm-vegalite](elmIntroduction5.md)
+1.  [Functions, functions, functions](elmIntroduction2.md)
+1.  [Types and pattern matching](elmIntroduction3.md)
+1.  [Lists and list processing](elmIntroduction4.md)
+1.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
@@ -18,7 +18,7 @@ This tutorial introduces the Elm programming language and briefly covers some ba
 
 _You can edit the example elm code in these tutorial pages to experiment with the ideas introduced._
 
-## What is Elm?
+## What is Elm
 
 [Elm](http://elm-lang.org) is a declarative statically typed pure functional programming language that is transpiled into JavaScript.
 Or in English, it is a programming language where:

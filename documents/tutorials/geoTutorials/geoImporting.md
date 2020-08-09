@@ -14,9 +14,9 @@ import VegaLite exposing (..)
 _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [Geospatial File Formats](geoFormats.md)
-2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-3.  **Importing geographic datasets into elm-vegalite**
-4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
+1.  [Generating Global Map Projection Geo Files](geoGenerating.md)
+1.  **Importing geographic datasets into elm-vegalite**
+1.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
@@ -44,7 +44,9 @@ After installation, opening a command line window and typing
 
 should display a message similar to
 
-    GDAL 2.4.1, released 2019/03/15
+```txt
+GDAL 2.4.1, released 2019/03/15
+```
 
 You will also need to install some d3 command-line utilities, so open a command line window and type
 
@@ -76,7 +78,7 @@ ogr2ogr -t_srs 'EPSG:4326' -s_srs 'EPSG:27700' boroughs_geo.shp London_Borough_E
 
 substituting the name of the input and output .shp files with your own.
 
-## 2. Convert the shapefile to geoJSON.
+## 2. Convert the shapefile to geoJSON
 
 Type the following:
 

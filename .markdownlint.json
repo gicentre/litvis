@@ -1,0 +1,7 @@
+{
+  "extends": "./node_modules/@kachkaev/markdownlint-config/index.json",
+  "first-line-heading": false,
+  "no-emphasis-as-heading": false,
+  "no-duplicate-heading": false,
+  "no-inline-html": false
+}

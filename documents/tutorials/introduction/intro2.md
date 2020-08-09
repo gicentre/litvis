@@ -8,8 +8,8 @@ narrative-schemas:
 @import "../css/tutorial.less"
 
 1.  [Writing your first litvis documents](intro1.md)
-2.  **Branching narratives**
-3.  [Narrative schemas](intro3.md)
+1.  **Branching narratives**
+1.  [Narrative schemas](intro3.md)
 
 ---
 
@@ -25,7 +25,7 @@ Let's explore how this might work in practice by considering ways to visualize h
 
 We can start, as we did in the previous chapter, by creating a litvis document with a function to load the data, here provided by the [Institute for Fiscal Studies](http://www.ifs.org.uk/tools_and_resources/incomes_in_uk).
 
-````
+````markdown
 ---
 elm:
   dependencies:
@@ -70,7 +70,7 @@ If you are feeling confident with [elm-vegalite](https://package.elm-lang.org/pa
 
 Notice that the header of this new file doesn't have the usual `elm dependencies` lines, nor does it import anything or create a `data` function. All of that was defined in `incomeRoot.md`. Instead we link this document to `incomeRoot.md` with the header
 
-```
+```markdown
 ---
 follows: incomeRoot
 ---
@@ -94,10 +94,11 @@ This should generate a page where we can explore connected scatterplot designs, 
 
 Note in passing that the final scatterplot allows interactive zooming (try dragging and 'mousewheel zooming' over final scatterplot). To enable interaction with a visualization that specifies it (here with the line `selection << select "view" Interval [ BindScales ]`), simply add an `interaction` keyword at the start of the code block:
 
-````
+````markdown
 ```elm {v interactive}
 scatter : Spec
 scatter = ...
+```
 ````
 
 ## 4. Continuing the narrative

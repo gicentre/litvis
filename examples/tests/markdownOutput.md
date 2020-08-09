@@ -119,6 +119,8 @@ multiLineOutput1 =
 
 ### 3.2 Headings
 
+<!-- markdownlint-disable single-title -->
+
 # Level 1 heading
 
 ## Level 2 heading
@@ -126,6 +128,8 @@ multiLineOutput1 =
 ### Level 3 heading
 
 #### Level 4 heading
+
+<!-- markdownlint-enable single-title -->
 
 ↕
 
@@ -173,7 +177,7 @@ multiLineOutput3 =
 
 - spaced bullet item 1
 
-* spaced bullet item 2
+- spaced bullet item 2
 
 - spaced bullet item 3
 
@@ -184,7 +188,7 @@ multiLineOutput4 : String
 multiLineOutput4 =
     """- spaced bullet item 1
 
-* spaced bullet item 2
+- spaced bullet item 2
 
 - spaced bullet item 3"""
 ```
@@ -193,48 +197,48 @@ multiLineOutput4 =
 
 ### 3.4 Numbered Lists
 
-1. Item One
-2. Item Two
-3. Item Three
+1.  Item One
+1.  Item Two
+1.  Item Three
 
 ↕
 
 ```elm {m}
 multiLineOutput5 : String
 multiLineOutput5 =
-    """1. Item One
-2. Item Two
-3. Item Three"""
+    """1.  Item One
+1.  Item Two
+1.  Item Three"""
 ```
 
 ---
 
-1. Item One
+1.  Item One
 
-   With more than one sentence.
+With more than one sentence.
 
-2. Item Two
+1.  Item Two
 
-   With more than one sentence.
+With more than one sentence.
 
-3. Item Three
+1.  Item Three
 
-   With more than one sentence.
+With more than one sentence.
 
 ↕
 
 ```elm {m}
 multiLineOutput6 : String
 multiLineOutput6 =
-    """1. Item One
+    """1.  Item One
 
     With more than one sentence.
 
-2. Item Two
+1.  Item Two
 
     With more than one sentence.
 
-3. Item Three
+1.  Item Three
 
     With more than one sentence."""
 ```

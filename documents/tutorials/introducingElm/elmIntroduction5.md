@@ -12,10 +12,10 @@ elm:
 _Litvis tutorials: Introducing Elm_
 
 1.  [Introduction](elmIntroduction1.md)
-2.  [Functions, functions, functions](elmIntroduction2.md)
-3.  [Types and pattern matching](elmIntroduction3.md)
-4.  [Lists and list processing](elmIntroduction4.md)
-5.  **Elm and elm-vegalite**
+1.  [Functions, functions, functions](elmIntroduction2.md)
+1.  [Types and pattern matching](elmIntroduction3.md)
+1.  [Lists and list processing](elmIntroduction4.md)
+1.  **Elm and elm-vegalite**
 
 ---
 

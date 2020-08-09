@@ -56,7 +56,7 @@ data =
         << dataColumn "speed" (nums speeds)
 ```
 
-For convenience, pre-calculated direction and speed values have been stored at https://gicentre.github.io/data/windVectors.csv.
+For convenience, pre-calculated direction and speed values have been stored at <https://gicentre.github.io/data/windVectors.csv>.
 
 The data cover the region between -10 to 10 degrees longitude and 45 to 60 degrees latitude.
 

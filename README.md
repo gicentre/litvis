@@ -15,17 +15,17 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
 1.  If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
 
-2.  Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
+1.  Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
 
-    ```
+    ```sh
     npm install --global elm prettier prettier-plugin-elm
     ```
 
     _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
 
-3.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
+1.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 
-4.  Depending on which editor you wish to use, install the litvis extensions:
+1.  Depending on which editor you wish to use, install the litvis extensions:
 
     **If using Atom:**
 
@@ -51,8 +51,10 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
     - Search for `elm` and install _(syntax highlighting of Elm code)_.
 
-<!-- 5.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
-    There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
+<!--
+1.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
+    There is a plan to merge litvis functionality into this extension, which should ease the setup.
+-->
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 

@@ -14,9 +14,9 @@ import VegaLite exposing (..)
 _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [geospatial File Formats](geoFormats.md)
-2.  **Generating Global Map Projection Geo Files**
-3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
-4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
+1.  **Generating Global Map Projection Geo Files**
+1.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
+1.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
@@ -198,7 +198,7 @@ Note how the small circle is no longer circular when projected onto a plane. We 
 ^^^elm v=(paris "Mercator" (projection [ prType mercator ]))^^^
 ^^^elm v=(paris "Transverse Mercator" (projection [ prType transverseMercator ]))^^^
 
-## 3. Generate a Tissot's Indicatrix file.
+## 3. Generate a Tissot's Indicatrix file
 
 The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes. We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion. _Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude,latitude) space to projected space. We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
 

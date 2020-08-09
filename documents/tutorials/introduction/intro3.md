@@ -15,8 +15,8 @@ import VegaLite exposing (..)
 ```
 
 1.  [Writing your first litvis documents](intro1.md)
-2.  [Branching narratives](intro2.md)
-3.  **Narrative schemas**
+1.  [Branching narratives](intro2.md)
+1.  **Narrative schemas**
 
 ---
 
@@ -64,7 +64,7 @@ Finally, we can apply standard 'CSS' styling to the html described in the `htmlT
 
 To see the schema in action, copy the schema above into a file `todo.yaml` then create a new litvis document into which you copy the following code:
 
-````
+````markdown
 ---
 elm:
   dependencies:
@@ -98,9 +98,9 @@ Within the main body of the litvis document the labels are inserted by enclosing
 A common form of schema is to require a litvis document to include a number of specific headings that are to be presented in a fixed order. For example, when exploring a new form of data visualization, we might force ourselves to ask and answer the following questions and prompts:
 
 1.  What is the aim of your visualization design?
-2.  Describe how your design works.
-3.  Provide some architypes showing how your design works with different patterns of data.
-4.  What are the limitations of your design?
+1.  Describe how your design works.
+1.  Provide some architypes showing how your design works with different patterns of data.
+1.  What are the limitations of your design?
 
 We can turn these into a schema, which we'll call `newIdiom`, as follows:
 
@@ -156,7 +156,7 @@ Here we add a few more rules that specify that there must be one `aim` label in 
 
 Below is an example litvis document that conforms to this narrative schema:
 
-````
+````markdown
 ---
 elm:
   dependencies:

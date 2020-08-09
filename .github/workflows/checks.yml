@@ -21,6 +21,9 @@ jobs:
       - name: Build packages
         run: yarn build
 
+      - name: Lint with markdownlint
+        run: yarn lint:markdownlint
+
       - name: Lint with prettier
         run: yarn lint:prettier
 

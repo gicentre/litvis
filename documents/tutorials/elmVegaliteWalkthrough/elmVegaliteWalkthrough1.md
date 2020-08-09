@@ -8,9 +8,9 @@ elm:
 @import "../css/tutorial.less"
 
 1.  **Introduction**
-2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
-3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
-4.  [Interaction](elmVegaliteWalkthrough4.md)
+1.  [Single View Specifications](elmVegaliteWalkthrough2.md)
+1.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
+1.  [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 

@@ -40,15 +40,15 @@ There are few regular sources of pollution monitoring data in London.
 The most widespread are distributed as part of the [London Air Quality Network](http://www.londonair.org.uk/london/asp/datadownload.asp).
 This was also the source used by Cyclists In The City, so provides a basis for comparison.
 
-### Temporal Sample
+## Temporal Sample
 
 Data to be sampled for Sundays through the year including the Sundays of closed roads. The annual 'Ride London' events that result in closed roads are always on Sundays, so can compare like-with-like. It is possible that it might be more comparable to compare only Sundays in July so as to adjust for seasonal changes, but this would reduce the sample size significantly. Initial inspection suggests there is no strong seasonal effect.
 
-### Spatial Sample
+## Spatial Sample
 
 Initially selected just Putney 'High Street Facade' which was also the location of the original post so comparisons can be made.
 
-### Measurement Sample
+## Measurement Sample
 
 Some readings are 'unratified' and subject to measurement error. No evidence of systematic bias in errors has been uncovered. The only filtering was to remove erroneous negative values.
 
@@ -162,7 +162,7 @@ airPollution =
         ]
 ```
 
-### Iteration 3
+## Iteration 3
 
 > _Litvis Note: The commentary here is more about goal setting than justification, but feels a natural way of 'thinking aloud' while designing. Do we want to support/encourge this?_
 
