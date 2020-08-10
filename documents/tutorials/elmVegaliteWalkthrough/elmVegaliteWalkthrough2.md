@@ -26,9 +26,14 @@ Let's start with a simple table of data representing time-stamped weather data f
 We can store the specification for retrieving the data in its own function for later reuse:
 
 ```elm {l}
+path : String
+path =
+    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
+
+
 seattleData : Data
 seattleData =
-    dataFromUrl "https://vega.github.io/vega-lite/data/seattle-weather.csv" [ parse [ ( "Date", foDate "%Y/%m/%d" ) ] ]
+    dataFromUrl (path ++ "seattle-weather.csv") [ parse [ ( "Date", foDate "%Y/%m/%d" ) ] ]
 ```
 
 ### A Strip plot ([3:26](https://youtu.be/9uaHRWj04D4?t=3m26s))
@@ -60,7 +65,8 @@ stripPlot : Spec
 stripPlot =
     let
         enc =
-            encoding << position X [ pName "temp_max", pQuant ]
+            encoding
+                << position X [ pName "temp_max", pQuant ]
     in
     toVegaLite [ seattleData, enc [], tick [] ]
 ```
@@ -83,7 +89,7 @@ histogram =
 
 The code now contains two chained `position` encodings: one for the x-position, which is now binned, and one for the y-position which is aggregated by providing `pAggregate opCount` instead of a data field name.
 
-Notice again that sensible defaults are provided for the parts of the specification we didn't specify such as axis titles, colors and number of bins.
+Notice again that sensible defaults are provided for the parts of the specification we didn't specify such as axis titles, colours and number of bins.
 
 ### Stacked Histogram ([7:03](https://youtu.be/9uaHRWj04D4?t=7m03s))
 
@@ -95,22 +101,22 @@ stackedHistogram =
     let
         enc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [] ]
+                << position X [ pName "temp_max", pBin [] ]
                 << position Y [ pAggregate opCount, pQuant ]
-                << color [ mName "weather", mNominal ]
+                << color [ mName "weather" ]
     in
     toVegaLite [ seattleData, enc [], bar [] ]
 ```
 
-The code to do this simply adds another channel encoding, this time `color` rather than `position`, and uses it to encode the `weather` data field. Unlike temperature, weather type is _nominal_, that is, categorical with no intrinsic order. And once again, simply by declaring the measurement type, Vega-Lite determines an appropriate color scheme and legend.
+The code to do this simply adds another channel encoding, this time `color` rather than `position`, and uses it to encode the `weather` data field. Unlike temperature, weather type is _nominal_, that is, categorical with no intrinsic order. By default, fields are assumed to be nominal, so we don't need to specify the measurement type explicitly (although we could add `mNominal` to the `color` properties if we wished).
 
-Notice how functions are used to customise various channels starting with a letter indicating the type of channel affected. So the name of the data field use to encode _position_ is `pName`, its measurement type, `pQuant` and its positional aggregation is `pAggregate`, whereas the name of the data field for encoding color is indicated by `mName` and its measurement type `mNominal` (where `m` is short for _mark_).
+Notice how functions are used to customise various channels starting with a letter indicating the type of channel affected. So the name of the data field use to encode _position_ is `pName`, its measurement type, `pQuant` and its positional aggregation is `pAggregate`, whereas the name of the data field for encoding color is indicated by `mName` (where `m` is short for _mark_).
 
-### Stacked Histogram with Customised Colors ([7:20](https://youtu.be/9uaHRWj04D4?t=7m20s))
+### Stacked Histogram with Customised Colours ([7:20](https://youtu.be/9uaHRWj04D4?t=7m20s))
 
-While the default nominal color scheme is well chosen for general purposes, we might want to customise the colors to better match the semantics of the data.
+While the default nominal colour scheme is well chosen for general purposes, we might want to customise the colors to better match the semantics of the data.
 
-Changing the way a channel is encoded involves specifying the _scale_ and in particular the mapping between the _domain_ (the elements of the data to show) and the color _range_ used to represent them.
+Changing the way a channel is encoded involves specifying the _scale_ and in particular the mapping between the _domain_ (the elements of the data to show) and the colour _range_ used to represent them.
 
 ```elm {l}
 weatherColors : List ScaleProperty
@@ -130,16 +136,16 @@ stackedHistogram =
     let
         enc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [] ]
-                << position Y [ pAggregate opCount, pQuant ]
-                << color [ mName "weather", mNominal, mScale weatherColors ]
+                << position X [ pName "temp_max", pBin [] ]
+                << position Y [ pAggregate opCount ]
+                << color [ mName "weather", mScale weatherColors ]
     in
     toVegaLite [ seattleData, enc [], bar [] ]
 ```
 
-The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colors used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vegalite function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
+The mapping between the values in the domain (weather types `sun`, `fog` etc.) and the colours used to represent them (hex values `#e7ba52`, `#c7c7c7` etc.) is handled by an elm-vegalite function `categoricalDomainMap` which accepts a list of tuples defining those mappings.
 
-Notice how we never needed to state explicitly that we wished our bars to be stacked. This was reasoned directly by Vega-Lite based on the combination of bar marks and color channel encoding. If we were to change just the mark function from `bar` to `line`, Vega-Lite produces an unstacked series of lines, which makes sense because unlike bars, lines do not occlude one another to the same extent.
+Notice how we never needed to state explicitly that we wished our bars to be stacked. This was reasoned directly by Vega-Lite based on the combination of bar marks and colour channel encoding. If we were to change just the mark function from `bar` to `line`, Vega-Lite produces an unstacked series of lines, which makes sense because unlike bars, lines do not occlude one another to the same extent.
 
 ```elm {v l s}
 lineChart : Spec
@@ -147,9 +153,9 @@ lineChart =
     let
         enc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [] ]
-                << position Y [ pAggregate opCount, pQuant ]
-                << color [ mName "weather", mNominal, mScale weatherColors ]
+                << position X [ pName "temp_max", pBin [] ]
+                << position Y [ pAggregate opCount ]
+                << color [ mName "weather", mScale weatherColors ]
     in
     toVegaLite [ seattleData, line [], enc [] ]
 ```
