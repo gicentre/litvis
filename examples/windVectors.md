@@ -18,7 +18,7 @@ import VegaLite exposing (..)
 
 ## Data
 
-[Gridded global wind data](http://www.remss.com/measurements/ccmp/) can be extracted [via an API](https://data.planetos.com/datasets/rss_ccmp_winds_v2) at 0.25 degree intervals. For each sampled grid location, a (u,v) vector pair is available indicating components of velocity in metres per second in the east-west and north-south directions respectively (wind moving NE would have positive u and v components). These are shown as a [tidy table](https://package.elm-lang.org/packages/gicentre/tidy/latest/Tidy) and stored as a table called `grid`:
+[Gridded global wind data](http://www.remss.com/measurements/ccmp/) can be extracted [via an API](https://data.planetos.com/datasets/rss_ccmp_winds_v2) at 0.25 degree intervals. For each sampled grid location, a $(u,v)$ vector pair is available indicating components of velocity in metres per second in the east-west and north-south directions respectively (wind moving NE would have positive u and v components). These are shown as a [tidy table](https://package.elm-lang.org/packages/gicentre/tidy/latest/Tidy) and stored as a table called `grid`:
 
 ```elm {m}
 uvWindTable : List String
@@ -26,7 +26,7 @@ uvWindTable =
     tableSummary 5 grid
 ```
 
-The velocity magnitude (speed) and direction can be calculated with a simple transformation of each (u,v) pair. Additionally we create a wind direction category (`dirCats`) based on the wind direction rounded to the nearest 15 degree group:
+The velocity magnitude (speed) and direction can be calculated with a simple transformation of each $(u,v)$ pair. Additionally we create a wind direction category (`dirCats`) based on the wind direction rounded to the nearest 15 degree group:
 
 ```elm {l}
 speeds : List Float
@@ -58,20 +58,32 @@ data =
 
 For convenience, pre-calculated direction and speed values have been stored at https://gicentre.github.io/data/windVectors.csv.
 
+```elm {l}
+path : String
+path =
+    "https://gicentre.github.io/data/"
+```
+
 The data cover the region between -10 to 10 degrees longitude and 45 to 60 degrees latitude.
+
+```elm {l}
+proj : ( VLProperty, Spec )
+proj =
+    projection [ prType equalEarth ]
+```
 
 ```elm {v}
 basemap : Spec
 basemap =
     let
-        mapData =
-            dataFromUrl "https://gicentre.github.io/data/europe/nwEuropeLand.json"
-                [ topojsonFeature "ne_10m_land" ]
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
 
-        proj =
-            projection [ prType equirectangular ]
+        mapData =
+            dataFromUrl (path ++ "europe/nwEuropeLand.json") [ topojsonFeature "ne_10m_land" ]
     in
-    toVegaLite [ width 600, height 450, mapData, proj, geoshape [ maFill "#ddd" ] ]
+    toVegaLite [ cfg [], width 600, height 450, mapData, proj, geoshape [ maFill "#ddd" ] ]
 ```
 
 ## Coloured Grid Representation
@@ -81,14 +93,8 @@ Wind speed in metres per second can be shown as a grid of coloured rectangles:
 ```elm {l=hidden}
 encPos =
     encoding
-        << position X
-            [ pName "longitude", pOrdinal, pAxis [], pScale [ scPaddingInner 0 ] ]
-        << position Y
-            [ pName "latitude"
-            , pOrdinal
-            , pScale [ scZero False, scPaddingInner 0 ]
-            , pAxis []
-            ]
+        << position Longitude [ pName "longitude" ]
+        << position Latitude [ pName "latitude" ]
 ```
 
 ```elm {v}
@@ -98,34 +104,11 @@ windSpeed =
         enc =
             encPos
                 << color [ mName "speed", mQuant, mScale [ scScheme "yelloworangered" [] ] ]
-
-        proj =
-            projection [ prType equirectangular ]
     in
-    toVegaLite [ width 600, height 450, data [], proj, enc [], rect [] ]
+    toVegaLite [ width 600, height 450, data [], proj, enc [], square [ maSize 80 ] ]
 ```
 
 Similarly, we can show direction by colouring rectangles according to direction using a [perceptually scaled cyclical colour scheme](https://peterkovesi.com/projects/colourmaps/):
-
-```elm {l=hidden}
-cyclicColours =
-    mScale
-        [ scDomain (doNums [ 0, 45, 90, 135, 180, 225, 270, 315, 360 ])
-        , scRange
-            (raStrs
-                [ "rgb(167,34,35)" -- Southerly
-                , "rgb(220,87,145)" -- Southwesterly
-                , "rgb(234,140,240)" -- Westerly
-                , "rgb(161,120,244)" -- Northwesterly
-                , "rgb(67,67,234)" -- Northerly
-                , "rgb(96,139,144)" -- Northeasterly
-                , "rgb(195,171,76)" -- Easterly
-                , "rgb(192,113,42)" -- Southeastery
-                , "rgb(167,34,35)" -- Southerly
-                ]
-            )
-        ]
-```
 
 ```elm {v}
 windDirection : Spec
@@ -136,11 +119,11 @@ windDirection =
                 << color
                     [ mName "dir"
                     , mQuant
-                    , mLegend [ leValues (leNums [ 0, 90, 180, 270, 360 ]) ]
-                    , cyclicColours
+                    , mLegend []
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scScheme "rainbow" [] ]
                     ]
     in
-    toVegaLite [ width 600, height 450, data [], enc [], rect [] ]
+    toVegaLite [ width 600, height 560, data [], proj, enc [], square [ maSize 80 ] ]
 ```
 
 One of the problems with using colour is that it is hard to combine both wind strength and wind direction. The apparent discontinuity in wind direction running east-west along the English channel is associated with very low wind speeds, so is greatly exaggerated.
@@ -156,62 +139,19 @@ windVelocity =
                 << color
                     [ mName "dir"
                     , mQuant
-                    , mLegend [ leValues (leNums [ 0, 90, 180, 270, 360 ]) ]
-                    , cyclicColours
+                    , mLegend []
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scScheme "rainbow" [] ]
                     ]
                 << size [ mName "speed", mQuant ]
     in
-    toVegaLite [ width 600, height 450, data [], enc [], circle [] ]
+    toVegaLite [ width 600, height 560, data [], proj, enc [], circle [] ]
 ```
 
 This may be an improvement, but it does leave unsatisfactory overlaps and gaps between circles packed into the grid.
 
-## Wind Vector Glyphs
+## Wind Vector Directional Symbols
 
-An alternative is to use a glyph to represent a wind vector, rotated according to its direction and sized by magnitude.
-
-Vega-Lite doesn't have a `rotate` channel, so we need to create a set of glyphs for each rotation direction we wish to symbolise. We can do this programmatically by creating SVG paths representing each glyph generated by a function parameterised by a direction _θ_.
-
-![glyph construction](https://staff.city.ac.uk/~jwo/datavis2019/session04/images/glyphConstruction.png)
-
-```elm {l=hidden}
-arrow : Float -> String
-arrow theta =
-    let
-        cosA =
-            cos (degrees theta)
-
-        sinA =
-            sin (degrees theta)
-
-        f =
-            String.fromFloat
-
-        hl =
-            1.5
-
-        hw =
-            0.2
-    in
-    "m"
-        ++ f (-hl * sinA)
-        ++ " "
-        ++ f (hl * cosA)
-        ++ "l"
-        ++ f (2 * hl * sinA - hw * cosA)
-        ++ " "
-        ++ f (-2 * hl * cosA - hw * sinA)
-        ++ "l"
-        ++ f (2 * hw * cosA)
-        ++ " "
-        ++ f (2 * hw * sinA)
-        ++ "l"
-        ++ f (-2 * hl * sinA - hw * cosA)
-        ++ " "
-        ++ f (2 * hl * cosA - hw * sinA)
-```
-
-By sizing each glyph according to the wind magnitude we can create a vector field map of wind direction and strength:
+An alternative is to use directional symbol (`symWedge`) to indicate each wind vector, sizing it by magnitude and orientating it based on wind direction via the `angle` channel.
 
 ```elm {v}
 windVelocityGlyph : Spec
@@ -219,35 +159,42 @@ windVelocityGlyph =
     let
         cfg =
             configure
-                << configuration (coView [ vicoStroke Nothing ])
+                << configuration (coView [ vicoStep 10, vicoFill (Just "black") ])
 
-        mapData =
-            dataFromUrl "https://gicentre.github.io/data/europe/nwEuropeLand.json"
-                [ topojsonFeature "ne_10m_land" ]
+        geoData =
+            dataFromUrl (path ++ "europe/nwEuropeLand.json") [ topojsonFeature "ne_10m_land" ]
 
-        glyphs =
-            categoricalDomainMap
-                (List.map2 Tuple.pair
-                    (List.range 0 24 |> List.map ((*) 15 >> String.fromInt))
-                    (List.range 0 24 |> List.map ((*) 15 >> toFloat >> arrow))
-                )
+        geoSpec =
+            asSpec
+                [ geoData
+                , geoshape [ maStroke "white", maStrokeWidth 0.4, maFilled False ]
+                ]
 
         enc =
             encPos
-                << color [ mName "dir", mQuant, cyclicColours, mLegend [] ]
-                << size [ mName "speed", mQuant, mLegend [] ]
-                << shape [ mName "dirCat", mNominal, mScale glyphs, mLegend [] ]
+                << color
+                    [ mName "dir"
+                    , mQuant
+                    , mLegend []
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scScheme "rainbow" [] ]
+                    ]
+                << angle
+                    [ mName "dir"
+                    , mQuant
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scRange (raNums [ 180, 540 ]) ]
+                    ]
+                << size [ mName "speed", mQuant ]
 
         windSpec =
-            asSpec [ data [], enc [], point [ maFilled True ] ]
-
-        proj =
-            projection [ prType equirectangular ]
-
-        mapSpec =
-            asSpec [ mapData, proj, geoshape [ maStroke "#666" ] ]
+            asSpec [ data [], enc [], point [ maShape symWedge ] ]
     in
-    toVegaLite [ background "black", width 800, height 600, cfg [], layer [ mapSpec, windSpec ] ]
+    toVegaLite
+        [ cfg []
+        , width 600
+        , height 560
+        , proj
+        , layer [ geoSpec, windSpec ]
+        ]
 ```
 
 ---
