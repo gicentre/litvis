@@ -28,8 +28,26 @@
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
     "use-prod-typings": "lerna exec \"replace --quiet src\\/index\\.ts dist/index.d.ts package.json\""
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "post-commit": "run-if-changed",
+      "post-checkout": "run-if-changed",
+      "post-merge": "run-if-changed",
+      "post-rewrite": "run-if-changed"
+    }
+  },
+  "lint-staged": {
+    "**/*": [
+      "prettier --write"
+    ]
+  },
+  "resolutions": {
+    "lodash": "^4.17.19"
+  },
   "dependencies": {},
   "devDependencies": {
+    "@hkdobrev/run-if-changed": "^0.3.1",
     "@types/cheerio": "^0.22.13",
     "@types/fs-extra": "^8.0.0",
     "@types/html-entities": "^1.2.16",
@@ -45,8 +63,10 @@
     "@types/vfile": "^3.0.2",
     "@types/yamljs": "^0.2.30",
     "globby": "^10.0.1",
+    "husky": "^4.2.5",
     "jest": "^24.9.0",
     "lerna": "^3.16.4",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.4",
     "prettier-plugin-elm": "^0.7.0",
     "prettier-plugin-packagejson": "^2.0.1",
@@ -57,5 +77,8 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.3",
     "yarn-deduplicate": "^2.0.0"
+  },
+  "run-if-changed": {
+    "yarn.lock": "yarn install --prefer-offline --pure-lockfile"
   }
 }
