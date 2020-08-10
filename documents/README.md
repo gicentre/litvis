@@ -12,9 +12,7 @@
 
 ## 1. Litvis concepts
 
-A litvis document is a markdown file that uses a number of additional non-standard features.
-The syntax is compatible with [CommonMark](http://commonmark.org/) specification, which makes litvis documents partially renderable in non-litvis environments such as on GitHub.
-In addition, any existing markdown document can be ‘upgraded’ to a litvis document with ease just by using one of the added concepts.
+A litvis document is a markdown file that uses a number of additional non-standard features. The syntax is compatible with [CommonMark](http://commonmark.org/) specification, which makes litvis documents partially renderable in non-litvis environments such as on GitHub. In addition, any existing markdown document can be ‘upgraded’ to a litvis document with ease just by using one of the added concepts.
 
 A description of litvis concepts provided below should help you to get started with litvis.
 
@@ -31,67 +29,41 @@ _Delimits a block of literate code, which is evaluated in real time_
 
 ### Description
 
-Just as any other fenced code block in markdown a litvis code block is surrounded with three backticks (` ``` `).
-Language reference `elm` should immediately follow backticks (spaces after the opening ` ``` ` are not allowed).
-The arguments that determine the behaviour of the block should be placed inside `{}` and should not contain line breaks.
+Just as any other fenced code block in markdown a litvis code block is surrounded with three backticks (` ``` `). Language reference `elm` should immediately follow backticks (spaces after the opening ` ``` ` are not allowed). The arguments that determine the behaviour of the block should be placed inside `{}` and should not contain line breaks.
 
 `...attributes` are whitespace-separated tags or key-value pairs, e.g. `tag1 key1=value1 key2=[value21, value22] tag2`. The following syntactic rules apply:
 
 - A tag is a synonym of `key=true` (e.g. adding `v=true` is the same as `v`).
 
-- No spaces are allowed around `=`.
+* No spaces are allowed around `=`.
 
-- Square brackets indicate an array of values.
-  The values are separated by commas.
-  If commas, whitespace or semicolons are a part of a value, they should be escaped by backslash (e.g.`\,`).
+- Square brackets indicate an array of values. The values are separated by commas. If commas, whitespace or semicolons are a part of a value, they should be escaped by backslash (e.g.`\,`).
 
-- Values may be surrounded by quotation marks (`"`, `'` and `` ` ``) in order for them to contain spaces and other control characters, e.g. `=`, `[ ]` or `( )`.
-  A quotation mark may also be placed within a quoted value if it is a different symbol or if it is escaped with `\`, e.g. `key1="It's a different symbol" key2='It\'s escaped'`.
-  Quotes are useful in _schema label_ attributes, (see below).
+* Values may be surrounded by quotation marks (`"`, `'` and `` ` ``) in order for them to contain spaces and other control characters, e.g. `=`, `[ ]` or `( )`. A quotation mark may also be placed within a quoted value if it is a different symbol or if it is escaped with `\`, e.g. `key1="It's a different symbol" key2='It\'s escaped'`. Quotes are useful in _schema label_ attributes, (see below).
 
-- Values can be surrounded by round brackets.
-  This works similarly to quotation marks and may be nested, e.g. `z=(function (x, y))`.
-  However, unlike quotation marks, outer round brackets are not cropped during parsing and remain part of the value.
-  Surrounding attribute values with brackets can be useful when using triple hat references ([see below](#3-triple-hat-references)).
+- Values can be surrounded by round brackets. This works similarly to quotation marks and may be nested, e.g. `z=(function (x, y))`. However, unlike quotation marks, outer round brackets are not cropped during parsing and remain part of the value. Surrounding attribute values with brackets can be useful when using triple hat references ([see below](#3-triple-hat-references)).
 
 Literate code blocks support the following attributes:
 
-- `l` (or `literate`) is an indicator of a literate code block, which differentiates it from a standard markdown fenced code block.
-  By default, any Elm declaration is accessible in other literate code blocks within the document.
-  If `l=hidden`, the code is still evaluated but its source is not displayed in the rendered output.
-  This is useful for setup code such as import statements and cases when the implementation is not central to the narrative.
+- `l` (or `literate`) is an indicator of a literate code block, which differentiates it from a standard markdown fenced code block. By default, any Elm declaration is accessible in other literate code blocks within the document. If `l=hidden`, the code is still evaluated but its source is not displayed in the rendered output. This is useful for setup code such as import statements and cases when the implementation is not central to the narrative.
 
-* `v` (or `visualize`) indicates that the code block is expected to render some output at this point in the document.
-  The format of this output is determined by the contents of a symbol or an expression to render.
-  Currently, Vega-Lite and Vega specs generated by [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite) and [elm-vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/Vega) are supported.
-  If no value is assigned to `v`, the last symbol defined in the code block is used.
+* `v` (or `visualize`) indicates that the code block is expected to render some output at this point in the document. The format of this output is determined by the contents of a symbol or an expression to render. Currently, Vega-Lite and Vega specs generated by [elm-vegalite](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite) and [elm-vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/Vega) are supported. If no value is assigned to `v`, the last symbol defined in the code block is used.
 
-- `r` (or `raw`) works similarly to `v` and indicates that the code block is expected to print the raw value of a function or functions.
-  This can be useful for 'literate Elm' where the value generated by a function is to be displayed.
-  If no value is assigned to `r`, the last symbol defined in the code block is used.
+- `r` (or `raw`) works similarly to `v` and indicates that the code block is expected to print the raw value of a function or functions. This can be useful for 'literate Elm' where the value generated by a function is to be displayed. If no value is assigned to `r`, the last symbol defined in the code block is used.
 
-* `m` (or `markdown`) works similarly to `r` but the raw output is interpreted as markdown.
-  This allows formatted output to be generated by an elm function and can be useful for creating data-driven tabular output.
+* `m` (or `markdown`) works similarly to `r` but the raw output is interpreted as markdown. This allows formatted output to be generated by an elm function and can be useful for creating data-driven tabular output.
 
-- `j` (or `json`) works just like `r`/`raw` except that the value gets parsed as JSON and formatted.
-  This can be useful when debugging or exporting a Vega/Vega-Lite specification.
+- `j` (or `json`) works just like `r`/`raw` except that the value gets parsed as JSON and formatted. This can be useful when debugging or exporting a Vega/Vega-Lite specification.
 
-- `context` is an attribute that enables code isolation within one document. Code blocks in different contexts work in parallel and do not share any imports or symbol declarations.
-  All blocks belong to an implicit `default` context if the attribute is not defined.
-  Contexts are evaluated independently, which reduces the spread of Elm compile errors and namespace clashes.
-  When a problem does not allow the code to run or a `v`/`r`/`j` expression to be evaluated, other independent contexts (if any) are not affected.
+* `context` is an attribute that enables code isolation within one document. Code blocks in different contexts work in parallel and do not share any imports or symbol declarations. All blocks belong to an implicit `default` context if the attribute is not defined. Contexts are evaluated independently, which reduces the spread of Elm compile errors and namespace clashes. When a problem does not allow the code to run or a `v`/`r`/`j` expression to be evaluated, other independent contexts (if any) are not affected.
 
 - `id` assigns an identifier to a code block so that it can be referenced in other code blocks (see `follows`).
 
-- `follows` can be used in the first code block of a new context to branch off from an existing context.
-  This makes the definitions and imports _above_ the block shared between the two contexts.
-  The attribute may also refer to an `id` of a specific block when it is necessary to hand-pick a specific forking point.
+* `follows` can be used in the first code block of a new context to branch off from an existing context. This makes the definitions and imports _above_ the block shared between the two contexts. The attribute may also refer to an `id` of a specific block when it is necessary to hand-pick a specific forking point.
 
-- `i` (or `isolated`) is a shorthand tag for assigning a random context name to a single block.
-  This attribute does not expect a value.
+- `i` (or `isolated`) is a shorthand tag for assigning a random context name to a single block. This attribute does not expect a value.
 
-- `s` (or `siding`) is a shorthand for `isolated follows=default`.
-  This attribute does not expect a value.
+* `s` (or `siding`) is a shorthand for `isolated follows=default`. This attribute does not expect a value.
 
 - `interactive` (or `interactive=true`) makes specs interactive if they include interactive elements such as [elm-vegalite selections](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#selection) and [elm-vega event handling](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/Vega#evHandler).
 
@@ -118,15 +90,15 @@ mySpec =
     let
         data =
             dataFromColumns []
-                << dataColumn "a" (Strings [ "C", "C", "D", "D", "E", "E" ])
-                << dataColumn "b" (Numbers [ 2, 7, 1, 2, 6, 8 ])
+                << dataColumn "a" (strs [ "C", "C", "D", "D", "E", "E" ])
+                << dataColumn "b" (nums [ 2, 7, 1, 2, 6, 8 ])
 
         enc =
             encoding
-                << position X [ PName "a", PmType Nominal ]
-                << position Y [ PName "b", PmType Quantitative, PAggregate Mean ]
+                << position X [ pName "a" ]
+                << position Y [ pName "b", pAggregate opMean ]
     in
-    toVegaLite [ data [], enc [], mark Bar [] ]
+    toVegaLite [ data [], enc [], bar [] ]
 ```
 ````
 
@@ -188,11 +160,9 @@ _Renders symbols from literate code blocks in any part of the markdown narrative
 
 ### Description
 
-Triple hat references allow for inline rendering or repeated calls to the same rendering within a document.
-They use the same attribute syntax as literate code blocks and recognise the following keys:
+Triple hat references allow for inline rendering or repeated calls to the same rendering within a document. They use the same attribute syntax as literate code blocks and recognise the following keys:
 
-- `v` (or `visualize`) indicates what symbols and expressions to render.
-  In the most common scenario the value is a single Elm constant of type [Spec](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#Spec), e.g. `v=myChart`.
+- `v` (or `visualize`) indicates what symbols and expressions to render. In the most common scenario the value is a single Elm constant of type [Spec](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#Spec), e.g. `v=myChart`.
 
 - `r` (or `raw`) indicates what symbols and expressions to output without formatting.
 
@@ -200,13 +170,11 @@ They use the same attribute syntax as literate code blocks and recognise the fol
 
 - `j` (or `json`) indicates what symbols and expressions to output as formatted JSON.
 
-- `context` is an optional attribute to specify which code block context to refer to.
-  The `default` context is assumed if the attribute is not defined.
+- `context` is an optional attribute to specify which code block context to refer to. The `default` context is assumed if the attribute is not defined.
 
 - `interactive` (or `interactive=true`) makes visualized specs interactive if applicable.
 
-The order of `v`, `r`, `m` and `j` determines the order of the output.
-It is considered a good practice to avoid multiple output formats and specs in a single triple hat reference as this helps control layout of output.
+The order of `v`, `r`, `m` and `j` determines the order of the output. It is considered a good practice to avoid multiple output formats and specs in a single triple hat reference as this helps control layout of output.
 
 ### Examples
 
@@ -248,22 +216,15 @@ follows: path/to/another/document[.md]
 
 ### Description
 
-Narrative branching is achieved by starting a document with a reference to an upstream document in [markdown frontmatter](https://jekyllrb.com/docs/frontmatter/) (property `follows`).
-Frontmatter is expected to start and end with `---` and use `yaml` syntax.
-Using relative paths and excluding file extensions (`.md` or `.markdown`) is considered a good practice.
+Narrative branching is achieved by starting a document with a reference to an upstream document in [markdown frontmatter](https://jekyllrb.com/docs/frontmatter/) (property `follows`). Frontmatter is expected to start and end with `---` and use `yaml` syntax. Using relative paths and excluding file extensions (`.md` or `.markdown`) is considered a good practice.
 
-A document that does not mention any other litvis document in its frontmatter is a _root document_ in a narrative.
-Narrative branching is achieved by mentioning an upstream document in more than one document (so that it has several _followers_).
-Circular links between documents are not allowed and cancel the evaluation of literate code blocks in all affected documents.
+A document that does not mention any other litvis document in its frontmatter is a _root document_ in a narrative. Narrative branching is achieved by mentioning an upstream document in more than one document (so that it has several _followers_). Circular links between documents are not allowed and cancel the evaluation of literate code blocks in all affected documents.
 
-When a given document is evaluated, a joint litvis environment is composed by evaluating a chain of upstream documents.
-Thus, upstream code block contexts and ids as well as Elm imports and symbols become available in the current document’s code blocks and triple hat references.
-However, referencing a symbol from a downstream document is not permitted in order to avoid ambiguity when branching.
+When a given document is evaluated, a joint litvis environment is composed by evaluating a chain of upstream documents. Thus, upstream code block contexts and ids as well as Elm imports and symbols become available in the current document’s code blocks and triple hat references. However, referencing a symbol from a downstream document is not permitted in order to avoid ambiguity when branching.
 
 Elm errors in code blocks propagate to all documents downstream but not vice versa.
 
-The documents forming a single narrative are allowed to be stored in different directories.
-In this case, the urls inside elm-vega/vegalite specs (such as links to data files) are assumed to be relative to the _root document_.
+The documents forming a single narrative are allowed to be stored in different directories. In this case, the urls inside elm-vega/vegalite specs (such as links to data files) are assumed to be relative to the _root document_.
 
 ### Examples
 
@@ -320,26 +281,15 @@ elm:
 
 ### Description
 
-Parameter `dependencies` determines what third-party Elm packages to install.
-Package versions should be put in quotation marks to avoid their misinterpretation by the yaml parser, which does not distinguish between numeric values such as `4` and `4.0`.
-To refer to the latest available version of an Elm package, keyword `latest` should be used.
-In this case the latest version will be automatically picked every time litvis cache is cleared.
-Specifying system packages such as `elm-lang/core` or `elm-lang/html` is not necessary.
+Parameter `dependencies` determines what third-party Elm packages to install. Package versions should be put in quotation marks to avoid their misinterpretation by the yaml parser, which does not distinguish between numeric values such as `4` and `4.0`. To refer to the latest available version of an Elm package, keyword `latest` should be used. In this case the latest version will be automatically picked every time litvis cache is cleared. Specifying system packages such as `elm-lang/core` or `elm-lang/html` is not necessary.
 
-When a narrative is spread between multiple litvis documents, Elm dependencies may be specified in multiple documents.
-When a downstream document declares a set of Elm dependencies, they are merged with any mentioned upstream, but will not affect the behaviour of the upstream documents.
+When a narrative is spread between multiple litvis documents, Elm dependencies may be specified in multiple documents. When a downstream document declares a set of Elm dependencies, they are merged with any mentioned upstream, but will not affect the behaviour of the upstream documents.
 
-In rare cases, a package used in an upstream document needs to be excluded in a branch in favour of a local Elm module (for example, to test a new development version of a library).
-In this case, `false` as package version should be used.
+In rare cases, a package used in an upstream document needs to be excluded in a branch in favour of a local Elm module (for example, to test a new development version of a library). In this case, `false` as package version should be used.
 
-Parameter `source-directories` configures Elm to ‘see’ modules in the local filesystem.
-This may be useful when debugging a copy of a package before publishing it.
-When `source-directories` are not specified, no local Elm modules are imported from the filesystem, even if they are in the same directory as the litvis document.
-The paths are expected to be relevant to the current litvis document and are joined together in multi-document narratives.
-However, unlike for `dependencies` it is not possible to exclude a directory that has been listed under `source-directories` in an upstream document.
+Parameter `source-directories` configures Elm to ‘see’ modules in the local filesystem. This may be useful when debugging a copy of a package before publishing it. When `source-directories` are not specified, no local Elm modules are imported from the filesystem, even if they are in the same directory as the litvis document. The paths are expected to be relevant to the current litvis document and are joined together in multi-document narratives. However, unlike for `dependencies` it is not possible to exclude a directory that has been listed under `source-directories` in an upstream document.
 
-All parameters are optional and are expected to be found in markdown frontmatter under property `elm`.
-Other fields from `elm.json` may be added in future to support more use cases.
+All parameters are optional and are expected to be found in markdown frontmatter under property `elm`. Other fields from `elm.json` may be added in future to support more use cases.
 
 ### Example
 
@@ -374,7 +324,7 @@ elm:
 follows: root
 elm:
   dependencies:
-    eskimoblood/elm-color-extra: latest
+    noahzgordon/elm-color-extra: latest
 ---
 ```
 
@@ -426,24 +376,13 @@ styling:
 
 ### Description
 
-A litvis narrative can be linked to a set of YAML files, which define _labels_, _rules_ and _styling_.
-These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML.
-The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design.
-This can be thought of as form of scaffolding to assist in the process of design exposition.
-Schemas can be also used to validate litvis documents.
+A litvis narrative can be linked to a set of YAML files, which define _labels_, _rules_ and _styling_. These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML. The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design. This can be thought of as form of scaffolding to assist in the process of design exposition. Schemas can be also used to validate litvis documents.
 
-Unlike the HTML tags that could also be utilised, narrative schema labels starting with `{(` and `{|` remain visible in non-litvis markdown previews such as GitHub.
-This also helps distinguish them from non-semantic HTML tags that are sometimes added to markdown files.
+Unlike the HTML tags that could also be utilised, narrative schema labels starting with `{(` and `{|` remain visible in non-litvis markdown previews such as GitHub. This also helps distinguish them from non-semantic HTML tags that are sometimes added to markdown files.
 
-Schema definitions determine how the labels are rendered.
-Unknown (or misspelled) labels are printed ‘as is’ and the known labels can be converted into HTML elements or hidden.
-Hidden labels are useful when their only purpose is to validate the structure of the narrative.
-In order to convert labels into a rendered HTML, [Handlebars](https://handlebarsjs.com/) templating language is used.
-The templates defined in `labels` → `[i]` → `single|paired` → `htmlTemplate` can mention label attributes or `children`.
+Schema definitions determine how the labels are rendered. Unknown (or misspelled) labels are printed ‘as is’ and the known labels can be converted into HTML elements or hidden. Hidden labels are useful when their only purpose is to validate the structure of the narrative. In order to convert labels into a rendered HTML, [Handlebars](https://handlebarsjs.com/) templating language is used. The templates defined in `labels` → `[i]` → `single|paired` → `htmlTemplate` can mention label attributes or `children`.
 
-To specify what schemas a document is expected to follow, the frontmatter parameter `narrative-schemas` is used.
-Multiple schemas can be referenced and thus composed together.
-In turn, each narrative schema can depend on other schemas, which makes it easy to re-use and build upon narrative representation and validation.
+To specify what schemas a document is expected to follow, the frontmatter parameter `narrative-schemas` is used. Multiple schemas can be referenced and thus composed together. In turn, each narrative schema can depend on other schemas, which makes it easy to re-use and build upon narrative representation and validation.
 
 Downstream litvis documents are not allowed to override previously defined narrative schemas – only the schemas defined in the root document are taken into account.
 
@@ -483,4 +422,4 @@ Examples of schema yamls can be found in the [narrative-schemas](../narrative-sc
 
 2.  Create a new markdown file and open its preview
 
-3.  Copy any of the [examples](../examples) or type your own litvis-flavoured markdown
+3.  Copy any of the [examples](../examples/README.md) or type your own litvis-flavoured markdown
