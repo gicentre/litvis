@@ -25,7 +25,7 @@ Answer to the Ultimate Question of Life, the Universe, and Everything is ^^^elm 
 
 > AK: `^^^elm r=answerAsString^^^` produces quotes. How about adding `^^^elm s=answerAsString^^^` for printing strings without quotes? Implementing this should be quicker than updating the docs.
 
-> JWO: I think we can cover this with the `m`/`markdown` output, which should not generate quotes. This should work for all strings that do not contain markdown formatting instructions. For those that do, outputing the literal with quotation marks makes sense.
+> JWO: I think we can cover this with the `m`/`markdown` output, which should not generate quotes. This should work for all strings that do not contain markdown formatting instructions. For those that do, output of the literal with quotation marks makes sense.
 
 ---
 

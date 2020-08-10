@@ -19,7 +19,7 @@ This should generate both formatted output in the preview window and console out
 
 ^^^elm r=(echoToConsole "Formatted output here" "Console output here")^^^
 
-This shoud generate console ouput only with an empty string displayed in preview window.
+This should generate console output only with an empty string displayed in preview window.
 
 ^^^elm r=(consoleOnly "Hello from the console")^^^
 

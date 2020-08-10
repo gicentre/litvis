@@ -33,7 +33,7 @@ Output in each column should be identical:
 
 ## 2. Simple String Values
 
-These should be simialr to `r`/`raw` output except that no quotation marks should appear around `m`/`markdown` output.
+These should be similar to `r`/`raw` output except that no quotation marks should appear around `m`/`markdown` output.
 
 ### 2.1 Output from fenced code blocks
 
