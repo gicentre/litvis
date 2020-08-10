@@ -7,14 +7,14 @@ follows: incomeRoot
 Rather than separate the 5% and 95% income quantiles, consider a scatterplot that compares both measures for each year of the sample.
 
 ```elm {l=hidden}
-config =
+cfg =
     let
         font =
             "Roboto Condensed"
     in
     configure
         << configuration (coAxis [ axcoTitleFont font, axcoLabelFont font, axcoGrid False ])
-        << configuration (coView [ vicoStroke Nothing, vicoWidth 500, vicoHeight 500 ])
+        << configuration (coView [ vicoStroke Nothing, vicoContinuousWidth 500, vicoContinuousHeight 500 ])
         << configuration (coText [ maAlign haRight, maFontSize 7, maAngle 20, maDx -4 ])
 ```
 
@@ -39,23 +39,22 @@ enc =
 ```elm {v siding}
 scatter : Spec
 scatter =
-    toVegaLite [ config [], data, point [ maFilled True ], enc [] ]
+    toVegaLite [ cfg [], data, enc [], point [ maFilled True ] ]
 ```
 
-While this shows some structure, which is revealing, we cannot see the temporal trend.
-We could get a better idea by creating a [connected scatterplot](https://eagereyes.org/papers/the-connected-scatterplot-for-presenting-paired-time-series) that joins the points in temporal order (1961 in bottom left, 2016 at top right):
+While this shows some structure, which is revealing, we cannot see the temporal trend. We could get a better idea by creating a [connected scatterplot](https://eagereyes.org/papers/the-connected-scatterplot-for-presenting-paired-time-series) that joins the points in temporal order (1961 in bottom left, 2016 at top right):
 
 ```elm {v siding}
 scatter : Spec
 scatter =
     toVegaLite
-        [ config []
+        [ cfg []
         , data
+        , enc []
         , line
             [ maInterpolate miMonotone
             , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
             ]
-        , enc []
         ]
 ```
 
@@ -66,7 +65,7 @@ labelEnc =
     encoding
         << position X [ pName "5pcIncome", pQuant ]
         << position Y [ pName "95pcIncome", pQuant ]
-        << text [ tName "PMLabel", tNominal ]
+        << text [ tName "PMLabel" ]
 ```
 
 ```elm {v siding}
@@ -75,17 +74,17 @@ scatter =
     let
         lineSpec =
             asSpec
-                [ line
+                [ enc []
+                , line
                     [ maInterpolate miMonotone
                     , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
                     ]
-                , enc []
                 ]
 
         labelSpec =
             asSpec [ textMark [], labelEnc [] ]
     in
-    toVegaLite [ config [], data, layer [ lineSpec, labelSpec ] ]
+    toVegaLite [ cfg [], data, layer [ lineSpec, labelSpec ] ]
 ```
 
 Labels look too crowded towards the top of the scatterplot, so for now let's make the chart zoomable.
@@ -96,18 +95,18 @@ scatter =
     let
         lineSpec =
             asSpec
-                [ line
+                [ enc []
+                , line
                     [ maInterpolate miMonotone
                     , maPoint (pmMarker [ maFill "black", maStroke "white", maStrokeWidth 1.5 ])
                     ]
-                , enc []
                 ]
 
         labelSpec =
-            asSpec [ textMark [], labelEnc [], sel [] ]
+            asSpec [ labelEnc [], sel [], textMark [] ]
 
         sel =
             selection << select "view" seInterval [ seBindScales ]
     in
-    toVegaLite [ config [], data, layer [ lineSpec, labelSpec ] ]
+    toVegaLite [ cfg [], data, layer [ lineSpec, labelSpec ] ]
 ```

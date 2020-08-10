@@ -15,7 +15,7 @@ richest =
                 << position X [ pName "Year", pTemporal, pAxis [ axFormat "%Y" ] ]
                 << position Y [ pName "95pcIncome", pQuant, pTitle "Richest 5% (£)" ]
     in
-    toVegaLite [ width 400, data, line [ maStroke "darkBlue" ], enc [] ]
+    toVegaLite [ width 400, data, enc [], line [ maStroke "darkBlue" ] ]
 ```
 
 And the same for the poorest 5% (5th percentile):
@@ -29,7 +29,7 @@ poorest =
                 << position X [ pName "Year", pTemporal, pAxis [ axFormat "%Y" ] ]
                 << position Y [ pName "5pcIncome", pQuant, pTitle "Poorest 5% (£)" ]
     in
-    toVegaLite [ width 400, data, line [ maStroke "darkRed" ], enc [] ]
+    toVegaLite [ width 400, data, enc [], line [ maStroke "darkRed" ] ]
 ```
 
 Comparison between the two is quite hard, so perhaps it would be easier on the same chart:
@@ -52,8 +52,8 @@ combinedLinechart =
         [ width 400
         , data
         , layer
-            [ asSpec [ line [ maStroke "darkred" ], enc5pc [] ]
-            , asSpec [ line [ maStroke "darkblue" ], enc95pc [] ]
+            [ asSpec [ enc5pc [], line [ maStroke "darkred" ] ]
+            , asSpec [ enc95pc [], line [ maStroke "darkblue" ] ]
             ]
         ]
 ```
@@ -84,8 +84,8 @@ combinedLinechart =
         , data
         , res []
         , layer
-            [ asSpec [ line [ maStroke "darkred" ], enc5pc [] ]
-            , asSpec [ line [ maStroke "darkblue" ], enc95pc [] ]
+            [ asSpec [ enc5pc [], line [ maStroke "darkred" ] ]
+            , asSpec [ enc95pc [], line [ maStroke "darkblue" ] ]
             ]
         ]
 ```

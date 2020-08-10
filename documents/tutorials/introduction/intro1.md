@@ -50,16 +50,15 @@ helloLitvis =
             encoding
                 << position X
                     [ pName "language"
-                    , pNominal
                     , pSort [ soByField "rating" opMean, soDescending ]
                     ]
                 << position Y [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc[], bar [] ]
 ```
 ````
 
-If you open the preview pane (in Atom, select `Packages->Markdown Preview Enhanced with litvis->Toggle` or the keyboard shortcut `Shift-Ctrl-M`), you should see output similar to the following:
+If you open the preview pane (in Atom, select `Packages->Markdown Preview Enhanced with litvis->Toggle` or the keyboard shortcut `Shift-Ctrl-M`; or in VS-Code, `Crtl-k` or `Cmd-k` followed by `s`), you should see output similar to the following:
 
 ![helloLitvis](images/hello1.png)
 
@@ -101,8 +100,7 @@ Try changing the values inside the curly braces of `elm {v}` in `helloLitvis.md`
 
 ## Working with multiple code blocks
 
-You can mix normal markdown text with fenced code blocks throughout a litvis document.
-For example, try adding the following text and code to the bottom of [`helloLitvis.md`](helloLitvisV2.md):
+You can mix normal markdown text with fenced code blocks throughout a litvis document. For example, try adding the following text and code to the bottom of [`helloLitvis.md`](helloLitvisV2.md):
 
 ````
 Here are the same data but displayed as horizontal bars arranged in alphabetical order:
@@ -118,10 +116,10 @@ helloLitvis2 =
 
         enc =
             encoding
-                << position Y [ pName "language", pNominal ]
+                << position Y [ pName "language" ]
                 << position X [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc [], bar [] ]
 ```
 ````
 
@@ -133,8 +131,7 @@ By continuing to add text and code samples that render visualizations we can bui
 
 But notice that we have some repetition between the two code blocks that share a common data source, and that we have been forced to give the two versions of the function different names (`helloLitvis` and `helloLitvis2`) to avoid name clashes.
 
-By default, functions that are defined in fenced code blocks are visible throughout the entire document (which is why we had to give both rendering functions different names).
-We can use this to clean things up a little by putting the common code inside its own function to be used by other functions:
+By default, functions that are defined in fenced code blocks are visible throughout the entire document (which is why we had to give both rendering functions different names). We can use this to clean things up a little by putting the common code inside its own function to be used by other functions:
 
 ````
 ```elm {l=hidden}
@@ -145,8 +142,7 @@ data =
 ```
 ````
 
-Additionally, we can give our two visualization specification-generating functions the same name by making them _sidings_ – blocks of code that are not accessible to the other parts of the litvis document.
-This can be useful when you want to create 'one-off' functions that are not referenced elsewhere in your document:
+Additionally, we can give our two visualization specification-generating functions the same name by making them _sidings_ – blocks of code that are not accessible to the other parts of the litvis document. This can be useful when you want to create 'one-off' functions that are not referenced elsewhere in your document:
 
 ````
 Top 5 programming languages according to the [TIOBE index](https://www.tiobe.com/tiobe-index).
@@ -157,10 +153,10 @@ helloLitvis =
     let
         enc =
             encoding
-                << position X [ pName "language", pNominal, pSort [ soByField "rating" opMean, soDescending ] ]
+                << position X [ pName "language", pSort [ soByField "rating" opMean, soDescending ] ]
                 << position Y [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc[], bar [] ]
 ```
 
 Here are the same data but displayed as horizontal bars arranged in alphabetical order:
@@ -171,10 +167,10 @@ helloLitvis =
     let
         enc =
             encoding
-                << position Y [ pName "language", pNominal ]
+                << position Y [ pName "language" ]
                 << position X [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc[], bar [] ]
 ```
 ````
 
