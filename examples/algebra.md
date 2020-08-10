@@ -239,8 +239,7 @@ brexitMap mapSize dChange orderType oDirection =
 
         votingSpec =
             asSpec
-                [ dataFromUrl (path ++ "brexit.tsv")
-                    [ parse [ ( "RemainVotes", foNum ), ( "LeaveVotes", foNum ) ] ]
+                [ dataFromUrl (path ++ "brexit.tsv") [ parse [ ( "RemainVotes", foNum ), ( "LeaveVotes", foNum ) ] ]
                 , trans []
                 , circle [ maStroke "white", maStrokeWidth 0.5 ]
                 , votingEnc []
@@ -248,13 +247,12 @@ brexitMap mapSize dChange orderType oDirection =
 
         votingEnc =
             encoding
-                << position Longitude [ pName "Longitude", pQuant ]
-                << position Latitude [ pName "Latitude", pQuant ]
+                << position Longitude [ pName "Longitude" ]
+                << position Latitude [ pName "Latitude" ]
                 << size ([ mName "majority %", mQuant ] ++ legend)
                 << order orderParams
                 << color
                     ([ mName "majority decision"
-                     , mNominal
                      , mScale (categoricalDomainMap [ ( "remain", "rgb(50,50,200)" ), ( "leave", "rgb(200,50,50)" ) ])
                      ]
                         ++ legend

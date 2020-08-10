@@ -14,7 +14,7 @@ import VegaLite exposing (..)
 
 # Exploring Stellar Properties
 
-_Adapted from this [hVega notebook](https://github.com/DougBurke/hvega/blob/master/notebooks/hvega-frames-and-gaia.ipynb) by Doug Burke._
+_Adapted from this [hVega notebook](https://github.com/DougBurke/hvega/blob/master/notebooks/hvega-frames-and-gaia.ipynb) by Doug Burke. This provides an example of a 'data science notebook', exploring both data and the visual means of expressing the data._
 
 ## Table of Contents
 
@@ -57,9 +57,14 @@ Fortunately the full table is pretty small, so there should no problems with rea
 We can simply read the TSV file directly and make it available to our _elm-vegalite_ specifications.
 
 ```elm {l}
+path : String
+path =
+    "https://gicentre.github.io/data/"
+
+
 data : Data
 data =
-    dataFromUrl "https://gicentre.github.io/data/gaia-aa-616-a10-table1a.tsv" []
+    dataFromUrl (path ++ "gaia-aa-616-a10-table1a.tsv") []
 ```
 
 ## 3. Plotting the data
@@ -89,7 +94,7 @@ starPos =
             encoding
                 << position X (axOpts "RA_ICRS" 0 360 True)
                 << position Y (axOpts "DE_ICRS" -90 90 False)
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite [ data, width 300, height 300, enc [], circle [] ]
 ```
@@ -120,13 +125,17 @@ graticuleData : Float -> Float -> List DataColumn -> Data
 graticuleData lngStep latStep =
     let
         range mn mx step =
-            List.range 0 ((mx - mn) / step |> round) |> List.map (\x -> mn + (toFloat x * step))
+            List.range 0 ((mx - mn) / step |> round)
+                |> List.map (\x -> mn + (toFloat x * step))
 
         lng =
-            range -180 180 lngStep |> List.repeat (180 // round latStep + 1) |> List.concat
+            range -180 180 lngStep
+                |> List.repeat (180 // round latStep + 1)
+                |> List.concat
 
         lat =
-            range -90 90 latStep |> List.concatMap (List.repeat (360 // round lngStep + 1))
+            range -90 90 latStep
+                |> List.concatMap (List.repeat (360 // round lngStep + 1))
     in
     dataFromColumns []
         << dataColumn "lng" (nums lng)
@@ -150,7 +159,7 @@ graticule =
 
         encParallel =
             enc
-                << detail [ dName "lat", dNominal ]
+                << detail [ dName "lat" ]
 
         specParallel =
             asSpec
@@ -162,7 +171,7 @@ graticule =
 
         encMeridian =
             enc
-                << detail [ dName "lng", dNominal ]
+                << detail [ dName "lng" ]
                 << order [ oName "lat", oQuant ]
 
         specMeridian =
@@ -215,12 +224,12 @@ starPosAitoff =
             encoding
                 << position X [ pName "x", pQuant, pScale [ scNice niFalse ] ]
                 << position Y [ pName "y", pQuant, pScale [ scNice niFalse ] ]
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
 
         spec =
             asSpec [ trans [], enc [], circle [ maSize 9 ] ]
     in
-    toVegaLite [ cfg [], width 570, height 285, data, layer (spec :: graticule) ]
+    toVegaLite [ cfg [], width 570, height 285, data, layer (graticule ++ [ spec ]) ]
 ```
 
 ### Cluster Centroids
@@ -252,8 +261,8 @@ starCentroids =
             encoding
                 << position X [ pName "x", pQuant, pScale [ scNice niFalse ] ]
                 << position Y [ pName "y", pQuant, pScale [ scNice niFalse ] ]
-                << color [ mName "Cluster", mNominal, mLegend [] ]
-                << text [ tName "Cluster", tNominal ]
+                << color [ mName "Cluster", mLegend [] ]
+                << text [ tName "Cluster" ]
 
         clusterSpec =
             asSpec [ clusterTrans [], enc [], circle [ maSize 90 ] ]
@@ -273,7 +282,7 @@ starCentroids =
         , width 570
         , height 285
         , data
-        , layer (clusterSpec :: uncorrectedSpec :: clusterLabelSpec :: graticule)
+        , layer (graticule ++ [ clusterSpec, uncorrectedSpec, clusterLabelSpec ])
         ]
 ```
 
@@ -289,18 +298,17 @@ clusterCount =
             encoding
                 << position X
                     [ pName "Cluster"
-                    , pNominal
                     , pSort [ soByChannel chY, soDescending ]
                     , pTitle ""
                     ]
                 << position Y
                     [ pAggregate opCount
-                    , pQuant
                     , pAxis [ axTitle "Number of stars", axGrid False ]
                     ]
 
         barEnc =
-            enc << color [ mName "Cluster", mNominal, mLegend [] ]
+            enc
+                << color [ mName "Cluster", mLegend [] ]
 
         barSpec =
             asSpec [ barEnc [], bar [] ]
@@ -333,7 +341,7 @@ parTicks =
         enc =
             encoding
                 << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
-                << color [ mName "Cluster", mNominal, mLegend [] ]
+                << color [ mName "Cluster", mLegend [] ]
     in
     toVegaLite [ width 400, data, enc [], tick [ maOpacity 0.1 ] ]
 ```
@@ -347,8 +355,8 @@ parTicksSeparated =
         enc =
             encoding
                 << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
-                << position Y [ pName "Cluster", pNominal ]
-                << color [ mName "Cluster", mNominal, mLegend [] ]
+                << position Y [ pName "Cluster" ]
+                << color [ mName "Cluster", mLegend [] ]
     in
     toVegaLite [ width 400, data, enc [], tick [ maOpacity 0.1 ] ]
 ```
@@ -364,8 +372,8 @@ parDist =
         enc =
             encoding
                 << position X [ pName "plx", pQuant, pTitle "parallax (mas)" ]
-                << row [ fName "Cluster", fNominal, fSort [ soByField "plx" opMedian ] ]
-                << color [ mName "Cluster", mNominal, mLegend [] ]
+                << row [ fName "Cluster", fSort [ soByField "plx" opMedian ] ]
+                << color [ mName "Cluster", mLegend [] ]
     in
     toVegaLite
         [ cfgNoBorder []
@@ -398,7 +406,7 @@ parErrs =
                     , pQuant
                     , pTitle "error (milli-arcsecond)"
                     ]
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite [ width 400, data, enc [], circle [ maOpacity 0.2 ] ]
 ```
@@ -427,7 +435,7 @@ parErrsNoZero =
                     , pScale [ scType scLog ]
                     , pTitle "error (milli-arcsecond)"
                     ]
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite
         [ width 400
@@ -458,7 +466,7 @@ sigPlots =
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
                 << position Y [ pName "sig_plx", pQuant, pScale [ scType scLog ] ]
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite [ width 400, data, trans [], enc [], point [ maOpacity 0.5 ] ]
 ```
@@ -491,7 +499,7 @@ magVsParallax =
                     , pQuant
                     , pScale [ scType scLog, scNice niFalse ]
                     ]
-                << color [ mName "Cluster", mNominal ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite [ width 400, height 300, data, enc [], square [ maOpacity 0.5 ] ]
 ```
@@ -505,17 +513,13 @@ gmagDist =
         enc =
             encoding
                 << position X [ pName "Gmag", pQuant, pBin [ biMaxBins 20 ] ]
-                << position Y
-                    [ pAggregate opCount
-                    , pQuant
-                    , pTitle "Number of stars"
-                    ]
-                << color [ mName "Cluster", mNominal ]
+                << position Y [ pAggregate opCount, pTitle "Number of stars" ]
+                << color [ mName "Cluster" ]
     in
     toVegaLite [ width 500, height 500, data, enc [], bar [] ]
 ```
 
-Well, that's very colorful, but let's see what the individual cluster distributions look like by faceting on the Cluster field and viewing frequencies on a (sym)log scale:
+Well, that's very colourful, but let's see what the individual cluster distributions look like by faceting on the Cluster field and viewing frequencies on a (sym)log scale:
 
 ```elm {l v}
 perCluster : Spec
@@ -524,18 +528,14 @@ perCluster =
         cfgFacet =
             configure
                 << configuration (coHeader [ hdLabelAngle 0, hdTitleFontSize 0 ])
-                << configuration (coAxisY [ axcoTitleFontSize 0 ])
+                << configuration (coAxis [ axcoTitleFontSize 0 ] |> coAxisYFilter)
 
         enc =
             encoding
                 << position X [ pName "Gmag", pQuant, pBin [ biMaxBins 20 ] ]
-                << position Y
-                    [ pAggregate opCount
-                    , pQuant
-                    , pScale [ scType scSymLog ]
-                    ]
-                << color [ mName "Cluster", mNominal, mLegend [] ]
-                << row [ fName "Cluster", fNominal ]
+                << position Y [ pAggregate opCount, pScale [ scType scSymLog ] ]
+                << color [ mName "Cluster", mLegend [] ]
+                << row [ fName "Cluster", fHeader [ hdLabelAnchor anStart ] ]
     in
     toVegaLite [ cfgFacet [], width 300, height 100, data, enc [], bar [] ]
 ```
@@ -557,11 +557,7 @@ crossfilter =
         enc =
             encoding
                 << position X [ pRepeat arFlow, pBin [ biMaxBins 20 ], pQuant ]
-                << position Y
-                    [ pAggregate opCount
-                    , pQuant
-                    , pTitle "Number of Stars"
-                    ]
+                << position Y [ pAggregate opCount, pTitle "Number of Stars" ]
 
         trans =
             transform

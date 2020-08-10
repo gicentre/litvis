@@ -11,6 +11,11 @@ narrative-schemas:
 
 ```elm {l=hidden}
 import VegaLite exposing (..)
+
+
+path : String
+path =
+    "https://gicentre.github.io/data/"
 ```
 
 # Dynamic Design Documents
@@ -25,7 +30,7 @@ The sizes of the units vary considerably. To show a summary visualization in eac
 ```elm {v}
 fig1 : Spec
 fig1 =
-    toVegaLite [ config, layer [ geoMap 300 ] ]
+    toVegaLite [ cfg [], layer [ geoMap 300 ] ]
 ```
 
 This tile map uses the same colours to show NPUs. The reporting areas are well aligned, and the overall layout represents the original geography well. There is now room to add information for each reporting area in the map.
@@ -33,7 +38,7 @@ This tile map uses the same colours to show NPUs. The reporting areas are well a
 ```elm {v}
 fig2 : Spec
 fig2 =
-    toVegaLite [ config, layer [ gridMapSpec 300 FixedOpacity ] ]
+    toVegaLite [ cfg [], layer [ gridMapSpec 300 FixedOpacity ] ]
 ```
 
 ## Comparing Multiple Maps
@@ -51,7 +56,7 @@ gridmapCrimes : Spec
 gridmapCrimes =
     let
         crimeData =
-            dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsCrimesShort.tsv" []
+            dataFromUrl (path ++ "westMidlands/westMidsCrimesShort.tsv") []
 
         crimeTrans =
             transform
@@ -68,7 +73,7 @@ gridmapCrimes =
             220
     in
     toVegaLite
-        [ config
+        [ cfg []
         , crimeData
         , crimeTrans []
         , facet [ rowBy [ fName "crimeType", fOrdinal, fHeader [ hdTitle "" ] ] ]
@@ -81,12 +86,20 @@ gridmapCrimes =
 ```elm {l=hidden}
 geoMap : Float -> Spec
 geoMap w =
+    let
+        data =
+            dataFromUrl (path ++ "westMidlands/westMidsTopo.json") [ topojsonFeature "NPU" ]
+
+        enc =
+            encoding
+                << color [ mName "id", mScale npuColours, mLegend [] ]
+    in
     asSpec
         [ width w
         , height (w / 1.54)
-        , dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsTopo.json" [ topojsonFeature "NPU" ]
+        , data
+        , enc []
         , geoshape [ maStroke "white", maStrokeWidth (w * 0.00214) ]
-        , encoding (color [ mName "id", mNominal, mScale npuColours, mLegend [] ] [])
         ]
 
 
@@ -97,7 +110,7 @@ gridMapSpec w op =
             w / 26
 
         gridData =
-            dataFromUrl "https://gicentre.github.io/data/westMidlands/westMidsGridmapOpacity.tsv" []
+            dataFromUrl (path ++ "westMidlands/westMidsGridmapOpacity.tsv") []
 
         gridTrans =
             case op of
@@ -117,8 +130,7 @@ gridMapSpec w op =
             encoding
                 << position X [ pName "gridE", pQuant, pAxis [] ]
                 << position Y [ pName "gridN", pQuant, pAxis [] ]
-                << color [ mName "NPU", mNominal, mScale npuColours, mLegend [] ]
-                << size [ mNum ((gSize - 1) * (gSize - 1)) ]
+                << color [ mName "NPU", mScale npuColours, mLegend [] ]
 
         gridSel =
             selection
@@ -137,8 +149,8 @@ gridMapSpec w op =
                 , height (w / 2.36)
                 , gridData
                 , gridTrans []
-                , (gridEnc << opacity [ mNum 1 ]) []
-                , square []
+                , gridEnc []
+                , square [ maOpacity 1, maSize ((gSize - 1) * (gSize - 1)) ]
                 ]
 
         UserOpacity ->
@@ -168,12 +180,15 @@ crimeOverlay w =
             encoding
                 << position X [ pName "gridE", pQuant, pAxis [] ]
                 << position Y [ pName "gridN", pQuant, pAxis [] ]
-                << shape [ mName "crimeCats", mNominal, mScale crimeSymbols, mLegend [] ]
-                << color [ mName "crimeCats", mNominal, mScale crimeColours, mLegend [] ]
-                << opacity [ mNum 1 ]
-                << size [ mNum (w / 3) ]
+                << shape [ mName "crimeCats", mScale crimeSymbols, mLegend [] ]
+                << color [ mName "crimeCats", mScale crimeColours, mLegend [] ]
     in
-    asSpec [ width w, height (w / 2.36), crimeEnc [], point [ maFilled True ] ]
+    asSpec
+        [ width w
+        , height (w / 2.36)
+        , crimeEnc []
+        , point [ maOpacity 1, maSize (w / 3), maFilled True ]
+        ]
 
 
 type OpacityVal
@@ -210,6 +225,7 @@ crimeColours =
         ]
 
 
-config =
-    configure (configuration (coView [ vicoStroke Nothing ]) [])
+cfg =
+    configure
+        << configuration (coView [ vicoStroke Nothing ])
 ```

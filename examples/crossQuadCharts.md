@@ -138,7 +138,7 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
             encoding
                 << position X [ pName "x", pQuant, pAxis [] ]
                 << position Y [ pName "y", pQuant, pAxis [] ]
-                << shape [ mName "quadrant", mNominal, mScale quadPaths, mLegend [] ]
+                << shape [ mName "quadrant", mScale quadPaths, mLegend [] ]
                 << size
                     [ mName "magnitude"
                     , mQuant
@@ -148,54 +148,53 @@ labelledCrossQuad col1Title col2Title row1Title row2Title w tl tr bl br =
 
         quadSpec =
             asSpec
-                [ point [ maFill "rgb(129,160,194)", maFillOpacity 1, maStroke "#fff", maStrokeWidth 0 ]
-                , quadEnc []
+                [ quadEnc []
+                , point [ maFill "rgb(129,160,194)", maFillOpacity 1, maStroke "#fff", maStrokeWidth 0 ]
                 ]
 
         axisEnc =
             encoding
                 << position X [ pName "x", pQuant, pAxis [] ]
                 << position Y [ pName "y", pQuant, pAxis [] ]
-                << size [ mNum (w * 2) ]
                 << shape [ mName "quadrant", mNominal, mScale quadPaths, mLegend [] ]
 
         axisSpec =
-            asSpec [ point [ maStroke "#fff" ], axisEnc [] ]
+            asSpec [ axisEnc [], point [ maSize (w * 2), maStroke "#fff" ] ]
 
         numLabelEnc =
             encoding
                 << position X [ pName "numLabelX", pQuant, pAxis [] ]
                 << position Y [ pName "numLabelY", pQuant, pAxis [] ]
-                << text [ tName "magnitude", tNominal ]
+                << text [ tName "magnitude" ]
 
         numLabelSpec =
             asSpec
-                [ textMark
+                [ numLabelEnc []
+                , textMark
                     [ maAlign haCenter
                     , maBaseline vaMiddle
                     , maStrokeOpacity 0
                     , maFill "#f0f0f6"
                     , maFontSize (d * 0.9)
                     ]
-                , numLabelEnc []
                 ]
 
         labelEnc =
             encoding
                 << position X [ pName "labelX", pQuant, pAxis [] ]
                 << position Y [ pName "labelY", pQuant, pAxis [] ]
-                << text [ tName "label", tNominal ]
+                << text [ tName "label" ]
 
         labelSpec =
             asSpec
-                [ textMark
+                [ labelEnc []
+                , textMark
                     [ maAlign haCenter
                     , maBaseline vaTop
                     , maStrokeOpacity 0
                     , maFill "#666"
                     , maFontSize d
                     ]
-                , labelEnc []
                 ]
     in
     toVegaLite
