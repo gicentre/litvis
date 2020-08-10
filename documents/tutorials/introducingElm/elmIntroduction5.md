@@ -173,7 +173,11 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position X
+                    [ pName "angle"
+                    , pQuant
+                    , pAxis [ axValues (nums (List.range 0 9 |> List.map ((*) 90 >> toFloat))) ]
+                    ]
                 << position Y [ pName "y", pQuant ]
     in
     toVegaLite [ width 400, data [], enc [], line [] ]
@@ -208,7 +212,11 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position X
+                    [ pName "angle"
+                    , pQuant
+                    , pAxis [ axValues (nums (List.range 0 9 |> List.map ((*) 90 >> toFloat))) ]
+                    ]
                 << position Y [ pName "y", pQuant ]
     in
     toVegaLite [ width 400, data [], enc [], line [] ]
@@ -325,17 +333,17 @@ barGrid =
     let
         enc =
             encoding
-                << position X [ pName "cat", pOrdinal, pAxis [] ]
+                << position X [ pName "cat", pAxis [] ]
                 << position Y [ pName "val", pQuant, pAxis [] ]
-                << color [ mName "cat", mNominal, mLegend [] ]
+                << color [ mName "cat", mLegend [] ]
     in
     toVegaLite
         [ tidyData []
         , spacing 50
         , specification (asSpec [ width 120, height 120, bar [], enc [] ])
         , facet
-            [ rowBy [ fName "row", fOrdinal, fHeader [ hdTitle "" ] ]
-            , columnBy [ fName "col", fOrdinal, fHeader [ hdTitle "" ] ]
+            [ rowBy [ fName "row", fHeader [ hdTitle "" ] ]
+            , columnBy [ fName "col", fHeader [ hdTitle "" ] ]
             ]
         ]
 ```
