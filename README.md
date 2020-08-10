@@ -49,7 +49,7 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
     - Search for `prettier - Code formatter` and install _(auto-formats code)_.
 
-    - Search for `elm` and install _(syntax highlighting of Elm code)_.
+    - Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
 
 <!-- 5.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
     There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
