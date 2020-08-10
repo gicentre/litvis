@@ -99,6 +99,10 @@ echo "{}"  \
 graticule : Spec
 graticule =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
         graticuleSpec =
             asSpec
                 [ projection [ prType equirectangular ]
@@ -113,12 +117,7 @@ graticule =
                 , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
     in
-    toVegaLite
-        [ width 500
-        , height 250
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , layer [ graticuleSpec, countrySpec ]
-        ]
+    toVegaLite [ width 500, height 250, cfg [], layer [ graticuleSpec, countrySpec ] ]
 ```
 
 For other options for customising graticule generation, see the [geoGraticule documentation](https://github.com/d3/d3-geo/blob/master/README.md#geoGraticule).
@@ -146,6 +145,10 @@ type alias Proj =
 paris : String -> Proj -> Spec
 paris projName proj =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
         pDetails =
             [ width 300, height 200, proj ]
 
@@ -175,7 +178,7 @@ paris projName proj =
     in
     toVegaLite
         [ title (projName ++ " projection") []
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
+        , cfg []
         , layer [ graticuleSpec, countrySpec, circleSpec ]
         ]
 ```
@@ -200,7 +203,7 @@ Note how the small circle is no longer circular when projected onto a plane. We 
 
 ## 3. Generate a Tissot's Indicatrix file.
 
-The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes. We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion. _Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude,latitude) space to projected space. We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
+The example of the single small circle above shows that a circle is a useful visual indicator of distortion as we have a clear 'reference' with which to compare distorted shapes. We can project small circles at regular intervals across the globe to gain a more systematic impression of distortion. _Tissot's indicatrices_ are defined as circles of infinitesimal diameter that are projected from geographical (longitude, latitude) space to projected space. We can simulate Tissot's indicatrices by generating a geoJSON object containing a grid of small circles:
 
 <details><summary>click to see Tissot generating code</summary>
 
@@ -232,14 +235,14 @@ tissot gStep =
                         lat =
                             cLat + radToDeg (degToRad r * cos (degToRad15 i))
                     in
-                    ( rnd <| cLng + radToDeg (degToRad r / cos (degToRad lat) * sin (degToRad15 i)), rnd lat )
+                    ( cLng + radToDeg (degToRad r / cos (degToRad lat) * sin (degToRad15 i)), rnd lat |> rnd )
             in
             List.map circ (List.range 0 24)
 
         circles lng =
             List.map (\i -> circle lng i 2.5) (range -80 80 20)
     in
-    geoPolygons <| List.map (\lng -> circles lng) (range -180 160 30)
+    List.map (\lng -> circles lng) (range -180 160 30) |> geoPolygons
 ```
 
 </details>
@@ -248,6 +251,10 @@ tissot gStep =
 tissotMap : Spec
 tissotMap =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
         proj =
             projection [ prType equirectangular ]
 
@@ -272,12 +279,7 @@ tissotMap =
                 , geoshape [ maStroke "white", maFill "black", maStrokeWidth 0.1, maFillOpacity 0.1 ]
                 ]
     in
-    toVegaLite
-        [ width 500
-        , height 250
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , layer [ graticuleSpec, tissotSpec, countrySpec ]
-        ]
+    toVegaLite [ width 500, height 250, cfg [], layer [ graticuleSpec, tissotSpec, countrySpec ] ]
 ```
 
 > TODO: Can we pass d3 iterable actions into the command line tool rather than relying on elm code?
