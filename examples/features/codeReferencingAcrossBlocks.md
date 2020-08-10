@@ -11,12 +11,17 @@ import VegaLite exposing (..)
 # Simple litvis chart
 
 ```elm {l=hidden}
+path : String
+path =
+    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
+```
+
+```elm {l=hidden}
 barChart : Spec
 barChart =
     let
         data =
-            dataFromUrl "https://vega.github.io/vega-lite/data/cars.json"
-                []
+            dataFromUrl (path ++ "cars.json") []
 
         enc =
             encoding
