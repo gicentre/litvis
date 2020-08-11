@@ -35,7 +35,7 @@ This can be summarised by saying that the paths from the D in the top left corne
 
 - Failures in the invariance principle result in _hallicinators_ (unimportant change in R results in salient changes in V).
 
-* Failures in the unambiguity principle result in _confusers_ (meaningful changes in D cannot be seen in V).
+- Failures in the unambiguity principle result in _confusers_ (meaningful changes in D cannot be seen in V).
 
 - Failures in the correspondence principle result in _jumblers_ (change in D does not result in an equivalent change in V) or _misleaders_ (change in V don't reflect equivalent change in D).
 
