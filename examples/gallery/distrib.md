@@ -48,9 +48,44 @@ freqHisto =
 
 ---
 
+## Relative Frequency
+
+While the shape of the distribution remains the same, we can represent frequency as a proportion of the total. The data are binned with first transform. The number of values per bin and the total number are calculated in the second and third transform to calculate the relative frequency in the last transformation step.
+
+```elm {v l interactive}
+relFreq : Spec
+relFreq =
+    let
+        data =
+            dataFromUrl (giCentrePath ++ "putneyAirQuality2018.csv")
+                [ parse [ ( "NOX", foNum ) ] ]
+
+        trans =
+            transform
+                << binAs [ biStep 20 ] "NOX" "bin_NOX"
+                << aggregate [ opAs opCount "" "Count" ] [ "bin_NOX", "bin_NOX_end" ]
+                << joinAggregate [ opAs opSum "Count" "totalCount" ] []
+                << calculateAs "datum.Count/datum.totalCount" "percentOfTotal"
+
+        enc =
+            encoding
+                << position X [ pName "bin_NOX", pBinned, pTitle "NOX concentration (μg/m3)" ]
+                << position X2 [ pName "bin_NOX_end" ]
+                << position Y
+                    [ pName "percentOfTotal"
+                    , pQuant
+                    , pTitle "Relative frequency"
+                    , pAxis [ axFormat ".1~%" ]
+                    ]
+    in
+    toVegaLite [ width 600, data, trans [], enc [], bar [ maTooltip ttEncoding ] ]
+```
+
+---
+
 ## Cumulative Frequency Distribution
 
-The cumulative frequency distribution can be calculated by vega-lite using a window transform.
+The cumulative frequency distribution can be calculated using the [window transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-16-window-transformations).
 
 ```elm {v l}
 cumulativeF : Spec
@@ -71,13 +106,82 @@ cumulativeF =
                     [ pName "NOX"
                     , pQuant
                     , pTitle "NOX concentration (μg/m3)"
+                    , pScale [ scDomain (doNums [ 0, 700 ]) ]
                     ]
                 << position Y
                     [ pName "cumulativeCount"
                     , pQuant
                     ]
     in
+    toVegaLite [ width 500, data, trans [], enc [], area [ maClip True ] ]
+```
+
+---
+
+## Density Distribution
+
+We can estimate a continuous density distribution from a set of quantitative measurements using the [density (KDE) transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-12-density-estimation).
+
+```elm {v l}
+densityDist : Spec
+densityDist =
+    let
+        data =
+            dataFromUrl (giCentrePath ++ "putneyAirQuality2018.csv")
+                [ parse [ ( "NOX", foNum ) ] ]
+
+        trans =
+            transform
+                << density "NOX" [ dnMinSteps 200 ]
+
+        enc =
+            encoding
+                << position X
+                    [ pName "value"
+                    , pQuant
+                    , pTitle "NOX concentration (μg/m3)"
+                    ]
+                << position Y [ pName "density", pQuant ]
+    in
     toVegaLite [ width 500, data, trans [], enc [], area [] ]
+```
+
+---
+
+## Multiple Density Distributions
+
+We can stack density estimates when comparing distributions in different categories.
+
+```elm{v l}
+multiDensity : Spec
+multiDensity =
+    let
+        data =
+            dataFromUrl (vegaPath ++ "penguins.json") []
+
+        trans =
+            transform
+                << density "Body Mass (g)"
+                    [ dnMinSteps 50
+                    , dnGroupBy [ "Species" ]
+                    , dnExtent 2500 6500
+                    ]
+
+        enc =
+            encoding
+                << position X [ pName "value", pQuant, pTitle "Body mass (g)" ]
+                << position Y [ pName "density", pQuant, pStack stZero ]
+                << color [ mName "Species" ]
+    in
+    toVegaLite
+        [ title "Body Mass of Penguins" []
+        , width 400
+        , height 120
+        , data
+        , trans []
+        , enc []
+        , area [ maStroke "white", maStrokeWidth 0.5 ]
+        ]
 ```
 
 ---
@@ -98,6 +202,24 @@ tukeyBoxplot =
         enc =
             encoding
                 << position X [ pName "IMDB Rating", pQuant ]
+    in
+    toVegaLite [ width 400, data, enc [], boxplot [] ]
+```
+
+We can combine boxplots easily in order to compare distributions in different categories. Here, for example, comparison of penguin weights by species.
+
+```elm {v l}
+tukeyBoxplots : Spec
+tukeyBoxplots =
+    let
+        data =
+            dataFromUrl (vegaPath ++ "penguins.json") []
+
+        enc =
+            encoding
+                << position X [ pName "Body Mass (g)", pQuant, pScale [ scZero False ] ]
+                << position Y [ pName "Species", pAxis [ axLabelAngle 0, axTitle "" ] ]
+                << color [ mName "Species", mLegend [] ]
     in
     toVegaLite [ width 400, data, enc [], boxplot [] ]
 ```
