@@ -148,6 +148,58 @@ punchedCard =
 
 ---
 
+## 'Lasagna chart' (dense time-series heatmap)
+
+For regular sampling over time we can colour by magnitude and separate different categories vertically. Can be useful when showing many categories that would otherwise be too complex as a multi-line chart.
+
+```elm {v l}
+lasagna : Spec
+lasagna =
+    let
+        data =
+            dataFromUrl (path ++ "stocks.csv") []
+
+        trans =
+            transform
+                << filter (fiExpr "datum.symbol !== 'GOOG'")
+
+        enc =
+            encoding
+                << position X
+                    [ pName "date"
+                    , pOrdinal
+                    , pTimeUnit yearMonthDate
+                    , pAxis
+                        [ axTitle ""
+                        , axFormat "%Y"
+                        , axLabelAngle 0
+                        , axLabelOverlap osNone
+                        , axDataCondition
+                            (fiEqual "value" (dt [ dtMonth Jan, dtDate 1 ]) |> fiOpTrans (mTimeUnit monthDate))
+                            (cAxLabelColor "black" "")
+                        , axDataCondition
+                            (fiEqual "value" (dt [ dtMonth Jan, dtDate 1 ]) |> fiOpTrans (mTimeUnit monthDate))
+                            (cAxTickColor "black" "")
+                        ]
+                    ]
+                << position Y [ pName "symbol", pTitle "" ]
+                << color
+                    [ mAggregate opSum
+                    , mName "price"
+                    , mTitle "Price"
+                    , mLegend [ leGradientLength 100, leGradientThickness 10 ]
+                    ]
+
+        cfg =
+            configure
+                << configuration (coScale [ sacoBandPaddingInner 0, sacoBandPaddingOuter 0 ])
+                << configuration (coText [ maBaseline vaMiddle ])
+    in
+    toVegaLite [ width 400, height 120, cfg [], data, trans [], enc [], rect [] ]
+```
+
+---
+
 ## Annotated grid
 
 When colour does not provide sufficient detail to convey values, we can overlay a text annotation on a tabled view.
