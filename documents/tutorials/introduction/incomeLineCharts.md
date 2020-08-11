@@ -2,7 +2,7 @@
 follows: incomeRoot
 ---
 
-## Line chart experiments
+# Line chart experiments
 
 Household income of the richest 5 percent after housing costs and adjusted for inflation:
 

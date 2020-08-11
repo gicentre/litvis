@@ -2,7 +2,7 @@
 follows: incomeRoot
 ---
 
-## Scatterplot experiments
+# Scatterplot experiments
 
 Rather than separate the 5% and 95% income quantiles, consider a scatterplot that compares both measures for each year of the sample.
 
