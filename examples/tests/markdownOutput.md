@@ -173,7 +173,7 @@ multiLineOutput3 =
 
 - spaced bullet item 1
 
-* spaced bullet item 2
+- spaced bullet item 2
 
 - spaced bullet item 3
 

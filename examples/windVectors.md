@@ -56,7 +56,7 @@ data =
         << dataColumn "speed" (nums speeds)
 ```
 
-For convenience, pre-calculated direction and speed values have been stored at https://gicentre.github.io/data/windVectors.csv.
+For convenience, pre-calculated direction and speed values have been stored at [gicentre.github.io/data/windVectors.csv](https://gicentre.github.io/data/windVectors.csv).
 
 ```elm {l}
 path : String

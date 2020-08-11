@@ -7,7 +7,7 @@ elm:
 
 @import "assets/robotoStyle.less"
 
-## Lunar Eclipse Mapping
+# Lunar Eclipse Mapping
 
 There was a lunar eclipse on the 27th of July, 2018.
 
