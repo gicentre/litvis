@@ -195,7 +195,7 @@ intervalHighlight =
 
 ## Hover Highlighting
 
-_Mouse over individual points or select multiple points with the shift key_
+Mouse over individual points or select multiple points with the shift key
 
 ```elm {v l interactive}
 hoverHighlight : Spec
