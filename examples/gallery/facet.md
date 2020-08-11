@@ -263,3 +263,38 @@ barleySmallMultiples =
         , specification (asSpec [ heightStep 12, enc [], point [] ])
         ]
 ```
+
+---
+
+## Compact Trellis Chart
+
+Trellis charts are useful for comparing magnitudes across categories. This compact version makes it suitable for many small multiples.
+
+```elm {v l}
+trellis : Spec
+trellis =
+    let
+        data =
+            dataFromColumns []
+                << dataColumn "a" (List.repeat 9 "a1" ++ List.repeat 9 "a2" ++ List.repeat 9 "a3" |> strs)
+                << dataColumn "b" (List.repeat 3 "b1" ++ List.repeat 3 "b2" ++ List.repeat 3 "b3" |> List.repeat 3 |> List.concat |> strs)
+                << dataColumn "c" (List.repeat 9 [ "x", "y", "z" ] |> List.concat |> strs)
+                << dataColumn "p" (nums [ 0.14, 0.6, 0.03, 0.8, 0.38, 0.55, 0.11, 0.58, 0.79, 0.83, 0.87, 0.67, 0.97, 0.84, 0.9, 0.74, 0.64, 0.19, 0.57, 0.35, 0.49, 0.91, 0.38, 0.91, 0.99, 0.8, 0.37 ])
+
+        enc =
+            encoding
+                << position X [ pName "p", pQuant, pAxis [ axFormat "%", axTitle "" ] ]
+                << position Y [ pName "c", pAxis [] ]
+                << color
+                    [ mName "c"
+                    , mLegend [ leOrient loBottom, leTitleOrient loLeft, leTitle "settings" ]
+                    ]
+                << row [ fName "a", fHeader [ hdTitle "Factor A", hdLabelAngle 0 ] ]
+                << column [ fName "b", fHeader [ hdTitle "Factor B" ] ]
+
+        res =
+            resolve
+                << resolution (reScale [ ( chY, reIndependent ) ])
+    in
+    toVegaLite [ width 60, heightStep 8, spacing 5, data [], enc [], bar [] ]
+```
