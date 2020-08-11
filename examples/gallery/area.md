@@ -217,3 +217,96 @@ horizonChart =
         , layer [ specLower, specUpper ]
         ]
 ```
+
+---
+
+## Mosaic Chart
+
+Similar to a stacked bar chart except the width of each 'bar' is proportional to the magnitude of the items in the bar and the height of each item in the bar proportional to the item's relative proportion within the bar. If the values are not pre-calculated in the dataset, you can use the [window transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-16-window-transformations) as below to aggregate and group the values needed for each cell.
+
+```elm {v l}
+mosaic : Spec
+mosaic =
+    let
+        data =
+            dataFromUrl (path ++ "cars.json") []
+
+        trans =
+            transform
+                << aggregate [ opAs opCount "" "count_*" ] [ "Origin", "Cylinders" ]
+                << stack "count_*"
+                    []
+                    "stack_count_Origin1"
+                    "stack_count_Origin2"
+                    [ stOffset stNormalize, stSort [ stAscending "Origin" ] ]
+                << window
+                    [ ( [ wiAggregateOp opMin, wiField "stack_count_Origin1" ], "x" )
+                    , ( [ wiAggregateOp opMax, wiField "stack_count_Origin2" ], "x2" )
+                    , ( [ wiOp woDenseRank ], "rank_Cylinders" )
+                    , ( [ wiAggregateOp opDistinct, wiField "Cylinders" ], "distinct_Cylinders" )
+                    ]
+                    [ wiFrame Nothing Nothing, wiGroupBy [ "Origin" ], wiSort [ wiAscending "Cylinders" ] ]
+                << window
+                    [ ( [ wiOp woDenseRank ], "rank_Origin" ) ]
+                    [ wiFrame Nothing Nothing, wiSort [ wiAscending "Origin" ] ]
+                << stack "count_*"
+                    [ "Origin" ]
+                    "y"
+                    "y2"
+                    [ stOffset stNormalize, stSort [ stAscending "Cylinders" ] ]
+                << calculateAs "datum.y + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3" "ny"
+                << calculateAs "datum.y2 + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3" "ny2"
+                << calculateAs "datum.x + (datum.rank_Origin - 1) * 0.01" "nx"
+                << calculateAs "datum.x2 + (datum.rank_Origin - 1) * 0.01" "nx2"
+                << calculateAs "(datum.nx+datum.nx2)/2" "xc"
+                << calculateAs "(datum.ny+datum.ny2)/2" "yc"
+
+        enc1 =
+            encoding
+                << position X [ pName "xc", pAggregate opMin, pTitle "Origin", pAxis [] ]
+                << color [ mName "Origin", mLegend [] ]
+                << text [ tName "Origin" ]
+
+        spec1 =
+            asSpec [ enc1 [], textMark [ maBaseline vaTop, maAlign haCenter ] ]
+
+        enc2 =
+            encoding
+                << position X [ pName "nx", pQuant, pAxis [] ]
+                << position X2 [ pName "nx2" ]
+                << position Y [ pName "ny", pQuant, pAxis [] ]
+                << position Y2 [ pName "ny2" ]
+                << color [ mName "Origin", mLegend [] ]
+                << opacity [ mName "Cylinders", mQuant, mLegend [] ]
+                << tooltips [ [ tName "Origin" ], [ tName "Cylinders", tQuant ] ]
+
+        spec2 =
+            asSpec [ enc2 [], rect [] ]
+
+        enc3 =
+            encoding
+                << position X [ pName "xc", pQuant, pAxis [] ]
+                << position Y [ pName "yc", pQuant, pTitle "Cylinders" ]
+                << text [ tName "Cylinders" ]
+
+        spec3 =
+            asSpec [ enc3 [], textMark [ maBaseline vaMiddle, maSize 8, maOpacity 0.5 ] ]
+
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+                << configuration (coAxis [ axcoDomain False, axcoTicks False, axcoLabels False, axcoGrid False ])
+                << configuration (coConcat [ cocoSpacing 10 ])
+
+        res =
+            resolve
+                << resolution (reScale [ ( chX, reShared ) ])
+    in
+    toVegaLite
+        [ cfg []
+        , res []
+        , data
+        , trans []
+        , vConcat [ spec1, asSpec [ layer [ spec2, spec3 ] ] ]
+        ]
+```
