@@ -6,13 +6,13 @@ narrative-schemas:
 
 @import "../css/tutorial.less"
 
-_Litvis tutorials: Introducing Elm_
+_Litvis tutorials: Introducing Elm._
 
-1.  [Introduction](elmIntroduction1.md)
-2.  [Functions, functions, functions](elmIntroduction2.md)
-3.  [Types and pattern matching](elmIntroduction3.md)
-4.  **Lists and list processing**
-5.  [Elm and elm-vegalite](elmIntroduction5.md)
+1. [Introduction](elmIntroduction1.md)
+2. [Functions, functions, functions](elmIntroduction2.md)
+3. [Types and pattern matching](elmIntroduction3.md)
+4. **Lists and list processing**
+5. [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
@@ -71,7 +71,7 @@ Here we have created a new list by adding 'Pete' to a reversed copy of the previ
 
 Note that as with all elm values, lists are _immutable_ so can never change their contents. What we are doing above is to create a completely new list (`newNames`) based on the contents of an existing one (`names`). At no point does `names` ever contain `"Pete"`.
 
-### Processing lists with recursion
+## Processing lists with recursion
 
 The cons operator is particularly useful when pattern matching. It allows us to name the head and tail of a list (if it has any contents) and do something with each of them. When combined with a recursive call to itself, this allows a function to process the individual elements in a list one by one:
 
@@ -93,7 +93,7 @@ sumList =
 
 The example above uses _tail call recursion_ where the recursion to the next level (a call to `sum`) is the last and only operation of the function. If the last line of the example above was instead `0 + sum (acc+hd) tl`, this would be much slower as the stack needs to keep track of every recursive call in order to complete the succession of `+` operations (even though we are not changing anything by adding zero in this example).
 
-### Folding lists
+## Folding lists
 
 Folding (sometimes referred to as 'reducing') lists can be used as an alternative to recursing to process list elements and will generally be clearer, more compact and sometimes faster (e.g. by ensuring tail-call recursion). The result of the processing might be another list or some reduced representation (such as the sum or concatenated value). Folds can proceed from left to right with [List.foldl](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldl) (most efficient) or right to left with [List.foldr](http://package.elm-lang.org/packages/elm-lang/core/latest/List#foldr).
 
@@ -177,7 +177,7 @@ triOutput =
     triList 20
 ```
 
-### Transforming list contents with map
+## Transforming list contents with map
 
 The final commonly used function with lists we will consider here is [map](http://package.elm-lang.org/packages/elm-lang/core/latest/List#map), which is used to apply some transforming function to each item in a list.
 
@@ -203,7 +203,7 @@ doublerOutput =
     List.range 1 10 |> doubler
 ```
 
-### Using tuples to compare adjacent list items
+## Using tuples to compare adjacent list items
 
 Using the map function as above is helpful when you want to change each item in that list independently of all other items (doubling a number does not depend on the values of any of the other numbers in the list). Sometimes though you may wish to perform actions that depend on adjacent list items (similar to [window transforms](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#window) available via elm-vegalite). For example, you could increase the value of a list item by one if the next item is larger, or decrease it by one if the next item is smaller (effectively 'smoothing' the numbers in a list).
 
@@ -268,9 +268,9 @@ smoothOutput =
 
 {(question |}
 
-1.  How would you express the `smooth` function in point-free style?
+1. How would you express the `smooth` function in point-free style?
 
-2.  The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
+1. The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
 
 {|question )}
 

@@ -13,10 +13,10 @@ import VegaLite exposing (..)
 
 _This is one of a series of 'geo' tutorials for use with litvis._
 
-1.  [Geospatial File Formats](geoFormats.md)
-2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-3.  **Importing geographic datasets into elm-vegalite**
-4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
+1. [Geospatial File Formats](geoFormats.md)
+2. [Generating Global Map Projection Geo Files](geoGenerating.md)
+3. **Importing geographic datasets into elm-vegalite**
+4. [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
@@ -75,7 +75,7 @@ ogr2ogr -t_srs 'EPSG:4326' -s_srs 'EPSG:27700' boroughs_geo.shp London_Borough_E
 
 substituting the name of the input and output .shp files with your own.
 
-## 2. Convert the shapefile to geoJSON.
+## 2. Convert the shapefile to geoJSON
 
 Type the following:
 

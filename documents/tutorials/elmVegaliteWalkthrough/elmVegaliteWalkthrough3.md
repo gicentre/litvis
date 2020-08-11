@@ -5,14 +5,14 @@ id: litvis
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmVegaliteWalkthrough1.md)
-2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
-3.  **Layered and Multi-view Composition**
-4.  [Interaction](elmVegaliteWalkthrough4.md)
+1. [Introduction](elmVegaliteWalkthrough1.md)
+2. [Single View Specifications](elmVegaliteWalkthrough2.md)
+3. **Layered and Multi-view Composition**
+4. [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 
-## Layered and Multi-view Composition ([8:28](https://youtu.be/9uaHRWj04D4?t=8m28s))
+# Layered and Multi-view Composition ([8:28](https://youtu.be/9uaHRWj04D4?t=8m28s))
 
 To show our weather distributions next to each other rather than stacked on top of each other, we simply encode column position in a row of small multiples with the `weather` data field:
 
@@ -34,17 +34,17 @@ There are only two additions in order to create these small multiples. Firstly w
 
 The second, minor change, is to include an `mLegend` specification in the colour encoding. The legend can be customised with its parameter list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with colour encoding and default column labels make the legend redundant).
 
-### Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
+## Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
 
 There are four ways in which multiple views may be combined:
 
 - The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above). elm-vegalite functions to create faceted views: `column`, `row`, `facet` and `specification`.
 
-* The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot. elm-vegalite functions to create a layered view: `layer` and `asSpec`.
+- The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot. elm-vegalite functions to create a layered view: `layer` and `asSpec`.
 
 - The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns. This allows 'dashboards' to be built. elm-vegalite functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
 
-* The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view. elm-vegalite functions for repeated views: `repeat` and `specification`.
+- The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view. elm-vegalite functions for repeated views: `repeat` and `specification`.
 
 ## Composition Example: Precipitation in Seattle ([9:40](https://youtu.be/9uaHRWj04D4?t=9m40s))
 
@@ -86,7 +86,7 @@ barChart =
     toVegaLite [ seattleData, layer [ temporalBarSpec (pName "precipitation") 180 ] ]
 ```
 
-### Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
+## Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
 
 We can annotate the chart by placing the bar chart specification in a layer and adding another layer with the annotation. In this example we will add a layer showing the average precipitation for the entire period:
 
@@ -122,7 +122,7 @@ temporalAvBarSpec dataField w =
         [ layer [ temporalBarSpec dataField w, asSpec [ enc [], rule [] ] ] ]
 ```
 
-### Concatenating views ([10:47](https://youtu.be/9uaHRWj04D4?t=10m47s))
+## Concatenating views ([10:47](https://youtu.be/9uaHRWj04D4?t=10m47s))
 
 Instead of layering one view on top of another (superposition), we can place them side by side in a row or column (juxtaposition). In Vega-Lite this is referred to as _concatenation_:
 
@@ -140,7 +140,7 @@ barCharts =
 
 Concatenated views are specified in the same way as layered views expect that we use the `vConcat` function (or `hConcat` for a horizontal arrangement) in place of `layer`.
 
-### Repeated Views ([11:08](https://youtu.be/9uaHRWj04D4?t=11m08s))
+## Repeated Views ([11:08](https://youtu.be/9uaHRWj04D4?t=11m08s))
 
 Noting that juxtaposing similar charts is a common operation, and the specification for each of them often is very similar, the repeat operator allows us to streamline the specification required to do this. We might, for example, wish to show three data fields from the Seattle weather dataset:
 
@@ -185,7 +185,7 @@ splom =
         ]
 ```
 
-### Building A Dashboard ([12:40](https://youtu.be/9uaHRWj04D4?t=12m40s))
+## Building A Dashboard ([12:40](https://youtu.be/9uaHRWj04D4?t=12m40s))
 
 We can compose more complex 'dashboards' by assembling single views but varying either their encoding or the data that are encoded. To illustrate, let's first identify the four single view types that we will compose with (all of these we have considered above, but are shown here again for clarity).
 

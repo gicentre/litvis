@@ -13,10 +13,10 @@ import VegaLite exposing (..)
 
 _This is one of a series of 'geo' tutorials for use with litvis._
 
-1.  [Geospatial File Formats](geoFormats.md)
-2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
-4.  **Importing and displaying OpenStreetMap data**
+1. [Geospatial File Formats](geoFormats.md)
+2. [Generating Global Map Projection Geo Files](geoGenerating.md)
+3. [Importing geographic datasets into elm-vegalite](geoImporting.md)
+4. **Importing and displaying OpenStreetMap data**
 
 ---
 
@@ -58,15 +58,13 @@ Visit [OpenStreetMap](https://www.openstreetmap.org) and navigate to a region of
 
 This should display something similar to
 
-```
-INFO: Open of `map.osm'
-  using driver `OSM' successful.
-1: points (Point)
-2: lines (Line String)
-3: multilinestrings (Multi Line String)
-4: multipolygons (Multi Polygon)
-5: other_relations (Geometry Collection)
-```
+    INFO: Open of `map.osm'
+      using driver `OSM' successful.
+    1: points (Point)
+    2: lines (Line String)
+    3: multilinestrings (Multi Line String)
+    4: multipolygons (Multi Polygon)
+    5: other_relations (Geometry Collection)
 
 This indicates that the OSM file contains 5 types of geometry. We will have to extract and convert the types were are interested in. For the purposes of this tutorial we will extract the point, line and polygon features:
 

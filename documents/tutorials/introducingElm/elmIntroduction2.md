@@ -4,15 +4,15 @@ id: "litvis"
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmIntroduction1.md)
-2.  **Functions, functions, functions**
-3.  [Types and pattern matching](elmIntroduction3.md)
-4.  [Lists and list processing](elmIntroduction4.md)
-5.  [Elm and elm-vegalite](elmIntroduction5.md)
+1. [Introduction](elmIntroduction1.md)
+2. **Functions, functions, functions**
+3. [Types and pattern matching](elmIntroduction3.md)
+4. [Lists and list processing](elmIntroduction4.md)
+5. [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
-## Functions, functions, functions
+# Functions, functions, functions
 
 Elm code is organised into _functions_ that evaluate expressions to produce some value. Those functions may have some input in the form of _parameters_ and they will always return some output. Functions never change existing values and their returned value is always the only thing they return. In other words, functions in Elm never have any _side effects_. Almost everything in an Elm program will be a function. Elm doesn't use 'variables' common in many other languages. Instead, you create simple named functions that return a value.
 
@@ -120,7 +120,7 @@ myAnswer =
 
 In the `divide` function above we use a conditional expression (`if`...`then`...`else`) to ensure we do not perform a divide by zero. Unlike some other languages, `if` must always be paired with an `else` because we must guarantee a value is returned whatever the value of the condition. Note also that Elm has a special operator for integer division (e.g. `6 // 2`) to distinguish it from floating point division (e.g. `6.3 / 2.0`).
 
-### Brackets, precedence and pipes
+## Brackets, precedence and pipes
 
 In the function `sumIsOdd` we have used brackets to force `add n1 n2` to be evaluated before its value is supplied as an argument to `isOdd`. This is necessary because without brackets, the expression `isOdd add n1 n2` would be treated as a call to `isOdd` providing 3 arguments `add`, `n1` and `n2`.
 
@@ -166,7 +166,7 @@ always3Backwards n =
 
 Often it is clearer to use the pipe operator to chain a sequence of functions together in the natural order we would process them. A variation of this is used commonly in _elm-vegalite_ when creating visualization specifications (see _functional composition_ below for more details).
 
-### Scoping expressions with 'let'
+## Scoping expressions with 'let'
 
 By default, once a function has been declared it is available to any other parts of your program. In a litvis document that means any non-isolated code block within the document including any upstream branches connected with `follows`. Sometimes a function may only have relevance within a small section of your code, so it is helpful to be able to limit its scope. This is done by declaring a function with `let..in` within the body of another function. Any function declared in this way is only usable within the expression following the `in`.
 
@@ -182,7 +182,7 @@ result =
 
 Unlike top-level function definitions, locally scoped functions do not need to have a type annotation, although this always remains an option.
 
-### Anonymous Functions
+## Anonymous Functions
 
 Sometimes it is a little cumbersome to create a new named function with its own type annotation, especially if that function is simple or is to be used only once. A more compact alternative is to create an anonymous function (sometimes referred to as a _lambda expression_).
 
@@ -196,7 +196,7 @@ result =
 
 Anonymous functions are enclosed in brackets with their parameters named after a `\` symbol (representing lambda, the Greek letter λ) and the returned value after an `->` arrow. One of the main uses of anonymous functions is when _folding_ and _mapping_ lists of items (see [lists and list processing](elmIntroduction4.md)).
 
-### Partial application and currying
+## Partial application and currying
 
 The value returned by a function can be anything, including another function. So both of the following are valid functions:
 
@@ -247,7 +247,7 @@ This process of sequentially processing partially applied functions is known as 
 
 A function with four parameters is actually a function with just one parameter that returns a function with three parameters, which is itself a function with one parameter that returns a function with two parameters, which is itself another function with one parameter that returns a function with one parameter that evaluates an expression to return a value. Phew! Reading the `->` arrows is probably simpler!
 
-### Functional Composition
+## Functional Composition
 
 The final concept we will consider here relevant to handling functions is the process of combining functions through _functional composition_.
 

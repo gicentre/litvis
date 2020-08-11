@@ -5,14 +5,14 @@ id: litvis
 
 @import "../css/tutorial.less"
 
-1.  [Introduction](elmVegaliteWalkthrough1.md)
-2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
-3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
-4.  **Interaction**
+1. [Introduction](elmVegaliteWalkthrough1.md)
+2. [Single View Specifications](elmVegaliteWalkthrough2.md)
+3. [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
+4. **Interaction**
 
 ---
 
-## Interaction ([14:35](https://youtu.be/9uaHRWj04D4?t=14m35s))
+# Interaction ([14:35](https://youtu.be/9uaHRWj04D4?t=14m35s))
 
 Interaction is enabled by creating _selections_ that may be combined with the kinds of specifications already described. Selections involve three components:
 
@@ -114,7 +114,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-### Selection Transformations ([16:39](https://youtu.be/9uaHRWj04D4?t=16m39s))
+## Selection Transformations ([16:39](https://youtu.be/9uaHRWj04D4?t=16m39s))
 
 Simple selections as described above create sets of selected data marks based directly on what was interacted with by the user. Selection transformations allow us to _project_ that direct selection onto other parts of our dataset. For example, suppose we wanted to know what effect the number of engine cylinders has on the relationship between engine power and engine efficiency. We can invoke a _selection projection_ on `Cylinders` in our dataset that says 'when a single point is selected, extend that selection to all other points in the dataset that share the same number of cylinders' (_click on any point to select all with the same number of cylinders_):
 
@@ -213,7 +213,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-### Multiple Coordinated Views ([19:38](https://youtu.be/9uaHRWj04D4?t=19m38s))
+## Multiple Coordinated Views ([19:38](https://youtu.be/9uaHRWj04D4?t=19m38s))
 
 One of the more powerful aspects of selection-based interaction is in coordinating different views – a selection of a data subset is projected onto all other views of the same data. _Try selecting points in any one scatterplot and see the selection projected to all the others:_
 
@@ -328,7 +328,7 @@ linkedTimeSeries =
     toVegaLite [ data, vConcat [ specContext, specDetail ] ]
 ```
 
-### Cross-filtering ([20:41](https://youtu.be/9uaHRWj04D4?t=20m41s))
+## Cross-filtering ([20:41](https://youtu.be/9uaHRWj04D4?t=20m41s))
 
 The final example brings together ideas of view composition and interactive selection with data filtering by implementing _cross-filtering_.
 
