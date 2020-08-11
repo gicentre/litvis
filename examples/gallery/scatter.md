@@ -276,3 +276,63 @@ scatterWithNulls =
     in
     toVegaLite [ width 400, height 400, cfg [], data, enc [], point [] ]
 ```
+
+---
+
+## Scatterplot with trend line
+
+We can add a trend using _locally estimated scatterplot smoothing_ (loess) by calling the [loess transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-13-loess-trend-calculation). The [lsBandwidth](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#lsBandwidth) property determines how smooth the trend line should be.
+
+```elm {v l}
+scatterWithLoess : Spec
+scatterWithLoess =
+    let
+        data =
+            dataFromUrl (path ++ "movies.json") []
+
+        trans =
+            transform
+                << loess "IMDB Rating" "Rotten Tomatoes Rating" [ lsBandwidth 0.1 ]
+
+        enc =
+            encoding
+                << position X [ pName "Rotten Tomatoes Rating", pQuant ]
+                << position Y [ pName "IMDB Rating", pQuant ]
+
+        pointSpec =
+            asSpec [ point [ maFilled True, maOpacity 0.3 ] ]
+
+        trendSpec =
+            asSpec [ trans [], line [ maColor "firebrick" ] ]
+    in
+    toVegaLite [ width 300, height 300, data, enc [], layer [ pointSpec, trendSpec ] ]
+```
+
+Alternatively we can fit a regression line through the points with the [regression transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-14-regression-calculation). In this example we fit a cubic polynomial regression line by setting the [rgOrder](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#rgOrder) to 3.
+
+```elm {v l}
+scatterWithPolynomial : Spec
+scatterWithPolynomial =
+    let
+        data =
+            dataFromUrl (path ++ "movies.json") []
+
+        trans =
+            transform
+                << regression "IMDB Rating"
+                    "Rotten Tomatoes Rating"
+                    [ rgMethod rgPoly, rgOrder 3 ]
+
+        enc =
+            encoding
+                << position X [ pName "Rotten Tomatoes Rating", pQuant ]
+                << position Y [ pName "IMDB Rating", pQuant ]
+
+        pointSpec =
+            asSpec [ point [ maFilled True, maOpacity 0.3 ] ]
+
+        regSpec =
+            asSpec [ trans [], line [ maColor "firebrick" ] ]
+    in
+    toVegaLite [ width 300, height 300, data, enc [], layer [ pointSpec, regSpec ] ]
+```
