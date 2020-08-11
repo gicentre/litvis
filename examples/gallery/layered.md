@@ -131,7 +131,6 @@ rangedDotPlot =
                     ]
                 << color
                     [ mName "year"
-                    , mOrdinal
                     , mScale (domainRangeMap ( 1955, "#e6959c" ) ( 2000, "#911a24" ))
                     , mTitle "Year"
                     ]
@@ -152,9 +151,6 @@ Used typically to display performance data, bullet charts function like bar char
 layer3 : Spec
 layer3 =
     let
-        desc =
-            description "Bullet chart"
-
         cfg =
             configure << configuration (coTick [ maThickness 2 ])
 
@@ -228,8 +224,7 @@ layer3 =
             asSpec [ enc6 [], tick [ maColor "black" ] ]
     in
     toVegaLite
-        [ desc
-        , cfg []
+        [ cfg []
         , data []
         , res []
         , facet
@@ -409,5 +404,500 @@ barbell =
         , height 200
         , data
         , layer [ spec1, spec2, spec3, spec4, spec5, spec6, spec7 ]
+        ]
+```
+
+---
+
+## Multi-Layer Chart
+
+We can build more sophisticated designs by layering many specs on top of each other. Here is a reproduction [this design](https://www.reddit.com/r/dataisbeautiful/comments/azjti7/leonardo_dicaprio_refuses_to_date_a_woman_over_25) and combined with [XKCD's Creepiness Rule](https://xkcd.com/314/) showing Leonardo DiCaprio's dating history.
+
+While the spec looks complicated, such designs can be built layer by layer in a systematic way.
+
+```elm {v l}
+diCaprio : Spec
+diCaprio =
+    let
+        minAge age =
+            toFloat age / 2 + 7
+
+        maxAge age =
+            toFloat ((age - 7) * 2)
+
+        textColour =
+            "rgb(143,154,174)"
+
+        dcColour =
+            "rgb(223,117,45)"
+
+        partnerColour =
+            "rgb(91,198,214)"
+
+        annotationFont =
+            maFont "FjallaOne"
+
+        dcData =
+            dataFromColumns []
+                << dataColumn "year" (List.range 1999 2019 |> List.map toFloat |> nums)
+                << dataColumn "dcAge" (List.range 24 44 |> List.map toFloat |> nums)
+                << dataColumn "minAge" (List.range 24 44 |> List.map minAge |> nums)
+                << dataColumn "maxAge" (List.range 24 44 |> List.map maxAge |> nums)
+                << dataColumn "partnerAge" ([ 18, 19, 20, 21, 22, 23, 20, 21, 22, 23, 24, 25, 23, 22, 20, 21, 25, 24, 25, 20, 21 ] |> nums)
+
+        annotationData =
+            dataFromRows []
+                << dataRow
+                    [ ( "name", str "Gisele Bundchen" )
+                    , ( "start", num 1999 )
+                    , ( "end", num 2004 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Bar Refaeli" )
+                    , ( "start", num 2005 )
+                    , ( "end", num 2010 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Blake Lively" )
+                    , ( "start", num 2011 )
+                    , ( "end", num 2011 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Erin Heatherton" )
+                    , ( "start", num 2012 )
+                    , ( "end", num 2012 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Toni Garrn" )
+                    , ( "start", num 2013 )
+                    , ( "end", num 2014 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Kelly Rohrbach" )
+                    , ( "start", num 2015 )
+                    , ( "end", num 2015 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Nina Agdal" )
+                    , ( "start", num 2016 )
+                    , ( "end", num 2017 )
+                    ]
+                << dataRow
+                    [ ( "name", str "Camilla Morrone" )
+                    , ( "start", num 2018 )
+                    , ( "end", num 2019 )
+                    ]
+
+        dcAnnotationData =
+            dataFromRows []
+                << dataRow
+                    [ ( "dcX", num 2019 )
+                    , ( "dcY", num 44 )
+                    , ( "dcAnnotation", str "Leo's age" )
+                    ]
+                << dataRow
+                    [ ( "dcX", num 2012 )
+                    , ( "dcY", num 32 )
+                    , ( "dcAnnotation", str "xkcd non-creepiness range" )
+                    ]
+
+        partnerAnnotationData =
+            dataFromRows []
+                << dataRow
+                    [ ( "partnerX", num 2018 )
+                    , ( "partnerY", num 25 )
+                    , ( "partnerAnnotation", str "partner's age" )
+                    ]
+
+        -- XKCD Creepiness range
+        encBand =
+            encoding
+                << position X [ pName "year", pOrdinal, pTitle "" ]
+                << position Y
+                    [ pName "minAge"
+                    , pQuant
+                    , pScale [ scZero False, scDomain (doNums [ 16, 50 ]) ]
+                    , pTitle ""
+                    ]
+                << position Y2 [ pName "maxAge" ]
+
+        specBand =
+            asSpec [ encBand [], area [ maClip True, maFill dcColour, maOpacity 0.2 ] ]
+
+        -- Leo's age
+        encDiCaprio =
+            encoding
+                << position X [ pName "year", pOrdinal ]
+                << position Y [ pName "dcAge", pQuant ]
+
+        specDiCaprio =
+            asSpec
+                [ encDiCaprio []
+                , line
+                    [ maColor dcColour
+                    , maStrokeWidth 1
+                    , maPoint (pmMarker [ maStroke dcColour, maStrokeWidth 1.5, maFill "rgb(42,24,12)" ])
+                    ]
+                ]
+
+        encDiCaprioText =
+            encoding
+                << position X [ pName "year", pOrdinal ]
+                << position Y [ pName "dcAge", pQuant ]
+                << text [ tName "dcAge", tQuant ]
+
+        specDiCaprioText =
+            asSpec [ encDiCaprioText [], textMark [ maColor dcColour, maDy -11 ] ]
+
+        encDiCaprioLabel =
+            encoding
+                << position X [ pName "dcX", pOrdinal ]
+                << position Y [ pName "dcY", pQuant ]
+                << text [ tName "dcAnnotation" ]
+
+        specDiCaprioLabel =
+            asSpec
+                [ dcAnnotationData []
+                , encDiCaprioLabel []
+                , textMark [ maColor dcColour, maAlign haLeft, annotationFont, maDx 10, maDy 5, maSize 14 ]
+                ]
+
+        -- Partners' ages
+        encPartners =
+            encoding
+                << position X [ pName "year", pOrdinal ]
+                << position Y [ pName "partnerAge", pQuant ]
+
+        specPartners =
+            asSpec
+                [ encPartners []
+                , bar
+                    [ maColorGradient grLinear
+                        [ grX1 1
+                        , grX2 1
+                        , grY1 1
+                        , grY2 0
+                        , grStops [ ( 0, "black" ), ( 1, partnerColour ) ]
+                        ]
+                    ]
+                ]
+
+        -- Partners' names
+        encPartnerText =
+            encoding
+                << position X [ pName "year", pOrdinal ]
+                << position Y [ pName "partnerAge", pQuant ]
+                << text [ tName "partnerAge", tQuant ]
+
+        specPartnerText =
+            asSpec [ encPartnerText [], textMark [ maColor partnerColour, maDy -7 ] ]
+
+        encPartnerRange =
+            encoding
+                << position X [ pName "start", pOrdinal ]
+                << position X2 [ pName "end" ]
+                << position Y [ pNum 420 ]
+
+        specPartnerRange =
+            asSpec [ annotationData [], encPartnerRange [], rule [ maColor partnerColour ] ]
+
+        encPartnerNames =
+            encoding
+                << position X [ pName "start", pOrdinal ]
+                << position Y [ pNum 435 ]
+                << text [ tName "name" ]
+
+        specPartnerNames =
+            asSpec
+                [ annotationData []
+                , encPartnerNames []
+                , textMark [ maColor partnerColour, maAlign haLeft, maAngle 30, annotationFont ]
+                ]
+
+        encPartnerLabel =
+            encoding
+                << position X [ pName "partnerX", pOrdinal ]
+                << position Y [ pName "partnerY", pQuant ]
+                << text [ tName "partnerAnnotation" ]
+
+        specPartnerLabel =
+            asSpec
+                [ partnerAnnotationData []
+                , encPartnerLabel []
+                , textMark [ maColor partnerColour, maAlign haLeft, annotationFont, maDx 17, maDy 5, maSize 14 ]
+                ]
+
+        cfg =
+            configure
+                << configuration (coScale [ sacoBandPaddingInner 0.5 ])
+                << configuration
+                    (coAxis
+                        [ axcoGridOpacity 0.1
+                        , axcoTicks False
+                        , axcoDomain False
+                        , axcoLabelColor textColour
+                        , axcoLabelAngle 0
+                        ]
+                    )
+                << configuration (coView [ vicoStroke Nothing ])
+                << configuration (coPadding (paSize 60))
+                << configuration (coBackground "black")
+                << configuration (coText [ maColor textColour ])
+                << configuration (coTitle [ ticoColor textColour, ticoFont "FjallaOne", ticoFontSize 22, ticoAnchor anStart ])
+    in
+    toVegaLite
+        [ title "Leonardo DiCaprio has never dated a woman over 25" []
+        , width 650
+        , height 400
+        , cfg []
+        , dcData []
+        , layer
+            [ specBand
+            , specDiCaprio
+            , specDiCaprioText
+            , specDiCaprioLabel
+            , specPartners
+            , specPartnerText
+            , specPartnerRange
+            , specPartnerNames
+            , specPartnerLabel
+            ]
+        ]
+```
+
+---
+
+## Playfair's Wheat and Wages Chart
+
+Another example of a complex layered chart built up from simpler components.
+
+Wheat and Wages. A recreation of [William Playfair’s chart](https://apandre.files.wordpress.com/2011/03/oldcombocharwagesofmechanicvspriceofwheat1821.jpg) visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Adapted from a chart by @manzt.
+
+```elm {v l}
+wheatAndWages : Spec
+wheatAndWages =
+    let
+        data =
+            dataFromUrl (path ++ "wheat.json") []
+
+        dataAnnotation =
+            dataFromRows []
+                << dataRow [ ( "x", str "1626" ), ( "y", num 8 ), ( "name", str "Weekly Wages of a Good Mechanic" ) ]
+
+        dataMonarch =
+            dataFromUrl "https://vega.github.io/vega-lite/data/monarchs.json"
+                [ parse [ ( "start", foDate "%Y" ), ( "end", foDate "%Y" ) ] ]
+
+        dataCurves =
+            dataFromRows []
+                << dataRow [ ( "x", str "1675" ), ( "y", num 80.3 ), ( "curve", str "inset" ) ]
+
+        curves =
+            categoricalDomainMap [ ( "inset", "m-43 a43,25 0 1,0 86,0a43,25 0 1,0 -86,0 a43,25.5 0 1,0 86,0a43,25.5 0 1,0 -86,0" ) ]
+
+        dataText1 =
+            dataFromRows [ parse [ ( "x", foDate "%Y %m" ) ] ]
+                << dataRow [ ( "x", str "1675 1" ), ( "y", num 76 ), ( "name", str "CHART" ) ]
+                << dataRow [ ( "x", str "1675 6" ), ( "y", num 76 ), ( "name", str "CHART" ) ]
+
+        dataText2 =
+            dataFromRows []
+                << dataRow [ ( "x", str "1675" ), ( "y", num 72.5 ), ( "name", str "Showing at One View" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 68 ), ( "name", str "The Price of The Quarter of Wheat" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 58 ), ( "name", str "The Year 1565 to 1821" ) ]
+
+        dataText3 =
+            dataFromRows []
+                << dataRow [ ( "x", str "1675" ), ( "y", num 62 ), ( "name", str "⤙ from ⤚" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 55 ), ( "name", str "⤙ by ⤚" ) ]
+
+        dataText4 =
+            dataFromRows []
+                << dataRow [ ( "x", str "1574" ), ( "y", num 102 ), ( "name", str "16th Century" ) ]
+                << dataRow [ ( "x", str "1650" ), ( "y", num 102 ), ( "name", str "17th Century" ) ]
+                << dataRow [ ( "x", str "1750" ), ( "y", num 102 ), ( "name", str "18th Century" ) ]
+                << dataRow [ ( "x", str "1822" ), ( "y", num 102 ), ( "name", str "19th Century" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 64.3 ), ( "name", str "& Wages of Labour by the Week" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 52.7 ), ( "name", str "WILLIAM PLAYFIAR" ) ]
+
+        dataCentury =
+            dataFromColumns [ parse [ ( "year", foDate "%Y" ) ] ]
+                << dataColumn "year" (nums [ 1565, 1590, 1600, 1605, 1650, 1695, 1700, 1705, 1750, 1795, 1800, 1805, 1810, 1830 ])
+                << dataColumn "y" (nums [ 106, 102, 100, 101, 106, 101, 100, 101, 106, 101, 100, 102, 103.5, 106 ])
+                << dataColumn "y2" (nums [ 105, 102, 100, 101, 105, 101, 100, 101, 105, 101, 100, 102, 103.5, 105 ])
+
+        transWages =
+            transform
+                << filter (fiExpr "year(datum.year) <= 1810")
+
+        transMonarchBar =
+            transform
+                << calculateAs "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 1.5 + 97" "y"
+                << calculateAs "97" "x"
+
+        transMonarchText =
+            transform
+                << calculateAs "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 94" "y"
+                << calculateAs "+datum.start + (+datum.end - +datum.start)/2" "x"
+
+        cfg =
+            configure
+                << configuration
+                    (coAxis
+                        [ axcoTitleFont "Pinyon Script"
+                        , axcoTitleFontWeight Bold
+                        , axcoLabelFont "Pinyon Script"
+                        , axcoLabelFontSize 8
+                        , axcoLabelFontWeight Bold
+                        ]
+                    )
+                << configuration (coText [ maFont "Pinyon Script", maFontWeight Bold, maAlign haCenter ])
+
+        encWheat =
+            encoding
+                << position X
+                    [ pName "year"
+                    , pTemporal
+                    , pAxis
+                        [ axDomainWidth 2
+                        , axDomainColor "rgb(46,41,43)"
+                        , axTicks False
+                        , axTickCount (niInterval year 5)
+                        , axGridColor "black"
+                        , axGridOpacity 0.6
+                        , axDataCondition (expr "year(datum.value) % 50 == 0") (cAxGridWidth 2 0.5)
+                        , axLabelExpr "if (year(datum.value) % 10 == 5, ' ', if(year(datum.value) % 50 == 0, utcFormat(datum.value,'%Y'), utcFormat(datum.value,'%y')))"
+                        , axTitle "5 Years each division"
+                        , axZIndex 1
+                        ]
+                    ]
+                << position Y
+                    [ pName "wheat"
+                    , pQuant
+                    , pAxis
+                        [ axTickCount (niTickCount 20)
+                        , axTicks False
+                        , axLabelPadding 4
+                        , axGridColor "black"
+                        , axDataCondition (expr "datum.value % 10 == 0") (cAxGridWidth 2 0.5)
+                        , axLabelExpr "if (datum.value % 10 == 5, '5', datum.value)"
+                        , axDomainWidth 2
+                        , axDomainColor "rgb(46,41,43)"
+                        , axTitle ""
+                        , axZIndex 1
+                        ]
+                    , pScale [ scDomain (doNums [ 0, 100 ]) ]
+                    ]
+
+        specWheat =
+            asSpec
+                [ encWheat []
+                , area
+                    [ maInterpolate miStepAfter
+                    , maColorGradient grLinear
+                        [ grX1 1
+                        , grX2 1
+                        , grY1 1
+                        , grY2 0
+                        , grStops
+                            [ ( 0.2, "white" )
+                            , ( 0.4, "black" )
+                            ]
+                        ]
+                    , maOpacity 0.8
+                    ]
+                ]
+
+        encWages =
+            encoding
+                << position X [ pName "year", pTemporal ]
+                << position Y
+                    [ pName "wages"
+                    , pQuant
+                    , pAxis [ axDomainWidth 2 ]
+                    ]
+
+        specMechanic =
+            asSpec
+                [ transWages []
+                , encWages []
+                , layer
+                    [ asSpec [ area [ maColor "rgb(170,210,220)", maLine (lmMarker [ maColor "black", maStrokeWidth 1 ]) ] ]
+                    , asSpec [ line [ maColor "rgb(215,102,110)", maStrokeWidth 3, maYOffset -2 ] ]
+                    ]
+                ]
+
+        specAnnotation =
+            asSpec [ dataAnnotation [], encText [], textMark [ maAngle -2 ] ]
+
+        encMonarchBar =
+            encoding
+                << position X [ pName "start", pTemporal ]
+                << position X2 [ pName "end" ]
+                << position Y [ pName "y", pQuant ]
+                << position Y2 [ pName "x" ]
+                << fill
+                    [ mName "commonwealth"
+                    , mScale [ scRange (raStrs [ "black", "white" ]) ]
+                    , mLegend []
+                    ]
+
+        specMonarchBar =
+            asSpec [ dataMonarch, transMonarchBar [], encMonarchBar [], bar [ maStroke "black" ] ]
+
+        encText =
+            encoding
+                << position X [ pName "x", pTemporal ]
+                << position Y [ pName "y", pQuant ]
+                << text [ tName "name" ]
+
+        encCurves =
+            encoding
+                << position X [ pName "x", pTemporal ]
+                << position Y [ pName "y", pQuant ]
+                << shape [ mName "curve", mScale curves, mLegend [] ]
+
+        specCurves =
+            asSpec [ dataCurves [], encCurves [], point [ maStroke "black", maOpacity 1 ] ]
+
+        specText =
+            asSpec
+                [ encText []
+                , layer
+                    [ asSpec [ dataMonarch, transMonarchText [], textMark [] ]
+                    , asSpec [ dataText1 [], textMark [ maFontSize 20, maFont "Old Standard TT" ] ]
+                    , asSpec [ dataText2 [], textMark [ maFontSize 15 ] ]
+                    , asSpec [ dataText3 [], textMark [] ]
+                    , asSpec [ dataText4 [], textMark [ maFont "Old Standard TT" ] ]
+                    ]
+                ]
+
+        encCentury =
+            encoding
+                << position X [ pName "year", pTemporal ]
+                << position Y [ pName "y", pQuant ]
+                << position Y2 [ pName "y2" ]
+
+        specCentury =
+            asSpec
+                [ dataCentury []
+                , encCentury []
+                , area [ maStroke "black", maFill "black", maStrokeWidth 3, maInterpolate miMonotone ]
+                ]
+    in
+    toVegaLite
+        [ cfg []
+        , width 900
+        , height 450
+        , data
+        , layer
+            [ specWheat
+            , specMechanic
+            , specAnnotation
+            , specMonarchBar
+            , specCurves
+            , specText
+            , specCentury
+            ]
         ]
 ```
