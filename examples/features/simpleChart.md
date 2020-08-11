@@ -10,7 +10,6 @@ import VegaLite exposing (..)
 
 # Simple litvis chart
 
-
 ```elm {l=hidden}
 path : String
 path =
@@ -22,7 +21,7 @@ barChart : Spec
 barChart =
     let
         data =
-            dataFromUrl (path ++"cars.json") []
+            dataFromUrl (path ++ "cars.json") []
 
         enc =
             encoding
