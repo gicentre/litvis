@@ -470,6 +470,89 @@ interactiveLegend =
 
 ---
 
+## Interactive Highlighting
+
+Interactive highlight and labels positioned at end of each line.
+
+```elm {v l interactive}
+interactiveHighlight : Spec
+interactiveHighlight =
+    let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromUrl (vegaPath ++ "stocks.csv") [ parse [ ( "date", foDate "" ) ] ]
+
+        trans =
+            transform
+                << filter (fiExpr "datum.symbol !== 'IBM'")
+
+        enc =
+            encoding
+                << color
+                    [ mSelectionCondition (selectionName "myHover")
+                        [ mName "symbol", mLegend [] ]
+                        [ mStr "grey" ]
+                    ]
+                << opacity
+                    [ mSelectionCondition (selectionName "myHover")
+                        [ mNum 1 ]
+                        [ mNum 0.2 ]
+                    ]
+
+        enc1 =
+            encoding
+                << position X [ pName "date", pTemporal, pTitle "" ]
+                << position Y [ pName "price", pQuant, pTitle "Price" ]
+
+        sel1 =
+            selection
+                << select "myHover"
+                    seSingle
+                    [ seOn "mouseover"
+                    , seEmpty
+                    , seFields [ "symbol" ]
+                    , seInit [ ( "symbol", str "AAPL" ) ]
+                    ]
+
+        spec1 =
+            asSpec
+                [ enc1 []
+                , layer
+                    [ asSpec
+                        [ description "Transparent layer to make it easier to trigger selection"
+                        , sel1 []
+                        , line [ maStrokeWidth 8, maStroke "transparent" ]
+                        ]
+                    , asSpec [ line [] ]
+                    ]
+                ]
+
+        enc2 =
+            encoding
+                << position X [ pName "date", pTemporal, pAggregate opMax ]
+                << position Y [ pName "price", pQuant, pAggregate (opArgMax (Just "date")) ]
+
+        enc2_1 =
+            encoding
+                << text [ tName "symbol" ]
+
+        spec2 =
+            asSpec
+                [ enc2 []
+                , layer
+                    [ asSpec [ circle [] ]
+                    , asSpec [ enc2_1 [], textMark [ maAlign haLeft, maDx 4 ] ]
+                    ]
+                ]
+    in
+    toVegaLite [ cfg [], width 600, data, trans [], enc [], layer [ spec1, spec2 ] ]
+```
+
+---
+
 ## Dynamic Annotations
 
 For more detailed comparison between values, we can position a vertical rule mark by filtering dates with a single valued selection. We can annotate the rule by showing point and text marks for that selection. The original lines, filtered rule and filtered point and text marks are all layered on top of each other. Adapted from [this example by Jake Vanderplas](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9)
