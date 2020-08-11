@@ -318,7 +318,7 @@ weatherBars =
 
 The 'baseline' of a bar chart will default to being positioned at 0. This means that if the data mapped to bar length contains negative as well as positive values, bars will extend both downwards and upwards. In this example, bar categories (political party) are ordered by the amount of change with [pSort](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#pSort) and [soByField](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#soByField). Custom colours are specified via [categoricalDomainMap](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#categoricalDomainMap).
 
-_(Data from https://twitter.com/ElectionMapsUK)_
+Data from [@ElectionMapsUK](https://twitter.com/ElectionMapsUK)
 
 ```elm {v l}
 changeBarchart : Spec
@@ -394,4 +394,69 @@ gantt =
                 << position Y [ pName "task", pOrdinal, pTitle "" ]
     in
     toVegaLite [ width 400, data [], enc [], bar [] ]
+```
+
+---
+
+## Bars coloured directly by data values
+
+Normally we colour marks via a `color` encoding channel, and depending on the measurement type and colour scheme selected, colours are assigned to each mark. Sometimes we may wish for more explicit control of colours when a dataset contains colour specifications. We can use [raField](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#raField) to set the colour range directly from a data field.
+
+```elm {v l}
+barColourFromField : Spec
+barColourFromField =
+    let
+        data =
+            dataFromColumns []
+                << dataColumn "myColours" (strs [ "red", "green", "blue" ])
+                << dataColumn "b" (nums [ 28, 55, 43 ])
+
+        enc =
+            encoding
+                << position X
+                    [ pName "myColours"
+                    , pAxis [ axTitle "", axLabelAngle 0 ]
+                    ]
+                << position Y [ pName "b", pQuant ]
+                << color
+                    [ mName "myColours"
+
+                    -- Extract colour directly from the myColours field.
+                    , mScale [ scRange (raField "myColours") ]
+                    ]
+    in
+    toVegaLite [ width 100, data [], enc [], bar [] ]
+```
+
+---
+
+## Wilkinson Dot Plot
+
+A bar chart made of dot symbols shows overall magnitude but also allows direct counting of values without the need for text labels.
+
+This approach uses the [window transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#3-16-window-transformations) to group tally counts in the original dataset (see [advanced examples](advanced.md) to other examples of window transforms).
+
+```elm {l v}
+wilkinsonDotplot : Spec
+wilkinsonDotplot =
+    let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromColumns []
+                << dataColumn "data" (nums [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 4, 4, 4, 4 ])
+
+        trans =
+            transform
+                << window [ ( [ wiOp woRank, wiField "rank" ], "id" ) ]
+                    [ wiGroupBy [ "data" ] ]
+
+        enc =
+            encoding
+                << position X [ pName "data", pAxis [ axTitle "", axLabelAngle 0 ] ]
+                << position Y [ pName "id", pAxis [], pSort [ soDescending ] ]
+    in
+    toVegaLite [ cfg [], height 100, data [], trans [], enc [], circle [ maSize 50 ] ]
 ```
