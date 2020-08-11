@@ -144,6 +144,54 @@ steppedLine =
 
 ---
 
+## Line chart with conditional axes
+
+We can make the grid lines and axis labels on any chart conditional on some properties of the data. Here we make the grid and labels dependend on the month of the year (making January bolder with year label).
+
+```elm {v l}
+conditionalAxes : Spec
+conditionalAxes =
+    let
+        cfg =
+            configure
+                << configuration (coAxis [ axcoDomainColor "#ddd", axcoTickColor "#ddd" ])
+
+        data =
+            dataFromUrl (vegaPath ++ "stocks.csv") []
+
+        trans =
+            transform
+                << filter (fiExpr "datum.symbol === 'GOOG'")
+
+        enc =
+            encoding
+                << position X
+                    [ pName "date"
+                    , pScale [ scDomain (doMinDt [ dtYear 2006 ]) ]
+                    , pTemporal
+                    , pAxis
+                        [ axTitle ""
+                        , axLabelAlign haLeft
+                        , axLabelExpr "[timeFormat(datum.value, '%b'), timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']"
+                        , axLabelOffset 4
+                        , axLabelPadding -24
+                        , axTickSize 30
+                        , axDataCondition
+                            (fiEqual "value" (dt [ dtMonth Jan ]) |> fiOpTrans (mTimeUnit monthDate))
+                            (cAxGridDash [] [ 2, 2 ])
+                        , axDataCondition
+                            (fiEqual "value" (dt [ dtMonth Jan ]) |> fiOpTrans (mTimeUnit monthDate))
+                            (cAxTickDash [] [ 2, 2 ])
+                        , axDataCondition
+                            (fiEqual "value" (dt [ dtMonth Jan ]) |> fiOpTrans (mTimeUnit monthDate))
+                            (cAxGridColor "#999" "#ccc")
+                        ]
+                    ]
+                << position Y [ pName "price", pQuant ]
+    in
+    toVegaLite [ cfg [], width 600, data, trans [], enc [], line [ maClip True ] ]
+```
+
 ## Coloured multi-line chart
 
 We can show multiple lines on a chart by encoding categorical variable with colour. Here each company (unhelpfully called `symbol` in the stocks dataset) is encoded with colour, that has the effect generating a separate line for each set of stock price values associated with each company.
@@ -166,7 +214,29 @@ multiLines =
 
 ---
 
-## Multi-line chart
+## Textured multi-line chart
+
+Instead of colour, we can use the [strokeDash channel](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#strokeDash) to generate different stroke styles for categorical data. These could be double encoded with colour by adding a colour channel as in the example above.
+
+```elm {v l}
+texturedLines : Spec
+texturedLines =
+    let
+        data =
+            dataFromUrl (vegaPath ++ "stocks.csv") []
+
+        enc =
+            encoding
+                << position X [ pName "date", pTemporal, pTitle "" ]
+                << position Y [ pName "price", pQuant ]
+                << strokeDash [ mName "symbol", mTitle "Company" ]
+    in
+    toVegaLite [ width 400, data, enc [], line [] ]
+```
+
+---
+
+## Single colour multi-line chart
 
 Sometimes you may wish to split a line chart by some variable (as the colour example above), but not allocate a different colour to each line. This can be achieved by encoding with a [detail](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#detail) channel rather than [color](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#color) channel.
 
@@ -318,4 +388,68 @@ invalidExample =
                 << position Y [ pName "yPrime", pQuant ]
     in
     toVegaLite [ data [], trans [], enc [], line [ maPoint (pmMarker []) ] ]
+```
+
+---
+
+## Sequence Generators
+
+While Elm is usually the best choice for programmatically generated data, Vega-Lite also has some sequence generators for creating numeric sequences. Here we use [dataSequenceAs](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataSequenceAs) and a [calculateAs transform](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#calculateAs) to create some sine and cosine waves.
+
+```elm {v l}
+trigSequence : Spec
+trigSequence =
+    let
+        data =
+            dataSequenceAs 0 12.7 0.1 "u"
+
+        trans =
+            transform
+                << calculateAs "sin(datum.u)" "v"
+                << calculateAs "cos(datum.u)" "w"
+
+        encSin =
+            encoding
+                << position X [ pName "u", pQuant, pTitle "x" ]
+                << position Y [ pName "v", pQuant, pTitle "sin(x)" ]
+
+        specSin =
+            asSpec [ encSin [], line [] ]
+
+        encCos =
+            encoding
+                << position X [ pName "u", pQuant, pTitle "x" ]
+                << position Y [ pName "w", pQuant, pTitle "cos(x)" ]
+
+        specCos =
+            asSpec [ encCos [], line [ maStroke "firebrick" ] ]
+    in
+    toVegaLite [ width 300, height 150, data, trans [], layer [ specSin, specCos ] ]
+```
+
+---
+
+## Combining solid and dashed lines
+
+By default, the first two categorical dash styles are solid and dashed, which allows us to combine the two styles in the same line. Here we use the approach to symbolise observed and predicted data values.
+
+```elm {v l}
+observedAndPredicted : Spec
+observedAndPredicted =
+    let
+        data =
+            dataFromColumns []
+                -- Note the duplicate of the 4th data value to join dash to solid line.
+                << dataColumn "a" (strs [ "A", "B", "C", "D", "D", "E", "F" ])
+                << dataColumn "b" (nums [ 28, 55, 91, 81, 81, 19, 87 ])
+                << dataColumn "predicted" (boos [ False, False, False, False, True, True, True ])
+
+        enc =
+            encoding
+                << position X [ pName "a", pOrdinal, pAxis [ axTitle "", axLabelAngle 0 ] ]
+                << position Y [ pName "b", pQuant, pTitle "" ]
+                << strokeDash [ mName "predicted" ]
+                << color [ mName "predicted" ]
+    in
+    toVegaLite [ width 200, data [], enc [], line [] ]
 ```
