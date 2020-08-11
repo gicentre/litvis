@@ -51,7 +51,7 @@ scatterplot =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
     in
     toVegaLite [ cars, enc [], circle [] ]
 ```
@@ -77,7 +77,7 @@ scatterplot2 =
             encoding
                 (position X [ pName "Horsepower", pQuant ] <|
                     position Y [ pName "Miles_per_Gallon", pMQuant ] <|
-                        color [ mName "Origin", mNominal ] <|
+                        color [ mName "Origin" ] <|
                             []
                 )
     in
@@ -99,7 +99,7 @@ scatterplot3 =
                     [ pName "Horsepower", pQuant ]
                     (position Y
                         [ pName "Miles_per_Gallon", pQuant ]
-                        (color [ mName "Origin", mNominal ]
+                        (color [ mName "Origin" ]
                             []
                         )
                     )
@@ -128,9 +128,9 @@ myVis1 =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
     in
-    toVegaLite [ dataPath "cars.json", circle [], enc [] ]
+    toVegaLite [ dataPath "cars.json", enc [], circle [] ]
 ```
 
 ```elm {l v}
@@ -141,7 +141,7 @@ myVis2 =
             encoding
                 << position X [ pName "date", pTemporal ]
                 << position Y [ pName "price", pQuant ]
-                << color [ mName "symbol", mNominal ]
+                << color [ mName "symbol" ]
     in
     toVegaLite [ dataPath "stocks.csv", enc [], line [] ]
 ```
@@ -340,7 +340,7 @@ barGrid =
     toVegaLite
         [ tidyData []
         , spacing 50
-        , specification (asSpec [ width 120, height 120, bar [], enc [] ])
+        , specification (asSpec [ width 120, height 120, enc [], bar [] ])
         , facet
             [ rowBy [ fName "row", fHeader [ hdTitle "" ] ]
             , columnBy [ fName "col", fHeader [ hdTitle "" ] ]
