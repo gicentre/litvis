@@ -20,7 +20,7 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
     npm install --global elm prettier prettier-plugin-elm
     ```
 
-_If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
+    _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
 
 1.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 

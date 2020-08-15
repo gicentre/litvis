@@ -217,7 +217,7 @@ To extract the metro lines we filter the lineMap file, but this time we will not
 
   **`o 'metroLines.json' format=topojson`**
 
-For the Metro stations themselves we need to extract them from the _pointMap.geojson_ file and filter them by examining the _other_tags_ content. And because we will by styling these point features in our map we will save the points as a CSV file rather than topoJSON file. Storing as a CSV file can also be useful if you wish to visualize other properties of a point-located dataset.
+For the Metro stations themselves we need to extract them from the _pointMap.geojson_ file and filter them by examining the _other tags_ content. And because we will by styling these point features in our map we will save the points as a CSV file rather than topoJSON file. Storing as a CSV file can also be useful if you wish to visualize other properties of a point-located dataset.
 
 - Refresh the mapshaper page, drag _pointMap.geojson_ into mapshaper and open the mapshaper console.
 - Clip to the bounding rectangle:

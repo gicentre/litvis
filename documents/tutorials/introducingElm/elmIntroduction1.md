@@ -20,7 +20,7 @@ This tutorial introduces the Elm programming language and briefly covers some ba
 
 _You can edit the example elm code in these tutorial pages to experiment with the ideas introduced._
 
-## What is Elm
+## What is Elm?
 
 [Elm](http://elm-lang.org) is a declarative statically typed pure functional programming language that is transpiled into JavaScript.
 Or in English, it is a programming language where:

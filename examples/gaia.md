@@ -286,7 +286,7 @@ starCentroids =
         ]
 ```
 
-## 4. How many stars are there
+## 4. How many stars are there?
 
 Through visual inspection it appears that the Hyades cluster has the most stars, but by how much? Let's confirm with a count of the number of stars in each cluster:
 
