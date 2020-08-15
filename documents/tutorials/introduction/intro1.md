@@ -8,8 +8,8 @@ narrative-schemas:
 @import "../css/tutorial.less"
 
 1.  **Writing your first litvis documents**
-2.  [Branching narratives](intro2.md)
-3.  [Narrative schemas](intro3.md)
+1.  [Branching narratives](intro2.md)
+1.  [Narrative schemas](intro3.md)
 
 ---
 

@@ -39,7 +39,7 @@ sparkline groupName =
 ```
 
 1.  ^^^elm v=(sparkline "1")^^^
-2.  ^^^elm v=(sparkline "2")^^^
-3.  ^^^elm v=(sparkline "3")^^^
+1.  ^^^elm v=(sparkline "2")^^^
+1.  ^^^elm v=(sparkline "3")^^^
 
 ^^^elm v=(sparkline "1")^^^ text ^^^elm v=(sparkline "2")^^^ more text ^^^elm v=(sparkline "3")^^^.

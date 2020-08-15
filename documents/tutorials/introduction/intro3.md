@@ -15,8 +15,8 @@ import VegaLite exposing (..)
 ```
 
 1.  [Writing your first litvis documents](intro1.md)
-2.  [Branching narratives](intro2.md)
-3.  **Narrative schemas**
+1.  [Branching narratives](intro2.md)
+1.  **Narrative schemas**
 
 ---
 

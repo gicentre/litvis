@@ -420,6 +420,6 @@ Examples of schema yamls can be found in the [narrative-schemas](../narrative-sc
 
 1.  Make sure you have [installed litvis in your editor](https://atom.io/packages/markdown-preview-enhanced-with-litvis)
 
-2.  Create a new markdown file and open its preview
+1.  Create a new markdown file and open its preview
 
-3.  Copy any of the [examples](../examples/README.md) or type your own litvis-flavoured markdown
+1.  Copy any of the [examples](../examples/README.md) or type your own litvis-flavoured markdown

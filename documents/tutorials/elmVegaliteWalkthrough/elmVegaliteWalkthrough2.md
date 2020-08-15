@@ -6,9 +6,9 @@ id: litvis
 @import "../css/tutorial.less"
 
 1.  [Introduction](elmVegaliteWalkthrough1.md)
-2.  **Single View Specifications**
-3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
-4.  [Interaction](elmVegaliteWalkthrough4.md)
+1.  **Single View Specifications**
+1.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
+1.  [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 
