@@ -12,46 +12,46 @@ A light-touch approach to designing, building and describing visualization. Here
 
 Litvis documents can be viewed and created in either the Atom or VS Code editors:
 
-1. If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
+1.  If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
 
-1. Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
+1.  Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
 
-   ```sh
-   npm install --global elm prettier prettier-plugin-elm
-   ```
+    ```sh
+    npm install --global elm prettier prettier-plugin-elm
+    ```
 
-   _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
+    _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
 
-1. Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
+1.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 
-1. Depending on which editor you wish to use, install the litvis extensions:
+1.  Depending on which editor you wish to use, install the litvis extensions:
 
-   **If using Atom:**
+    **If using Atom:**
 
-   - Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
+    - Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
 
-   - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
+    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
 
-   - Search for `prettier-atom` and install _(auto-formats code)_.
+    - Search for `prettier-atom` and install _(auto-formats code)_.
 
-   - Search for `language-elm` and install _(syntax highlighting of Elm code)_.
+    - Search for `language-elm` and install _(syntax highlighting of Elm code)_.
 
-   - Search for `language-markdown` and install _(markdown syntax highlighting)_.
+    - Search for `language-markdown` and install _(markdown syntax highlighting)_.
 
-   - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
+    - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
 
-   **If using VS Code:**
+    **If using VS Code:**
 
-   - Select `View → Extensions`
+    - Select `View → Extensions`
 
-   - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
+    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
 
-   - Search for `prettier - Code formatter` and install _(auto-formats code)_.
+    - Search for `prettier - Code formatter` and install _(auto-formats code)_.
 
-   - Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
+    - Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
 
-<!-- 1.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
-    There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
+    <!-- If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
+        There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 

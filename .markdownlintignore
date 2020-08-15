@@ -1,14 +1,7 @@
 ## extensions
 *.*
-!*.css
-!*.js
-!*.json
-!*.less
+LICENSE
 !*.md
-!*.ts
-!*.yaml
-!*.yml
-
 
 ## same as in .gitignore
 # elm-package generated files

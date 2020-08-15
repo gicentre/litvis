@@ -183,7 +183,7 @@ airPollution2 =
         ]
 ```
 
-### Iteration 3
+## Iteration 3
 
 > _Litvis Note: The commentary here is more about goal setting than justification, but feels a natural way of 'thinking aloud' while designing. Do we want to support/encourage this?_
 

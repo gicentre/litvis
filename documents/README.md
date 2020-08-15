@@ -2,13 +2,13 @@
 
 ## Table of contents
 
-1. [Litvis concepts](#1-litvis-concepts)
-2. [Literate code blocks](#2-literate-code-blocks)
-3. [Triple hat references](#3-triple-hat-references)
-4. [Branching narratives](#4-branching-narratives)
-5. [Elm configuration](#5-elm-configuration)
-6. [Narrative schemas](#6-narrative-schemas)
-7. [Getting started](#7-getting-started-with-litvis)
+1.  [Litvis concepts](#1-litvis-concepts)
+1.  [Literate code blocks](#2-literate-code-blocks)
+1.  [Triple hat references](#3-triple-hat-references)
+1.  [Branching narratives](#4-branching-narratives)
+1.  [Elm configuration](#5-elm-configuration)
+1.  [Narrative schemas](#6-narrative-schemas)
+1.  [Getting started](#7-getting-started-with-litvis)
 
 ## 1. Litvis concepts
 
@@ -418,8 +418,8 @@ Examples of schema yamls can be found in the [narrative-schemas](../narrative-sc
 
 ## 7. Getting started with litvis
 
-1. Make sure you have [installed litvis in your editor](https://atom.io/packages/markdown-preview-enhanced-with-litvis)
+1.  Make sure you have [installed litvis in your editor](https://atom.io/packages/markdown-preview-enhanced-with-litvis)
 
-2. Create a new markdown file and open its preview
+1.  Create a new markdown file and open its preview
 
-3. Copy any of the [examples](../examples/README.md) or type your own litvis-flavoured markdown
+1.  Copy any of the [examples](../examples/README.md) or type your own litvis-flavoured markdown

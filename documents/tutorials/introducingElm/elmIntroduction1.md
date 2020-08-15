@@ -6,11 +6,11 @@ id: "litvis"
 
 _Litvis tutorials: Introducing Elm._
 
-1. **Introduction**
-2. [Functions, functions, functions](elmIntroduction2.md)
-3. [Types and pattern matching](elmIntroduction3.md)
-4. [Lists and list processing](elmIntroduction4.md)
-5. [Elm and elm-vegalite](elmIntroduction5.md)
+1.  **Introduction**
+1.  [Functions, functions, functions](elmIntroduction2.md)
+1.  [Types and pattern matching](elmIntroduction3.md)
+1.  [Lists and list processing](elmIntroduction4.md)
+1.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 

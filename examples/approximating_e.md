@@ -8,7 +8,9 @@ id: "litvis"
 
 The constant _e_ is defined by the series:
 
-    e = 1/0! + 1/1! + 1/2! + 1/3! + ...
+```txt
+e = 1/0! + 1/1! + 1/2! + 1/3! + ...
+```
 
 To generate a list of these terms we could first create a function to generate a list of consecutive factorials:
 

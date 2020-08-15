@@ -8,11 +8,11 @@ narrative-schemas:
 
 _Litvis tutorials: Introducing Elm._
 
-1. [Introduction](elmIntroduction1.md)
-2. [Functions, functions, functions](elmIntroduction2.md)
-3. [Types and pattern matching](elmIntroduction3.md)
-4. **Lists and list processing**
-5. [Elm and elm-vegalite](elmIntroduction5.md)
+1.  [Introduction](elmIntroduction1.md)
+1.  [Functions, functions, functions](elmIntroduction2.md)
+1.  [Types and pattern matching](elmIntroduction3.md)
+1.  **Lists and list processing**
+1.  [Elm and elm-vegalite](elmIntroduction5.md)
 
 ---
 
@@ -268,9 +268,9 @@ smoothOutput =
 
 {(question |}
 
-1. How would you express the `smooth` function in point-free style?
+1.  How would you express the `smooth` function in point-free style?
 
-1. The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
+1.  The `neighbours` function drops the last item in the original list, so a smoothed version is one item shorter than the original. How could you adapt `neighbours` so the smoothed list maintains the length of the input list?
 
 {|question )}
 
