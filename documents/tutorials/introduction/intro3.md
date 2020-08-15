@@ -64,7 +64,7 @@ Finally, we can apply standard 'CSS' styling to the html described in the `htmlT
 
 To see the schema in action, copy the schema above into a file `todo.yaml` then create a new litvis document into which you copy the following code:
 
-````md
+````markdown
 ---
 elm:
   dependencies:
@@ -156,7 +156,7 @@ Here we add a few more rules that specify that there must be one `aim` label in 
 
 Below is an example litvis document that conforms to this narrative schema:
 
-````md
+````markdown
 ---
 elm:
   dependencies:
