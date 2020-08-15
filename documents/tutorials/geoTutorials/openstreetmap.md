@@ -14,9 +14,9 @@ import VegaLite exposing (..)
 _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [Geospatial File Formats](geoFormats.md)
-1.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-1.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
-1.  **Importing and displaying OpenStreetMap data**
+2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
+3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
+4.  **Importing and displaying OpenStreetMap data**
 
 ---
 
@@ -151,8 +151,8 @@ Make sure you have the three topoJSON files in a `data` folder located in the sa
 _For this version of the tutorial we define a path to online versions of the data files, but you may wish to edit the path to point to your local files._
 
 ```elm {l}
-dataPath : String
-dataPath =
+path : String
+path =
     -- for local files relative to this document use "./"
     "https://gicentre.github.io/data/geoTutorials/paris/"
 ```
@@ -162,19 +162,19 @@ parisMap : Spec
 parisMap =
     let
         buildingsData =
-            dataFromUrl (dataPath ++ "buildings.json") [ topojsonFeature "polyMap" ]
+            dataFromUrl (path ++ "buildings.json") [ topojsonFeature "polyMap" ]
 
         specBuildings =
             asSpec [ buildingsData, geoshape [ maColor "#eee" ] ]
 
         parksData =
-            dataFromUrl (dataPath ++ "parks.json") [ topojsonFeature "polyMap" ]
+            dataFromUrl (path ++ "parks.json") [ topojsonFeature "polyMap" ]
 
         specParks =
             asSpec [ parksData, geoshape [ maColor "rgb(239,244,225)" ] ]
 
         riversData =
-            dataFromUrl (dataPath ++ "rivers.json") [ topojsonFeature "lineMap" ]
+            dataFromUrl (path ++ "rivers.json") [ topojsonFeature "lineMap" ]
 
         specRivers =
             asSpec
@@ -274,25 +274,25 @@ metroMap : Spec
 metroMap =
     let
         buildingsData =
-            dataFromUrl (dataPath ++ "buildings.json") [ topojsonFeature "polyMap" ]
+            dataFromUrl (path ++ "buildings.json") [ topojsonFeature "polyMap" ]
 
         specBuildings =
             asSpec [ buildingsData, geoshape [ maColor "#eee" ] ]
 
         parksData =
-            dataFromUrl (dataPath ++ "parks.json") [ topojsonFeature "polyMap" ]
+            dataFromUrl (path ++ "parks.json") [ topojsonFeature "polyMap" ]
 
         specParks =
             asSpec [ parksData, geoshape [ maColor "rgb(239,244,225)" ] ]
 
         riversData =
-            dataFromUrl (dataPath ++ "rivers.json") [ topojsonFeature "lineMap" ]
+            dataFromUrl (path ++ "rivers.json") [ topojsonFeature "lineMap" ]
 
         metroLinesData =
-            dataFromUrl (dataPath ++ "metroLines.json") [ topojsonFeature "lineMap" ]
+            dataFromUrl (path ++ "metroLines.json") [ topojsonFeature "lineMap" ]
 
         stationsData =
-            dataFromUrl (dataPath ++ "metroStations.csv") []
+            dataFromUrl (path ++ "metroStations.csv") []
 
         specRivers =
             asSpec
@@ -304,7 +304,6 @@ metroMap =
             encoding
                 << color
                     [ mName "properties.name"
-                    , mNominal
                     , mScale metroColours
                     , mLegend
                         [ leTitle ""
@@ -339,7 +338,7 @@ metroMap =
 
         encStationNames =
             encStations
-                << text [ tName "name", tNominal ]
+                << text [ tName "name" ]
 
         specStationNames =
             asSpec

@@ -6,13 +6,13 @@ id: litvis
 @import "../css/tutorial.less"
 
 1.  [Introduction](elmVegaliteWalkthrough1.md)
-1.  [Single View Specifications](elmVegaliteWalkthrough2.md)
-1.  **Layered and Multi-view Composition**
-1.  [Interaction](elmVegaliteWalkthrough4.md)
+2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
+3.  **Layered and Multi-view Composition**
+4.  [Interaction](elmVegaliteWalkthrough4.md)
 
 ---
 
-## Layered and Multi-view Composition ([8:28](https://youtu.be/9uaHRWj04D4?t=8m28s))
+# Layered and Multi-view Composition ([8:28](https://youtu.be/9uaHRWj04D4?t=8m28s))
 
 To show our weather distributions next to each other rather than stacked on top of each other, we simply encode column position in a row of small multiples with the `weather` data field:
 
@@ -22,34 +22,29 @@ smallMultiples =
     let
         enc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [], pTitle "" ]
-                << position Y [ pAggregate opCount, pQuant ]
-                << color [ mName "weather", mNominal, mLegend [], mScale weatherColors ]
-                << column [ fName "weather", fNominal ]
+                << position X [ pName "temp_max", pBin [], pTitle "" ]
+                << position Y [ pAggregate opCount ]
+                << color [ mName "weather", mLegend [], mScale weatherColors ]
+                << column [ fName "weather" ]
     in
-    toVegaLite [ width 110, height 110, seattleData, bar [], enc [] ]
+    toVegaLite [ width 110, height 110, seattleData, enc [], bar [] ]
 ```
 
-There are only two additions in order to create these small multiples. Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to. Note that the `f` prefix for `fName` and `fNominal` refers to _facet_ – a form of data selection and grouping standard in data visualization.
+There are only two additions in order to create these small multiples. Firstly we have an extra encoding with the `column` function specifying the `weather` data field as the one to determine which column each data item gets mapped to. Note that the `f` prefix for `fName` refers to _facet_ – a form of data selection and grouping standard in data visualization.
 
-The second, minor change, is to include an `mLegend` specification in the color encoding. The legend can be customised with its parameter list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with color encoding and default column labels make the legend redundant).
+The second, minor change, is to include an `mLegend` specification in the colour encoding. The legend can be customised with its parameter list but here by providing an empty list, we declare we do not wish the default legend to appear (the arrangement into columns with colour encoding and default column labels make the legend redundant).
 
-### Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
+## Multi-view Composition Operators ([9:00](https://youtu.be/9uaHRWj04D4?t=9m00s))
 
 There are four ways in which multiple views may be combined:
 
-- The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above).
-  elm-vegalite functions to create faceted views: `column`, `row`, `facet` and `specification`.
+- The **facet operator** takes subsets of a dataset (facets) and separately applies the same view specification to each of those facets (as seen with the `column` function above). elm-vegalite functions to create faceted views: `column`, `row`, `facet` and `specification`.
 
-- The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot.
-  elm-vegalite functions to create a layered view: `layer` and `asSpec`.
+- The **layer operator** creates different views of the data but each is layered (superposed) on the same same space, for example a trend line layered on top of a scatterplot. elm-vegalite functions to create a layered view: `layer` and `asSpec`.
 
-- The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns.
-  This allows 'dashboards' to be built.
-  elm-vegalite functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
+- The **concatenation operator** allows arbitrary views (potentially with different datasets) to be assembled in rows or columns. This allows 'dashboards' to be built. elm-vegalite functions to create concatenated views: `vConcat`, `hConcat` and `asSpec`.
 
-- The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view.
-  elm-vegalite functions for repeated views: `repeat` and `specification`.
+- The **repeat operator** is a concise way of combining multiple views with only small data-driven differences in each view. elm-vegalite functions for repeated views: `repeat` and `specification`.
 
 ## Composition Example: Precipitation in Seattle ([9:40](https://youtu.be/9uaHRWj04D4?t=9m40s))
 
@@ -62,9 +57,9 @@ barChart =
         enc =
             encoding
                 << position X [ pName "date", pOrdinal, pTimeUnit month ]
-                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
+                << position Y [ pName "precipitation", pAggregate opMean ]
     in
-    toVegaLite [ seattleData, bar [], enc [] ]
+    toVegaLite [ seattleData, enc [], bar [] ]
 ```
 
 (Note that here we've cast the date, which has been quantized into monthly intervals, to be ordinal so that bars span the full width of each month.)
@@ -78,9 +73,9 @@ temporalBarSpec pField w =
         enc =
             encoding
                 << position X [ pName "date", pOrdinal, pTimeUnit month ]
-                << position Y [ pField, pQuant, pAggregate opMean ]
+                << position Y [ pField, pAggregate opMean ]
     in
-    asSpec [ width w, height w, bar [], enc [] ]
+    asSpec [ width w, height w, enc [], bar [] ]
 ```
 
 This can then be passed to `toVegaLite` as its own _layer_:
@@ -91,7 +86,7 @@ barChart =
     toVegaLite [ seattleData, layer [ temporalBarSpec (pName "precipitation") 180 ] ]
 ```
 
-### Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
+## Composing layers ([10:08](https://youtu.be/9uaHRWj04D4?t=10m08s))
 
 We can annotate the chart by placing the bar chart specification in a layer and adding another layer with the annotation. In this example we will add a layer showing the average precipitation for the entire period:
 
@@ -103,7 +98,8 @@ barChart =
             pName "precipitation"
 
         enc =
-            encoding << position Y [ dataField, pQuant, pAggregate opMean ]
+            encoding
+                << position Y [ dataField, pAggregate opMean ]
     in
     toVegaLite
         [ seattleData
@@ -120,13 +116,13 @@ temporalAvBarSpec : PositionChannel -> Float -> Spec
 temporalAvBarSpec dataField w =
     let
         enc =
-            encoding << position Y [ dataField, pQuant, pAggregate opMean ]
+            encoding << position Y [ dataField, pAggregate opMean ]
     in
     asSpec
         [ layer [ temporalBarSpec dataField w, asSpec [ enc [], rule [] ] ] ]
 ```
 
-### Concatenating views ([10:47](https://youtu.be/9uaHRWj04D4?t=10m47s))
+## Concatenating views ([10:47](https://youtu.be/9uaHRWj04D4?t=10m47s))
 
 Instead of layering one view on top of another (superposition), we can place them side by side in a row or column (juxtaposition). In Vega-Lite this is referred to as _concatenation_:
 
@@ -144,7 +140,7 @@ barCharts =
 
 Concatenated views are specified in the same way as layered views expect that we use the `vConcat` function (or `hConcat` for a horizontal arrangement) in place of `layer`.
 
-### Repeated Views ([11:08](https://youtu.be/9uaHRWj04D4?t=11m08s))
+## Repeated Views ([11:08](https://youtu.be/9uaHRWj04D4?t=11m08s))
 
 Noting that juxtaposing similar charts is a common operation, and the specification for each of them often is very similar, the repeat operator allows us to streamline the specification required to do this. We might, for example, wish to show three data fields from the Seattle weather dataset:
 
@@ -175,8 +171,8 @@ splom =
             asSpec
                 [ width 120
                 , height 120
-                , point [ maStrokeWidth 0.4 ]
                 , enc []
+                , point [ maStrokeWidth 0.4 ]
                 ]
     in
     toVegaLite
@@ -189,7 +185,7 @@ splom =
         ]
 ```
 
-### Building A Dashboard ([12:40](https://youtu.be/9uaHRWj04D4?t=12m40s))
+## Building A Dashboard ([12:40](https://youtu.be/9uaHRWj04D4?t=12m40s))
 
 We can compose more complex 'dashboards' by assembling single views but varying either their encoding or the data that are encoded. To illustrate, let's first identify the four single view types that we will compose with (all of these we have considered above, but are shown here again for clarity).
 
@@ -202,11 +198,11 @@ histogram =
 
         histoEnc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [] ]
-                << position Y [ pAggregate opCount, pQuant ]
+                << position X [ pName "temp_max", pBin [] ]
+                << position Y [ pAggregate opCount ]
 
         histoSpec =
-            asSpec [ width w, height w, bar [], histoEnc [] ]
+            asSpec [ width w, height w, histoEnc [], bar [] ]
 
         scatterEnc =
             encoding
@@ -214,22 +210,22 @@ histogram =
                 << position Y [ pName "precipitation", pQuant ]
 
         scatterSpec =
-            asSpec [ width w, height w, point [ maStrokeWidth 0.3 ], scatterEnc [] ]
+            asSpec [ width w, height w, scatterEnc [], point [ maStrokeWidth 0.3 ] ]
 
         barEnc =
             encoding
                 << position X [ pName "date", pOrdinal, pTimeUnit month ]
-                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
+                << position Y [ pName "precipitation", pAggregate opMean ]
 
         barSpec =
-            asSpec [ width w, height w, bar [], barEnc [] ]
+            asSpec [ width w, height w, barEnc [], bar [] ]
 
         lineEnc =
             encoding
-                << position Y [ pName "precipitation", pQuant, pAggregate opMean ]
+                << position Y [ pName "precipitation", pAggregate opMean ]
 
         lineSpec =
-            asSpec [ width w, height w, rule [], lineEnc [] ]
+            asSpec [ width w, height w, lineEnc [], rule [] ]
     in
     toVegaLite
         [ seattleData
@@ -272,13 +268,13 @@ dashboard data =
 
         histoEnc =
             encoding
-                << position X [ pName "temp_max", pQuant, pBin [], pAxis [ axTitle "Max temp" ] ]
-                << position Y [ pAggregate opCount, pQuant ]
-                << color [ mName "weather", mNominal, mLegend [], mScale weatherColors ]
-                << column [ fName "weather", fNominal ]
+                << position X [ pName "temp_max", pBin [], pTitle "Max temp" ]
+                << position Y [ pAggregate opCount ]
+                << color [ mName "weather", mLegend [], mScale weatherColors ]
+                << column [ fName "weather" ]
 
         histoSpec =
-            asSpec [ width 120, height 120, bar [], histoEnc [] ]
+            asSpec [ width 120, height 120, histoEnc [], bar [] ]
     in
     toVegaLite
         [ data

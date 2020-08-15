@@ -11,7 +11,7 @@ import VegaLite exposing (..)
 ```elm {l=hidden}
 data : Data
 data =
-    dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
+    dataFromUrl "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/cars.json" []
 ```
 
 ```elm {v interactive}
@@ -19,7 +19,8 @@ interactive1 : Spec
 interactive1 =
     let
         sel =
-            selection << select "myBrush" seInterval []
+            selection
+                << select "myBrush" seInterval []
 
         enc =
             encoding
@@ -27,11 +28,11 @@ interactive1 =
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "myBrush")
-                        [ mName "Cylinders", mOrdinal ]
+                        [ mName "Cylinders" ]
                         [ mStr "grey" ]
                     ]
     in
-    toVegaLite [ width 300, height 150, data, point [], sel [], enc [] ]
+    toVegaLite [ width 300, height 150, data, sel [], enc [], point [] ]
 ```
 
 ```elm {v interactive}
@@ -59,12 +60,12 @@ binding1 =
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "CylYr")
-                        [ mName "Origin", mNominal ]
+                        [ mName "Origin" ]
                         [ mStr "grey" ]
                     ]
 
         spec1 =
-            asSpec [ sel1 [], circle [], enc1 [] ]
+            asSpec [ sel1 [], enc1 [], circle [] ]
 
         trans2 =
             transform
@@ -74,11 +75,11 @@ binding1 =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
                 << size [ mNum 100 ]
 
         spec2 =
-            asSpec [ trans2 [], circle [], enc2 [] ]
+            asSpec [ trans2 [], enc2 [], circle [] ]
     in
     toVegaLite [ width 300, height 150, data, trans [], layer [ spec1, spec2 ] ]
 ```

@@ -10,18 +10,24 @@ import VegaLite exposing (..)
 
 # Simple litvis chart
 
+```elm {l=hidden}
+path : String
+path =
+    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
+```
+
 ```elm {v}
 barChart : Spec
 barChart =
     let
-        cars =
-            dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
+        data =
+            dataFromUrl (path ++ "cars.json") []
 
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
     in
-    toVegaLite [ cars, circle [], enc [] ]
+    toVegaLite [ data, enc [], circle [] ]
 ```

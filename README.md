@@ -1,7 +1,6 @@
 # Literate Visualization &middot; [![License: BSD 3-Clause](https://img.shields.io/badge/license-BSD_3--Clause-blue.svg)](./LICENSE) [![GitHub Workflow Status (checks)](https://img.shields.io/github/workflow/status/gicentre/litvis/Checks?label=checks)](https://github.com/gicentre/litvis/actions?query=workflow%3AChecks) [![Code style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/) [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
-A light-touch approach to designing, building and describing visualization.
-Here you will find
+A light-touch approach to designing, building and describing visualization. Here you will find
 
 - [Tutorials](documents/tutorials) for working with litvis, Elm and elm-vega/vegalite.
 - [Examples](examples) of literate visualization.
@@ -17,11 +16,11 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
 1.  Open a terminal window and install [Elm](http://elm-lang.org), [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
 
-    ```sh
-    npm install --global elm prettier prettier-plugin-elm
-    ```
+```sh
+npm install --global elm prettier prettier-plugin-elm
+```
 
-    _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
+_If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
 
 1.  Install either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor.
 
@@ -29,39 +28,36 @@ Litvis documents can be viewed and created in either the Atom or VS Code editors
 
     **If using Atom:**
 
-    - Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
+- Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
 
-    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
+- Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
 
-    - Search for `prettier-atom` and install _(auto-formats code)_.
+- Search for `prettier-atom` and install _(auto-formats code)_.
 
-    - Search for `language-elm` and install _(syntax highlighting of Elm code)_.
+- Search for `language-elm` and install _(syntax highlighting of Elm code)_.
 
-    - Search for `language-markdown` and install _(markdown syntax highlighting)_.
+- Search for `language-markdown` and install _(markdown syntax highlighting)_.
 
-    - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
+- When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
 
-    **If using VS Code:**
+**If using VS Code:**
 
-    - Select `View → Extensions`
+- Select `View → Extensions`
 
-    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
+- Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
 
-    - Search for `prettier - Code formatter` and install _(auto-formats code)_.
+- Search for `prettier - Code formatter` and install _(auto-formats code)_.
 
-    - Search for `elm` and install _(syntax highlighting of Elm code)_.
+- Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
 
-<!--
-1.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
-    There is a plan to merge litvis functionality into this extension, which should ease the setup.
--->
+<!-- 1.  If you have been using [`markdown-preview-enhanced`](https://shd101wyy.github.io/markdown-preview-enhanced/#/) extension by [@shd101wyy](https://github.com/shd101wyy/) in your editor, you may want to temporary disable it to avoid keyboard shortcut conflicts.
+    There is a plan to merge litvis functionality into this extension, which should ease the setup. -->
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 
 ## ‘Hello world’ in literate Elm
 
-Adding litvis attribute `literate` (or `l`) to ` ```elm ` blocks in markdown automatically compiles and executes the code in real time.
-Attribute `raw` (or `r`) is the simplest way to see the result.
+Adding litvis attribute `literate` (or `l`) to `elm` blocks in markdown automatically compiles and executes the code in real time. Attribute `raw` (or `r`) is the simplest way to see the result.
 
 ![helloworld](https://user-images.githubusercontent.com/608862/38144403-735c2894-343c-11e8-983a-39487fbb116e.gif)
 
@@ -77,8 +73,7 @@ A litvis code block with attribute `visualize` (or `v`) automatically renders th
 
 ## Code referencing across blocks
 
-By default, litvis code blocks share the same execution context, which means that an Elm symbol defined in one block and can be referenced in another block.
-It is not necessary to maintain the order of blocks to make referencing work.
+By default, litvis code blocks share the same execution context, which means that an Elm symbol defined in one block and can be referenced in another block. It is not necessary to maintain the order of blocks to make referencing work.
 
 ![codereferencingcodeblocks](https://user-images.githubusercontent.com/608862/38144058-2711026c-343b-11e8-9eb5-080ea07d582c.gif)
 
@@ -111,8 +106,7 @@ These attributes follow the same ordering rules as `l` and `v`.
 
 ## Interaction
 
-Adding `interactive` to a code block with `v` or a triple hat reference makes visualizations live if interaction is described within `Spec`.
-User input controls can be added to the document, if desired.
+Adding `interactive` to a code block with `v` or a triple hat reference makes visualizations live if interaction is described within `Spec`. User input controls can be added to the document, if desired.
 
 ![interaction](https://user-images.githubusercontent.com/608862/38144556-178c98e0-343d-11e8-9c98-1e247ff48581.gif)
 
@@ -120,11 +114,9 @@ User input controls can be added to the document, if desired.
 
 ### Mutliple execution contexts
 
-Although a single Elm execution context may be sufficient in many litivs narratives, context isolation may be desired in some cases.
-A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
+Although a single Elm execution context may be sufficient in many litivs narratives, context isolation may be desired in some cases. A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
 
-A `siding` (or `s`) is a shortcut for `isolated follows=default`.
-This keyword makes previously defined symbols in `default` context available within the code block, but avoids name clashes with the following blocks.
+A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword makes previously defined symbols in `default` context available within the code block, but avoids name clashes with the following blocks.
 
 ![codesidings](https://user-images.githubusercontent.com/608862/38163354-8faa3c9e-34ea-11e8-84d3-d12747238b6d.gif)
 
@@ -132,9 +124,7 @@ This keyword makes previously defined symbols in `default` context available wit
 
 ### Branching narratives
 
-A litvis narrative can be split between multiple markdown documents, where each document `follows` its parent.
-This enables routine use of parallel branching narratives that assemble and structure document trees.
-Each branch in a tree can represent alternative potentially competing designs each with their own rationale.
+A litvis narrative can be split between multiple markdown documents, where each document `follows` its parent. This enables routine use of parallel branching narratives that assemble and structure document trees. Each branch in a tree can represent alternative potentially competing designs each with their own rationale.
 
 ![branchingnarratives](https://user-images.githubusercontent.com/608862/38163350-84ecde10-34ea-11e8-900c-ec8f4ad46ef0.gif)
 
@@ -143,10 +133,7 @@ Each branch in a tree can represent alternative potentially competing designs ea
 ### Narrative schemas
 
 A litvis narrative can be linked to a set of YAML files, which define `labels`, `rules` and `styling`.
-These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema.
-The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design.
-This can be thought of as form of scaffolding to assist in the process of design exposition.
-Schemas can be used to validate litvis documents.
+These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema. The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design. This can be thought of as form of scaffolding to assist in the process of design exposition. Schemas can be used to validate litvis documents.
 
 ![narrativeschemas](https://user-images.githubusercontent.com/608862/38163859-d69bc4da-34f2-11e8-984d-786118f3100b.gif)
 
@@ -154,9 +141,7 @@ Schemas can be used to validate litvis documents.
 
 ## Linting
 
-A litvis document that is being previewed is constantly checked against various issues.
-These issues are displayed in the editing environment and help with debugging.
-If a visualization has been successfully rendered before the issue had occurred, its old preview is shown to avoid unwanted markup reflows.
+A litvis document that is being previewed is constantly checked against various issues. These issues are displayed in the editing environment and help with debugging. If a visualization has been successfully rendered before the issue had occurred, its old preview is shown to avoid unwanted markup reflows.
 
 ![linting](https://user-images.githubusercontent.com/608862/38143955-bc310866-343a-11e8-94f8-c31a71e6155c.gif)
 
@@ -164,9 +149,7 @@ If a visualization has been successfully rendered before the issue had occurred,
 
 ## Automatic code formatting
 
-Litvis integrates with [Prettier](https://prettier.io/) and its [Elm plugin](https://github.com/gicentre/prettier-plugin-elm), which enables seamless document formatting as the narrative is being written.
-A file is automatically _prettified_ on save or when the _Format_ command is explicitly called.
-Formatting keeps litvis files in a readable and maintainable state, which eases collaboration and reduces distraction from the higher-level tasks.
+Litvis integrates with [Prettier](https://prettier.io/) and its [Elm plugin](https://github.com/gicentre/prettier-plugin-elm), which enables seamless document formatting as the narrative is being written. A file is automatically _prettified_ on save or when the _Format_ command is explicitly called. Formatting keeps litvis files in a readable and maintainable state, which eases collaboration and reduces distraction from the higher-level tasks.
 
 ![formatting1000](https://user-images.githubusercontent.com/608862/38144144-84de604c-343b-11e8-8ffd-f210e2f991ae.gif)
 

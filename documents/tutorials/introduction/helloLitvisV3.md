@@ -27,12 +27,11 @@ helloLitvis =
             encoding
                 << position X
                     [ pName "language"
-                    , pNominal
                     , pSort [ soByField "rating" opMean, soDescending ]
                     ]
                 << position Y [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc [], bar [] ]
 ```
 
 Here are the same data but displayed as horizontal bars arranged in alphabetical order:
@@ -43,8 +42,8 @@ helloLitvis =
     let
         enc =
             encoding
-                << position Y [ pName "language", pNominal ]
+                << position Y [ pName "language" ]
                 << position X [ pName "rating", pQuant ]
     in
-    toVegaLite [ data [], bar [], enc [] ]
+    toVegaLite [ data [], enc [], bar [] ]
 ```

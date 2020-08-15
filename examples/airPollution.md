@@ -1,7 +1,9 @@
 ---
 id: "litvis"
+
 narrative-schemas:
   - ../narrative-schemas/socratic-questions
+
 elm:
   dependencies:
     gicentre/elm-vegalite: latest
@@ -52,12 +54,18 @@ Initially selected just Putney 'High Street Facade' which was also the location 
 
 Some readings are 'unratified' and subject to measurement error. No evidence of systematic bias in errors has been uncovered. The only filtering was to remove erroneous negative values.
 
-```elm {l v siding}
-airPollution : Spec
-airPollution =
+```elm {l}
+path : String
+path =
+    "https://gicentre.github.io/data/"
+```
+
+```elm {l v}
+airPollution1 : Spec
+airPollution1 =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+            dataFromUrl (path ++ "putneyAirQuality.csv")
                 [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         trans =
@@ -70,7 +78,7 @@ airPollution =
             encoding
                 << position X [ pName "time of day", pQuant ]
                 << position Y [ pName "reading", pQuant ]
-                << detail [ dName "day", dOrdinal ]
+                << detail [ dName "day" ]
     in
     toVegaLite [ data, trans [], enc [], line [] ]
 ```
@@ -87,12 +95,12 @@ airPollution =
 - Can summarise the complexity of the many hundreds of Sunday readings with an average making the 24 hour trend clearer.
 - To reduce visual clutter, only show grid lines at 4 hour intervals. This helps also to anchor the day at midday.
 
-```elm {v siding}
-airPollution : Spec
-airPollution =
+```elm {v}
+airPollution2 : Spec
+airPollution2 =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+            dataFromUrl (path ++ "putneyAirQuality.csv")
                 [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         backgroundTrans =
@@ -106,19 +114,27 @@ airPollution =
                 << position X
                     [ pName "time of day"
                     , pQuant
-                    , pAxis [ axValues (nums [ 0, 4, 8, 12, 16, 20, 24 ]), axFormat "05.2f" ]
+                    , pAxis
+                        [ axValues (nums [ 0, 4, 8, 12, 16, 20, 24 ])
+                        , axFormat "05.2f"
+                        ]
                     ]
                 << position Y
                     [ pName "reading"
                     , pQuant
-                    , pAxis [ axValues (nums [ 250, 500, 750, 1000 ]), axTitle "Oxides of Nitrogen (μg m-3 )" ]
+                    , pAxis
+                        [ axValues (nums [ 250, 500, 750, 1000 ])
+                        , axTitle "Oxides of Nitrogen (μg m-3 )"
+                        ]
                     ]
-                << detail [ dName "day", dOrdinal ]
-                << color [ mStr "#200" ]
-                << opacity [ mNum 0.5 ]
+                << detail [ dName "day" ]
 
         backgroundSpec =
-            asSpec [ backgroundTrans [], line [ maStrokeWidth 0.1 ], backgroundEnc [] ]
+            asSpec
+                [ backgroundTrans []
+                , backgroundEnc []
+                , line [ maStrokeWidth 0.1, maColor "#200", maOpacity 0.5 ]
+                ]
 
         avTrans =
             transform
@@ -130,11 +146,13 @@ airPollution =
             encoding
                 << position X [ pName "time of day", pQuant ]
                 << position Y [ pAggregate opMean, pName "reading", pQuant ]
-                << color [ mStr "#000" ]
-                << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], avEnc [], line [ maStrokeWidth 4, maInterpolate miMonotone ] ]
+            asSpec
+                [ avTrans []
+                , avEnc []
+                , line [ maColor "black", maOpacity 0.2, maStrokeWidth 4, maInterpolate miMonotone ]
+                ]
 
         rideTrans =
             transform
@@ -147,11 +165,14 @@ airPollution =
             encoding
                 << position X [ pName "time of day", pQuant ]
                 << position Y [ pName "reading", pQuant ]
-                << detail [ dName "day", dOrdinal ]
-                << color [ mStr "rgb(202,0,0)" ]
+                << detail [ dName "day" ]
 
         rideSpec =
-            asSpec [ rideTrans [], rideEnc [], line [ maStrokeWidth 1, maInterpolate miMonotone ] ]
+            asSpec
+                [ rideTrans []
+                , rideEnc []
+                , line [ maColor "rgb(202,0,0)", maStrokeWidth 1, maInterpolate miMonotone ]
+                ]
     in
     toVegaLite
         [ width 500
@@ -164,19 +185,19 @@ airPollution =
 
 ## Iteration 3
 
-> _Litvis Note: The commentary here is more about goal setting than justification, but feels a natural way of 'thinking aloud' while designing. Do we want to support/encourge this?_
+> _Litvis Note: The commentary here is more about goal setting than justification, but feels a natural way of 'thinking aloud' while designing. Do we want to support/encourage this?_
 
 - Most of the variation is in the 0-300 μg m-3 range, but the less frequent peaks dominate the scaling.
   Perhaps better to scale to the lower part of the range.
 - Maximum EU NO2 limits are 200 μg m-3 in an hour and 40 μg m-3 average over the year.
   Would be good to show these, and by implication, how far above the limits 'normal' Sundays are, helping to meet objective II. It would be desirable to somehow anchor the chart to these legal limits in order to frame the data.
 
-```elm {v siding}
-airPollution : Spec
-airPollution =
+```elm {v}
+airPollution3 : Spec
+airPollution3 =
     let
         data =
-            dataFromUrl "https://gicentre.github.io/data/putneyAirQuality.csv"
+            dataFromUrl (path ++ "putneyAirQuality.csv")
                 [ parse [ ( "dateTime", foDate "%Y-%m-%dT%H:%M" ) ] ]
 
         backgroundTrans =
@@ -202,12 +223,14 @@ airPollution =
                     , pScale [ scDomain (doNums [ 0, 600 ]) ]
                     , pAxis [ axTitle "Oxides of Nitrogen (μg m-3 )" ]
                     ]
-                << detail [ dName "day", dOrdinal ]
-                << color [ mStr "#200" ]
-                << opacity [ mNum 0.5 ]
+                << detail [ dName "day" ]
 
         backgroundSpec =
-            asSpec [ backgroundTrans [], backgroundEnc [], line [ maClip True, maStrokeWidth 0.1 ] ]
+            asSpec
+                [ backgroundTrans []
+                , backgroundEnc []
+                , line [ maColor "#200", maOpacity 0.5, maClip True, maStrokeWidth 0.1 ]
+                ]
 
         avTrans =
             transform
@@ -219,11 +242,13 @@ airPollution =
             encoding
                 << position X [ pName "time of day", pQuant ]
                 << position Y [ pAggregate opMean, pName "reading", pQuant, pAxis [] ]
-                << color [ mStr "#000" ]
-                << opacity [ mNum 0.2 ]
 
         avSpec =
-            asSpec [ avTrans [], line [ maStrokeWidth 4, maInterpolate miMonotone ], avEnc [] ]
+            asSpec
+                [ avTrans []
+                , line [ maColor "black", maOpacity 0.2, maStrokeWidth 4, maInterpolate miMonotone ]
+                , avEnc []
+                ]
 
         limitsData =
             dataFromColumns []
@@ -241,11 +266,13 @@ airPollution =
                         ]
                     ]
                 << position Y2 [ pName "max", pQuant ]
-                << color [ mStr "rgb(173,118,66)" ]
-                << opacity [ mNum 0.15 ]
 
         limitsSpec =
-            asSpec [ limitsData [], rect [], limitsEnc [] ]
+            asSpec
+                [ limitsData []
+                , limitsEnc []
+                , rect [ maColor "rgb(173,118,66)", maOpacity 0.15 ]
+                ]
 
         rideTrans =
             transform
@@ -258,11 +285,14 @@ airPollution =
             encoding
                 << position X [ pName "time of day", pQuant ]
                 << position Y [ pName "reading", pQuant, pAxis [] ]
-                << detail [ dName "day", dOrdinal ]
-                << color [ mStr "rgb(202,0,0)" ]
+                << detail [ dName "day" ]
 
         rideSpec =
-            asSpec [ rideTrans [], line [ maStrokeWidth 1, maInterpolate miMonotone ], rideEnc [] ]
+            asSpec
+                [ rideTrans []
+                , rideEnc []
+                , line [ maColor "rgb(202,0,0)", maStrokeWidth 1, maInterpolate miMonotone ]
+                ]
 
         res =
             resolve

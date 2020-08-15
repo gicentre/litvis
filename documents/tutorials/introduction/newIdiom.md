@@ -37,7 +37,6 @@ This will have to wait until I've coded up some examples.
 
 {(limitations|}
 
-These only work for 2x2 tables. What if I wanted to show a 3x3 table?
-Success depends on our ability to compare areas accurately.
+These only work for 2x2 tables. What if I wanted to show a 3x3 table? Success depends on our ability to compare areas accurately.
 
 {|limitations)}

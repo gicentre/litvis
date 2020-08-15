@@ -6,13 +6,13 @@ id: litvis
 @import "../css/tutorial.less"
 
 1.  [Introduction](elmVegaliteWalkthrough1.md)
-1.  [Single View Specifications](elmVegaliteWalkthrough2.md)
-1.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
-1.  **Interaction**
+2.  [Single View Specifications](elmVegaliteWalkthrough2.md)
+3.  [Layered and Multi-view Composition](elmVegaliteWalkthrough3.md)
+4.  **Interaction**
 
 ---
 
-## Interaction ([14:35](https://youtu.be/9uaHRWj04D4?t=14m35s))
+# Interaction ([14:35](https://youtu.be/9uaHRWj04D4?t=14m35s))
 
 Interaction is enabled by creating _selections_ that may be combined with the kinds of specifications already described. Selections involve three components:
 
@@ -22,21 +22,24 @@ Interaction is enabled by creating _selections_ that may be combined with the ki
 
 - **Predicates** (i.e. Boolean functions) identify whether or not something is included in the selection. These need not be limited to only those parts of the visualization directly selected through interaction (see _selection projection_ below).
 
-By way of an example consider this colored scatterplot where any point can be selected and all non-selected points are turned grey (_click on a point to select it_):
+By way of an example consider this coloured scatterplot where any point can be selected and all non-selected points are turned grey (_click on a point to select it_):
 
-_Note that in the interactive examples that follow, the code block header must include the `interactive` keyword, e.g. `elm {v l interactive}` (this might not be apparent if you are viewing this document directly in github)._
+_Note that in the interactive examples that follow, the code block header must include the `interactive` keyword, e.g. `elm {v l interactive}` (this might not be apparent if you are viewing this document directly in GitHub)._
 
 ```elm {v l s interactive}
 scatterplot : Spec
 scatterplot =
     let
+        data =
+            dataFromUrl (path ++ "cars.json") []
+
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
-                        [ mName "Origin", mNominal ]
+                        [ mName "Origin" ]
                         [ mStr "grey" ]
                     ]
 
@@ -44,17 +47,12 @@ scatterplot =
             selection
                 << select "picked" seSingle []
     in
-    toVegaLite
-        [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-        , circle []
-        , enc []
-        , sel []
-        ]
+    toVegaLite [ data, sel [], enc [], circle [] ]
 ```
 
-In comparison to the static specifications we have already seen, the addition here is the new function `selection` that is added to the spec passed to Vega-Lite and a new `mSelectionCondition` used to encode color.
+In comparison to the static specifications we have already seen, the addition here is the new function `selection` that is added to the spec passed to Vega-Lite and a new `mSelectionCondition` used to encode colour.
 
-Previously when encoding color (or any other channel) we have provided a list of properties. Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
+Previously when encoding colour (or any other channel) we have provided a list of properties. Here we provide a pair of lists – one for when the selection condition is true, the other for when it is false.
 
 The name `"picked"` is just one we have chosen to call the selection. The type of selection here is `seSingle` meaning we can only select one item at a time.
 
@@ -64,17 +62,20 @@ Because we will reuse the scatterplot specification in several examples, we can 
 scatterProps : List ( VLProperty, Spec )
 scatterProps =
     let
+        data =
+            dataFromUrl (path ++ "cars.json") []
+
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "picked")
-                        [ mName "Origin", mNominal ]
+                        [ mName "Origin" ]
                         [ mStr "grey" ]
                     ]
     in
-    [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" [], circle [], enc [] ]
+    [ data, enc [], circle [] ]
 ```
 
 This allows us to add the selection specification separately. So the previous example can now be created by adding the selection function and passing the complete list to `toVegaLite`:
@@ -113,7 +114,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-### Selection Transformations ([16:39](https://youtu.be/9uaHRWj04D4?t=16m39s))
+## Selection Transformations ([16:39](https://youtu.be/9uaHRWj04D4?t=16m39s))
 
 Simple selections as described above create sets of selected data marks based directly on what was interacted with by the user. Selection transformations allow us to _project_ that direct selection onto other parts of our dataset. For example, suppose we wanted to know what effect the number of engine cylinders has on the relationship between engine power and engine efficiency. We can invoke a _selection projection_ on `Cylinders` in our dataset that says 'when a single point is selected, extend that selection to all other points in the dataset that share the same number of cylinders' (_click on any point to select all with the same number of cylinders_):
 
@@ -212,7 +213,7 @@ scatterplot =
     toVegaLite (sel [] :: scatterProps)
 ```
 
-### Multiple Coordinated Views ([19:38](https://youtu.be/9uaHRWj04D4?t=19m38s))
+## Multiple Coordinated Views ([19:38](https://youtu.be/9uaHRWj04D4?t=19m38s))
 
 One of the more powerful aspects of selection-based interaction is in coordinating different views – a selection of a data subset is projected onto all other views of the same data. _Try selecting points in any one scatterplot and see the selection projected to all the others:_
 
@@ -220,6 +221,9 @@ One of the more powerful aspects of selection-based interaction is in coordinati
 linkedScatterplots : Spec
 linkedScatterplots =
     let
+        data =
+            dataFromUrl (path ++ "cars.json") []
+
         enc =
             encoding
                 << position X [ pRepeat arColumn, pQuant ]
@@ -235,11 +239,7 @@ linkedScatterplots =
 
         spec =
             asSpec
-                [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-                , circle []
-                , enc []
-                , sel []
-                ]
+                [ data, sel [], enc [], circle [] ]
     in
     toVegaLite
         [ repeat
@@ -260,22 +260,20 @@ _Try dragging, and zooming with the mouse wheel / trackpad to coordinate the sca
 linkedScatterplots : Spec
 linkedScatterplots =
     let
+        data =
+            dataFromUrl (path ++ "cars.json") []
+
         enc =
             encoding
                 << position X [ pRepeat arColumn, pQuant ]
                 << position Y [ pRepeat arRow, pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
 
         sel =
             selection << select "picked" seInterval [ seBindScales ]
 
         spec =
-            asSpec
-                [ dataFromUrl "https://vega.github.io/vega-lite/data/cars.json" []
-                , circle []
-                , enc []
-                , sel []
-                ]
+            asSpec [ data, sel [], enc [], circle [] ]
     in
     toVegaLite
         [ repeat
@@ -286,7 +284,7 @@ linkedScatterplots =
         ]
 ```
 
-The only difference between this and the previous example is that we now call `seBindScales` based on the selection rather than provide a conditional encoding of color.
+The only difference between this and the previous example is that we now call `seBindScales` based on the selection rather than provide a conditional encoding of colour.
 
 The ability to determine the scale of a chart based on a selection is useful in implementing a common visualization design pattern, that of 'context and focus' (or sometimes referred to as 'overview and detail on demand'). We can achieve this by setting the scale of one view based on the selection in another. The detail view is updated whenever the selected region is changed through interaction.
 
@@ -296,6 +294,9 @@ _Try selecting and dragging a selection in the upper chart to see the selection 
 linkedTimeSeries : Spec
 linkedTimeSeries =
     let
+        data =
+            dataFromUrl (path ++ "sp500.csv") []
+
         sel =
             selection << select "brush" seInterval [ seEncodings [ chX ] ]
 
@@ -305,11 +306,11 @@ linkedTimeSeries =
                 << position Y
                     [ pName "price"
                     , pQuant
-                    , pAxis [ axTickCount 3, axGrid False ]
+                    , pAxis [ axTickCount (niTickCount 3), axGrid False ]
                     ]
 
         specContext =
-            asSpec [ width 400, height 80, sel [], area [], encContext [] ]
+            asSpec [ width 400, height 80, sel [], encContext [], area [] ]
 
         encDetail =
             encoding
@@ -317,20 +318,17 @@ linkedTimeSeries =
                     [ pName "date"
                     , pTemporal
                     , pScale [ scDomain (doSelection "brush") ]
-                    , pAxis [ axTitle "" ]
+                    , pTitle ""
                     ]
                 << position Y [ pName "price", pQuant ]
 
         specDetail =
-            asSpec [ width 400, area [], encDetail [] ]
+            asSpec [ width 400, encDetail [], area [] ]
     in
-    toVegaLite
-        [ dataFromUrl "https://vega.github.io/vega-lite/data/sp500.csv" []
-        , vConcat [ specContext, specDetail ]
-        ]
+    toVegaLite [ data, vConcat [ specContext, specDetail ] ]
 ```
 
-### Cross-filtering ([20:41](https://youtu.be/9uaHRWj04D4?t=20m41s))
+## Cross-filtering ([20:41](https://youtu.be/9uaHRWj04D4?t=20m41s))
 
 The final example brings together ideas of view composition and interactive selection with data filtering by implementing _cross-filtering_.
 
@@ -343,6 +341,9 @@ _Try selecting a subset of any one of the views below and see the filtered selec
 crossFilter : Spec
 crossFilter =
     let
+        data =
+            dataFromUrl (path ++ "flights-2k.json") [ parse [ ( "date", foDate "%Y/%m/%d %H:%M" ) ] ]
+
         hourTrans =
             -- This generates a new field based on the hour of day extracted from the date field.
             transform
@@ -363,8 +364,7 @@ crossFilter =
         selectedEnc =
             encoding
                 << position X [ pRepeat arColumn, pQuant ]
-                << position Y [ pAggregate opCount, pQuant ]
-                << color [ mStr "goldenrod" ]
+                << position Y [ pAggregate opCount ]
     in
     toVegaLite
         [ repeat [ columnFields [ "hour", "delay", "distance" ] ]
@@ -372,11 +372,11 @@ crossFilter =
             asSpec
                 [ width 170
                 , height 150
-                , dataFromUrl "https://vega.github.io/vega-lite/data/flights-2k.json" [ parse [ ( "date", foDate "%Y/%m/%d %H:%M" ) ] ]
+                , data
                 , hourTrans []
                 , layer
-                    [ asSpec [ bar [], totalEnc [] ]
-                    , asSpec [ sel [], filterTrans [], bar [], selectedEnc [] ]
+                    [ asSpec [ totalEnc [], bar [] ]
+                    , asSpec [ sel [], filterTrans [], selectedEnc [], bar [ maColor "goldenrod" ] ]
                     ]
                 ]
         ]

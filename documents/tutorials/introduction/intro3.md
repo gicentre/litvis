@@ -15,8 +15,8 @@ import VegaLite exposing (..)
 ```
 
 1.  [Writing your first litvis documents](intro1.md)
-1.  [Branching narratives](intro2.md)
-1.  **Narrative schemas**
+2.  [Branching narratives](intro2.md)
+3.  **Narrative schemas**
 
 ---
 
@@ -64,7 +64,7 @@ Finally, we can apply standard 'CSS' styling to the html described in the `htmlT
 
 To see the schema in action, copy the schema above into a file `todo.yaml` then create a new litvis document into which you copy the following code:
 
-````markdown
+````md
 ---
 elm:
   dependencies:
@@ -156,7 +156,7 @@ Here we add a few more rules that specify that there must be one `aim` label in 
 
 Below is an example litvis document that conforms to this narrative schema:
 
-````markdown
+````md
 ---
 elm:
   dependencies:

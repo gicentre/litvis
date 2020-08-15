@@ -9,13 +9,13 @@ elm:
 
 @import "../css/tutorial.less"
 
-_Litvis tutorials: Introducing Elm_
+_Litvis tutorials: Introducing Elm._
 
 1.  [Introduction](elmIntroduction1.md)
-1.  [Functions, functions, functions](elmIntroduction2.md)
-1.  [Types and pattern matching](elmIntroduction3.md)
-1.  [Lists and list processing](elmIntroduction4.md)
-1.  **Elm and elm-vegalite**
+2.  [Functions, functions, functions](elmIntroduction2.md)
+3.  [Types and pattern matching](elmIntroduction3.md)
+4.  [Lists and list processing](elmIntroduction4.md)
+5.  **Elm and elm-vegalite**
 
 ---
 
@@ -51,7 +51,7 @@ scatterplot =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
     in
     toVegaLite [ cars, enc [], circle [] ]
 ```
@@ -77,7 +77,7 @@ scatterplot2 =
             encoding
                 (position X [ pName "Horsepower", pQuant ] <|
                     position Y [ pName "Miles_per_Gallon", pMQuant ] <|
-                        color [ mName "Origin", mNominal ] <|
+                        color [ mName "Origin" ] <|
                             []
                 )
     in
@@ -99,7 +99,7 @@ scatterplot3 =
                     [ pName "Horsepower", pQuant ]
                     (position Y
                         [ pName "Miles_per_Gallon", pQuant ]
-                        (color [ mName "Origin", mNominal ]
+                        (color [ mName "Origin" ]
                             []
                         )
                     )
@@ -128,9 +128,9 @@ myVis1 =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin", mNominal ]
+                << color [ mName "Origin" ]
     in
-    toVegaLite [ dataPath "cars.json", circle [], enc [] ]
+    toVegaLite [ dataPath "cars.json", enc [], circle [] ]
 ```
 
 ```elm {l v}
@@ -141,7 +141,7 @@ myVis2 =
             encoding
                 << position X [ pName "date", pTemporal ]
                 << position Y [ pName "price", pQuant ]
-                << color [ mName "symbol", mNominal ]
+                << color [ mName "symbol" ]
     in
     toVegaLite [ dataPath "stocks.csv", enc [], line [] ]
 ```
@@ -173,7 +173,11 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position X
+                    [ pName "angle"
+                    , pQuant
+                    , pAxis [ axValues (nums (List.range 0 9 |> List.map ((*) 90 >> toFloat))) ]
+                    ]
                 << position Y [ pName "y", pQuant ]
     in
     toVegaLite [ width 400, data [], enc [], line [] ]
@@ -208,7 +212,11 @@ trigCurves =
 
         enc =
             encoding
-                << position X [ pName "angle", pQuant, pAxis [ axTickStep 90 ] ]
+                << position X
+                    [ pName "angle"
+                    , pQuant
+                    , pAxis [ axValues (nums (List.range 0 9 |> List.map ((*) 90 >> toFloat))) ]
+                    ]
                 << position Y [ pName "y", pQuant ]
     in
     toVegaLite [ width 400, data [], enc [], line [] ]
@@ -325,17 +333,17 @@ barGrid =
     let
         enc =
             encoding
-                << position X [ pName "cat", pOrdinal, pAxis [] ]
+                << position X [ pName "cat", pAxis [] ]
                 << position Y [ pName "val", pQuant, pAxis [] ]
-                << color [ mName "cat", mNominal, mLegend [] ]
+                << color [ mName "cat", mLegend [] ]
     in
     toVegaLite
         [ tidyData []
         , spacing 50
-        , specification (asSpec [ width 120, height 120, bar [], enc [] ])
+        , specification (asSpec [ width 120, height 120, enc [], bar [] ])
         , facet
-            [ rowBy [ fName "row", fOrdinal, fHeader [ hdTitle "" ] ]
-            , columnBy [ fName "col", fOrdinal, fHeader [ hdTitle "" ] ]
+            [ rowBy [ fName "row", fHeader [ hdTitle "" ] ]
+            , columnBy [ fName "col", fHeader [ hdTitle "" ] ]
             ]
         ]
 ```

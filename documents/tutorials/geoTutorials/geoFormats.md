@@ -14,9 +14,9 @@ import VegaLite exposing (..)
 _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  **Geospatial File Formats**
-1.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-1.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
-1.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
+2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
+3.  [Importing geographic datasets into elm-vegalite](geoImporting.md)
+4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
@@ -49,7 +49,7 @@ planar =
             encoding
                 << position X [ pName "easting", pQuant, pScale [ scZero False ] ]
                 << position Y [ pName "northing", pQuant, pScale [ scZero False ] ]
-                << order [ oName "order", oOrdinal ]
+                << order [ oName "order" ]
     in
     toVegaLite [ myRegion [], enc [], line [] ]
 ```
@@ -67,8 +67,8 @@ geo =
 
         enc =
             encoding
-                << position Longitude [ pName "easting", pQuant ]
-                << position Latitude [ pName "northing", pQuant ]
+                << position Longitude [ pName "easting" ]
+                << position Latitude [ pName "northing" ]
                 << order [ oName "order", oOrdinal ]
     in
     toVegaLite [ width 250, height 250, myRegion [], proj, enc [], line [] ]
@@ -80,6 +80,10 @@ The `orthographic` map projection function used above gives a more accurate indi
 globe : Spec
 globe =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
         pDetails =
             [ width 250, height 250, projection [ prType orthographic, prRotate 0 -15 0 ] ]
 
@@ -107,10 +111,7 @@ globe =
                        ]
                 )
     in
-    toVegaLite
-        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , layer [ graticuleSpec, countrySpec, circleSpec ]
-        ]
+    toVegaLite [ cfg [], layer [ graticuleSpec, countrySpec, circleSpec ] ]
 ```
 
 We have established that there can be good reason to represent geographic regions with spherical coordinates. But how do we represent boundaries more complex than simple squares? This is where the 'geoJSON' and 'topoJSON' file formats are useful.
@@ -342,7 +343,7 @@ The `id` is a useful and concise way of identifying a single property in a topoJ
 }
 ```
 
-We can access any of the properties by using dot notation to identify nested json elements. For example to access `myRegionName` for each feature we would use `properties.myRegionName` in its specification instead of `id`. Below we access all instances of the `myPopulationCount` property to colour each feature:
+We can access any of the properties by using dot notation to identify nested JSON elements. For example to access `myRegionName` for each feature we would use `properties.myRegionName` in its specification instead of `id`. Below we access all instances of the `myPopulationCount` property to colour each feature:
 
 ```elm {s l v}
 geo : Spec
@@ -432,8 +433,7 @@ geo =
         ]
 ```
 
-Finally, it is possible to have 'holes' within polygons and even 'islands' within those holes in cases where one polygon ring is within another. Here is the geoJSON that defines two further rings within the southern region.
-Note that in order to specify a hole, the order of coordinates is anti-clockwise whereas the outer ring and inner island, bounding 'positive' areas are in clockwise order.
+Finally, it is possible to have 'holes' within polygons and even 'islands' within those holes in cases where one polygon ring is within another. Here is the geoJSON that defines two further rings within the southern region. Note that in order to specify a hole, the order of coordinates is anti-clockwise whereas the outer ring and inner island, bounding 'positive' areas are in clockwise order.
 
 ```Javascript
 {

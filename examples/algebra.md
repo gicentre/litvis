@@ -1,5 +1,6 @@
 ---
 id: "litvis"
+
 narrative-schemas:
   - ../narrative-schemas/algebra
 elm:
@@ -11,6 +12,11 @@ elm:
 
 ```elm {l=hidden}
 import VegaLite exposing (..)
+
+
+path : String
+path =
+    "https://gicentre.github.io/data/"
 ```
 
 # Kindlmann and Scheidegger Visualization Algebra Schema Example
@@ -218,7 +224,7 @@ brexitMap mapSize dChange orderType oDirection =
 
         gbSpec =
             asSpec
-                [ dataFromUrl "https://gicentre.github.io/data/gbRegions.json" [ topojsonFeature "regions_id_geo" ]
+                [ dataFromUrl (path ++ "gbRegions.json") [ topojsonFeature "regions_id_geo" ]
                 , geoshape [ maStroke "#fff", maStrokeWidth 0.1, maFill "#ddd" ]
                 ]
 
@@ -233,8 +239,7 @@ brexitMap mapSize dChange orderType oDirection =
 
         votingSpec =
             asSpec
-                [ dataFromUrl "https://gicentre.github.io/data/brexit.tsv"
-                    [ parse [ ( "RemainVotes", foNum ), ( "LeaveVotes", foNum ) ] ]
+                [ dataFromUrl (path ++ "brexit.tsv") [ parse [ ( "RemainVotes", foNum ), ( "LeaveVotes", foNum ) ] ]
                 , trans []
                 , circle [ maStroke "white", maStrokeWidth 0.5 ]
                 , votingEnc []
@@ -242,13 +247,12 @@ brexitMap mapSize dChange orderType oDirection =
 
         votingEnc =
             encoding
-                << position Longitude [ pName "Longitude", pQuant ]
-                << position Latitude [ pName "Latitude", pQuant ]
+                << position Longitude [ pName "Longitude" ]
+                << position Latitude [ pName "Latitude" ]
                 << size ([ mName "majority %", mQuant ] ++ legend)
                 << order orderParams
                 << color
                     ([ mName "majority decision"
-                     , mNominal
                      , mScale (categoricalDomainMap [ ( "remain", "rgb(50,50,200)" ), ( "leave", "rgb(200,50,50)" ) ])
                      ]
                         ++ legend

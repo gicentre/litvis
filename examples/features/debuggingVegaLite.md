@@ -14,13 +14,18 @@ barChart : Spec
 barChart =
     let
         data =
-            dataFromUrl "https://vega.github.io/vega-lite/data/cars.json"
-                []
+            dataFromUrl (path ++ "cars.json") []
 
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
-                << position Y [ pAggregate opCount, pQuant ]
+                << position Y [ pAggregate opCount ]
     in
     toVegaLite [ data, enc [], bar [] ]
+```
+
+```elm {l=hidden}
+path : String
+path =
+    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
 ```

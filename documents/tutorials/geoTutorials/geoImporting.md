@@ -14,16 +14,15 @@ import VegaLite exposing (..)
 _This is one of a series of 'geo' tutorials for use with litvis._
 
 1.  [Geospatial File Formats](geoFormats.md)
-1.  [Generating Global Map Projection Geo Files](geoGenerating.md)
-1.  **Importing geographic datasets into elm-vegalite**
-1.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
+2.  [Generating Global Map Projection Geo Files](geoGenerating.md)
+3.  **Importing geographic datasets into elm-vegalite**
+4.  [Importing and displaying OpenStreetMap data](openstreetmap.md)
 
 ---
 
 # Importing geographic datasets into elm-vegalite
 
-This tutorial leads you through the workflow for importing spatial datasets into elm-vegalite, and therefore into litvis documents.
-If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJSON format, just jump to step 3).
+This tutorial leads you through the workflow for importing spatial datasets into elm-vegalite, and therefore into litvis documents. If the dataset you wish to import is a shapefile, the process involves the following steps (and if it is already in geoJSON format, just jump to step 3).
 
 - Change the shapefile's projection to use longitude/latitude coordinates with the WGS84 ellipsoid.
 - Convert the shapefile into a [geoJSON](http://geojson.org) file.
@@ -152,22 +151,18 @@ Using the final output file after conversion (here, `londonBoroughs.json`), we c
 ```elm {l v s}
 boroughs : Spec
 boroughs =
-    toVegaLite
-        [ width 600
-        , height 400
-        , configure
-            (configuration
-                (coView
-                    [ vicoStroke
-                        Nothing
-                    ]
-                )
-                []
-            )
-        , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
-        , geoshape []
-        , encoding (color [ mName "id", mNominal ] [])
-        ]
+    let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+
+        enc =
+            encoding << color [ mName "id" ]
+    in
+    toVegaLite [ width 600, height 400, cfg [], data, enc [], geoshape [] ]
 ```
 
 # Generating New Data
@@ -235,13 +230,25 @@ Setting the `mScale` to use this list gives us our new colour scheme:
 ```elm {l v s}
 boroughs : Spec
 boroughs =
+    let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+
+        enc =
+            encoding
+                << color [ mName "id", mScale boroughColors ]
+    in
     toVegaLite
         [ width 600
         , height 400
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+        , cfg []
+        , data
+        , enc []
         , geoshape [ maStroke "white", maStrokeWidth 2 ]
-        , encoding (color [ mName "id", mNominal, mScale boroughColors ] [])
         ]
 ```
 
@@ -288,36 +295,46 @@ We create two layers, one for the coloured polygons, the other for the name labe
 boroughsCustom : Float -> Float -> Spec
 boroughsCustom w h =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+
         polyEnc =
             encoding
-                << color [ mName "id", mNominal, mScale boroughColors, mLegend [] ]
+                << color [ mName "id", mScale boroughColors, mLegend [] ]
 
         polySpec =
             asSpec
-                [ dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
-                , geoshape [ maStroke "white", maStrokeWidth (2 * w / 700) ]
+                [ data
                 , polyEnc []
+                , geoshape [ maStroke "white", maStrokeWidth (2 * w / 700) ]
                 ]
 
         labelEnc =
             encoding
                 << position Longitude [ pName "cx" ]
                 << position Latitude [ pName "cy" ]
-                << text [ tName "bLabel", tNominal ]
-                << size [ mNum (8 * w / 700) ]
-                << opacity [ mNum 0.6 ]
+                << text [ tName "bLabel" ]
 
         trans =
             transform
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], textMark [], labelEnc [] ]
+            asSpec
+                [ dataFromUrl (path "londonCentroids.json") []
+                , trans []
+                , labelEnc []
+                , textMark [ maSize (8 * w / 700), maOpacity 0.6 ]
+                ]
     in
     toVegaLite
         [ width w
         , height h
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
+        , cfg []
         , layer [ polySpec, labelSpec ]
         ]
 ```
@@ -349,13 +366,19 @@ We can display the newly created topoJSON file of the tube lines much as we did 
 ```elm {l v s}
 tubeLines : Spec
 tubeLines =
-    toVegaLite
-        [ width 700
-        , height 400
-        , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
-        , geoshape [ maFilled False ]
-        , encoding (color [ mName "id", mNominal ] [])
-        ]
+    let
+        data =
+            dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        enc =
+            encoding
+                << color [ mName "id" ]
+    in
+    toVegaLite [ width 700, height 400, cfg [], data, enc [], geoshape [ maFilled False ] ]
 ```
 
 We can improve the design by thickening the lines, giving them their standard tube line colours and moving the legend to the bottom-right corner:
@@ -383,23 +406,22 @@ tubeLineColors =
 tubeLines : Spec
 tubeLines =
     let
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
+
+        data =
+            dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+
         enc =
             encoding
                 << color
                     [ mName "id"
-                    , mNominal
                     , mLegend [ leTitle "", leOrient loBottomRight ]
                     , mScale tubeLineColors
                     ]
     in
-    toVegaLite
-        [ width 700
-        , height 500
-        , configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
-        , enc []
-        , geoshape [ maFilled False, maStrokeWidth 2 ]
-        ]
+    toVegaLite [ width 700, height 500, cfg [], data, enc [], geoshape [ maFilled False, maStrokeWidth 2 ] ]
 ```
 
 Finally, we can overlay the routes onto the borough boundaries to provide more of a geographical context:
@@ -408,40 +430,50 @@ Finally, we can overlay the routes onto the borough boundaries to provide more o
 tubeLines : Spec
 tubeLines =
     let
+        centroidData =
+            dataFromUrl (path "londonCentroids.json") []
+
+        boroughData =
+            dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
+
+        lineData =
+            dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+
         polySpec =
             asSpec
-                [ dataFromUrl (path "londonBoroughs.json") [ topojsonFeature "boroughs" ]
-                , geoshape [ maStroke "white", maStrokeWidth 2 ]
-                , encoding (color [ mStr "#eee" ] [])
+                [ boroughData
+                , geoshape [ maFill "#eee", maStroke "white", maStrokeWidth 2 ]
                 ]
 
         labelEnc =
             encoding
                 << position Longitude [ pName "cx" ]
                 << position Latitude [ pName "cy" ]
-                << text [ tName "bLabel", tNominal ]
-                << size [ mNum 8 ]
-                << opacity [ mNum 0.6 ]
+                << text [ tName "bLabel" ]
 
         trans =
             transform
                 << calculateAs "indexof (datum.name,' ') > 0  ? substring(datum.name,0,indexof(datum.name, ' ')) : datum.name" "bLabel"
 
         labelSpec =
-            asSpec [ dataFromUrl (path "londonCentroids.json") [], trans [], textMark [], labelEnc [] ]
+            asSpec
+                [ centroidData
+                , trans []
+                , labelEnc []
+                , textMark [ maSize 8, maOpacity 0.6 ]
+                ]
 
         tubeEnc =
             encoding
                 << color
                     [ mName "id"
-                    , mNominal
                     , mLegend [ leTitle "", leOrient loBottomRight, leOffset 0 ]
                     , mScale tubeLineColors
                     ]
 
         routeSpec =
             asSpec
-                [ dataFromUrl (path "londonTubeLines.json") [ topojsonFeature "line" ]
+                [ lineData
                 , tubeEnc []
                 , geoshape [ maFilled False, maStrokeWidth 2 ]
                 ]
