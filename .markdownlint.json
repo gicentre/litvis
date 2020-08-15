@@ -1,7 +1,12 @@
 {
-  "extends": "./node_modules/@kachkaev/markdownlint-config/index.json",
+  "default": true,
   "first-line-heading": false,
-  "no-emphasis-as-heading": false,
+  "line-length": false,
+  "list-marker-space": { "ol_multi": 2, "ol_single": 2 },
+  "no-alt-text": false,
   "no-duplicate-heading": false,
-  "no-inline-html": false
+  "no-emphasis-as-heading": false,
+  "no-inline-html": false,
+  "no-trailing-spaces": false,
+  "ol-prefix": { "style": "one" }
 }

@@ -51,7 +51,6 @@
   "dependencies": {},
   "devDependencies": {
     "@hkdobrev/run-if-changed": "^0.3.1",
-    "@kachkaev/markdownlint-config": "^0.1.0",
     "@types/cheerio": "^0.22.13",
     "@types/fs-extra": "^8.0.0",
     "@types/html-entities": "^1.2.16",

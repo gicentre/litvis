@@ -429,11 +429,6 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@kachkaev/markdownlint-config@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@kachkaev/markdownlint-config/-/markdownlint-config-0.1.0.tgz#33b904dec05489994e3c9a9ee7f093f3e9c2db93"
-  integrity sha512-5021c0nJ6SebyAc9yGv1aYR/byHJu8MmsQgxBfQs4TNYTyUVG61AylSM0Y75chEJF5hJOC3AIt5lRnnXzQm3/A==
-
 "@kachkaev/run-elm@^3.0.0-litvis-patch.3":
   version "3.0.0-litvis-patch.3"
   resolved "https://registry.yarnpkg.com/@kachkaev/run-elm/-/run-elm-3.0.0-litvis-patch.3.tgz#d5d4621298bc94c19364009d4d9db5395260c33a"
