@@ -7,6 +7,7 @@
   "no-duplicate-heading": false,
   "no-emphasis-as-heading": false,
   "no-inline-html": false,
+  "no-trailing-punctuation": { "punctuation": ".,;:!" },
   "no-trailing-spaces": false,
   "ol-prefix": { "style": "one" }
 }
