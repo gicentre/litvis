@@ -151,63 +151,63 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
 1.  Navigate to the latest pre-compiled versions of the libraries available via the CDN:
 
-- <https://www.jsdelivr.com/package/npm/vega>
-- <https://www.jsdelivr.com/package/npm/vega-lite>
-- <https://www.jsdelivr.com/package/npm/vega-embed>
-- <https://www.jsdelivr.com/package/npm/apache-arrow>
-- <https://www.jsdelivr.com/package/npm/vega-loader-arrow>
+    - <https://www.jsdelivr.com/package/npm/vega>
+    - <https://www.jsdelivr.com/package/npm/vega-lite>
+    - <https://www.jsdelivr.com/package/npm/vega-embed>
+    - <https://www.jsdelivr.com/package/npm/apache-arrow>
+    - <https://www.jsdelivr.com/package/npm/vega-loader-arrow>
 
-These pages are usually updated within a few hours after the official release.
+    These pages are usually updated within a few hours after the official release.
 
 1.  Replace the following local files with the corresponding CDN downloads:
 
-- `dependencies/vega/vega.min.js`
-- `dependencies/vega-lite/vega-lite.min.js`
-- `dependencies/vega-embed/vega-embed.min.js`
-- `dependencies/apache-arrow/apache-arrow.min.js`
-- `dependencies/vega-loader-arrow/vega-loader-arrow.min.js`
+    - `dependencies/vega/vega.min.js`
+    - `dependencies/vega-lite/vega-lite.min.js`
+    - `dependencies/vega-embed/vega-embed.min.js`
+    - `dependencies/apache-arrow/apache-arrow.min.js`
+    - `dependencies/vega-loader-arrow/vega-loader-arrow.min.js`
 
-Opening minified JavaScripts in the browser and pasting their contents to the git repo may result in broken text encoding. Using the command line is safer:
+    Opening minified JavaScripts in the browser and pasting their contents to the git repo may result in broken text encoding. Using the command line is safer:
 
-```sh
-brew install http
+    ```sh
+    brew install http
 
-cd mume-with-litvis
-```
+    cd mume-with-litvis
+    ```
 
-```sh
-NAME=vega
-VERSION=5.13.0
-BUILD_PATH=
-```
+    ```sh
+    NAME=vega
+    VERSION=5.13.0
+    BUILD_PATH=
+    ```
 
-```sh
-NAME=vega-lite
-VERSION=4.14.1
-BUILD_PATH=
-```
+    ```sh
+    NAME=vega-lite
+    VERSION=4.14.1
+    BUILD_PATH=
+    ```
 
-```sh
-NAME=vega-embed
-VERSION=6.10.0
-BUILD_PATH=
-```
+    ```sh
+    NAME=vega-embed
+    VERSION=6.10.0
+    BUILD_PATH=
+    ```
 
-```sh
-NAME=apache-arrow
-VERSION=0.17.0
-BUILD_PATH=Arrow.es5.min.js
-```
+    ```sh
+    NAME=apache-arrow
+    VERSION=0.17.0
+    BUILD_PATH=Arrow.es5.min.js
+    ```
 
-```sh
-NAME=vega-loader-arrow
-VERSION=0.0.7
-BUILD_PATH=
-```
+    ```sh
+    NAME=vega-loader-arrow
+    VERSION=0.0.7
+    BUILD_PATH=
+    ```
 
-```sh
-http "https://cdn.jsdelivr.net/npm/${NAME}@${VERSION}/${BUILD_PATH:-build/${NAME}.min.js}" > "dependencies/${NAME}/${NAME}.min.js"
-```
+    ```sh
+    http "https://cdn.jsdelivr.net/npm/${NAME}@${VERSION}/${BUILD_PATH:-build/${NAME}.min.js}" > "dependencies/${NAME}/${NAME}.min.js"
+    ```
 
 1.  Update `dependencies/README.md` with the picked library versions. This change is needed for documentation purposes only.
 
@@ -249,9 +249,9 @@ The new package version should now show up in Atom and it should be possible to 
 
 1.  Make sure you have the latest version of `vsce` installed globally.
 
-```sh
-npm install -g vsce
-```
+    ```sh
+    npm install -g vsce
+    ```
 
 1.  Check out the latest commit on the `master` branch of <https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis.git>.
 

@@ -196,7 +196,7 @@ parisMap =
 
 As an illustration of a more sophisticated extraction of OpenStreetMap data we will create a map of Paris's metro stations and lines to be overlaid on the basemap we produced above.
 
-Some features contained in OpenStreetMap data don't have their own labels like _building_, _waterway_, _leisure_ as we used above. Instead they may be identified via its _name_ or _other_tags_which can contain free text describing the features. This is the case for Paris's Metro stations and lines (as distinct from its mainline and RER stations). To extract these features we can use javascript_regular expressions_ to filter only the metro-relevant features.
+Some features contained in OpenStreetMap data don't have their own labels like _building_, _waterway_, _leisure_ as we used above. Instead they may be identified via its _name_ or _other tags_ which can contain free text describing the features. This is the case for Paris's Metro stations and lines (as distinct from its mainline and RER stations). To extract these features we can use javascript _regular expressions_ to filter only the metro-relevant features.
 
 To extract the metro lines we filter the lineMap file, but this time we will not drop the attribute table entirely as we need to retain the name of each metro line:
 
