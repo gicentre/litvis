@@ -41,7 +41,7 @@
   },
   "lint-staged": {
     "**/*": [
-      "markdownlint --fix",
+      "suppress-exit-code markdownlint --fix",
       "prettier --write"
     ]
   },
@@ -76,6 +76,7 @@
     "prettier-plugin-packagejson": "^2.0.1",
     "replace": "^1.1.1",
     "rimraf": "^3.0.0",
+    "suppress-exit-code": "^0.1.0",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-config-prettier": "^1.18.0",
