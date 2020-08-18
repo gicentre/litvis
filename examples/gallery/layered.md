@@ -274,7 +274,7 @@ dualAxes =
                     [ pName "temp_max"
                     , pAggregate opMean
                     , pScale [ scDomain (doNums [ 0, 30 ]) ]
-                    , pAxis [ axTitle "Avgerage Temperature (°C)", axTitleColor "#85C5A6" ]
+                    , pAxis [ axTitle "Average Temperature (°C)", axTitleColor "#85C5A6" ]
                     ]
                 << position Y2 [ pName "temp_min", pAggregate opMean ]
 
@@ -671,7 +671,7 @@ diCaprio =
 
 Another example of a complex layered chart built up from simpler components.
 
-Wheat and Wages. A recreation of [William Playfair’s chart](https://apandre.files.wordpress.com/2011/03/oldcombocharwagesofmechanicvspriceofwheat1821.jpg) visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Adapted from a chart by @manzt.
+Wheat and Wages. A recreation of [William Playfair's chart](https://apandre.files.wordpress.com/2011/03/oldcombocharwagesofmechanicvspriceofwheat1821.jpg) visualizing the price of wheat, the wages of a mechanic, and the reigning British monarch. Adapted from a chart by @manzt.
 
 ```elm {v l}
 wheatAndWages : Spec
@@ -718,7 +718,7 @@ wheatAndWages =
                 << dataRow [ ( "x", str "1750" ), ( "y", num 102 ), ( "name", str "18th Century" ) ]
                 << dataRow [ ( "x", str "1822" ), ( "y", num 102 ), ( "name", str "19th Century" ) ]
                 << dataRow [ ( "x", str "1675" ), ( "y", num 64.3 ), ( "name", str "& Wages of Labour by the Week" ) ]
-                << dataRow [ ( "x", str "1675" ), ( "y", num 52.7 ), ( "name", str "WILLIAM PLAYFIAR" ) ]
+                << dataRow [ ( "x", str "1675" ), ( "y", num 52.7 ), ( "name", str "WILLIAM PLAYFAIR" ) ]
 
         dataCentury =
             dataFromColumns [ parse [ ( "year", foDate "%Y" ) ] ]
