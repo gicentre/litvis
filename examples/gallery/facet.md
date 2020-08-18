@@ -148,7 +148,7 @@ facetBars2 =
 
 ## Faceting with independent scales
 
-Stock prices of five large companies as a small multiples of area charts. Here the small multiples use independent scales on the y-axis to account for the constrasting absolute prices.
+Stock prices of five large companies as a small multiples of area charts. Here the small multiples use independent scales on the y-axis to account for the contrasting absolute prices.
 
 ```elm {v l highlight=[34-36]}
 stocks : Spec
