@@ -432,7 +432,7 @@ parallelCoords =
 
 ## Raw and Aggregate Values
 
-Raw values are shown as circles, then aggregatede by year in order to create a trend line.
+Raw values are shown as circles, then aggregated by year in order to create a trend line.
 
 ```elm {v l}
 advanced16 : Spec
@@ -504,7 +504,7 @@ rollingAverage =
 
 ## Benchmark Line Chart
 
-Uses the window transform to calcualte frames per second values.
+Uses the window transform to calculate frames per second values.
 
 ```elm {v l}
 framesPerSecond : Spec
