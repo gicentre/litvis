@@ -59,7 +59,7 @@ calendarPlot =
 
         trans =
             transform
-                -- Convert farenheit to celsius
+                -- Convert Fahrenheit to celsius
                 << calculateAs "(datum.temp_max - 32) * 5 / 9" "tempC"
 
         enc =
