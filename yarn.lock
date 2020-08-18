@@ -3239,13 +3239,13 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-find-elm-dependencies@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/find-elm-dependencies/-/find-elm-dependencies-2.0.2.tgz#589a759a021e6e2f8f0df805f973313fc4b55693"
-  integrity sha512-nM5UCbccD1G8CGK2GsM7ykG3ksOAl9E+34jiDfl07CAl2OPnLpBVWY2hlxEmIkSBfdJjSopEowWHrO0cI8RhxQ==
+find-elm-dependencies@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/find-elm-dependencies/-/find-elm-dependencies-2.0.4.tgz#0a327fc8c0c0297b54115efbf0a9d6de474cfc89"
+  integrity sha512-x/4w4fVmlD2X4PD9oQ+yh9EyaQef6OtEULdMGBTuWx0Nkppvo2Z/bAiQioW2n+GdRYKypME2b9OmYTw5tw5qDg==
   dependencies:
-    firstline "1.2.0"
-    lodash "4.17.15"
+    firstline "^1.2.0"
+    lodash "^4.17.19"
 
 find-up@^1.0.0:
   version "1.1.2"
@@ -3284,10 +3284,10 @@ find-versions@^3.2.0:
   dependencies:
     semver-regex "^2.0.0"
 
-firstline@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/firstline/-/firstline-1.2.0.tgz#c9f4886e7f7fbf0afc12d71941dce06b192aea05"
-  integrity sha1-yfSIbn9/vwr8EtcZQdzgaxkq6gU=
+firstline@^1.2.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/firstline/-/firstline-1.3.1.tgz#59e84af0fd858fbc6dac0a0ff97fd22a47e58084"
+  integrity sha512-ycwgqtoxujz1dm0kjkBFOPQMESxB9uKc/PlD951dQDIG+tBXRpYZC2UmJb0gDxopQ1ZX6oyRQN3goRczYu7Deg==
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
@@ -5042,7 +5042,7 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.17.15, lodash@^4.15.0, lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.2.1:
+lodash@^4.15.0, lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.2.1:
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
   integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
@@ -5512,13 +5512,13 @@ nice-try@^1.0.4:
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
 node-elm-compiler@^5.0.1:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/node-elm-compiler/-/node-elm-compiler-5.0.4.tgz#e139c517c4b91f914cccb0a06e3329e3c49d02ac"
-  integrity sha512-VQsT8QSierYGkHzRed+b4MnccQVF1+qPHunE8jBoU7jD6YpuRqCDPzEoC2zfyEJS80qVnlMZrqobLnyjzX9lJg==
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/node-elm-compiler/-/node-elm-compiler-5.0.5.tgz#a47c027d766d0fba53ea0f19c8e2e82992e9c87d"
+  integrity sha512-vapB+VkmKMY1NRy7jjpGjzwWbKmtiRfzbgVoV/eROz5Kx30QvY0Nd5Ua7iST+9utrn1aG8cVToXC6UWdEO5BKQ==
   dependencies:
     cross-spawn "6.0.5"
-    find-elm-dependencies "2.0.2"
-    lodash "4.17.15"
+    find-elm-dependencies "^2.0.4"
+    lodash "^4.17.19"
     temp "^0.9.0"
 
 node-fetch-npm@^2.0.2:
