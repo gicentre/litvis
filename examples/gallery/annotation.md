@@ -107,7 +107,7 @@ compactBarLabels =
 
 ## Conditional Labels
 
-Label colour can be made dependent on a data value so that we can ensure white text on a dark background and black text on a light background. Notice also the use of emojii for category labels.
+Label colour can be made dependent on a data value so that we can ensure white text on a dark background and black text on a light background. Notice also the use of emoji for category labels.
 
 ```elm {v l}
 conditionalLabel : Spec
