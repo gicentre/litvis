@@ -146,7 +146,7 @@ steppedLine =
 
 ## Line chart with conditional axes
 
-We can make the grid lines and axis labels on any chart conditional on some properties of the data. Here we make the grid and labels dependend on the month of the year (making January bolder with year label).
+We can make the grid lines and axis labels on any chart conditional on some properties of the data. Here we make the grid and labels depend on the month of the year (making January bolder with year label).
 
 ```elm {v l}
 conditionalAxes : Spec
