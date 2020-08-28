@@ -339,3 +339,56 @@ isotype =
         , point [ maFilled True, maOpacity 1, maSize 200 ]
         ]
 ```
+
+## Vector Field
+
+We can use the [angle channel](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#angle) to orient a directional shape by some data value. Here we show wind direction and strength over NW Europe.
+
+```elm {v l}
+windVectorField : Spec
+windVectorField =
+    let
+        cfg =
+            configure
+                << configuration (coView [ vicoStep 10, vicoFill (Just "black") ])
+
+        data =
+            dataFromUrl (path ++ "windvectors.csv") []
+
+        geoData =
+            dataFromUrl (path ++ "europe/nwEuropeLand.json") [ topojsonFeature "ne_10m_land" ]
+
+        proj =
+            projection [ prType equalEarth ]
+
+        geoSpec =
+            asSpec [ geoData, geoshape [ maStroke "white", maStrokeWidth 0.4, maFilled False ] ]
+
+        enc =
+            encoding
+                << position Longitude [ pName "longitude" ]
+                << position Latitude [ pName "latitude" ]
+                << color
+                    [ mName "dir"
+                    , mQuant
+                    , mLegend []
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scScheme "rainbow" [] ]
+                    ]
+                << angle
+                    [ mName "dir"
+                    , mQuant
+                    , mScale [ scDomain (doNums [ 0, 360 ]), scRange (raNums [ 180, 540 ]) ]
+                    ]
+                << size [ mName "speed", mQuant ]
+
+        windSpec =
+            asSpec [ data, enc [], point [ maShape symWedge ] ]
+    in
+    toVegaLite
+        [ cfg []
+        , width 600
+        , height 560
+        , proj
+        , layer [ geoSpec, windSpec ]
+        ]
+```
