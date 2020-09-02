@@ -62,7 +62,7 @@ Adding litvis attribute `l` (or `literate`) to `elm` blocks in markdown automati
 
 ## Simple litvis chart
 
-A litvis code block with attribute `v` (or `visualize`) automatically renders the declared symbol using [`elm-vega`](https://github.com/gicentre/elm-vega) or [`vega-lite`](https://vega.github.io/vega-lite/).
+A litvis code block with attribute `v` (or `visualize`) automatically renders the declared symbol using [`elm-vegalite`](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest) or [`elm-vega`](https://package.elm-lang.org/packages/gicentre/elm-vega/latest/).
 
 ![simplechart](https://user-images.githubusercontent.com/1846999/91957636-37309300-ecfe-11ea-844d-03ea877f92cc.gif)
 
@@ -115,7 +115,7 @@ Adding `interactive` to a code block with `v` or a triple hat reference makes vi
 
 Although a single Elm execution context may be sufficient in many litvis narratives, context isolation may be desired in some cases. A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
 
-A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword makes previously defined symbols in `default` context available within the code block, but avoids name clashes with the following blocks.
+A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword makes previously defined symbols in `default` context available within the code block, but avoids name clashes with any blocks later in the document.
 
 ![codesidings](https://user-images.githubusercontent.com/1846999/91977772-0b6fd600-ed1b-11ea-8c88-89fbc0136be8.gif)
 
@@ -123,7 +123,7 @@ A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword m
 
 ### Branching narratives
 
-A litvis narrative can be split between multiple markdown documents, where each document `follows` its parent. This enables routine use of parallel branching narratives that assemble and structure document trees. Each branch in a tree can represent alternative potentially competing designs each with their own rationale.
+A litvis narrative can be split between multiple markdown documents, where each document `follows` its parent. This enables routine use of parallel branching narratives that assemble and structure document trees. Each branch in a tree can represent alternative designs each with their own rationale or focus for analysis.
 
 ![branchingnarratives](https://user-images.githubusercontent.com/1846999/91979139-34916600-ed1d-11ea-98b7-ef316f010130.gif)
 
@@ -132,7 +132,9 @@ A litvis narrative can be split between multiple markdown documents, where each 
 ### Narrative schemas
 
 A litvis narrative can be linked to a set of YAML files, which define `labels`, `rules` and `styling`.
-These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema. The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design. This can be thought of as form of scaffolding to assist in the process of design exposition. Schemas can be used to validate litvis documents.
+These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema.
+
+The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around visualizations. This can be thought of as form of scaffolding to assist in the process of design exposition or reasoning. Schemas can be used to validate litvis documents.
 
 ![narrativeschemas](https://user-images.githubusercontent.com/1846999/91980779-b71b2500-ed1f-11ea-8e88-30ab35c90455.gif)
 
