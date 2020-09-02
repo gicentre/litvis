@@ -10,7 +10,7 @@ A light-touch approach to designing, building and describing visualization. Here
 
 ## Installing litvis
 
-Litvis documents can be viewed and created in either the VS Code (recommended) or Atom editors:
+Litvis documents can be viewed and created in either the _VS Code_ (recommended) or _Atom_ editors:
 
 1.  If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.
 
@@ -54,50 +54,52 @@ You should now be good to go! Get started by [writing your first litvis document
 
 ## ‘Hello world’ in literate Elm
 
-Adding litvis attribute `literate` (or `l`) to `elm` blocks in markdown automatically compiles and executes the code in real time. Attribute `raw` (or `r`) is the simplest way to see the result.
+Adding litvis attribute `l` (or `literate`) to `elm` blocks in markdown automatically compiles and executes the code in real time. Attribute `r` (or `raw`) is the simplest way to see the result.
 
-![helloworld](https://user-images.githubusercontent.com/608862/38144403-735c2894-343c-11e8-983a-39487fbb116e.gif)
+![helloworld](https://user-images.githubusercontent.com/1846999/91957582-21bb6900-ecfe-11ea-910f-7c42fa9dc429.gif)
 
 > [examples/features/helloWorld.md](examples/features/helloWorld.md)
 
 ## Simple litvis chart
 
-A litvis code block with attribute `visualize` (or `v`) automatically renders the declared symbol using [`elm-vega`](https://github.com/gicentre/elm-vega) / [`vega-lite`](https://vega.github.io/vega-lite/).
+A litvis code block with attribute `v` (or `visualize`) automatically renders the declared symbol using [`elm-vega`](https://github.com/gicentre/elm-vega) or [`vega-lite`](https://vega.github.io/vega-lite/).
 
-![simplechart](https://user-images.githubusercontent.com/608862/38144167-940f5eea-343b-11e8-82d8-96737615febc.gif)
+![simplechart](https://user-images.githubusercontent.com/1846999/91957636-37309300-ecfe-11ea-844d-03ea877f92cc.gif)
 
 > [examples/features/simpleChart.md](examples/features/simpleChart.md)
 
 ## Code referencing across blocks
 
-By default, litvis code blocks share the same execution context, which means that an Elm symbol defined in one block and can be referenced in another block. It is not necessary to maintain the order of blocks to make referencing work.
+By default, litvis code blocks share the same execution context, which means that an Elm symbol defined in one block and can be referenced in another block. Blocks can be placed in any order.
 
-![codereferencingcodeblocks](https://user-images.githubusercontent.com/608862/38144058-2711026c-343b-11e8-9eb5-080ea07d582c.gif)
+![codereferencingcodeblocks](https://user-images.githubusercontent.com/1846999/91957686-44e61880-ecfe-11ea-8c39-e1fc1f599b6d.gif)
 
 > [examples/features/codeReferencingAcrossBlocks.md](examples/features/codeReferencingAcrossBlocks.md)
 
 ## Code referencing with triple hat notation
 
-Symbols from Elm code blocks can be referenced in any part of the markdown using triple hat notation (`^^^`), e.g. `^^^elm v=barChart^^^`.
+Symbols from Elm code blocks can be referenced in any part of the markdown using triple hat notation (`^^^`).
 
-![codereferencingtriplehat](https://user-images.githubusercontent.com/608862/38144584-41c5891e-343d-11e8-81c7-a9c0150e409b.gif)
+![codereferencingtriplehat](https://user-images.githubusercontent.com/1846999/91960101-6399de80-ed01-11ea-8e67-b1570bcd5e03.gif)
 
 > [examples/features/codeReferencingWithTripleHatNotation.md](examples/features/codeReferencingWithTripleHatNotation.md)
 
 ## Code referencing with parameters
 
-Triple hat references accept parametrized function calls, which makes it easy to combine text with graphics and produce families of related graphics. This means that small multiples and sparklines are straightforward.
+Triple hat references accept parametrized function calls, which makes it easy to combine text with graphics and produce families of related graphics. This means that small multiples and embedded graphics such as sparklines are straightforward.
 
-![codereferencingparams](https://user-images.githubusercontent.com/608862/38144395-6e1230ae-343c-11e8-8d45-510ae0c5d161.gif)
+![codereferencingparams](https://user-images.githubusercontent.com/1846999/91957801-71019980-ecfe-11ea-8a4e-1a65e1a5bfea.gif)
 
 > [examples/features/codeReferencingWithParameters.md](examples/features/codeReferencingWithParameters.md)
 
-## Debugging `vega-lite` specs
+## Debugging Code
+
+A litvis document that is being previewed is constantly checked for program validity. Any issues that are detected are displayed in the editing environment and help with debugging. If a visualization has been successfully rendered before the issue had occurred, its old preview is shown to avoid unwanted markup reflows.
 
 Replacing `v` with `r` for `raw` or `j` for `json` makes it possible to look into generated vega-lite specs.
-These attributes follow the same ordering rules as `l` and `v`.
+This can help debugging more deeply embedded problems or for generating standard JSON Vega/Vega-Lite specifications.
 
-![debuggingvegalite](https://user-images.githubusercontent.com/608862/38144689-de039e56-343d-11e8-9a42-05726e2f87b4.gif)
+![debuggingvegalite](https://user-images.githubusercontent.com/1846999/91960996-7e208780-ed02-11ea-96c5-6765db519da3.gif)
 
 > [examples/features/debuggingVegaLite.md](examples/features/debuggingVegaLite.md)
 
@@ -105,17 +107,17 @@ These attributes follow the same ordering rules as `l` and `v`.
 
 Adding `interactive` to a code block with `v` or a triple hat reference makes visualizations live if interaction is described within `Spec`. User input controls can be added to the document, if desired.
 
-![interaction](https://user-images.githubusercontent.com/608862/38144556-178c98e0-343d-11e8-9c98-1e247ff48581.gif)
+![interaction](https://user-images.githubusercontent.com/1846999/91964258-d35e9800-ed06-11ea-8fac-a1f365d78626.gif)
 
 > [examples/features/interaction.md](examples/features/interaction.md)
 
 ### Mutliple execution contexts
 
-Although a single Elm execution context may be sufficient in many litivs narratives, context isolation may be desired in some cases. A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
+Although a single Elm execution context may be sufficient in many litvis narratives, context isolation may be desired in some cases. A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
 
 A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword makes previously defined symbols in `default` context available within the code block, but avoids name clashes with the following blocks.
 
-![codesidings](https://user-images.githubusercontent.com/608862/38163354-8faa3c9e-34ea-11e8-84d3-d12747238b6d.gif)
+![codesidings](https://user-images.githubusercontent.com/1846999/91977772-0b6fd600-ed1b-11ea-8c88-89fbc0136be8.gif)
 
 > [examples/features/codeSidings.md](examples/features/codeSidings.md)
 
@@ -123,7 +125,7 @@ A `siding` (or `s`) is a shortcut for `isolated follows=default`. This keyword m
 
 A litvis narrative can be split between multiple markdown documents, where each document `follows` its parent. This enables routine use of parallel branching narratives that assemble and structure document trees. Each branch in a tree can represent alternative potentially competing designs each with their own rationale.
 
-![branchingnarratives](https://user-images.githubusercontent.com/608862/38163350-84ecde10-34ea-11e8-900c-ec8f4ad46ef0.gif)
+![branchingnarratives](https://user-images.githubusercontent.com/1846999/91979139-34916600-ed1d-11ea-98b7-ef316f010130.gif)
 
 > [examples/features/branching/root.md](examples/features/branching/root.md) > [examples/features/branching/branchA.md](examples/features/branching/branchA.md) > [examples/features/branching/branchB.md](examples/features/branching/branchB.md)
 
@@ -132,22 +134,14 @@ A litvis narrative can be split between multiple markdown documents, where each 
 A litvis narrative can be linked to a set of YAML files, which define `labels`, `rules` and `styling`.
 These narrative schemas can be thought of as an analogue of schemas more usually found in declarative programming contexts such as JSON and XML schema. The purpose of the schema is to provide a set of structured guidelines to assist in writing the narrative content around a visualization design. This can be thought of as form of scaffolding to assist in the process of design exposition. Schemas can be used to validate litvis documents.
 
-![narrativeschemas](https://user-images.githubusercontent.com/608862/38163859-d69bc4da-34f2-11e8-984d-786118f3100b.gif)
+![narrativeschemas](https://user-images.githubusercontent.com/1846999/91980779-b71b2500-ed1f-11ea-8e88-30ab35c90455.gif)
 
-> [examples/crossQuardChart.md](examples/crossQuardChart.md) > [schemas/idiom.yml](schemas/idiom.yml)
-
-## Linting
-
-A litvis document that is being previewed is constantly checked against various issues. These issues are displayed in the editing environment and help with debugging. If a visualization has been successfully rendered before the issue had occurred, its old preview is shown to avoid unwanted markup reflows.
-
-![linting](https://user-images.githubusercontent.com/608862/38143955-bc310866-343a-11e8-94f8-c31a71e6155c.gif)
-
-> [documents/tutorials/geoFormats.md](documents/tutorials/geoFormats.md)
+> [examples/crossQuadCharts.md](examples/crossQuadCharts.md) > [narrative-schemas/idiom.yml](snarrative-chemas/idiom.yml)
 
 ## Automatic code formatting
 
 Litvis integrates with [Prettier](https://prettier.io/) and its [Elm plugin](https://github.com/gicentre/prettier-plugin-elm), which enables seamless document formatting as the narrative is being written. A file is automatically _prettified_ on save or when the _Format_ command is explicitly called. Formatting keeps litvis files in a readable and maintainable state, which eases collaboration and reduces distraction from the higher-level tasks.
 
-![formatting1000](https://user-images.githubusercontent.com/608862/38144144-84de604c-343b-11e8-8ffd-f210e2f991ae.gif)
+![formatting1000](https://user-images.githubusercontent.com/1846999/91981866-5ab90500-ed21-11ea-9629-ded732008cda.gif)
 
 > [examples/lunarEclipse.md](examples/lunarEclipse.md)
