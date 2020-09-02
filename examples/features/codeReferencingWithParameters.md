@@ -7,8 +7,8 @@ elm:
 # Sparklines
 
 1.  ^^^elm v=(sparkline "1")^^^
-2.  ^^^elm v=(sparkline "2")^^^
-3.  ^^^elm v=(sparkline "3")^^^
+1.  ^^^elm v=(sparkline "2")^^^
+1.  ^^^elm v=(sparkline "3")^^^
 
 ^^^elm v=(sparkline "1")^^^ and then ^^^elm v=(sparkline "3")^^^
 
