@@ -2,10 +2,12 @@
 follows: root
 ---
 
-# Experiments with Equirectangular projection
+# Experiments with Equal Earth projection
+
+Rationale for this projection here.
 
 ```elm {v}
 projectedGlobe : Spec
 projectedGlobe =
-    globe equirectangular []
+    globe equalEarth []
 ```

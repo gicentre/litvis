@@ -4,28 +4,21 @@ elm:
     gicentre/elm-vegalite: latest
 ---
 
-# Debugging Vega Lite
+```elm {l=hidden}
+import VegaLite exposing (..)
+```
+
+# Bicycle Hires
 
 ```elm {l r j v}
-import VegaLite exposing (..)
-
-
 barChart : Spec
 barChart =
     let
-        data =
-            dataFromUrl (path ++ "cars.json") []
-
         enc =
             encoding
-                << position X [ pName "Horsepower", pQuant ]
+                << position X [ pName "AvHireTime" ]
                 << position Y [ pAggregate opCount ]
     in
-    toVegaLite [ data, enc [], bar [] ]
-```
-
-```elm {l=hidden}
-path : String
-path =
-    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
+    toVegaLite
+        [ dataFromUrl "http://gicentre.github.io/data/bicycleHiresLondon.csv" [], enc [], bar [] ]
 ```

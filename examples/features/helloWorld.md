@@ -1,7 +1,7 @@
-# Hello world
+# My first Litvis document
 
 ```elm {l r}
 message : String
 message =
-    "Hello world!!!"
+    "Hello, world"
 ```

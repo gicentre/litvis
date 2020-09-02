@@ -4,35 +4,30 @@ elm:
     gicentre/elm-vegalite: latest
 ---
 
-Teaser
-
-^^^elm v=barChart^^^
-
 ```elm {l=hidden}
 import VegaLite exposing (..)
 ```
 
-```elm {l=hidden}
-path : String
-path =
-    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
-```
+_Teaser_ ^^^elm v=barChart^^^
 
-# Simple litvis chart
+# Bicycle Hires
 
 ```elm {l}
 barChart : Spec
 barChart =
     let
-        data =
-            dataFromUrl (path ++ "cars.json") []
-
         enc =
             encoding
-                << position X [ pName "Horsepower", pQuant ]
+                << position X [ pName "AvHireTime" ]
                 << position Y [ pAggregate opCount ]
     in
-    toVegaLite [ data, enc [], bar [] ]
+    toVegaLite
+        [ dataFromUrl "http://gicentre.github.io/data/bicycleHiresLondon.csv" []
+        , enc []
+        , bar []
+        ]
 ```
 
-Frequency histogram: ^^^elm v=barChart^^^
+## Frequency distribution
+
+^^^elm v=barChart^^^

@@ -4,6 +4,10 @@ elm:
     gicentre/elm-vegalite: latest
 ---
 
+# Global Map Functions
+
+Functions and data that are common to all branches.
+
 ```elm {l=hidden}
 import VegaLite exposing (..)
 
@@ -17,7 +21,7 @@ globe proj props =
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/graticule.json" [ topojsonMesh "graticule" ]
+                    ++ [ graticule [ grStep ( 10, 10 ) ]
                        , geoshape [ maFilled False, maStroke "#000", maStrokeWidth 0.1 ]
                        ]
                 )

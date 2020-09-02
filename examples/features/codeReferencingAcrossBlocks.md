@@ -8,31 +8,26 @@ elm:
 import VegaLite exposing (..)
 ```
 
-# Simple litvis chart
+# Bicycle Hires
 
-```elm {l=hidden}
-path : String
-path =
-    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
-```
-
-```elm {l=hidden}
+```elm {l}
 barChart : Spec
 barChart =
     let
-        data =
-            dataFromUrl (path ++ "cars.json") []
-
         enc =
             encoding
-                << position X [ pName "Horsepower", pQuant ]
-                << position Y [ pAggregate opCount, pQuant ]
+                << position X [ pName "AvHireTime" ]
+                << position Y [ pAggregate opCount ]
     in
-    toVegaLite [ data, enc [], bar [] ]
+    toVegaLite
+        [ dataFromUrl "https://gicentre.github.io/data/bicycleHiresLondon.csv" []
+        , enc []
+        , bar []
+        ]
 ```
 
 ```elm {v}
-barChartCopy : Spec
-barChartCopy =
+fDistrib : Spec
+fDistrib =
     barChart
 ```

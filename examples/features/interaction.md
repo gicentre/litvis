@@ -8,78 +8,52 @@ elm:
 import VegaLite exposing (..)
 ```
 
-```elm {l=hidden}
-data : Data
-data =
-    dataFromUrl "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/cars.json" []
-```
+# Bicycle Hires
+
+Drag selection across upper scatterplot to see a frequency distribution of highlighted points.
 
 ```elm {v interactive}
-interactive1 : Spec
-interactive1 =
+interactive : Spec
+interactive =
     let
+        data =
+            dataFromUrl "https://gicentre.github.io/data/bicycleHiresLondon.csv" []
+
         sel =
             selection
                 << select "myBrush" seInterval []
 
-        enc =
+        encScatter =
             encoding
-                << position X [ pName "Horsepower", pQuant ]
-                << position Y [ pName "Miles_per_Gallon", pQuant ]
+                << position X [ pName "NumberOfHires", pQuant ]
+                << position Y [ pName "AvHireTime", pQuant ]
                 << color
                     [ mSelectionCondition (selectionName "myBrush")
-                        [ mName "Cylinders" ]
-                        [ mStr "grey" ]
+                        [ mStr "rgb(76,120,168)" ]
+                        [ mStr "lightgrey" ]
                     ]
-    in
-    toVegaLite [ width 300, height 150, data, sel [], enc [], point [] ]
-```
 
-```elm {v interactive}
-binding1 : Spec
-binding1 =
-    let
+        specScatter =
+            asSpec [ width 300, height 150, sel [], encScatter [], circle [] ]
+
         trans =
             transform
-                << calculateAs "year(datum.Year)" "Year"
+                << filter (fiSelection "myBrush")
 
-        sel1 =
-            selection
-                << select "CylYr"
-                    seSingle
-                    [ seFields [ "Cylinders", "Year" ]
-                    , seBind
-                        [ iRange "Cylinders" [ inName "Cylinders ", inMin 3, inMax 8, inStep 1 ]
-                        , iRange "Year" [ inName "Year ", inMin 1969, inMax 1981, inStep 1 ]
-                        ]
+        encBars =
+            encoding
+                << position X
+                    [ pName "AvHireTime"
+                    , pScale [ scDomain (doNums [ 14, 27 ]) ]
+                    , pQuant
+                    ]
+                << position Y
+                    [ pAggregate opCount
+                    , pScale [ scDomain (doMax 20) ]
                     ]
 
-        enc1 =
-            encoding
-                << position X [ pName "Horsepower", pQuant ]
-                << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color
-                    [ mSelectionCondition (selectionName "CylYr")
-                        [ mName "Origin" ]
-                        [ mStr "grey" ]
-                    ]
-
-        spec1 =
-            asSpec [ sel1 [], enc1 [], circle [] ]
-
-        trans2 =
-            transform
-                << filter (fiSelection "CylYr")
-
-        enc2 =
-            encoding
-                << position X [ pName "Horsepower", pQuant ]
-                << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color [ mName "Origin" ]
-                << size [ mNum 100 ]
-
-        spec2 =
-            asSpec [ trans2 [], enc2 [], circle [] ]
+        specBars =
+            asSpec [ width 300, height 120, trans [], encBars [], bar [ maSize 15 ] ]
     in
-    toVegaLite [ width 300, height 150, data, trans [], layer [ spec1, spec2 ] ]
+    toVegaLite [ data, vConcat [ specScatter, specBars ] ]
 ```

@@ -11,8 +11,9 @@ import VegaLite exposing (..)
 globe : Projection -> List ProjectionProperty -> Spec
 globe proj props =
     let
-        path file =
-            "https://gicentre.github.io/data/geoTutorials/" ++ file
+        cfg =
+            configure
+                << configuration (coView [ vicoStroke Nothing ])
 
         pDetails =
             [ width 300, height 150, projection (prType proj :: props) ]
@@ -20,7 +21,7 @@ globe proj props =
         graticuleSpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "graticule.json") [ topojsonMesh "graticule" ]
+                    ++ [ graticule [ grStep ( 10, 10 ) ]
                        , geoshape [ maFilled False, maStroke "#000", maStrokeWidth 0.1 ]
                        ]
                 )
@@ -28,27 +29,24 @@ globe proj props =
         countrySpec =
             asSpec
                 (pDetails
-                    ++ [ dataFromUrl (path "world-110m.json") [ topojsonFeature "countries1" ]
+                    ++ [ dataFromUrl "https://gicentre.github.io/data/geoTutorials/world-110m.json" [ topojsonFeature "countries1" ]
                        , geoshape [ maStroke "white", maFill "#232", maOpacity 0.7, maStrokeWidth 0.1 ]
                        ]
                 )
     in
-    toVegaLite
-        [ configure (configuration (coView [ vicoStroke Nothing ]) [])
-        , layer [ graticuleSpec, countrySpec ]
-        ]
+    toVegaLite [ cfg [], layer [ graticuleSpec, countrySpec ] ]
 ```
 
 # Map Projections
 
 ```elm {v siding}
-projectedGlobe : Spec
-projectedGlobe =
-    globe equirectangular []
+worldMap : Spec
+worldMap =
+    globe orthographic []
 ```
 
 ```elm {v}
-projectedGlobe : Spec
-projectedGlobe =
-    globe orthographic []
+worldMap : Spec
+worldMap =
+    globe equalEarth []
 ```
