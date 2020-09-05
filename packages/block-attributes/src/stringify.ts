@@ -1,13 +1,29 @@
-import { BlockAttributes } from ".";
+import { BlockAttributes } from "./types";
+
+const stringifyArray = (value: any[]) => {
+  const parts = ["["];
+  value.forEach((v, i) => {
+    if (v instanceof Array) {
+      parts.push(stringifyArray(v));
+    } else {
+      parts.push(JSON.stringify(v));
+    }
+    if (i + 1 !== value.length) {
+      parts.push(", ");
+    }
+  });
+  parts.push("]");
+  return parts.join("");
+};
 
 /**
  * Convert attributes as JSON object to attributes as string
  * @param attributes
  */
-export default function (
+export const stringify = (
   attributes: BlockAttributes,
   addCurlyBrackets = false,
-): string {
+): string => {
   const parts: string[] = [];
   for (const key in attributes) {
     if (attributes.hasOwnProperty(key)) {
@@ -27,20 +43,4 @@ export default function (
     parts.push("}");
   }
   return parts.join("");
-}
-
-function stringifyArray(value: any[]) {
-  const parts = ["["];
-  value.forEach((v, i) => {
-    if (v instanceof Array) {
-      parts.push(stringifyArray(v));
-    } else {
-      parts.push(JSON.stringify(v));
-    }
-    if (i + 1 !== value.length) {
-      parts.push(", ");
-    }
-  });
-  parts.push("]");
-  return parts.join("");
-}
+};

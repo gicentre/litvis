@@ -1,4 +1,4 @@
-import { findIntroducedSymbols } from "./codeInsights";
+import { findIntroducedSymbols } from "./findIntroducedSymbols";
 
 const testCases: Array<{
   title?: string;

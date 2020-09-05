@@ -3,7 +3,7 @@ import execa from "execa";
 import { readFile, writeFile } from "fs-extra";
 import { resolve } from "path";
 
-export async function initializeElmProject(projectDirectory: string) {
+export const initializeElmProject = async (projectDirectory: string) => {
   const childProcess = execa("elm", ["init"], {
     cwd: projectDirectory,
     stdin: undefined,
@@ -12,27 +12,7 @@ export async function initializeElmProject(projectDirectory: string) {
     childProcess.stdin.write("\n");
   }
   await childProcess;
-}
-
-// const resolveVersion = (version: string) => {
-//   // Can't use version ranges in Elm 0.19 (yet?)
-//   // let min = version;
-//   // let max = version;
-//   // while ((min.match(/\./g) || []).length < 2) {
-//   //   min = `${min}.0`;
-//   //   max = `${max}.9999`;
-//   // }
-//   // if (min === max) {
-//   //   return version;
-//   // }
-//   // return `${min} <= v < ${max}`;
-
-//   let result = version;
-//   while ((result.match(/\./g) || []).length < 2) {
-//     result = `${result}.0`;
-//   }
-//   return result;
-// };
+};
 
 export const patchElmJson = async (projectPath, callback) => {
   const pathToElmJson = resolve(projectPath, "elm.json");
@@ -46,11 +26,11 @@ export const patchElmJson = async (projectPath, callback) => {
   );
 };
 
-export async function installElmPackage(
+export const installElmPackage = async (
   projectDirectory: string,
   packageName: string,
   packageVersion: string,
-) {
+) => {
   if (packageVersion !== "latest") {
     // https://github.com/elm/compiler/issues/1759
     throw new Error(
@@ -71,17 +51,17 @@ export async function installElmPackage(
   await childProcess;
   // TODO: return meaningful error when elm package is not installed
   // see https://github.com/jwoLondon/litvis/issues/27
-}
+};
 
-export async function runElm(
+export const runElm = async (
   projectDirectory: string,
   modulePath: string,
   outputSymbolName: string,
-): Promise<string> {
+): Promise<string> => {
   const result = await executeRunElm(modulePath, {
     report: "json",
     outputName: outputSymbolName,
     projectDir: projectDirectory,
   });
   return result;
-}
+};

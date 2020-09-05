@@ -1,4 +1,4 @@
-const testCases: Array<{
+export const sharedTestCases: Array<{
   attributes?: any;
   normalizedAttributes?: any;
   raw?: string | Array<string | null | undefined>;
@@ -206,6 +206,7 @@ const testCases: Array<{
     raw: "cmd .class1 hide .class2",
     stringified: 'cmd=true hide=true class="class1 class2"',
   },
+  /* eslint-disable @typescript-eslint/camelcase */
   {
     // normalization
     attributes: { hello_world: "test" },
@@ -219,6 +220,5 @@ const testCases: Array<{
     attributes: { HelloWorld: "test" },
     normalizedAttributes: { hello_world: "test" },
   },
+  /* eslint-enable @typescript-eslint/camelcase */
 ];
-
-export default testCases;

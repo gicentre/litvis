@@ -1,4 +1,4 @@
-import { ElmSymbol } from "./types";
+import { ElmSymbol } from "../types";
 
 /**
  * Extracts Elm symbols introduced in the given code block.
@@ -11,7 +11,7 @@ import { ElmSymbol } from "./types";
  *
  * @param code
  */
-export function findIntroducedSymbols(code: string): ElmSymbol[] {
+export const findIntroducedSymbols = (code: string): ElmSymbol[] => {
   const result: ElmSymbol[] = [];
   let insideMultiLineString = false;
   code.split("\n").forEach((line) => {
@@ -32,4 +32,4 @@ export function findIntroducedSymbols(code: string): ElmSymbol[] {
   });
 
   return result;
-}
+};

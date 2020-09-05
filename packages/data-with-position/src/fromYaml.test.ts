@@ -4,11 +4,11 @@ import kindOf from "kind-of";
 import _ from "lodash";
 import path from "path";
 
-import { FromYamlTestCaseConfig } from "./fixtures/types";
-import fromYaml from "./fromYaml";
-import getKind from "./getKind";
-import getPosition from "./getPosition";
-import getValue from "./getValue";
+import { FromYamlTestCaseConfig } from "./__fixtures__/types";
+import { fromYaml } from "./fromYaml";
+import { getKind } from "./getKind";
+import { getPosition } from "./getPosition";
+import { getValue } from "./getValue";
 
 const yamlPaths = globby.sync(`fixtures/fromYaml/*.yaml`, {
   cwd: __dirname,

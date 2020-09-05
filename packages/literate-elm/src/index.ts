@@ -1,4 +1,4 @@
 export * from "./codeInsights";
-export * from "./environment";
-export * from "./program";
+export * from "./ensureEnvironment";
+export * from "./runProgram";
 export * from "./types";

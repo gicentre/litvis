@@ -4,8 +4,8 @@ import _ from "lodash";
 import hash from "object-hash";
 import { resolve } from "path";
 
-import * as auxFiles from "./auxFiles";
-import { runElm } from "./tools";
+import * as auxFiles from "./shared/auxFiles";
+import { runElm } from "./shared/tools";
 import {
   CodeNode,
   EvaluatedExpression,
@@ -58,75 +58,8 @@ interface CachedProgramResult {
 
 const PROGRAM_TIMEOUT = 20000;
 
-export async function runProgram(program: Program): Promise<ProgramResult> {
-  const chunkifiedProgram = chunkifyProgram(program);
-  const programBasePath = resolve(
-    program.environment.workingDirectory,
-    chunkifiedProgram.name,
-  );
-  await auxFiles.touch(programBasePath);
-  const programResultPath = `${programBasePath}.result.json`;
-
-  let cachedResult: CachedProgramResult;
-  try {
-    await auxFiles.ensureUnlocked(programBasePath, PROGRAM_TIMEOUT);
-    cachedResult = (await readJson(programResultPath)) as CachedProgramResult;
-  } catch (e) {
-    await auxFiles.lock(programBasePath);
-
-    cachedResult = await runChunkifiedProgram(
-      chunkifiedProgram,
-      program.environment.workingDirectory,
-    );
-    await writeFile(programResultPath, JSON.stringify(cachedResult), "utf8");
-
-    await auxFiles.unlock(programBasePath);
-  }
-
-  if (cachedResult && cachedResult.status === "succeeded") {
-    const evaluatedExpressions = program.expressionNodes.map(
-      (expressionNode): EvaluatedExpression => {
-        const valueStringRepresentation =
-          (cachedResult.evaluatedExpressionTextMap &&
-            cachedResult.evaluatedExpressionTextMap[expressionNode.text]) ||
-          "";
-        let value;
-        try {
-          value = parseUsingCache(valueStringRepresentation);
-        } catch (e) {
-          value = e;
-        }
-        return {
-          node: expressionNode,
-          value,
-          valueStringRepresentation,
-        };
-      },
-    );
-    return {
-      program,
-      status: "succeeded",
-      evaluatedExpressions,
-      messages: convertErrorsToMessages(
-        chunkifiedProgram,
-        (cachedResult && cachedResult.errors) || [],
-      ),
-      debugLog:
-        cachedResult.debugLog instanceof Array ? cachedResult.debugLog : [],
-    };
-  } else {
-    return {
-      program,
-      status: "failed",
-      messages: convertErrorsToMessages(
-        chunkifiedProgram,
-        (cachedResult && cachedResult.errors) || [],
-      ),
-    };
-  }
-}
-
 const outputSymbolName = "literateElmOutputSymbol";
+
 const chunkifyProgram = (program: Program): ChunkifiedProgram => {
   const chunks: Chunk[] = [];
 
@@ -235,7 +168,7 @@ const runChunkifiedProgram = async (
         try {
           parsedErrorOutput = JSON.parse(line);
           return true;
-        } catch (e) {
+        } catch {
           return false;
         }
       });
@@ -297,6 +230,35 @@ const runChunkifiedProgram = async (
   }
 };
 
+const getErrorMessageText = (error): string => {
+  if (error.title === "UNKNOWN IMPORT") {
+    // Unknown imports form a special case. It is not reasonable to suggest looking into elm.json and source-directories
+    // as this is causing confusion in the literate-elm environment.
+    const failedImport = _.get(error, ["message", 1, "string"]);
+    if (failedImport) {
+      return `Could not ${failedImport}. Please make sure you have specified all dependencies on third-party Elm modules.`;
+    }
+  }
+  if (_.isArray(error.message)) {
+    const text = error.message
+      .map((chunk) => {
+        if (chunk.string) {
+          // remove underlines with ^^^^
+          if (chunk.string === "^".repeat(chunk.string.length)) {
+            return "__REMOVED_UNDERNLINE__";
+          }
+          return chunk.string;
+        }
+        return chunk;
+      })
+      .join("");
+    return text
+      .replace(/\s*__REMOVED_UNDERNLINE__\s*/g, "\n")
+      .replace(/\n\d+\|/g, "\n"); // remove line numbers in listings
+  }
+  return `${error.overview || error}`;
+};
+
 const convertErrorsToMessages = (
   chunkifiedProgram: ChunkifiedProgram,
   errors: any[],
@@ -308,7 +270,8 @@ const convertErrorsToMessages = (
         _.findIndex(
           chunkifiedProgram.chunks,
           (chunk) =>
-            chunk.offsetY! + 1 > _.get(error, ["region", "start", "line"], 0),
+            (chunk.offsetY || 0) + 1 >
+            _.get(error, ["region", "start", "line"], 0),
         ) - 1
       ];
     if (currentChunk && currentChunk.type === ChunkType.CODE_NODE) {
@@ -316,7 +279,7 @@ const convertErrorsToMessages = (
         start: {
           line:
             _.get(error, ["region", "start", "line"], 0) -
-            currentChunk.offsetY! -
+            (currentChunk.offsetY || 0) -
             1 +
             currentChunk.ref.position.start.line,
           column:
@@ -327,7 +290,7 @@ const convertErrorsToMessages = (
         end: {
           line:
             _.get(error, ["region", "end", "line"], 0) -
-            currentChunk.offsetY! -
+            (currentChunk.offsetY || 0) -
             1 +
             currentChunk.ref.position.start.line,
           column:
@@ -374,31 +337,70 @@ const convertErrorsToMessages = (
   return result;
 };
 
-const getErrorMessageText = (error): string => {
-  if (error.title === "UNKNOWN IMPORT") {
-    // Unknown imports form a special case. It is not reasonable to suggest looking into elm.json and source-directories
-    // as this is causing confusion in the literate-elm environment.
-    const failedImport = _.get(error, ["message", 1, "string"]);
-    if (failedImport) {
-      return `Could not ${failedImport}. Please make sure you have specified all dependencies on third-party Elm modules.`;
-    }
+export const runProgram = async (program: Program): Promise<ProgramResult> => {
+  const chunkifiedProgram = chunkifyProgram(program);
+  const programBasePath = resolve(
+    program.environment.workingDirectory,
+    chunkifiedProgram.name,
+  );
+  await auxFiles.touch(programBasePath);
+  const programResultPath = `${programBasePath}.result.json`;
+
+  let cachedResult: CachedProgramResult;
+  try {
+    await auxFiles.ensureUnlocked(programBasePath, PROGRAM_TIMEOUT);
+    cachedResult = (await readJson(programResultPath)) as CachedProgramResult;
+  } catch (e) {
+    await auxFiles.lock(programBasePath);
+
+    cachedResult = await runChunkifiedProgram(
+      chunkifiedProgram,
+      program.environment.workingDirectory,
+    );
+    await writeFile(programResultPath, JSON.stringify(cachedResult), "utf8");
+
+    await auxFiles.unlock(programBasePath);
   }
-  if (_.isArray(error.message)) {
-    const text = error.message
-      .map((chunk) => {
-        if (chunk.string) {
-          // remove underlines with ^^^^
-          if (chunk.string === "^".repeat(chunk.string.length)) {
-            return "__REMOVED_UNDERNLINE__";
-          }
-          return chunk.string;
+
+  if (cachedResult && cachedResult.status === "succeeded") {
+    const evaluatedExpressions = program.expressionNodes.map(
+      (expressionNode): EvaluatedExpression => {
+        const valueStringRepresentation =
+          (cachedResult.evaluatedExpressionTextMap &&
+            cachedResult.evaluatedExpressionTextMap[expressionNode.text]) ||
+          "";
+        let value;
+        try {
+          value = parseUsingCache(valueStringRepresentation);
+        } catch (e) {
+          value = e;
         }
-        return chunk;
-      })
-      .join("");
-    return text
-      .replace(/\s*__REMOVED_UNDERNLINE__\s*/g, "\n")
-      .replace(/\n\d+\|/g, "\n"); // remove line numbers in listings
+        return {
+          node: expressionNode,
+          value,
+          valueStringRepresentation,
+        };
+      },
+    );
+    return {
+      program,
+      status: "succeeded",
+      evaluatedExpressions,
+      messages: convertErrorsToMessages(
+        chunkifiedProgram,
+        (cachedResult && cachedResult.errors) || [],
+      ),
+      debugLog:
+        cachedResult.debugLog instanceof Array ? cachedResult.debugLog : [],
+    };
+  } else {
+    return {
+      program,
+      status: "failed",
+      messages: convertErrorsToMessages(
+        chunkifiedProgram,
+        (cachedResult && cachedResult.errors) || [],
+      ),
+    };
   }
-  return `${error.overview || error}`;
 };

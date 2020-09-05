@@ -1,6 +1,6 @@
 import { FromYamlTestCaseConfig } from "../types";
 
-const config: FromYamlTestCaseConfig = {
+export const config: FromYamlTestCaseConfig = {
   nodesToCheck: [
     {
       path: [],
@@ -56,5 +56,3 @@ const config: FromYamlTestCaseConfig = {
     },
   ],
 };
-
-export default config;

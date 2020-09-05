@@ -1,8 +1,8 @@
-import testCases from "./fixtures/sharedTestCases";
-import stringify from "./stringify";
+import { sharedTestCases } from "./__fixtures__/testCases";
+import { stringify } from "./stringify";
 
 describe("stringify()", () => {
-  testCases.map(
+  sharedTestCases.map(
     ({
       attributes = null,
       normalizedAttributes = null,

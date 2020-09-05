@@ -1,15 +1,17 @@
 import { positionKey } from "./keys";
 import { DataWithPosition, Position } from "./types";
 
-export default function (dataWithPosition: DataWithPosition): Position;
-export default function (dataWithPosition: undefined): undefined;
+interface GetPosition {
+  (dataWithPosition: DataWithPosition): Position;
+  (dataWithPosition: undefined): undefined;
+}
 
-export default function (
-  dataWithPosition?: DataWithPosition,
-): Position | undefined {
+export const getPosition: GetPosition = (
+  dataWithPosition: DataWithPosition | undefined,
+) => {
   if (typeof dataWithPosition === "undefined") {
     return undefined;
   }
 
   return dataWithPosition[positionKey];
-}
+};

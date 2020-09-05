@@ -2,9 +2,13 @@ import { ensureDir, pathExists, readFile, writeFile } from "fs-extra";
 import hash from "object-hash";
 import { resolve } from "path";
 
-import { ensureUnlocked, lock, touch, unlock } from "./auxFiles";
-import { collectGarbageIfNeeded } from "./gc";
-import { initializeElmProject, installElmPackage, patchElmJson } from "./tools";
+import { ensureUnlocked, lock, touch, unlock } from "./shared/auxFiles";
+import { collectGarbageIfNeeded } from "./shared/gc";
+import {
+  initializeElmProject,
+  installElmPackage,
+  patchElmJson,
+} from "./shared/tools";
 import {
   Dependencies,
   Environment,
@@ -19,11 +23,42 @@ const PROJECT_EXPIRY_WITH_ERRORS = 1000 * 60;
 const PROJECT_EXPIRY_WITH_NO_ELM_FOUND = 1000 * 5;
 // const PROJECT_EXPIRY_WITH_LATEST = 1000 * 60 * 60 * 24 * 7;
 
-export async function ensureEnvironment(
+const prepareElmApplication = async (
+  directory: string,
+  dependencies: Dependencies,
+  sourceDirectories: string[],
+) => {
+  // install dependencies
+  await initializeElmProject(directory);
+  let userRequestsJsonPackage = false;
+  for (const packageName in dependencies) {
+    if (dependencies.hasOwnProperty(packageName)) {
+      const packageVersion = dependencies[packageName];
+      await installElmPackage(directory, packageName, packageVersion);
+      if (packageName === "elm/json") {
+        userRequestsJsonPackage = true;
+      }
+    }
+  }
+  if (!userRequestsJsonPackage) {
+    await installElmPackage(directory, "elm/json", "latest");
+  }
+
+  // add sourceDirectories to elm.json
+  await patchElmJson(directory, (elmJson) => {
+    elmJson["source-directories"] = [...sourceDirectories, "."];
+  });
+};
+
+const resolvePathToMetadata = (workingDirectory: string) => {
+  return resolve(workingDirectory, "literate-elm-metadata.json");
+};
+
+export const ensureEnvironment = async (
   spec: EnvironmentSpec,
   literateElmDirectory: string,
   timeout: number = DEFAULT_TIMEOUT,
-): Promise<Environment> {
+): Promise<Environment> => {
   const now = +new Date();
 
   const currentCacheDirectory = resolve(
@@ -149,35 +184,4 @@ export async function ensureEnvironment(
   } finally {
     await unlock(specDirectory);
   }
-}
-
-async function prepareElmApplication(
-  directory,
-  dependencies: Dependencies,
-  sourceDirectories: string[],
-) {
-  // install dependencies
-  await initializeElmProject(directory);
-  let userRequestsJsonPackage = false;
-  for (const packageName in dependencies) {
-    if (dependencies.hasOwnProperty(packageName)) {
-      const packageVersion = dependencies[packageName];
-      await installElmPackage(directory, packageName, packageVersion);
-      if (packageName === "elm/json") {
-        userRequestsJsonPackage = true;
-      }
-    }
-  }
-  if (!userRequestsJsonPackage) {
-    await installElmPackage(directory, "elm/json", "latest");
-  }
-
-  // add sourceDirectories to elm.json
-  await patchElmJson(directory, (elmJson) => {
-    elmJson["source-directories"] = [...sourceDirectories, "."];
-  });
-}
-
-function resolvePathToMetadata(workingDirectory: string) {
-  return resolve(workingDirectory, "literate-elm-metadata.json");
-}
+};
