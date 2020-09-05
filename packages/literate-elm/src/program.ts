@@ -1,5 +1,5 @@
 import { parseUsingCache } from "elm-string-representation";
-import { remove, writeFile } from "fs-extra";
+import { remove, writeFile, readJson } from "fs-extra";
 import _ from "lodash";
 import hash from "object-hash";
 import { resolve } from "path";
@@ -69,7 +69,7 @@ export async function runProgram(program: Program): Promise<ProgramResult> {
   let cachedResult: CachedProgramResult;
   try {
     await auxFiles.ensureUnlocked(programBasePath, PROGRAM_TIMEOUT);
-    cachedResult = require(programResultPath) as CachedProgramResult;
+    cachedResult = (await readJson(programResultPath)) as CachedProgramResult;
   } catch (e) {
     await auxFiles.lock(programBasePath);
 
