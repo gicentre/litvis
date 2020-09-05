@@ -12,7 +12,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "data-with-position": "^0.4.0",
-    "kind-of": "^6.0.2",
-    "vfile": "^4.0.1"
+    "kind-of": "^6.0.3",
+    "vfile": "^4.2.0"
   }
 }
