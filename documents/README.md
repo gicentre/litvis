@@ -24,6 +24,7 @@ _Delimits a block of literate code, which is evaluated in real time._
 
 ````markdown
 ```elm {...attributes}
+
 ```
 ````
 

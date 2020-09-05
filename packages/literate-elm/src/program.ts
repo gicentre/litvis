@@ -1,5 +1,5 @@
 import { parseUsingCache } from "elm-string-representation";
-import { remove, writeFile, readJson } from "fs-extra";
+import { readJson, remove, writeFile } from "fs-extra";
 import _ from "lodash";
 import hash from "object-hash";
 import { resolve } from "path";

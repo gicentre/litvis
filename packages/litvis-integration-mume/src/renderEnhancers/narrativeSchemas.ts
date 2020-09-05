@@ -29,10 +29,10 @@ export default async function enhance(
     $("head").prepend("", ...arrayOf$StyleTags);
   }
 
-  const labelNodesInAst: LabelNode[] = selectAll(
+  const labelNodesInAst = selectAll(
     "narrativeSchemaLabel",
-    processedNarrative.combinedAst,
-  );
+    processedNarrative.combinedAst || { type: "", children: [] },
+  ) as LabelNode[];
   const labelNodeInAstById = _.keyBy(
     labelNodesInAst,
     (node) => `${node.data.id}`,

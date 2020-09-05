@@ -2,9 +2,10 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rules": {
+    "array-type": [true, "array-simple"],
     "interface-name": [true, "never-prefix"],
+    "no-implicit-dependencies": false,
     "no-string-literal": false,
-    "no-implicit-dependencies": true,
     "object-literal-sort-keys": false
   }
 }
