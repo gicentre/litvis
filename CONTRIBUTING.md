@@ -145,7 +145,7 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
 #### 1. Produce a new version of `mume-with-litvis`
 
-1.  Check out the latest commit on the `master` branch of <https://github.com/gicentre/mume-with-litvis.git>.
+1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/mume-with-litvis.git>.
 
 1.  Run `npm install`.
 
@@ -223,13 +223,13 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
 1.  Open <https://www.npmjs.com/package/mume-with-litvis> and verify that the package version has been updated.
 
-1.  Commit your change in `package.json` and push both commits to the master branch on github.
+1.  Commit your change in `package.json` and push both commits to the `main` branch on github.
 
 You may also want to cherry-pick the first commit to `mume` in order to keep the fork in sync with its origin. Example pull request: [shd101wyy/mume#79](https://github.com/shd101wyy/mume/pull/79).
 
 #### 2. Produce a new version of the Atom package
 
-1.  Check out the latest commit on the `master` branch of <https://github.com/gicentre/markdown-preview-enhanced-with-litvis.git>.
+1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/markdown-preview-enhanced-with-litvis.git>.
 
 1.  Run `npm install`.
 
@@ -241,7 +241,7 @@ You may also want to cherry-pick the first commit to `mume` in order to keep the
 
 1.  Run `apm publish patch` or `apm publish minor` depending on the nature of the upstream changes. This should automatically bump the version in `package.json` and push a new commit to GitHub, which constitutes the release (see [example](https://github.com/gicentre/markdown-preview-enhanced-with-litvis/commit/75dac081b7955028071c5ff79ccaa6791dd5b707)). You will be asked to authenticate at APM if needed.
 
-1.  Push the `master` branch.
+1.  Push the `main` branch.
 
 The new package version should now show up in Atom and it should be possible to upgrade. If the new version ends up broken, you can rollback by running `apm install markdown-preview-enhanced@another-version`.
 
@@ -253,7 +253,7 @@ The new package version should now show up in Atom and it should be possible to 
     npm install -g vsce
     ```
 
-1.  Check out the latest commit on the `master` branch of <https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis.git>.
+1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis.git>.
 
 1.  Run `npm install`.
 
@@ -265,4 +265,4 @@ The new package version should now show up in Atom and it should be possible to 
 
 1.  Run `vsce publish patch` or `vsce publish minor` depending on the nature of the upstream changes. You will be asked to authenticate at Visual Studio Marketplace if needed.
 
-1.  Push the `master` branch.
+1.  Push the `main` branch.
