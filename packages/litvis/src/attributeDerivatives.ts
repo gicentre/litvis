@@ -23,6 +23,8 @@ export function extractAttributeDerivatives(
         ? normalizeExpression(attributesWithMixIns.context)
         : "default",
     outputFormats: [],
+    interactive: true,
+    archive: false,
     outputExpressionsByFormat: {},
     id: attributesWithMixIns.id,
     follows: attributesWithMixIns.follows,
@@ -62,6 +64,9 @@ export function extractAttributeDerivatives(
         case "markdown":
           isLitVis = true;
           addOutputExpressions(result, "m", value);
+          break;
+        case "archive":
+          result.archive = !!value;
           break;
         case "interactive":
           result.interactive = !!value;
