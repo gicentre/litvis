@@ -27,5 +27,4 @@ yarn-error.log
 ## shared between linters
 CNAME
 LICENSE
-elm-stuff
 packages/data-with-position/src/fixtures/fromYaml

@@ -1,7 +1,10 @@
 ## extensions
 *.*
 LICENSE
-!*.md
+!*.js
+!*.json
+!*.ts
+!*.tsx
 
 ## same as in .gitignore
 # elm-package generated files

@@ -27,6 +27,9 @@ jobs:
       - name: Build packages
         run: yarn build
 
+      - name: Lint with eslint
+        run: yarn lint:eslint
+
       - name: Lint with markdownlint
         run: yarn lint:markdownlint
 
@@ -35,9 +38,6 @@ jobs:
 
       - name: Lint with tsc
         run: yarn lint:tsc
-
-      - name: Lint with tslint
-        run: yarn lint:tslint
 
       - name: Lint with yarn-deduplicate
         run: yarn lint:yarn-deduplicate
