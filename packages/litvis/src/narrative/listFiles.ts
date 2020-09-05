@@ -1,4 +1,5 @@
 import { VFile } from "vfile";
+
 import { LitvisNarrative } from "../types";
 
 export default (narrative: LitvisNarrative): VFile[] => {

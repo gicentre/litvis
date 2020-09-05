@@ -3,6 +3,7 @@ import { readJson, remove, writeFile } from "fs-extra";
 import _ from "lodash";
 import hash from "object-hash";
 import { resolve } from "path";
+
 import * as auxFiles from "./auxFiles";
 import { runElm } from "./tools";
 import {
@@ -209,7 +210,7 @@ ${outputSymbolName} =
 const runChunkifiedProgram = async (
   chunkifiedProgram: ChunkifiedProgram,
   workingDirectory: string,
-  keepElmFiles: boolean = false,
+  keepElmFiles = false,
 ): Promise<CachedProgramResult> => {
   const programPath = resolve(
     workingDirectory,

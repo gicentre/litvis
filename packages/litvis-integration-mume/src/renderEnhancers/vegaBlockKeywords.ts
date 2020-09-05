@@ -1,7 +1,7 @@
-import YAML from "yamljs";
-
 import { BlockInfo } from "block-info";
 import { extractAttributeDerivatives, LitvisNarrative } from "litvis";
+import YAML from "yamljs";
+
 import { LitvisEnhancerCache } from "../types";
 
 /**

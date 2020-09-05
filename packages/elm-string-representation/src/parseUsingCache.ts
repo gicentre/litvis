@@ -1,4 +1,5 @@
 import LRU from "lru-cache";
+
 import parse from "./parse";
 
 let cache: LRU<string, string | undefined | Error>;

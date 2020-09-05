@@ -1,7 +1,7 @@
-// tslint:disable-next-line:no-implicit-dependencies
 import { Parent } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
+
 import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 

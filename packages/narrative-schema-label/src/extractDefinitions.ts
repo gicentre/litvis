@@ -10,6 +10,7 @@ import {
   extractArrayOfEntities,
   NarrativeSchema,
 } from "narrative-schema-common";
+
 import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
 import { isValidLabelName } from "./utils";
 

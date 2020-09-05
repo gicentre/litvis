@@ -1,6 +1,7 @@
 import { stat } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
+
 import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {

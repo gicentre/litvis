@@ -1,8 +1,8 @@
 import { getPosition, getValue } from "data-with-position";
 import kindOf from "kind-of";
 import _ from "lodash";
-// tslint:disable-next-line:no-implicit-dependencies
 import { Position } from "unist";
+
 import { LitvisDocument } from "../../types";
 
 export default (

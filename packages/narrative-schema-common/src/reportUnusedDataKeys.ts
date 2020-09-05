@@ -1,5 +1,6 @@
 import { DataWithPosition, getKind, getPosition } from "data-with-position";
 import kindOf from "kind-of";
+
 import stringifyDataPath from "./stringifyDataPath";
 import { NarrativeSchema } from "./types";
 

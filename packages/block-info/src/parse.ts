@@ -2,9 +2,10 @@ import {
   BlockAttributes,
   parse as parseBlockAttributes,
 } from "block-attributes";
+
 import { BlockInfo } from ".";
 
-export default function (raw: string = ""): BlockInfo {
+export default function (raw = ""): BlockInfo {
   let language;
   let attributesAsString: string;
   let attributes: BlockAttributes;

@@ -1,4 +1,5 @@
 import { ComposedNarrativeSchema } from "narrative-schema-common";
+
 import visitAndExtractHtml from "./visitAndExtractHtml";
 
 export default (composedNarrativeSchema: ComposedNarrativeSchema) => () => {

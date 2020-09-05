@@ -1,6 +1,5 @@
-import parse from "./parse";
-
 import testCases from "./fixtures/sharedTestCases";
+import parse from "./parse";
 
 describe("parse()", () => {
   testCases.map(({ raw, attributes }) => {

@@ -1,5 +1,7 @@
 import _ from "lodash";
+import { Node, Parent } from "unist";
 import visit from "unist-util-visit";
+
 import { resolveExpressions } from "../attributeDerivatives";
 import {
   AttributeDerivatives,
@@ -9,9 +11,6 @@ import {
   OutputFormat,
   TripleHatReferenceNode,
 } from "../types";
-
-// tslint:disable-next-line:no-implicit-dependencies
-import { Node, Parent } from "unist";
 
 function visitCodeBlock(ast, vFile) {
   return visit<CodeBlock>(

@@ -1,5 +1,6 @@
 import { BlockAttributes } from "block-attributes";
 import { load } from "cheerio";
+
 // import { Position } from "data-with-position";
 import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
 import { LabelType } from "./types";

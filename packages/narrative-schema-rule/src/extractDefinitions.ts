@@ -1,5 +1,3 @@
-import { stringifyDataPath } from "narrative-schema-common";
-
 import {
   DataWithPosition,
   getKind,
@@ -11,6 +9,7 @@ import {
   EntityDefinition,
   extractArrayOfEntities,
   NarrativeSchema,
+  stringifyDataPath,
 } from "narrative-schema-common";
 import { isValidLabelName } from "narrative-schema-label";
 
@@ -242,7 +241,7 @@ const extractSelectorData = (
   selectorWithPosition: DataWithPosition,
   containerWithPosition: DataWithPosition,
   dataPath: Array<number | string>,
-  selectorIsOptional: boolean = false,
+  selectorIsOptional = false,
 ): null | any => {
   const dataToReturn: any = {};
   let selectorIsBroken = false;

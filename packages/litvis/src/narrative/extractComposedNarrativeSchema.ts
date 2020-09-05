@@ -2,6 +2,7 @@ import { getPosition } from "data-with-position";
 import _ from "lodash";
 import { loadAndCompose } from "narrative-schema";
 import { VFile } from "vfile";
+
 import { LitvisDocument, LitvisNarrative } from "../types";
 
 export default async (

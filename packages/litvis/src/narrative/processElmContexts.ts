@@ -7,16 +7,18 @@ import {
 } from "literate-elm";
 import _ from "lodash";
 import visit from "unist-util-visit";
+
 import {
   Cache,
   CodeBlock,
   EvaluatedOutputExpression,
   FailedLitvisContext,
   LitvisCodeBlock,
+  LitvisNarrative,
   OutputExpression,
+  ProcessedLitvisContext,
   SucceededLitvisContext,
 } from "../types";
-import { LitvisNarrative, ProcessedLitvisContext } from "../types";
 
 interface WrappedCodeBlock {
   documentIndex: number;

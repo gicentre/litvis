@@ -1,8 +1,6 @@
 import { DataWithPosition } from "data-with-position";
 import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
 import { ComposedNarrativeSchema } from "narrative-schema";
-
-// tslint:disable-next-line:no-implicit-dependencies
 import { Node, Parent, Position } from "unist";
 import { VFile } from "vfile";
 

@@ -1,4 +1,5 @@
 import { normalize as normalizeBlockAttributes } from "block-attributes";
+
 import { BlockInfo } from ".";
 
 export default function (blockInfo: BlockInfo): BlockInfo {

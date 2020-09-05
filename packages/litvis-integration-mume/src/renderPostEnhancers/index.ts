@@ -1,11 +1,9 @@
-// tslint:disable-next-line:no-implicit-dependencies
-import { Position } from "unist";
-
 import cheerio from "cheerio";
 import { Html5Entities } from "html-entities";
 import { listNarrativeFiles, LitvisDocument, LitvisNarrative } from "litvis";
 import _ from "lodash";
 import { EntityDefinitionWithOrigin } from "narrative-schema-common";
+import { Position } from "unist";
 import { VFile } from "vfile";
 
 const unescapeString = new Html5Entities().decode;
@@ -113,7 +111,6 @@ export default (
               "narrative-schema:rule-validation",
             );
           } else {
-            // tslint:disable-next-line:no-console
             console.error(e);
           }
         }

@@ -6,7 +6,7 @@ import { BlockAttributes } from ".";
  */
 export default function (
   attributes: BlockAttributes,
-  addCurlyBrackets: boolean = false,
+  addCurlyBrackets = false,
 ): string {
   const parts: string[] = [];
   for (const key in attributes) {

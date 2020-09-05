@@ -1,4 +1,5 @@
 import { VFile } from "vfile";
+
 import { Cache, LitvisNarrative } from "../types";
 import applySchemaToLabels from "./applySchemaToLabels";
 import extractComposedNarrativeSchema from "./extractComposedNarrativeSchema";

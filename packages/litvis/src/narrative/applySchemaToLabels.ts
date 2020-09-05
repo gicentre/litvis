@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { applySchemaToLabels } from "narrative-schema-label";
 import unified from "unified";
-// tslint:disable-next-line:no-implicit-dependencies
 import { Parent } from "unist";
+
 import { LitvisNarrative } from "../types";
 
 export default async (narrative: LitvisNarrative): Promise<void> => {

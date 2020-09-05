@@ -1,11 +1,9 @@
 import fs from "fs";
-// tslint:disable-next-line:no-implicit-dependencies
 import globby from "globby";
-// tslint:disable-next-line:no-implicit-dependencies
 import kindOf from "kind-of";
-// tslint:disable-next-line:no-implicit-dependencies
 import _ from "lodash";
 import path from "path";
+
 import { FromYamlTestCaseConfig } from "./fixtures/types";
 import fromYaml from "./fromYaml";
 import getKind from "./getKind";
@@ -76,7 +74,6 @@ _.forEach(yamlPaths, (yamlPath) => {
             nodeDefinition.expectedArrayLength! - 1,
           );
 
-          // tslint:disable-next-line:prefer-for-of
           for (let i = 0; i < node.length; i += 1) {
             expect(node[i]).toBeDefined();
           }

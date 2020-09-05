@@ -37,7 +37,7 @@ export default (text?: string): BlockAttributes => {
           : rawValue;
       i = subEnd;
       if (keyIsPending) {
-        output[pendingKey!] = value;
+        output[pendingKey] = value;
         pendingKey = undefined;
       } else if (textToParse[i] === "=") {
         pendingKey = value;

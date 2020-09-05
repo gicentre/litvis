@@ -1,5 +1,6 @@
 import { DataWithPosition, getPosition, getValue } from "data-with-position";
 import _ from "lodash";
+
 import { LitvisDocument } from "../../types";
 
 export default (

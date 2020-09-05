@@ -3,6 +3,7 @@ import _ from "lodash";
 import { getLabelIdPrefix, LabelNode } from "narrative-schema-label";
 import { getCssChunks } from "narrative-schema-styling";
 import { selectAll } from "unist-util-select";
+
 import { LitvisEnhancerCache } from "../types";
 
 export default async function enhance(

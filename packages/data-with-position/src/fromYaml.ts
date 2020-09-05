@@ -7,6 +7,7 @@ import {
   YAMLScalar,
   YAMLSequence,
 } from "yaml-ast-parser";
+
 import { kindKey, positionKey } from "./keys";
 import { DataKind, DataWithPosition, Position } from "./types";
 

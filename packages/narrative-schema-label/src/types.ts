@@ -1,5 +1,4 @@
 import { BlockAttributes } from "block-attributes";
-// tslint:disable-next-line:no-implicit-dependencies
 import { Node } from "unist";
 
 export type LabelType =

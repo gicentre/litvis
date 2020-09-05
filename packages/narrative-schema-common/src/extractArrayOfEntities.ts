@@ -1,4 +1,5 @@
 import { DataWithPosition, getKind, getPosition } from "data-with-position";
+
 import reportUnusedDataKeys from "./reportUnusedDataKeys";
 import { EntityDefinition, NarrativeSchema } from "./types";
 

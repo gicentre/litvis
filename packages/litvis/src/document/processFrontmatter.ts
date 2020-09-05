@@ -1,6 +1,6 @@
 import { DataWithPosition, fromYaml } from "data-with-position";
-// tslint:disable-next-line:no-implicit-dependencies
 import { Node } from "unist";
+
 import { LitvisDocument } from "../types";
 import extractElmDependencies from "./frontmatter/extractElmDependencies";
 import extractElmSourceDirectories from "./frontmatter/extractElmSourceDirectories";

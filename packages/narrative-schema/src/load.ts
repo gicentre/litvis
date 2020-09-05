@@ -17,6 +17,7 @@ import { extractDefinitions as extractStylingDefinitions } from "narrative-schem
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
+
 import traceParents from "./traceParents";
 
 const load = async (
