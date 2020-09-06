@@ -29,18 +29,23 @@ jobs:
 
       - name: Lint with eslint
         run: yarn lint:eslint
+        if: succeeded() || failed()
 
       - name: Lint with markdownlint
         run: yarn lint:markdownlint
+        if: succeeded() || failed()
 
       - name: Lint with prettier
         run: yarn lint:prettier
+        if: succeeded() || failed()
 
       - name: Lint with tsc
         run: yarn lint:tsc
+        if: succeeded() || failed()
 
       - name: Lint with yarn-deduplicate
         run: yarn lint:yarn-deduplicate
+        if: succeeded() || failed()
 
   unit-tests:
     name: Unit tests
