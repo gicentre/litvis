@@ -54,7 +54,7 @@ export const loadLitvisNarrative = async (
             "litvis:cross-document",
           );
         }
-        if (!fileStat!.isFile()) {
+        if (!fileStat.isFile()) {
           document.fail(
             `Document to follow ‘${document.data.litvisFollowsPath}’ is not a file`,
             document.data.litvisFollowsPosition,

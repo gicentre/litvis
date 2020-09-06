@@ -6,6 +6,7 @@ import {
   runProgram,
 } from "literate-elm";
 import _ from "lodash";
+import { Position } from "unist";
 import visit from "unist-util-visit";
 
 import {
@@ -35,6 +36,11 @@ interface UnprocessedLitvisContext {
   wrappedCodeBlocks: WrappedCodeBlock[];
   wrappedOutputExpressions: WrappedOutputExpression[];
 }
+
+const fallbackPosition: Position = {
+  start: { column: 0, line: 0 },
+  end: { column: 0, line: 0 },
+};
 
 export const processElmContexts = async (
   narrative: LitvisNarrative,
@@ -175,7 +181,7 @@ export const processElmContexts = async (
           wrappedCodeBlocks,
           (wrappedCodeBlock) => ({
             text: wrappedCodeBlock.subject.value,
-            position: wrappedCodeBlock.subject.position!,
+            position: wrappedCodeBlock.subject.position || fallbackPosition,
             fileIndex: wrappedCodeBlock.documentIndex,
           }),
         );
@@ -184,7 +190,8 @@ export const processElmContexts = async (
           wrappedOutputExpressions,
           (wrappedOutputExpression) => ({
             text: wrappedOutputExpression.subject.data.text,
-            position: wrappedOutputExpression.subject.position!,
+            position:
+              wrappedOutputExpression.subject.position || fallbackPosition,
             fileIndex: wrappedOutputExpression.documentIndex,
           }),
         );
@@ -202,6 +209,7 @@ export const processElmContexts = async (
     }
 
     const literateElmEnvironment = await ensureEnvironment(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       narrative.elmEnvironmentSpecForLastFile!,
       cache.literateElmDirectory,
     );
@@ -209,7 +217,7 @@ export const processElmContexts = async (
     if (literateElmEnvironment.metadata.status !== "ready") {
       try {
         lastDocument.fail(
-          literateElmEnvironment.metadata.errorMessage!,
+          literateElmEnvironment.metadata.errorMessage || "Unknown error",
           undefined,
           "litvis:elm-environment",
         );
