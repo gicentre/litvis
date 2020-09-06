@@ -20,7 +20,7 @@ const stringifyArray = (value: any[]) => {
  * Convert attributes as JSON object to attributes as string
  * @param attributes
  */
-export const stringify = (
+export const stringifyBlockAttributes = (
   attributes: BlockAttributes,
   addCurlyBrackets = false,
 ): string => {

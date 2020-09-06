@@ -1,13 +1,13 @@
 import * as moduleIndex from "./index";
 
 describe("module", () => {
-  it("exports normalize()", () => {
-    expect(typeof moduleIndex.normalize).toEqual("function");
+  it("exports normalizeBlockAttributes()", () => {
+    expect(typeof moduleIndex.normalizeBlockAttributes).toEqual("function");
   });
-  it("exports parse()", () => {
-    expect(typeof moduleIndex.parse).toEqual("function");
+  it("exports parseBlockAttributes()", () => {
+    expect(typeof moduleIndex.parseBlockAttributes).toEqual("function");
   });
-  it("exports stringify()", () => {
-    expect(typeof moduleIndex.stringify).toEqual("function");
+  it("exports stringifyBlockAttributes()", () => {
+    expect(typeof moduleIndex.stringifyBlockAttributes).toEqual("function");
   });
 });

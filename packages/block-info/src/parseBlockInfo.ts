@@ -1,11 +1,8 @@
-import {
-  BlockAttributes,
-  parse as parseBlockAttributes,
-} from "block-attributes";
+import { BlockAttributes, parseBlockAttributes } from "block-attributes";
 
 import { BlockInfo } from "./types";
 
-export const parse = (raw = ""): BlockInfo => {
+export const parseBlockInfo = (raw = ""): BlockInfo => {
   let language;
   let attributesAsString: string;
   let attributes: BlockAttributes;

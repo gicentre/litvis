@@ -1,4 +1,4 @@
-import { parse } from "./parse";
+import { parseBlockInfo } from "./parseBlockInfo";
 
 const testCases: Array<{
   info: object;
@@ -27,7 +27,7 @@ describe("parse()", () => {
   testCases.map(({ raw, info }) => {
     raw.map((text) => {
       it(`works for`, () => {
-        const result: object = parse(text);
+        const result: object = parseBlockInfo(text);
         expect(result).toEqual(info);
       });
     });

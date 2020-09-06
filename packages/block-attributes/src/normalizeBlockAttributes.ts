@@ -5,7 +5,9 @@ import { BlockAttributes } from "./types";
  * Walks through attribute keys and makes them snakeCase if needed
  * @param attributes
  */
-export const normalize = (attributes: BlockAttributes): BlockAttributes => {
+export const normalizeBlockAttributes = (
+  attributes: BlockAttributes,
+): BlockAttributes => {
   if (typeof attributes !== "object") {
     return {};
   }

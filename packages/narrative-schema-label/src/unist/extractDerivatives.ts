@@ -1,4 +1,4 @@
-import { parse as parseBlockInfo } from "block-info";
+import { parseBlockInfo } from "block-info";
 import _ from "lodash";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
