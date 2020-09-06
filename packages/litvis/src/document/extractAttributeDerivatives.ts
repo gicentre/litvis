@@ -1,10 +1,10 @@
 import { parse as parseBlockInfo } from "block-info";
 import visit from "unist-util-visit";
 
-import { extractAttributeDerivatives } from "../attributeDerivatives";
+import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";
 import { CodeBlock, LitvisDocument } from "../types";
 
-function visitCodeBlock(ast, vFile) {
+const visitCodeBlock = (ast, vFile) => {
   return visit<CodeBlock>(ast, "code", (codeBlockNode) => {
     if (!codeBlockNode.data) {
       codeBlockNode.data = {};
@@ -14,7 +14,7 @@ function visitCodeBlock(ast, vFile) {
     );
     const normalizedLanguage = (parsedInfo.language || "").trim().toLowerCase();
     if (normalizedLanguage === "elm") {
-      const attributeDerivatives = extractAttributeDerivatives(
+      const attributeDerivatives = doExtractAttributeDerivatives(
         parsedInfo.attributes,
       );
       if (attributeDerivatives) {
@@ -31,16 +31,16 @@ function visitCodeBlock(ast, vFile) {
       return;
     }
   });
-}
+};
 
-function visitTripleHatReference(ast, vFile: LitvisDocument) {
+const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
   return visit<CodeBlock>(
     ast,
     "tripleHatReference",
     (tripleHatReferenceNode) => {
       const parsedInfo = parseBlockInfo(tripleHatReferenceNode.data.info);
       if ((parsedInfo.language || "").toLowerCase() === "elm") {
-        const attributeDerivatives = extractAttributeDerivatives(
+        const attributeDerivatives = doExtractAttributeDerivatives(
           parsedInfo.attributes,
         );
         if (attributeDerivatives) {
@@ -61,9 +61,9 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
       );
     },
   );
-}
+};
 
-export default function () {
+export const extractAttributeDerivatives = () => {
   return function transformer(ast, vFile, next) {
     visitCodeBlock(ast, vFile);
     visitTripleHatReference(ast, vFile);
@@ -74,4 +74,4 @@ export default function () {
 
     return ast;
   };
-}
+};

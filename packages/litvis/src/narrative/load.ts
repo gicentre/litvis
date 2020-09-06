@@ -4,7 +4,7 @@ import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
 
-import parseDocument from "../document/parse";
+import { parseDocument } from "../document/parseDocument";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
 const MAX_CHAIN_LENGTH = 20;

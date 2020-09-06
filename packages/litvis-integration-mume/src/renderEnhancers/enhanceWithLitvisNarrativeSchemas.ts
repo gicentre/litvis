@@ -6,11 +6,16 @@ import { selectAll } from "unist-util-select";
 
 import { LitvisEnhancerCache } from "../types";
 
-export default async function enhance(
+const markLabelAsErroneous = ($el: Cheerio, message) => {
+  $el.children().attr("style", "background: #fdd");
+  $el.attr("title", message);
+};
+
+export const enhanceWithLitvisNarrativeSchemas = async (
   $: CheerioStatic,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
-) {
+): Promise<void> => {
   // add styling from narrative schema
   const arrayOf$StyleTags: Cheerio[] = [];
   if (processedNarrative.composedNarrativeSchema) {
@@ -73,9 +78,4 @@ export default async function enhance(
       ),
     );
   });
-}
-
-const markLabelAsErroneous = ($el: Cheerio, message) => {
-  $el.children().attr("style", "background: #fdd");
-  $el.attr("title", message);
 };

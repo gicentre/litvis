@@ -11,11 +11,11 @@ import { LitvisEnhancerCache } from "../types";
  * @param processedNarrative
  * @param cache
  */
-export default async function enhance(
+export const enhanceWithLitvisVegaBlockKeywords = async (
   $: CheerioStatic,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
-) {
+): Promise<void> => {
   $('[data-role="codeBlock"]').each((i, container) => {
     const $container = $(container);
     if ($container.data("executor")) {
@@ -108,4 +108,4 @@ export default async function enhance(
     });
     $container.remove();
   });
-}
+};

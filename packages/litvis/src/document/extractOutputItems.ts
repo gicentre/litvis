@@ -12,7 +12,7 @@ import {
   TripleHatReferenceNode,
 } from "../types";
 
-function visitCodeBlock(ast, vFile) {
+const visitCodeBlock = (ast, vFile) => {
   return visit<CodeBlock>(
     ast,
     "code",
@@ -44,9 +44,8 @@ function visitCodeBlock(ast, vFile) {
             nodes = nodesAfter;
             break;
           default:
-            const expressions = derivatives.outputExpressionsByFormat[
-              outputFormat
-            ]!;
+            const expressions =
+              derivatives.outputExpressionsByFormat[outputFormat] || [];
             nodes.push(
               ...expressions.map((expression) => ({
                 type: "outputExpression",
@@ -78,9 +77,9 @@ function visitCodeBlock(ast, vFile) {
       parent.children.splice(index, 1, ...resultingNodes);
     },
   );
-}
+};
 
-function visitTripleHatReference(ast, vFile: LitvisDocument) {
+const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
   return visit<TripleHatReferenceNode>(
     ast,
     "tripleHatReference",
@@ -131,9 +130,9 @@ function visitTripleHatReference(ast, vFile: LitvisDocument) {
       });
     },
   );
-}
+};
 
-export default function () {
+export const extractOutputItems = () => {
   return function transformer(ast, vFile, next) {
     visitCodeBlock(ast, vFile);
     visitTripleHatReference(ast, vFile);
@@ -144,4 +143,4 @@ export default function () {
 
     return ast;
   };
-}
+};

@@ -4,13 +4,13 @@ import path from "path";
 
 import { LitvisEnhancerCache } from "./types";
 
-export async function initLitvisEnhancerCache({
+export const initLitvisEnhancerCache = async ({
   mumeWorkingDirectory,
-}): Promise<LitvisEnhancerCache> {
+}): Promise<LitvisEnhancerCache> => {
   return {
     litvisCache: initCache({
       literateElmDirectory: path.resolve(mumeWorkingDirectory, "literate-elm"),
     }),
     successfulRenders: new LRU(50),
   };
-}
+};

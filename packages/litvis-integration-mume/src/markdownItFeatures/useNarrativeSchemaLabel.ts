@@ -7,7 +7,7 @@ const escapeString = new Html5Entities().encode;
 const openTagLength = 2;
 const closeTagLength = 2;
 
-export default (md: MarkdownIt) => {
+export const useNarrativeSchemaLabel = (md: MarkdownIt) => {
   md.inline.ruler.before(
     "escape",
     "litvis:narrative-schema-label",

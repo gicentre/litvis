@@ -8,7 +8,7 @@ import extractFollows from "./frontmatter/extractFollows";
 import extractNarrativeSchemas from "./frontmatter/extractNarrativeSchemas";
 import lintElm from "./frontmatter/lintElm";
 
-function visitFrontmatter(mdAst, document: LitvisDocument) {
+const visitFrontmatter = (mdAst, document: LitvisDocument) => {
   const frontmatterNode: Node = mdAst.children[0];
   if (!frontmatterNode) {
     return;
@@ -73,9 +73,9 @@ function visitFrontmatter(mdAst, document: LitvisDocument) {
     pathsWithPosition: narrativeSchemasWithPosition,
   } = extractNarrativeSchemas(dataWithPosition, document);
   document.data.litvisNarrativeSchemasWithPosition = narrativeSchemasWithPosition;
-}
+};
 
-export default function () {
+export const processFrontmatter = () => {
   return function transformer(ast, vFile, next) {
     // try {
     visitFrontmatter(ast, vFile);
@@ -90,4 +90,4 @@ export default function () {
 
     return ast;
   };
-}
+};

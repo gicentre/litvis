@@ -6,7 +6,7 @@ const escapeString = new Html5Entities().encode;
 
 const delimiters = [["^^^", "^^^"]];
 
-export default (md: MarkdownIt) => {
+export const useTripleHatReference = (md: MarkdownIt) => {
   md.inline.ruler.before(
     "escape",
     "litvis:triple-hat-reference",

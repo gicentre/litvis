@@ -6,21 +6,21 @@ import { Parent } from "unist";
 import { VFile } from "vfile";
 
 import { LitvisDocument } from "../types";
-import extractAttributeDerivatives from "./extractAttributeDerivatives";
-import extractOutputItems from "./extractOutputItems";
-import findTripleHatReference from "./findTripleHatReferences";
-import processFrontmatter from "./processFrontmatter";
+import { extractAttributeDerivatives } from "./extractAttributeDerivatives";
+import { extractOutputItems } from "./extractOutputItems";
+import { findTripleHatReferences } from "./findTripleHatReferences";
+import { processFrontmatter } from "./processFrontmatter";
 
 export const engine = unified()
   .use(remarkParse)
   .use(frontmatter, ["yaml", "toml"])
-  .use(findTripleHatReference)
+  .use(findTripleHatReferences)
   .use(extractAttributeDerivatives)
   .use(extractOutputItems)
   .use(processFrontmatter)
   .use(extractLabels);
 
-export default async (vFile: VFile): Promise<LitvisDocument> => {
+export const parseDocument = async (vFile: VFile): Promise<LitvisDocument> => {
   const result = vFile as LitvisDocument;
   result.data.root = engine.parse(vFile) as Parent;
   await engine.run(result.data.root, vFile);

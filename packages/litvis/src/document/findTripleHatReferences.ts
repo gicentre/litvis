@@ -5,12 +5,13 @@ import whitespace from "is-whitespace-character";
 const HAT = "^";
 const TRIPLE_HAT = "^^^";
 
-function locator(value, fromIndex) {
+const locator = (value, fromIndex) => {
   const index = value.indexOf(TRIPLE_HAT, fromIndex);
   return index;
-}
+};
 
-export default function plugin() {
+export const findTripleHatReferences = () => {
+  // eslint-disable-next-line func-style
   function inlineTokenizer(eat, value, silent) {
     if (
       !this.options.gfm ||
@@ -81,4 +82,4 @@ export default function plugin() {
       return `${TRIPLE_HAT}${this.all(node).join("")}${TRIPLE_HAT}`;
     };
   }
-}
+};

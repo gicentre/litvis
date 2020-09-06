@@ -6,6 +6,6 @@ export {
   resolveExpressions,
 } from "./attributeDerivatives";
 
-export { initCache } from "./cache";
+export * from "./initCache";
 
 export * from "./types";
