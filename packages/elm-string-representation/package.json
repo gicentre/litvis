@@ -1,6 +1,6 @@
 {
   "name": "elm-string-representation",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Parses Elm string representation for data",
   "keywords": [
     "elm",

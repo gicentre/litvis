@@ -1,6 +1,6 @@
 {
   "name": "narrative-schema",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Implements loading and validation of litvis narrative schemas",
   "keywords": [],
   "repository": {
@@ -11,13 +11,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "data-with-position": "^0.4.0",
+    "data-with-position": "^0.4.1",
     "jsonschema": "^1.2.6",
     "lodash": "^4.17.20",
-    "narrative-schema-common": "^0.2.0",
-    "narrative-schema-label": "^0.4.0",
-    "narrative-schema-rule": "^0.2.0",
-    "narrative-schema-styling": "^0.2.0",
+    "narrative-schema-common": "^0.2.1",
+    "narrative-schema-label": "^0.4.1",
+    "narrative-schema-rule": "^0.2.1",
+    "narrative-schema-styling": "^0.2.1",
     "pseudo-yaml-ast": "^1.0.10",
     "to-vfile": "^6.1.0",
     "vfile": "^4.2.0"
