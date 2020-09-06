@@ -13,7 +13,10 @@ const locator = (value, fromIndex) => {
   return Math.max(indexOfStart, indexOfStartClosing);
 };
 
-export const findLabels = () => {
+// Usage of "this" requires suppressing func-style eslint rule
+
+// eslint-disable-next-line func-style
+export function findLabels() {
   // eslint-disable-next-line func-style
   function inlineTokenizer(eat, value, silent) {
     if (
@@ -69,4 +72,4 @@ export const findLabels = () => {
     0,
     "narrativeSchemaLabel",
   );
-};
+}

@@ -10,7 +10,10 @@ const locator = (value, fromIndex) => {
   return index;
 };
 
-export const findTripleHatReferences = () => {
+// Usage of "this" requires suppressing func-style eslint rule
+
+// eslint-disable-next-line func-style
+export function findTripleHatReferences() {
   // eslint-disable-next-line func-style
   function inlineTokenizer(eat, value, silent) {
     if (
@@ -82,4 +85,4 @@ export const findTripleHatReferences = () => {
       return `${TRIPLE_HAT}${this.all(node).join("")}${TRIPLE_HAT}`;
     };
   }
-};
+}
