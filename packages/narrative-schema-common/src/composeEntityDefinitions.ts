@@ -1,6 +1,6 @@
 import { EntityDefinitionWithOrigin, NarrativeSchema } from "./types";
 
-export default (
+export const composeEntityDefinitions = (
   narrativeSchema: NarrativeSchema,
   entityKey: string,
   alreadyLoadedEntitiesWithOrigin: EntityDefinitionWithOrigin[],

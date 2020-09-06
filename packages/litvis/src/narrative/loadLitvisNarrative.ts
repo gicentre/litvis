@@ -9,7 +9,7 @@ import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
 const MAX_CHAIN_LENGTH = 20;
 
-export default async (
+export const loadLitvisNarrative = async (
   filePath: string,
   filesInMemory: VFile[] = [],
   cache: Cache,

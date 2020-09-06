@@ -6,7 +6,7 @@ import { LitvisDocument } from "../../types";
 
 const supportedProperties = ["dependencies", "source-directories"];
 
-export default (dataWithPosition, document: LitvisDocument): void => {
+export const lintElm = (dataWithPosition, document: LitvisDocument): void => {
   if (!_.isUndefined(dataWithPosition.elm)) {
     const elm = getValue(dataWithPosition.elm);
     if (_.isNull(elm)) {

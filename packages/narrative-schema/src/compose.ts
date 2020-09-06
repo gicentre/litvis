@@ -6,7 +6,7 @@ import {
 } from "narrative-schema-common";
 import { resolveAliasesAndKeyByName } from "narrative-schema-label";
 
-const compose = async (
+export const compose = async (
   narrativeSchemas: NarrativeSchema[],
 ): Promise<ComposedNarrativeSchema> => {
   let labels: EntityDefinitionWithOrigin[] = [];
@@ -26,5 +26,3 @@ const compose = async (
     labelByName: resolveAliasesAndKeyByName(labels),
   };
 };
-
-export default compose;

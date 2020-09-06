@@ -1,10 +1,10 @@
 import { DataWithPosition, getKind, getPosition } from "data-with-position";
 import kindOf from "kind-of";
 
-import stringifyDataPath from "./stringifyDataPath";
+import { stringifyDataPath } from "./stringifyDataPath";
 import { NarrativeSchema } from "./types";
 
-const reportUnusedDataKeys = (
+export const reportUnusedDataKeys = (
   narrativeSchema: NarrativeSchema,
   dataWithPosition: DataWithPosition,
   usedData: any,
@@ -50,5 +50,3 @@ const reportUnusedDataKeys = (
     );
   }
 };
-
-export default reportUnusedDataKeys;

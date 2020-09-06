@@ -1,8 +1,10 @@
 import { ComposedNarrativeSchema } from "narrative-schema-common";
 
-import visitAndExtractHtml from "./visitAndExtractHtml";
+import { visitAndExtractHtml } from "./visitAndExtractHtml";
 
-export default (composedNarrativeSchema: ComposedNarrativeSchema) => () => {
+export const applySchemaToLabels = (
+  composedNarrativeSchema: ComposedNarrativeSchema,
+) => () => {
   return function transformer(ast, vFile, next) {
     visitAndExtractHtml(ast, vFile, composedNarrativeSchema.labelByName);
 

@@ -2,7 +2,7 @@ import { ComposedNarrativeSchema } from "narrative-schema-common";
 
 import { CssChunk } from "./types";
 
-export default (
+export const getCssChunks = (
   composedNarrativeSchema: ComposedNarrativeSchema,
 ): CssChunk[] => {
   const result: CssChunk[] = [];

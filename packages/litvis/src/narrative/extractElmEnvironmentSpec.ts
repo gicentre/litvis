@@ -4,7 +4,9 @@ import { resolve } from "path";
 
 import { LitvisNarrative } from "../types";
 
-export default async (narrative: LitvisNarrative): Promise<void> => {
+export const extractElmEnvironmentSpec = async (
+  narrative: LitvisNarrative,
+): Promise<void> => {
   // resolve litvisElmDependencies and litvisElmSourceDirectories
   const dependencies = {};
   const sourceDirectories: string[] = [];

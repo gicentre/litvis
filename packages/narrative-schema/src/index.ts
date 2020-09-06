@@ -4,4 +4,4 @@ export type {
   ComposedNarrativeSchema,
 } from "narrative-schema-common";
 
-export { default as loadAndCompose } from "./loadAndCompose";
+export { loadAndCompose } from "./loadAndCompose";

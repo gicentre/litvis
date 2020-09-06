@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import { LitvisDocument } from "../../types";
 
-export default (
+export const extractNarrativeSchemas = (
   dataWithPosition,
   document: LitvisDocument,
 ): {

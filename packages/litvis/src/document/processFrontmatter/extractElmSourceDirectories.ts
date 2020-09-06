@@ -5,7 +5,7 @@ import { Position } from "unist";
 
 import { LitvisDocument } from "../../types";
 
-export default (
+export const extractElmSourceDirectories = (
   dataWithPosition,
   document: LitvisDocument,
 ): {

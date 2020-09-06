@@ -1,12 +1,12 @@
 import { DataWithPosition, fromYaml } from "data-with-position";
 import { Node } from "unist";
 
-import { LitvisDocument } from "../types";
-import extractElmDependencies from "./frontmatter/extractElmDependencies";
-import extractElmSourceDirectories from "./frontmatter/extractElmSourceDirectories";
-import extractFollows from "./frontmatter/extractFollows";
-import extractNarrativeSchemas from "./frontmatter/extractNarrativeSchemas";
-import lintElm from "./frontmatter/lintElm";
+import { LitvisDocument } from "../../types";
+import { extractElmDependencies } from "./extractElmDependencies";
+import { extractElmSourceDirectories } from "./extractElmSourceDirectories";
+import { extractFollows } from "./extractFollows";
+import { extractNarrativeSchemas } from "./extractNarrativeSchemas";
+import { lintElm } from "./lintElm";
 
 const visitFrontmatter = (mdAst, document: LitvisDocument) => {
   const frontmatterNode: Node = mdAst.children[0];

@@ -1,5 +1,5 @@
-export { default as loadAndProcessLitvisNarrative } from "./narrative/loadAndProcess";
-export { default as listNarrativeFiles } from "./narrative/listFiles";
+export * from "./narrative/loadAndProcessLitvisNarrative";
+export * from "./narrative/listNarrativeFiles";
 
 export {
   extractAttributeDerivatives,

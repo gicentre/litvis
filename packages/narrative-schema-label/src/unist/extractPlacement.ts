@@ -4,7 +4,7 @@ import { VFile } from "vfile";
 
 import { LabelNode } from "../types";
 
-export default () => (ast, vFile: VFile) => {
+export const extractPlacement = () => (ast, vFile: VFile) => {
   return visit<LabelNode>(
     ast,
     "narrativeSchemaLabel",

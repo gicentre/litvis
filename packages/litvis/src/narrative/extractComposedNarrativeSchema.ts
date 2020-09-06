@@ -5,7 +5,7 @@ import { VFile } from "vfile";
 
 import { LitvisDocument, LitvisNarrative } from "../types";
 
-export default async (
+export const extractComposedNarrativeSchema = async (
   narrative: LitvisNarrative,
   filesInMemory: VFile[] = [],
 ): Promise<void> => {

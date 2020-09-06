@@ -19,43 +19,103 @@ const selectorShape = {
   trimmedContent: true,
 };
 
-export default (
-  dataWithPosition: DataWithPosition,
+const extractSelectorData = (
   narrativeSchema: NarrativeSchema,
-): EntityDefinition[] =>
-  extractArrayOfEntities(
-    narrativeSchema,
-    dataWithPosition,
-    "rules",
-    "rule",
-    extractDataFromRule,
-    {
-      description: true,
-      selector: selectorShape,
-      minimumOccurrences: true,
-      maximumOccurrences: true,
-      children: {
-        minimumTrimmedTextLength: true,
-      },
+  selectorWithPosition: DataWithPosition,
+  containerWithPosition: DataWithPosition,
+  dataPath: Array<number | string>,
+  selectorIsOptional = false,
+): null | any => {
+  const dataToReturn: any = {};
+  let selectorIsBroken = false;
 
-      // immediate following
-      followedBy: {
-        selector: selectorShape,
-        // notAfter: selectorShape,
-      },
-      notFollowedBy: {
-        selector: selectorShape,
-      },
+  const kindOfSelector = getKind(selectorWithPosition);
+  if (kindOfSelector === "undefined" || kindOfSelector === "null") {
+    if (!selectorIsOptional) {
+      narrativeSchema.message(
+        `Expected rule ${stringifyDataPath(
+          dataPath,
+        )} to be an object, got ${kindOfSelector}`,
+        getPosition(selectorWithPosition || containerWithPosition),
+        "narrative-schema:rule",
+      );
+      selectorIsBroken = true;
+    }
+  } else if (kindOfSelector !== "object") {
+    narrativeSchema.message(
+      `Expected rule selector to be an object, got ${kindOfSelector}`,
+      getPosition(selectorWithPosition),
+      "narrative-schema:rule",
+    );
+    selectorIsBroken = true;
+  } else {
+    // selector.label
+    const kindOfLabel = getKind(selectorWithPosition.label);
+    const label = getValue(selectorWithPosition.label);
+    if (kindOfLabel !== "string") {
+      narrativeSchema.message(
+        `Expected rule selector.label to be a string, got ${kindOfLabel}`,
+        getPosition(selectorWithPosition.label || selectorWithPosition),
+        "narrative-schema:rule",
+      );
+      selectorIsBroken = true;
+    } else if (!isValidLabelName(label)) {
+      narrativeSchema.message(
+        `Expected label name to have a form of an identifier (i.e. to consist of latin characters, numbers or _)`,
+        getPosition(selectorWithPosition.label),
+        "narrative-schema:rule",
+      );
+      selectorIsBroken = true;
+    } else {
+      dataToReturn.label = label;
+    }
 
-      // following anywhere in the narrative
-      before: {
-        selector: selectorShape,
-      },
-      after: {
-        selector: selectorShape,
-      },
-    },
-  );
+    // selector.kind
+    const kindOfKind = getKind(selectorWithPosition.kind);
+    const kind = getValue(selectorWithPosition.kind);
+    if (kindOfKind === "null" || kindOfKind === "undefined") {
+      // do nothing, because selector.kind is optional
+    } else if (kind !== "single" && kind !== "paired") {
+      narrativeSchema.message(
+        `Expected rule selector.kind to be "single" or "paired", got ${
+          kindOfKind === "string" ? kind : kindOfKind
+        }`,
+        getPosition(selectorWithPosition.kind || selectorWithPosition),
+        "narrative-schema:rule",
+      );
+      selectorIsBroken = true;
+    } else {
+      dataToReturn.label = label;
+    }
+
+    // selector trimmedContent
+    const kindOfTrimmedContent = getKind(selectorWithPosition.trimmedContent);
+    if (
+      kindOfTrimmedContent === "null" ||
+      kindOfTrimmedContent === "undefined"
+    ) {
+      //
+    } else if (kindOfTrimmedContent !== "string") {
+      narrativeSchema.message(
+        `Expected rule ${stringifyDataPath([
+          ...dataPath,
+          "trimmedContent",
+        ])} to be a string, got ${kindOfTrimmedContent}`,
+        getPosition(selectorWithPosition.trimmedContent),
+        "narrative-schema:rule",
+      );
+      selectorIsBroken = true;
+    } else {
+      dataToReturn.trimmedContent = getValue(
+        selectorWithPosition.trimmedContent,
+      );
+    }
+  }
+  if (selectorIsBroken) {
+    throw new Error("data is broken");
+  }
+  return dataToReturn;
+};
 
 const extractDataFromRule = (
   narrativeSchema,
@@ -236,100 +296,40 @@ const extractDataFromRule = (
   return ruleData;
 };
 
-const extractSelectorData = (
+export const extractDefinitions = (
+  dataWithPosition: DataWithPosition,
   narrativeSchema: NarrativeSchema,
-  selectorWithPosition: DataWithPosition,
-  containerWithPosition: DataWithPosition,
-  dataPath: Array<number | string>,
-  selectorIsOptional = false,
-): null | any => {
-  const dataToReturn: any = {};
-  let selectorIsBroken = false;
+): EntityDefinition[] =>
+  extractArrayOfEntities(
+    narrativeSchema,
+    dataWithPosition,
+    "rules",
+    "rule",
+    extractDataFromRule,
+    {
+      description: true,
+      selector: selectorShape,
+      minimumOccurrences: true,
+      maximumOccurrences: true,
+      children: {
+        minimumTrimmedTextLength: true,
+      },
 
-  const kindOfSelector = getKind(selectorWithPosition);
-  if (kindOfSelector === "undefined" || kindOfSelector === "null") {
-    if (!selectorIsOptional) {
-      narrativeSchema.message(
-        `Expected rule ${stringifyDataPath(
-          dataPath,
-        )} to be an object, got ${kindOfSelector}`,
-        getPosition(selectorWithPosition || containerWithPosition),
-        "narrative-schema:rule",
-      );
-      selectorIsBroken = true;
-    }
-  } else if (kindOfSelector !== "object") {
-    narrativeSchema.message(
-      `Expected rule selector to be an object, got ${kindOfSelector}`,
-      getPosition(selectorWithPosition),
-      "narrative-schema:rule",
-    );
-    selectorIsBroken = true;
-  } else {
-    // selector.label
-    const kindOfLabel = getKind(selectorWithPosition.label);
-    const label = getValue(selectorWithPosition.label);
-    if (kindOfLabel !== "string") {
-      narrativeSchema.message(
-        `Expected rule selector.label to be a string, got ${kindOfLabel}`,
-        getPosition(selectorWithPosition.label || selectorWithPosition),
-        "narrative-schema:rule",
-      );
-      selectorIsBroken = true;
-    } else if (!isValidLabelName(label)) {
-      narrativeSchema.message(
-        `Expected label name to have a form of an identifier (i.e. to consist of latin characters, numbers or _)`,
-        getPosition(selectorWithPosition.label),
-        "narrative-schema:rule",
-      );
-      selectorIsBroken = true;
-    } else {
-      dataToReturn.label = label;
-    }
+      // immediate following
+      followedBy: {
+        selector: selectorShape,
+        // notAfter: selectorShape,
+      },
+      notFollowedBy: {
+        selector: selectorShape,
+      },
 
-    // selector.kind
-    const kindOfKind = getKind(selectorWithPosition.kind);
-    const kind = getValue(selectorWithPosition.kind);
-    if (kindOfKind === "null" || kindOfKind === "undefined") {
-      // do nothing, because selector.kind is optional
-    } else if (kind !== "single" && kind !== "paired") {
-      narrativeSchema.message(
-        `Expected rule selector.kind to be "single" or "paired", got ${
-          kindOfKind === "string" ? kind : kindOfKind
-        }`,
-        getPosition(selectorWithPosition.kind || selectorWithPosition),
-        "narrative-schema:rule",
-      );
-      selectorIsBroken = true;
-    } else {
-      dataToReturn.label = label;
-    }
-
-    // selector trimmedContent
-    const kindOfTrimmedContent = getKind(selectorWithPosition.trimmedContent);
-    if (
-      kindOfTrimmedContent === "null" ||
-      kindOfTrimmedContent === "undefined"
-    ) {
-      //
-    } else if (kindOfTrimmedContent !== "string") {
-      narrativeSchema.message(
-        `Expected rule ${stringifyDataPath([
-          ...dataPath,
-          "trimmedContent",
-        ])} to be a string, got ${kindOfTrimmedContent}`,
-        getPosition(selectorWithPosition.trimmedContent),
-        "narrative-schema:rule",
-      );
-      selectorIsBroken = true;
-    } else {
-      dataToReturn.trimmedContent = getValue(
-        selectorWithPosition.trimmedContent,
-      );
-    }
-  }
-  if (selectorIsBroken) {
-    throw new Error("data is broken");
-  }
-  return dataToReturn;
-};
+      // following anywhere in the narrative
+      before: {
+        selector: selectorShape,
+      },
+      after: {
+        selector: selectorShape,
+      },
+    },
+  );

@@ -1,4 +1,4 @@
-export default (dataPath: Array<string | number>) => {
+export const stringifyDataPath = (dataPath: Array<string | number>) => {
   const result: string[] = [];
   dataPath.forEach((pathElement) => {
     if (typeof pathElement === "number" || pathElement.includes(" ")) {

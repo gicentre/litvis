@@ -1,5 +1,7 @@
 import { LitvisNarrative } from "../types";
 
-export default async (narrative: LitvisNarrative): Promise<void> => {
+export const convertCombinedAstToHtml = async (
+  narrative: LitvisNarrative,
+): Promise<void> => {
   // TODO implement
 };

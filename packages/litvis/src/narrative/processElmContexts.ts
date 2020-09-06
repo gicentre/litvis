@@ -36,7 +36,7 @@ interface UnprocessedLitvisContext {
   wrappedOutputExpressions: WrappedOutputExpression[];
 }
 
-export default async (
+export const processElmContexts = async (
   narrative: LitvisNarrative,
   cache: Cache,
 ): Promise<void> => {
@@ -330,10 +330,10 @@ export default async (
       },
     );
     narrative.contexts = processedContexts;
-  } catch (e) {
+  } catch (error) {
     try {
-      lastDocument.fail(e.message);
-    } catch (e) {
+      lastDocument.fail(error.message);
+    } catch {
       // no need for action - just preventing .fail() from throwing further
     }
   }

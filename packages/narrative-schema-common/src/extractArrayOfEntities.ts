@@ -1,9 +1,9 @@
 import { DataWithPosition, getKind, getPosition } from "data-with-position";
 
-import reportUnusedDataKeys from "./reportUnusedDataKeys";
+import { reportUnusedDataKeys } from "./reportUnusedDataKeys";
 import { EntityDefinition, NarrativeSchema } from "./types";
 
-export default (
+export const extractArrayOfEntities = (
   narrativeSchema: NarrativeSchema,
   dataWithPosition: DataWithPosition,
   dataKeyForEntityArray: string,

@@ -1,7 +1,7 @@
 import { LabelFence } from "../types";
 import { deriveLabelType } from "../utils";
 
-function locator(value, fromIndex) {
+const locator = (value, fromIndex) => {
   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
   const indexOfStartClosing = value.indexOf(
     LabelFence.START_CLOSING,
@@ -11,9 +11,10 @@ function locator(value, fromIndex) {
     return Math.min(indexOfStart, indexOfStartClosing);
   }
   return Math.max(indexOfStart, indexOfStartClosing);
-}
+};
 
-export default function plugin() {
+export const findLabels = () => {
+  // eslint-disable-next-line func-style
   function inlineTokenizer(eat, value, silent) {
     if (
       !value.startsWith(LabelFence.START) &&
@@ -68,4 +69,4 @@ export default function plugin() {
     0,
     "narrativeSchemaLabel",
   );
-}
+};

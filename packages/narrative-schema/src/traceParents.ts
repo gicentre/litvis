@@ -1,7 +1,9 @@
 // import _ from "lodash";
 import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
 
-export default (parents: Array<ParentDocument | NarrativeSchema>): string => {
+export const traceParents = (
+  parents: Array<ParentDocument | NarrativeSchema>,
+): string => {
   //   if (parents && parents.length) {
   //     const parts = _.reduce(
   //       parents,
