@@ -127,7 +127,7 @@ const extractArray = (text, start): Node | void => {
  * Parses block attributes
  * @param text e.g. {#identifier .class1 .class2 key1=value1 key2=value2}
  */
-export const parse = (text?: string): BlockAttributes => {
+export const parseBlockAttributes = (text?: string): BlockAttributes => {
   // remove surrounding { } if exist
   let textToParse = (text || "").trim();
   if (textToParse[0] === "{" && textToParse[textToParse.length - 1] === "}") {

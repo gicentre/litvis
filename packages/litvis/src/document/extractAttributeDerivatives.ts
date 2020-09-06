@@ -1,4 +1,4 @@
-import { parse as parseBlockInfo } from "block-info";
+import { parseBlockInfo } from "block-info";
 import visit from "unist-util-visit";
 
 import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";

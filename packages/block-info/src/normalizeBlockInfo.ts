@@ -1,4 +1,4 @@
-import { normalize as normalizeBlockAttributes } from "block-attributes";
+import { normalizeBlockAttributes } from "block-attributes";
 
 import { BlockInfo } from "./types";
 
@@ -9,7 +9,7 @@ const normalizeLanguage = (language?: string): string => {
   return "";
 };
 
-export const normalize = (blockInfo: BlockInfo): BlockInfo => {
+export const normalizeBlockInfo = (blockInfo: BlockInfo): BlockInfo => {
   const normalizedAttributes = normalizeBlockAttributes(blockInfo.attributes);
   const normalizedLanguage = normalizeLanguage(blockInfo.language);
   if (

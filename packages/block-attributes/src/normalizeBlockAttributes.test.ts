@@ -1,13 +1,13 @@
 import { sharedTestCases } from "./__fixtures__/testCases";
-import { normalize } from "./normalize";
+import { normalizeBlockAttributes } from "./normalizeBlockAttributes";
 
-describe("normalize()", () => {
+describe("normalizeBlockAttributes()", () => {
   sharedTestCases.map(({ attributes = null, normalizedAttributes = null }) => {
     if (!attributes || !normalizedAttributes) {
       return;
     }
     test(`works for ${JSON.stringify(attributes)}`, () => {
-      const result = normalize(attributes);
+      const result = normalizeBlockAttributes(attributes);
       expect(result).toEqual(normalizedAttributes);
     });
   });

@@ -1,7 +1,7 @@
 import { sharedTestCases } from "./__fixtures__/testCases";
-import { stringify } from "./stringify";
+import { stringifyBlockAttributes } from "./stringifyBlockAttributes";
 
-describe("stringify()", () => {
+describe("stringifyBlockAttributes()", () => {
   sharedTestCases.map(
     ({
       attributes = null,
@@ -20,11 +20,14 @@ describe("stringify()", () => {
       attributesToTest.map((attrs) => {
         test(`works for ${JSON.stringify(attrs)}`, () => {
           // without curly parentheses
-          const resultWithoutCurlyParentheses = stringify(attrs);
+          const resultWithoutCurlyParentheses = stringifyBlockAttributes(attrs);
           expect(resultWithoutCurlyParentheses).toEqual(stringified);
 
           // with curly parentheses (default)
-          const resultWithCurlyParentheses = stringify(attrs, true);
+          const resultWithCurlyParentheses = stringifyBlockAttributes(
+            attrs,
+            true,
+          );
           expect(resultWithCurlyParentheses).toEqual(`{${stringified}}`);
         });
       });

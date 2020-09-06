@@ -1,3 +1,3 @@
-export * from "./normalize";
-export * from "./parse";
+export * from "./normalizeBlockInfo";
+export * from "./parseBlockInfo";
 export * from "./types";
