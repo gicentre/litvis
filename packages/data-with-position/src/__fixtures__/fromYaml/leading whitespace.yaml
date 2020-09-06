@@ -1,12 +1,14 @@
-obj:
-  arr:
-    - nums:
+
+    obj:
+      arr:
+      - nums:
         - 1
         - 2
         - 3
-      strs1:
-        - "1"
-        - "2"
-        - "3"
-  str: "1"
-  num: 1
+        strs1:
+        - '1'
+        - '2'
+        - '3'
+      str: '1'
+      num: 1
+  

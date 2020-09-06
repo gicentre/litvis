@@ -98,7 +98,7 @@ const walk = (nodes: YAMLNode[], input, ctx = {}) => {
   return Array.isArray(ctx) ? walkArr() : walkObj();
 };
 
-visitorByNodeKind[Kind.MAP] = (node: YamlMap, input) => {
+visitorByNodeKind[Kind.MAP] = (node: YamlMap, input, ctx) => {
   return Object.assign(walk(node.mappings, input), {
     [positionKey]: calculatePosition(input, {
       start: node.startPosition,
