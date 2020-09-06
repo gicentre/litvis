@@ -3,7 +3,7 @@ import LRU from "lru-cache";
 
 const cache = new LRU(1000);
 
-export default (htmlTemplate: string) => {
+export const getCompiledHandlebarsTemplate = (htmlTemplate: string) => {
   if (!cache[htmlTemplate]) {
     try {
       cache[htmlTemplate] = compile(htmlTemplate);

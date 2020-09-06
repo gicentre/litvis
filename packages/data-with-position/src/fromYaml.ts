@@ -7,6 +7,7 @@ import {
   YAMLScalar,
   YAMLSequence,
 } from "yaml-ast-parser";
+
 import { kindKey, positionKey } from "./keys";
 import { DataKind, DataWithPosition, Position } from "./types";
 
@@ -75,70 +76,7 @@ const visitorByNodeKind: Record<
     input: string,
     ctx: unknown[] | Record<string, unknown> | undefined,
   ) => void
-> = {
-  [Kind.MAP]: (node: YamlMap, input, ctx) => {
-    return Object.assign(walk(node.mappings, input), {
-      [positionKey]: calculatePosition(input, {
-        start: node.startPosition,
-        end: node.endPosition,
-      }),
-      [kindKey]: "object",
-    });
-  },
-  [Kind.MAPPING]: (node: YAMLMapping, input, ctx) => {
-    const value = walk([node.value], input);
-
-    if (node.value === null) {
-      return Object.assign(ctx, {
-        [node.key.value]: wrappedNull(
-          calculatePosition(input, {
-            start: node.startPosition,
-            end: node.endPosition,
-          }),
-        ),
-      });
-    }
-
-    value[positionKey] = calculatePosition(input, {
-      start: node.startPosition,
-      end: node.endPosition,
-    });
-
-    return Object.assign(ctx, {
-      [node.key.value]: value,
-    });
-  },
-  [Kind.SCALAR]: (node: YAMLScalar, input) => {
-    if (!node) {
-      return;
-    }
-
-    const position = calculatePosition(input, {
-      start: node.startPosition,
-      end: node.endPosition,
-    });
-
-    if (typeof node.valueObject === "boolean") {
-      return wrappedScalar(Boolean, "boolean", node.valueObject, position);
-    } else if (typeof node.valueObject === "number") {
-      return wrappedScalar(Number, "number", node.valueObject, position);
-    } else if (node.valueObject === null || node.value === null) {
-      return wrappedNull(position);
-    }
-    return wrappedScalar(String, "string", node.value, position);
-  },
-  [Kind.SEQ]: (node: YAMLSequence, input) => {
-    const items = walk(node.items, input, []);
-
-    items[positionKey] = calculatePosition(input, {
-      start: node.startPosition,
-      end: node.endPosition,
-    });
-    items[kindKey] = "array";
-
-    return items;
-  },
-};
+> = {};
 
 const walk = (nodes: YAMLNode[], input, ctx = {}) => {
   const onNode = (node: YAMLNode, ctx2, fallback) => {
@@ -160,4 +98,71 @@ const walk = (nodes: YAMLNode[], input, ctx = {}) => {
   return Array.isArray(ctx) ? walkArr() : walkObj();
 };
 
-export default (input: string): DataWithPosition => walk([load(input)], input);
+visitorByNodeKind[Kind.MAP] = (node: YamlMap, input, ctx) => {
+  return Object.assign(walk(node.mappings, input), {
+    [positionKey]: calculatePosition(input, {
+      start: node.startPosition,
+      end: node.endPosition,
+    }),
+    [kindKey]: "object",
+  });
+};
+
+visitorByNodeKind[Kind.MAPPING] = (node: YAMLMapping, input, ctx) => {
+  const value = walk([node.value], input);
+
+  if (node.value === null) {
+    return Object.assign(ctx, {
+      [node.key.value]: wrappedNull(
+        calculatePosition(input, {
+          start: node.startPosition,
+          end: node.endPosition,
+        }),
+      ),
+    });
+  }
+
+  value[positionKey] = calculatePosition(input, {
+    start: node.startPosition,
+    end: node.endPosition,
+  });
+
+  return Object.assign(ctx, {
+    [node.key.value]: value,
+  });
+};
+
+visitorByNodeKind[Kind.SCALAR] = (node: YAMLScalar, input) => {
+  if (!node) {
+    return;
+  }
+
+  const position = calculatePosition(input, {
+    start: node.startPosition,
+    end: node.endPosition,
+  });
+
+  if (typeof node.valueObject === "boolean") {
+    return wrappedScalar(Boolean, "boolean", node.valueObject, position);
+  } else if (typeof node.valueObject === "number") {
+    return wrappedScalar(Number, "number", node.valueObject, position);
+  } else if (node.valueObject === null || node.value === null) {
+    return wrappedNull(position);
+  }
+  return wrappedScalar(String, "string", node.value, position);
+};
+
+visitorByNodeKind[Kind.SEQ] = (node: YAMLSequence, input) => {
+  const items = walk(node.items, input, []);
+
+  items[positionKey] = calculatePosition(input, {
+    start: node.startPosition,
+    end: node.endPosition,
+  });
+  items[kindKey] = "array";
+
+  return items;
+};
+
+export const fromYaml = (input: string): DataWithPosition =>
+  walk([load(input)], input);

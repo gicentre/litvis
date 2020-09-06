@@ -1,7 +1,8 @@
 import LRU from "lru-cache";
-import parse from "./parse";
 
-let cache: LRU<string, string | undefined | Error>;
+import { parse } from "./parse";
+
+let cache: LRU<string, Error | unknown>;
 
 /**
  * Returns Elm's string representation as a JS value.
@@ -16,7 +17,7 @@ let cache: LRU<string, string | undefined | Error>;
  * * '{a = 1, b = 2}' -> {a: 1, b: 2} (json)
  * * '{0 = "a", 1 = 42}' -> ["a", 42] (array)
  */
-export default (text: string): any => {
+export const parseUsingCache = (text: string): unknown => {
   if (!cache) {
     cache = new LRU(100);
   }

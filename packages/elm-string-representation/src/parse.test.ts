@@ -1,4 +1,4 @@
-import parse from "./parse";
+import { parse } from "./parse";
 
 export const testCases: Array<{
   input: any[];

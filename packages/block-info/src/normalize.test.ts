@@ -1,4 +1,5 @@
-import { BlockInfo, normalize } from ".";
+import { normalize } from "./normalize";
+import { BlockInfo } from "./types";
 
 const testCases: Array<{
   infos: object[];

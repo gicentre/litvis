@@ -14,14 +14,15 @@
     "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
     "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
     "fix": "npm-run-all --continue-on-error fix:*",
+    "fix:eslint": "eslint --fix \"**/*\"",
     "fix:markdownlint": "markdownlint --fix \"**/*\"",
     "fix:prettier": "prettier --write .",
     "fix:yarn-deduplicate": "yarn install && yarn-deduplicate --strategy=fewer && yarn install",
     "lint": "npm-run-all --continue-on-error lint:*",
+    "lint:eslint": "eslint \"**/*\" --report-unused-disable-directives",
     "lint:markdownlint": "markdownlint \"**/*\"",
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --project .",
-    "lint:tslint": "lerna exec \"tslint --project .\"",
     "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "qa": "yarn lint && yarn test --coverage",
     "release": "yarn build-and-qa && lerna publish",
@@ -41,6 +42,7 @@
   },
   "lint-staged": {
     "**/*": [
+      "eslint --fix",
       "suppress-exit-code markdownlint --fix",
       "prettier --write"
     ]
@@ -51,6 +53,7 @@
   "dependencies": {},
   "devDependencies": {
     "@hkdobrev/run-if-changed": "^0.3.1",
+    "@kachkaev/eslint-config-base": "^0.1.0",
     "@types/cheerio": "^0.22.21",
     "@types/fs-extra": "^9.0.1",
     "@types/html-entities": "^1.2.16",
@@ -64,6 +67,7 @@
     "@types/object-hash": "^1.3.3",
     "@types/unist": "^2.0.3",
     "@types/yamljs": "^0.2.31",
+    "eslint": "^7.8.1",
     "globby": "^11.0.1",
     "husky": "^4.2.5",
     "jest": "^26.4.2",
@@ -78,8 +82,6 @@
     "rimraf": "^3.0.2",
     "suppress-exit-code": "^0.1.0",
     "ts-jest": "^26.3.0",
-    "tslint": "^6.1.3",
-    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.9.7",
     "yarn-deduplicate": "^3.0.0"
   },

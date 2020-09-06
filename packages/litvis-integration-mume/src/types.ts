@@ -1,6 +1,5 @@
-import LRU from "lru-cache";
-
 import { Cache as LitvisCache } from "litvis";
+import LRU from "lru-cache";
 
 export interface LitvisEnhancerCache {
   litvisCache: LitvisCache;

@@ -1,18 +1,16 @@
 import fs from "fs";
-// tslint:disable-next-line:no-implicit-dependencies
 import globby from "globby";
-// tslint:disable-next-line:no-implicit-dependencies
 import kindOf from "kind-of";
-// tslint:disable-next-line:no-implicit-dependencies
 import _ from "lodash";
 import path from "path";
-import { FromYamlTestCaseConfig } from "./fixtures/types";
-import fromYaml from "./fromYaml";
-import getKind from "./getKind";
-import getPosition from "./getPosition";
-import getValue from "./getValue";
 
-const yamlPaths = globby.sync(`fixtures/fromYaml/*.yaml`, {
+import { FromYamlTestCaseConfig } from "./__fixtures__/types";
+import { fromYaml } from "./fromYaml";
+import { getKind } from "./getKind";
+import { getPosition } from "./getPosition";
+import { getValue } from "./getValue";
+
+const yamlPaths = globby.sync(`__fixtures__/fromYaml/*.yaml`, {
   cwd: __dirname,
   absolute: true,
 });
@@ -20,7 +18,7 @@ _.forEach(yamlPaths, (yamlPath) => {
   const fixtureName = path.basename(yamlPath, ".yaml");
   describe(`fromYaml() for fixture ${fixtureName}`, () => {
     const configPath = yamlPath.replace(/\.yaml$/, ".config");
-    const config = require(configPath).default as FromYamlTestCaseConfig;
+    const config = require(configPath).config as FromYamlTestCaseConfig;
 
     const dataWithPosition = fromYaml(fs.readFileSync(yamlPath, "utf-8"));
 
@@ -76,7 +74,6 @@ _.forEach(yamlPaths, (yamlPath) => {
             nodeDefinition.expectedArrayLength! - 1,
           );
 
-          // tslint:disable-next-line:prefer-for-of
           for (let i = 0; i < node.length; i += 1) {
             expect(node[i]).toBeDefined();
           }

@@ -1,6 +1,6 @@
 import { DataWithPosition } from "./types";
 
-const getValue = (dataWithPosition: DataWithPosition): any => {
+export const getValue = (dataWithPosition: DataWithPosition): any => {
   if (typeof dataWithPosition === "undefined") {
     return undefined;
   }
@@ -23,5 +23,3 @@ const getValue = (dataWithPosition: DataWithPosition): any => {
     return value;
   }
 };
-
-export default getValue;

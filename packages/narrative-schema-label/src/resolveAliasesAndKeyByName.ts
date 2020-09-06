@@ -1,7 +1,7 @@
 import { getPosition } from "data-with-position";
 import { EntityDefinitionWithOrigin } from "narrative-schema-common";
 
-export default (
+export const resolveAliasesAndKeyByName = (
   labelDefinitions: EntityDefinitionWithOrigin[],
 ): { [name: string]: EntityDefinitionWithOrigin } => {
   const result: { [name: string]: EntityDefinitionWithOrigin } = {};

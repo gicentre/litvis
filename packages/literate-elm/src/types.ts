@@ -1,4 +1,3 @@
-// tslint:disable-next-line:no-implicit-dependencies
 import { Position } from "unist";
 
 export interface ElmSymbol {

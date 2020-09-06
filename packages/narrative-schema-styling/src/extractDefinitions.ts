@@ -10,7 +10,7 @@ import {
   reportUnusedDataKeys,
 } from "narrative-schema-common";
 
-export default (
+export const extractDefinitions = (
   dataWithPosition: DataWithPosition,
   narrativeSchema: NarrativeSchema,
 ): EntityDefinition[] => {

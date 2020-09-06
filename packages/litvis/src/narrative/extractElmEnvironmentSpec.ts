@@ -1,9 +1,12 @@
 import { stat } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
+
 import { LitvisNarrative } from "../types";
 
-export default async (narrative: LitvisNarrative): Promise<void> => {
+export const extractElmEnvironmentSpec = async (
+  narrative: LitvisNarrative,
+): Promise<void> => {
   // resolve litvisElmDependencies and litvisElmSourceDirectories
   const dependencies = {};
   const sourceDirectories: string[] = [];
@@ -18,7 +21,7 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
           } else {
             document.info(
               `‘elm.dependencies.${packageName}:’ setting ${packageVersion} to false is only necessary if this packaged is mentioned in upstream documents.`,
-              document.data.litvisElmDependencyPositions![packageName],
+              document.data.litvisElmDependencyPositions?.[packageName],
               "litvis:elm-dependencies",
             );
           }
@@ -34,9 +37,8 @@ export default async (narrative: LitvisNarrative): Promise<void> => {
     _.forEach(
       document.data.litvisElmSourceDirectoryPaths,
       (dir: string, index: number) => {
-        const position = document.data.litvisElmSourceDirectoryPositions![
-          index
-        ];
+        const position =
+          document.data.litvisElmSourceDirectoryPositions?.[index];
         const resolvedDir = resolvedDirsInThisFile[index];
         if (_.indexOf(resolvedDirsInThisFile, resolvedDir) < index) {
           document.info(

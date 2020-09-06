@@ -1,0 +1,26 @@
+## extensions
+*.*
+LICENSE
+!*.js
+!*.json
+!*.ts
+!*.tsx
+
+## same as in .gitignore
+# elm-package generated files
+elm-stuff
+# elm-repl generated files
+repl-temp-*
+
+# node-related files
+coverage
+dist
+lerna-debug.log
+node_modules
+yarn-error.log
+
+
+## shared between linters
+CNAME
+LICENSE
+packages/data-with-position/src/__fixtures__/fromYaml

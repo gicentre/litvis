@@ -6,6 +6,7 @@
     "module": "commonjs",
     "noImplicitAny": false,
     "noUnusedLocals": true,
+    "isolatedModules": true,
     "preserveWatchOutput": true,
     "sourceMap": true,
     "strictNullChecks": true,

@@ -6,17 +6,20 @@ import {
   runProgram,
 } from "literate-elm";
 import _ from "lodash";
+import { Position } from "unist";
 import visit from "unist-util-visit";
+
 import {
   Cache,
   CodeBlock,
   EvaluatedOutputExpression,
   FailedLitvisContext,
   LitvisCodeBlock,
+  LitvisNarrative,
   OutputExpression,
+  ProcessedLitvisContext,
   SucceededLitvisContext,
 } from "../types";
-import { LitvisNarrative, ProcessedLitvisContext } from "../types";
 
 interface WrappedCodeBlock {
   documentIndex: number;
@@ -34,7 +37,12 @@ interface UnprocessedLitvisContext {
   wrappedOutputExpressions: WrappedOutputExpression[];
 }
 
-export default async (
+const fallbackPosition: Position = {
+  start: { column: 0, line: 0 },
+  end: { column: 0, line: 0 },
+};
+
+export const processElmContexts = async (
   narrative: LitvisNarrative,
   cache: Cache,
 ): Promise<void> => {
@@ -173,7 +181,7 @@ export default async (
           wrappedCodeBlocks,
           (wrappedCodeBlock) => ({
             text: wrappedCodeBlock.subject.value,
-            position: wrappedCodeBlock.subject.position!,
+            position: wrappedCodeBlock.subject.position || fallbackPosition,
             fileIndex: wrappedCodeBlock.documentIndex,
           }),
         );
@@ -182,7 +190,8 @@ export default async (
           wrappedOutputExpressions,
           (wrappedOutputExpression) => ({
             text: wrappedOutputExpression.subject.data.text,
-            position: wrappedOutputExpression.subject.position!,
+            position:
+              wrappedOutputExpression.subject.position || fallbackPosition,
             fileIndex: wrappedOutputExpression.documentIndex,
           }),
         );
@@ -200,6 +209,7 @@ export default async (
     }
 
     const literateElmEnvironment = await ensureEnvironment(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       narrative.elmEnvironmentSpecForLastFile!,
       cache.literateElmDirectory,
     );
@@ -207,7 +217,7 @@ export default async (
     if (literateElmEnvironment.metadata.status !== "ready") {
       try {
         lastDocument.fail(
-          literateElmEnvironment.metadata.errorMessage!,
+          literateElmEnvironment.metadata.errorMessage || "Unknown error",
           undefined,
           "litvis:elm-environment",
         );
@@ -328,10 +338,10 @@ export default async (
       },
     );
     narrative.contexts = processedContexts;
-  } catch (e) {
+  } catch (error) {
     try {
-      lastDocument.fail(e.message);
-    } catch (e) {
+      lastDocument.fail(error.message);
+    } catch {
       // no need for action - just preventing .fail() from throwing further
     }
   }

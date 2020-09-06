@@ -27,20 +27,8 @@ jobs:
       - name: Build packages
         run: yarn build
 
-      - name: Lint with markdownlint
-        run: yarn lint:markdownlint
-
-      - name: Lint with prettier
-        run: yarn lint:prettier
-
-      - name: Lint with tsc
-        run: yarn lint:tsc
-
-      - name: Lint with tslint
-        run: yarn lint:tslint
-
-      - name: Lint with yarn-deduplicate
-        run: yarn lint:yarn-deduplicate
+      - name: Lint
+        run: yarn lint
 
   unit-tests:
     name: Unit tests

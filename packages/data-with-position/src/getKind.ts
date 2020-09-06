@@ -1,7 +1,7 @@
 import { kindKey } from "./keys";
 import { DataKind, DataWithPosition } from "./types";
 
-export default (dataWithPosition?: DataWithPosition): DataKind => {
+export const getKind = (dataWithPosition?: DataWithPosition): DataKind => {
   if (!dataWithPosition) {
     return "undefined";
   }

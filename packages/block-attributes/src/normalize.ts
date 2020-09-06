@@ -1,11 +1,11 @@
 import snakeCase = require("lodash.snakecase");
-import { BlockAttributes } from ".";
+import { BlockAttributes } from "./types";
 
 /**
  * Walks through attribute keys and makes them snakeCase if needed
  * @param attributes
  */
-export default function (attributes: BlockAttributes): BlockAttributes {
+export const normalize = (attributes: BlockAttributes): BlockAttributes => {
   if (typeof attributes !== "object") {
     return {};
   }
@@ -24,4 +24,4 @@ export default function (attributes: BlockAttributes): BlockAttributes {
   }
 
   return changed ? result : attributes;
-}
+};

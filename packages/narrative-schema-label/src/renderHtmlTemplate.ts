@@ -1,12 +1,13 @@
 import { BlockAttributes } from "block-attributes";
 import { load } from "cheerio";
+
 // import { Position } from "data-with-position";
-import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
+import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
 import { LabelType } from "./types";
 
 const FAKE_CHILDREN_CONTENTS = "__FAKE_CHILDREN__";
 
-export default (
+export const renderHtmlTemplate = (
   htmlTemplate,
   labelName: string,
   labelType: LabelType,

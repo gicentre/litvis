@@ -1,10 +1,11 @@
 import { DataWithPosition } from "data-with-position";
 import { ComposedNarrativeSchema } from "narrative-schema-common";
 import { VFile } from "vfile";
-import compose from "./compose";
-import load from "./load";
 
-export default async <Document extends VFile>(
+import { compose } from "./compose";
+import { load } from "./load";
+
+export const loadAndCompose = async <Document extends VFile>(
   dependenciesWithPosition: DataWithPosition,
   parent: Document,
   filesInMemory: VFile[],

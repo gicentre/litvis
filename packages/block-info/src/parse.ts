@@ -2,9 +2,10 @@ import {
   BlockAttributes,
   parse as parseBlockAttributes,
 } from "block-attributes";
-import { BlockInfo } from ".";
 
-export default function (raw: string = ""): BlockInfo {
+import { BlockInfo } from "./types";
+
+export const parse = (raw = ""): BlockInfo => {
   let language;
   let attributesAsString: string;
   let attributes: BlockAttributes;
@@ -35,4 +36,4 @@ export default function (raw: string = ""): BlockInfo {
   }
 
   return { language, attributes };
-}
+};

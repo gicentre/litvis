@@ -17,9 +17,24 @@ import { extractDefinitions as extractStylingDefinitions } from "narrative-schem
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
-import traceParents from "./traceParents";
 
-const load = async (
+import { traceParents } from "./traceParents";
+
+const resolveNarrativeSchemaPath = async (
+  path: string,
+  file: VFile,
+): Promise<string> => {
+  let result = resolve(file.dirname || "", path);
+  if (
+    !_.endsWith(result.toLowerCase(), ".yml") &&
+    !_.endsWith(result.toLowerCase(), ".yaml")
+  ) {
+    result += ".yml";
+  }
+  return result;
+};
+
+export const load = async (
   dependenciesWithPosition: DataWithPosition,
   parents: Array<ParentDocument | NarrativeSchema>,
   filesInMemory: VFile[],
@@ -99,7 +114,7 @@ const load = async (
           undefined,
           "narrative-schema:load",
         );
-      } catch (e) {
+      } catch {
         // noop, just preventing Error throwing
       }
       continue;
@@ -151,22 +166,6 @@ const load = async (
       },
       [],
     );
-  }
-  return result;
-};
-
-export default load;
-
-const resolveNarrativeSchemaPath = async (
-  path: string,
-  file: VFile,
-): Promise<string> => {
-  let result = resolve(file.dirname!, path);
-  if (
-    !_.endsWith(result.toLowerCase(), ".yml") &&
-    !_.endsWith(result.toLowerCase(), ".yaml")
-  ) {
-    result += ".yml";
   }
   return result;
 };

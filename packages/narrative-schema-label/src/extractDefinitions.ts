@@ -10,26 +10,9 @@ import {
   extractArrayOfEntities,
   NarrativeSchema,
 } from "narrative-schema-common";
-import getCompiledHandlebarsTemplate from "./getCompiledHandlebarsTemplate";
-import { isValidLabelName } from "./utils";
 
-export default (
-  dataWithPosition: DataWithPosition,
-  narrativeSchema: NarrativeSchema,
-): EntityDefinition[] =>
-  extractArrayOfEntities(
-    narrativeSchema,
-    dataWithPosition,
-    "labels",
-    "label",
-    extractDataFromLabel,
-    {
-      name: "",
-      aliasFor: "",
-      paired: { htmlTemplate: "" },
-      single: { htmlTemplate: "" },
-    },
-  );
+import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
+import { isValidLabelName } from "./utils";
 
 const extractDataFromLabel = (
   narrativeSchema,
@@ -152,3 +135,21 @@ const extractDataFromLabel = (
   }
   return labelData;
 };
+
+export const extractDefinitions = (
+  dataWithPosition: DataWithPosition,
+  narrativeSchema: NarrativeSchema,
+): EntityDefinition[] =>
+  extractArrayOfEntities(
+    narrativeSchema,
+    dataWithPosition,
+    "labels",
+    "label",
+    extractDataFromLabel,
+    {
+      name: "",
+      aliasFor: "",
+      paired: { htmlTemplate: "" },
+      single: { htmlTemplate: "" },
+    },
+  );

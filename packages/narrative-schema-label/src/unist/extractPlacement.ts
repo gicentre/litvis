@@ -1,10 +1,10 @@
-// tslint:disable-next-line:no-implicit-dependencies
 import { Parent } from "unist";
 import visit from "unist-util-visit-parents";
 import { VFile } from "vfile";
+
 import { LabelNode } from "../types";
 
-export default () => (ast, vFile: VFile) => {
+export const extractPlacement = () => (ast, vFile: VFile) => {
   return visit<LabelNode>(
     ast,
     "narrativeSchemaLabel",
