@@ -14,6 +14,7 @@ narrative-schemas:
 import VegaLite exposing (..)
 ```
 
+1.  [Installing litvis](installingLitvis.md)
 1.  [Writing your first litvis documents](intro1.md)
 1.  [Branching narratives](intro2.md)
 1.  **Narrative schemas**
@@ -144,7 +145,7 @@ rules:
       label: limitations
     minimumOccurrences: 1
 
-  - description: An idiom's description should be provided before listing its limtitations.
+  - description: An idiom's description should be provided before listing its limitations.
     selector:
       label: desc
     before:

@@ -7,7 +7,8 @@ narrative-schemas:
 
 @import "../css/tutorial.less"
 
-1.  **Writing your first litvis documents**
+1.  [Installing litvis](installingLitvis.md)
+1.  **Writing your first litvis documents]**
 1.  [Branching narratives](intro2.md)
 1.  [Narrative schemas](intro3.md)
 
@@ -15,7 +16,7 @@ narrative-schemas:
 
 # Writing your first litvis documents
 
-At its simplest, a litvis document is just text written using the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. Markdown has the advantage that it uses easy to remember text formatting instructions that are directly readable even before they are formatted. For example, have a look at this document in either the [Atom](https://atom.io) or [VS Code](https://code.visualstudio.com) editor making sure to select the preview panel to see the formatted output.
+At its simplest, a litvis document is just text written using the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. Markdown has the advantage that it uses easy to remember text formatting instructions that are directly readable even before they are formatted. For example, have a look at this document in either the [VS Code](https://code.visualstudio.com) or [Atom](https://atom.io) editor making sure to select the preview panel to see the formatted output.
 
 But litvis is more than a markdown editor for text. You can also write, edit and debug code for creating visualizations; render those visualization directly in your litvis document; arrange alternative visualization designs in _branches_; and validate the text in your litvis documents with _narrative schemas_. We will look at each of these in turn.
 

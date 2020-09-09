@@ -10,6 +10,8 @@ A light-touch approach to designing, building and describing visualization. Here
 
 ## Setting up litvis
 
+_(If you unfamiliar with the using npm or configuring editors, you can view these [more detailed setup instructions](documents/tutorials/introduction/installingLitvis.md) that show you how to install and set up VSCode to work with litvis.)_
+
 Litvis documents can be viewed and created in either the _VS Code_ (recommended) or _Atom_ editors:
 
 1.  If you don't have it already, [install Node.js](https://nodejs.org/en). This will allow you to use _npm_, used for installing some of the other necessary software.

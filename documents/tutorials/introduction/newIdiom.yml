@@ -37,7 +37,7 @@ rules:
       label: limitations
     minimumOccurrences: 1
 
-  - description: An idiom's description should be provided before listing its limtitations.
+  - description: An idiom's description should be provided before listing its limitations.
     selector:
       label: desc
     before:

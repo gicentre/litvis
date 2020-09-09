@@ -7,6 +7,7 @@ narrative-schemas:
 
 @import "../css/tutorial.less"
 
+1.  [Installing litvis](installingLitvis.md)
 1.  [Writing your first litvis documents](intro1.md)
 1.  **Branching narratives**
 1.  [Narrative schemas](intro3.md)
