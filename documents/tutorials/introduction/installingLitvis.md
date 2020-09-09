@@ -3,10 +3,6 @@ id: "litvis"
 
 narrative-schemas:
   - ../schemas/tutorial
-
-elm:
-  dependencies:
-    gicentre/elm-vegalite: latest
 ---
 
 @import "../css/tutorial.less"
