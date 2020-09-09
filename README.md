@@ -8,7 +8,7 @@ A light-touch approach to designing, building and describing visualization. Here
 - [Narrative Schemas](narrative-schemas) to help you write literate visualization documents.
 - [Packages](packages) for developers working with litvis and NPM.
 
-## Installing litvis
+## Setting up litvis
 
 Litvis documents can be viewed and created in either the _VS Code_ (recommended) or _Atom_ editors:
 
@@ -49,6 +49,22 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
     - Search for `language-markdown` and install _(markdown syntax highlighting)_.
 
     - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
+
+1.  Configuring Your Editor
+
+    To make using litvis as smooth as possible, we recommend the following editor configuration options:
+
+    **If using VS Code:**
+
+    - Under `Preferences->Settings`, change the following from their default settings:
+      - `Text Editor -> Formatting`: ensure `Format On Save` is ticked
+      - `Extensions -> Markdown Preview Enhanced with litvis`: ensure `Live Update` is _not_ ticked.
+      - `Extensions -> Prettier` and ensure `Prettier: Resolve Global Modules` is ticked.
+
+    **If using Atom:**
+
+    - `Settings->Packages` (Windows) or `Atom->Preferences->Packages` (MacOS) or `Edit->Preferences->Packages` (Linux), scroll down to _Prettier-atom_, click `Settings` and make sure `Format files on Save` is ticked.
+    - In `Packages` (as above) scroll down to _Markdown-Preview-Enhanced-with-litvis_, click `Settings` and ensure `live Update` and ensure it is _not_ ticked.
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 
@@ -111,7 +127,7 @@ Adding `interactive` to a code block with `v` or a triple hat reference makes vi
 
 > [examples/features/interaction.md](examples/features/interaction.md)
 
-### Mutliple execution contexts
+### Multiple execution contexts
 
 Although a single Elm execution context may be sufficient in many litvis narratives, context isolation may be desired in some cases. A number of code block attributes such as `context`, `id`, `follows`, `isolated` and `siding` enable fine-grained control of Elm symbol visibility, thus making it easier to accomplish certain tasks.
 
@@ -138,7 +154,7 @@ The purpose of the schema is to provide a set of structured guidelines to assist
 
 ![narrativeschemas](https://user-images.githubusercontent.com/1846999/91980779-b71b2500-ed1f-11ea-8e88-30ab35c90455.gif)
 
-> [examples/crossQuadCharts.md](examples/crossQuadCharts.md) > [narrative-schemas/idiom.yml](snarrative-chemas/idiom.yml)
+> [examples/crossQuadCharts.md](examples/crossQuadCharts.md) > [narrative-schemas/idiom.yml](narrative-schemas/idiom.yml)
 
 ## Automatic code formatting
 
