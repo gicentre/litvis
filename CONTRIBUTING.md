@@ -177,19 +177,19 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
     ```sh
     NAME=vega
-    VERSION=5.14.0
+    VERSION=5.17.0
     BUILD_PATH=
     ```
 
     ```sh
     NAME=vega-lite
-    VERSION=4.14.1
+    VERSION=4.17.0
     BUILD_PATH=
     ```
 
     ```sh
     NAME=vega-embed
-    VERSION=6.11.1
+    VERSION=6.12.2
     BUILD_PATH=
     ```
 
