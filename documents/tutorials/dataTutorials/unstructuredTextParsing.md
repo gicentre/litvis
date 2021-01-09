@@ -70,7 +70,7 @@ We can use another built-in parser [keyword](https://package.elm-lang.org/packag
 
 Putting these together with our `ignoredText` parser, we can create our cat parser to extract the value of some numeric text only if it is immediately followed by the word `cat`:
 
-```elm  {l}
+```elm {l}
 catCounter1 : Parser Int
 catCounter1 =
     P.succeed identity
@@ -99,7 +99,7 @@ input2 =
 
 The problem is that we are looking for numbers followed by the word `cats`, but we could also legitimately have the word `cat`. This is easily solved with the option [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) that allows us to consider alternatives in our parsing sequence:
 
-```elm  {l}
+```elm {l}
 catCounter2 : Parser Int
 catCounter2 =
     P.succeed identity
@@ -125,7 +125,7 @@ Here we have another problem. Our parser finds the first digit `2`, sees the wor
 
 Firstly, rather than use [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword), let's make a more general parser that can capture any word and return the text of that word:
 
-```elm  {l}
+```elm {l}
 word : Parser String
 word =
     P.getChompedString <|
