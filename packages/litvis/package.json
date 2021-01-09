@@ -1,6 +1,6 @@
 {
   "name": "litvis",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Literate Visualization, http://litvis.org/",
   "keywords": [],
   "repository": {
@@ -20,8 +20,8 @@
     "kind-of": "^6.0.3",
     "literate-elm": "^0.8.1",
     "lodash": "^4.17.20",
-    "narrative-schema": "^0.4.1",
-    "narrative-schema-label": "^0.4.1",
+    "narrative-schema": "^0.4.2",
+    "narrative-schema-label": "^0.4.2",
     "remark-frontmatter": "^2.0.0",
     "remark-parse": "^8.0.3",
     "temp-dir": "^2.0.0",
