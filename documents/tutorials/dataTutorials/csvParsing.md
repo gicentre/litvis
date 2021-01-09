@@ -33,35 +33,33 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,fare,cabin,embarked,boat,body,ho
 
 into a list of lists of strings where each string is a value in the CSV file that was originally separated by a comma.
 
-| pclass | survived | name                                                  | sex    | age    | sibsp | parch | ticket | fare     | cabin   | embarked | boat | body | home.dest                         |
-| ------ | -------- | ----------------------------------------------------- | ------ | ------ | ----- | ----- | ------ | -------- | ------- | -------- | ---- | ---- | --------------------------------- |
-| 1      | 1        | "Allen, Miss. Elisabeth Walton"                       | female | 29     | 0     | 0     | 24160  | 211.3375 | B5      | S        | 2    |      | "St Louis, MO"                    |
-| 1      | 1        | "Allison, Master. Hudson Trevor"                      | male   | 0.9167 | 1     | 2     | 113781 | 151.55   | C22 C26 | S        | 11   |      | "Montreal, PQ / Chesterville, ON" |
-| 1      | 0        | "Allison, Miss. Helen Loraine"                        | female | 2      | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      |      | "Montreal, PQ / Chesterville, ON" |
-| 1      | 0        | "Allison, Mr. Hudson Joshua Creighton"                | male   | 30     | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      | 135  | "Montreal, PQ / Chesterville, ON" |
-| 1      | 0        | "Allison, Mrs. Hudson J C (Bessie \"Waldo\" Daniels)" | female | 25     | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      |      | "Montreal, PQ / Chesterville, ON" |
-| 1      | 1        | "Anderson, Mr. Harry"                                 | male   | 48     | 0     | 0     | 19952  | 26.55    | E12     | S        | 3    |      | "New York, NY"                    |
+| pclass | survived | name                                              | sex    | age    | sibsp | parch | ticket | fare     | cabin   | embarked | boat | body | home.dest                         |
+| ------ | -------- | ------------------------------------------------- | ------ | ------ | ----- | ----- | ------ | -------- | ------- | -------- | ---- | ---- | --------------------------------- |
+| 1      | 1        | "Allen, Miss. Elisabeth Walton"                   | female | 29     | 0     | 0     | 24160  | 211.3375 | B5      | S        | 2    |      | "St Louis, MO"                    |
+| 1      | 1        | "Allison, Master. Hudson Trevor"                  | male   | 0.9167 | 1     | 2     | 113781 | 151.55   | C22 C26 | S        | 11   |      | "Montreal, PQ / Chesterville, ON" |
+| 1      | 0        | "Allison, Miss. Helen Loraine"                    | female | 2      | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      |      | "Montreal, PQ / Chesterville, ON" |
+| 1      | 0        | "Allison, Mr. Hudson Joshua Creighton"            | male   | 30     | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      | 135  | "Montreal, PQ / Chesterville, ON" |
+| 1      | 0        | "Allison, Mrs. Hudson J C (Bessie Waldo Daniels)" | female | 25     | 1     | 2     | 113781 | 151.55   | C22 C26 | S        |      |      | "Montreal, PQ / Chesterville, ON" |
+| 1      | 1        | "Anderson, Mr. Harry"                             | male   | 48     | 0     | 0     | 19952  | 26.55    | E12     | S        | 3    |      | "New York, NY"                    |
 
 Note some of the complications that can arise in a CSV file.
 
 - There may be blank lines in our input (first and last in this example), which we should ignore.
 - The first non-blank line is a _header_ that should contain the same number of comma separated values as in subsequent lines, but the values themselves may be of a different form to the data values in later lines.
-- While commas are used to separate values, the values themselves may contain commas which do not act as separators if they are _escaped_ or they are part of a string enclosed in quotation marks.
-- Quotation marks should not be included in the parsed output unless they are _escaped_. For this exercise we will regard an escaped symbol (comma, backslash or double quote) as one preceded by a `\` symbol.
+- While commas are used to separate values, the values themselves may contain commas which do not act as separators if they are _escaped_ within a string enclosed by quotation marks.
 - There may be consecutive commas indicating an empty value between them.
+- A line that starts with a comma indicates a empty first value. Likewise a line that ends with a comma indicates an empty final value.
 
 ## A data structure to store the parsed results
 
-A good first step is to define a top-level parsing function that describes the format of the input and the desired output. Any parsed CSV file should contain a header with the names of each column in the data along with some rows of actual data values. We might therefore define the output of our CSV parsing as
+A good first step is to define a top-level parsing function that describes the format of the input and the desired output. Any parsed CSV file should contain a header with the names of each column in the data along with some rows of actual data values. We might therefore define the output of our CSV parsing as a record that separates the header names from the main body of values:
 
 ```elm {l}
 type alias Table =
-    ( List String, List (List String) )
+    { header : List String, body : List (List String) }
 ```
 
-where the first element of the tuple is a list of header names and the second element a list of table rows.
-
-A parser would take an input string that had been split it into non-empty lines and parse the first one into the header and the remaining into the body of the table:
+The parser should take an input string that has been split into non-empty lines and parse the first one into the header and the remaining into the body of the table:
 
 ```elm {l}
 parse : Parser (List String) -> String -> Table
@@ -76,16 +74,16 @@ parse parser input =
                     []
     in
     case input |> String.lines |> List.filter (String.length >> (/=) 0) >> List.map parseLine of
-        hd :: tl ->
-            ( hd, tl )
+        header :: body ->
+            Table header body
 
         [] ->
-            ( [], [] )
+            Table [] []
 ```
 
 ## Parsing a simple case
 
-Let's start with a simpler example of input so we can create first attempt at a parser.
+Let's start with a simple example of input so we can create a first attempt at a parser.
 
 ```elm {l}
 input1 : String
@@ -135,7 +133,7 @@ tokens =
 
 ## A More Flexible Parser
 
-The parser above works well for our simple list of CSV input lines. But there are several cases where we need more flexible parsing.
+The parser above works well for our simple CSV input. But there are several cases where we need more flexible parsing.
 
 ### Quotation-enclosed tokens
 
@@ -154,7 +152,7 @@ sparrow,2,small
 
 ^^^elm r=(parse tokens input2)^^^
 
-The parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text. We can amend our parser so it considers such escaped tokens as well as standard ones:
+The original parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text. We can amend our parser so it considers such escaped tokens as well as standard ones:
 
 ```elm {l}
 escapedToken : Parser String
@@ -190,7 +188,7 @@ tokens2 =
 
 ### Empty tokens
 
-A legitimate CSV line can contain consecutive commas indicating an empty value. For example, the slow-worm without any text for number of legs or even an entire row of empty values:
+A legitimate CSV line can contain consecutive commas indicating an empty value. For example, the slow-worm without any text for number of legs or even an entire row of empty values (indicated by two comma separators in the example below):
 
 ```elm {l}
 input3 : String
@@ -208,7 +206,9 @@ slow-worm,,small
 
 Currently the slow-worm line is parsed into `["slow-worm","small"]` whereas we would like it to be `["slow-worm","","small"]` ensuring we have the expected number of values in our list. And the line containing two commas only is parsed into an empty list whereas it should be `["","",""]`. This is because our comma-detecting parser is always considered before the token-detecting parser within a loop, so we never store the empty text between consecutive commas.
 
-We can overcome this by keeping track of whether we have just previously parsed a comma. If we reach another comma immediately after a previous one, we add an empty string to parsed output. Additionally we need to treat the first and last items as if they are bound on their outer edges by separators so we can accommodate input lines that either start or end in a comma.
+We can overcome this by keeping track of whether we have just previously identified a separator. If we reach another separator immediately after a previous one, we add an empty string to parsed output. Additionally we need to treat the first and last items as if they are bound on their outer edges by separators so we can accommodate input lines that either start or end in a comma.
+
+The approach we adopt here is to store not only the list of parsed values, but also whether the immediately previous item in the loop was a separator. We can do this by storing an list containing a single empty string following a separator or start of line and an empty list otherwise. We can add this item to our stored list of tokens whenever we come across a separator or end of line.
 
 ```elm {l}
 tokens3 : Parser (List String)
