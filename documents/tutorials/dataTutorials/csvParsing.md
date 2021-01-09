@@ -117,19 +117,18 @@ The order in which we consider the three alternative parsers (end of line, comma
 ```elm {l}
 tokens : Parser (List String)
 tokens =
+    let
+        tokensHelp values =
+            P.oneOf
+                [ P.succeed (List.reverse values |> P.Done)
+                    |. P.end
+                , P.succeed (values |> P.Loop)
+                    |. P.symbol ","
+                , P.succeed (\v -> v :: values |> P.Loop)
+                    |= token
+                ]
+    in
     P.loop [] tokensHelp
-
-
-tokensHelp : List String -> Parser (P.Step (List String) (List String))
-tokensHelp values =
-    P.oneOf
-        [ P.succeed (List.reverse values |> P.Done)
-            |. P.end
-        , P.succeed (values |> P.Loop)
-            |. P.symbol ","
-        , P.succeed (\v -> v :: values |> P.Loop)
-            |= token
-        ]
 ```
 
 ^^^elm r=(parse tokens input1)^^^
@@ -171,28 +170,27 @@ As with our earlier parser, the order in which we consider the alternative parse
 ```elm {l}
 tokens2 : Parser (List String)
 tokens2 =
-    P.loop [] tokensHelp2
-
-
-tokensHelp2 : List String -> Parser (P.Step (List String) (List String))
-tokensHelp2 values =
-    P.oneOf
-        [ P.succeed (List.reverse values |> P.Done)
-            |. P.end
-        , P.succeed (values |> P.Loop)
-            |. P.symbol ","
-        , P.succeed (\v -> v :: values |> P.Loop)
-            |= escapedToken
-        , P.succeed (\v -> v :: values |> P.Loop)
-            |= token
-        ]
+    let
+        tokensHelp values =
+            P.oneOf
+                [ P.succeed (List.reverse values |> P.Done)
+                    |. P.end
+                , P.succeed (values |> P.Loop)
+                    |. P.symbol ","
+                , P.succeed (\v -> v :: values |> P.Loop)
+                    |= escapedToken
+                , P.succeed (\v -> v :: values |> P.Loop)
+                    |= token
+                ]
+    in
+    P.loop [] tokensHelp
 ```
 
 ^^^elm r=(parse tokens2 input2)^^^
 
 ### Empty tokens
 
-A legitimate CSV line can contain consecutive commas indicating an empty value. For example, the slow-worm without any text for number of legs:
+A legitimate CSV line can contain consecutive commas indicating an empty value. For example, the slow-worm without any text for number of legs or even an entire row of empty values:
 
 ```elm {l}
 input3 : String
@@ -200,43 +198,37 @@ input3 =
     """animal,legs,size
 "cat, domestic",4,medium
 dog,4,large
+sparrow,2,small
 slow-worm,,small
-sparrow,2,small"""
+,,
+"""
 ```
 
 ^^^elm r=(parse tokens2 input3)^^^
 
-Currently the slow-worm line is parsed into `["slow-worm","small"]` whereas we would like it to be `["slow-worm","","small"]` ensuring we have the expected number of values in our list. This is because our comma-detecting parser is always considered before the token-detecting parser within a loop, so we never store the empty text between consecutive commas.
+Currently the slow-worm line is parsed into `["slow-worm","small"]` whereas we would like it to be `["slow-worm","","small"]` ensuring we have the expected number of values in our list. And the line containing two commas only is parsed into an empty list whereas it should be `["","",""]`. This is because our comma-detecting parser is always considered before the token-detecting parser within a loop, so we never store the empty text between consecutive commas.
 
-We can overcome this by keeping track of whether we have just previously parsed a comma. If we reach another comma immediately after a previous one, we add an empty string to parsed output. This illustrates one of the benefits of parsing that goes beyond simple regular expression parsing. Here we are keeping track of a persistent state between sequential parses and act dependent on that state.
+We can overcome this by keeping track of whether we have just previously parsed a comma. If we reach another comma immediately after a previous one, we add an empty string to parsed output. Additionally we need to treat the first and last items as if they are bound on their outer edges by separators so we can accommodate input lines that either start or end in a comma.
 
 ```elm {l}
 tokens3 : Parser (List String)
 tokens3 =
-    P.loop ( Nothing, [] ) tokensHelp3
-
-
-tokensHelp3 : ( Maybe Char, List String ) -> Parser (P.Step ( Maybe Char, List String ) (List String))
-tokensHelp3 ( prev, values ) =
     let
-        valuesAfterComma =
-            case prev of
-                Just ',' ->
-                    "" :: values
-
-                _ ->
-                    values
+        tokensHelp ( prev, values ) =
+            P.oneOf
+                [ P.succeed (prev ++ values |> List.reverse |> P.Done)
+                    |. P.end
+                , P.succeed (( [ "" ], prev ++ values ) |> P.Loop)
+                    |. P.symbol ","
+                , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
+                    |= escapedToken
+                , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
+                    |= token
+                ]
     in
-    P.oneOf
-        [ P.succeed (List.reverse values |> P.Done)
-            |. P.end
-        , P.succeed (( Just ',', valuesAfterComma ) |> P.Loop)
-            |. P.symbol ","
-        , P.succeed (\v -> ( Nothing, v :: values ) |> P.Loop)
-            |= escapedToken
-        , P.succeed (\v -> ( Nothing, v :: values ) |> P.Loop)
-            |= token
-        ]
+    P.loop ( [ "" ], [] ) tokensHelp
 ```
 
 ^^^elm r=(parse tokens3 input3)^^^
+
+This illustrates one of the benefits of parsing that goes beyond simple regular expression parsing. Here we are keeping track of a persistent state between sequential parses and act dependent on that state.
