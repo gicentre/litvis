@@ -1,5 +1,7 @@
 # Literate Visualization Documentation
 
+_This document provides a detailed reference for LitVis functionality. If you are just beginning with LitVis, you may wish to start with these [tutorials](tutorials/README.md) instead._
+
 ## Table of contents
 
 1.  [Litvis concepts](#1-litvis-concepts)
