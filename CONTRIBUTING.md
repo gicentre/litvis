@@ -177,7 +177,7 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
     ```sh
     NAME=vega
-    VERSION=5.17.0
+    VERSION=5.18.0
     BUILD_PATH=
     ```
 
@@ -189,19 +189,19 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
     ```sh
     NAME=vega-embed
-    VERSION=6.12.2
+    VERSION=6.15.0
     BUILD_PATH=
     ```
 
     ```sh
     NAME=apache-arrow
-    VERSION=0.17.0
+    VERSION=2.0.0
     BUILD_PATH=Arrow.es5.min.js
     ```
 
     ```sh
     NAME=vega-loader-arrow
-    VERSION=0.0.7
+    VERSION=0.0.9
     BUILD_PATH=
     ```
 
