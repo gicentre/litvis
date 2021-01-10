@@ -3,7 +3,7 @@
 > Best viewed in Atom or VSCode with the [litvis plugin](https://github.com/gicentre/litvis#installing-litvis).
 
 - [gallery.md](gallery/gallery.md) – **Gallery of visualizations:** showing range of Vega-Lite/litvis possibilities.
-- [airPollution.md](airPollution.md) – **Socrating Questioning:** London Air Pollution.
+- [airPollution.md](airPollution.md) – **Socratic Questioning:** London Air Pollution.
 - [crossQuadCharts.md](crossQuadCharts.md) – **New Idioms:** CrossQuad Charts.
 - [algebra.md](algebra.md) – **Visualization Algebra:** Brexit Maps.
 - [ddd.md](ddd.md) – **Dynamic Design Documents.**
