@@ -10,18 +10,21 @@ elm:
 
 ```elm {l=hidden}
 import Parser as P exposing ((|.), (|=), Parser)
-import Set exposing (Set)
 ```
+
+_This is one of a series of 'data' tutorials for use with litvis._
+
+1.  [Parsing structured text](assemblyParsing.md)
+1.  **Parsing unstructured text**
+1.  [Parsing CSV](csvParsing.md)
+
+---
 
 # Using Elm Parser to Process Unstructured Text
 
-## Why use a parser?
+The [previous chapter](assemblyParsing.md) in this tutorial considered how to combine parsers to parse some structured input. In this chapter we will consider how to adapt the approach for less structured input.
 
-We often need to import data from some external source that may not be quite in the format we need work with. Parsers allow us to work through some input extracting the content we need and discarding the rest.
-
-For very simple input, such as a list of numbers, we can use Elm's simple conversion functions such as [String.toInt](https://package.elm-lang.org/packages/elm/core/latest/String#toInt) or [String.split](https://package.elm-lang.org/packages/elm/core/latest/String#split). But for more complex input, parsers allow us to account for variations that would be cumbersome and error prone to process 'by hand'.
-
-To illustrate how [Elm parsers](https://package.elm-lang.org/packages/elm/parser/latest) work, let's start up with a simple example and slowly build it up to provide more comprehensive unstructured input parsing. Suppose we wished to count the number of cats in the following sentence:
+Suppose we wished to count the number of cats mentioned in some text:
 
 ```elm {l}
 input1 : String
@@ -31,30 +34,15 @@ input1 =
 
 ## Setting up the parser infrastructure
 
-Elm's parser library contains a set of functions that may be similarly named to other functions (e.g. [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map), [andThen](https://package.elm-lang.org/packages/elm/parser/latest/Parser#andThen)), so we specify in the `import` line at the top of the litvis document a `P` prefix to preserve the namespace while keeping code short. In common with other packages we expose the core [Parser](https://package.elm-lang.org/packages/elm/parser/latest/Parser#Parser) type directly so we can name it directly in type signatures. The package also includes two unique pipe symbols which shouldn't clash with anything else so we can also import those without a namespace prefix.
-
-```elm
-import Parser as P exposing ((|.), (|=), Parser)
-```
-
-When we run our parser against the input text it will generate a [Result](https://package.elm-lang.org/packages/elm/core/latest/Result). A successful parse will store the results wrapped in [Ok](https://package.elm-lang.org/packages/elm/core/latest/Result#Result) or if there has been a problem parsing, in [Err](https://package.elm-lang.org/packages/elm/core/latest/Result#Result). Acknowledging that error handling is one of the strengths of the Elm parser, for now we will largely ignore any errors and just extract the cat count (hopefully) identified by the parser:
-
-Let's put the top-level function in place so we can see what we're aiming for before we get into the details of the parsing. The function runs the provided parser (first parameter) on some input text and if successful, should report the number of cats found. If we were interested in providing explanatory error messages we could add code to respond to a possible error result.
+As previously we must import the [Elm parser package](https://package.elm-lang.org/packages/elm/parser/latest/) and set up a top-level function that runs a parser and returns the result (again ignoring error handling for the moment):
 
 ```elm {l}
-parse : Parser Int -> String -> Int
-parse parser txt =
-    case P.run parser txt of
-        Ok cats ->
-            cats
-
-        Err msg ->
-            0
+parse : Parser a -> String -> Maybe a
+parse parser =
+    P.run parser >> Result.toMaybe
 ```
 
 ## A simple parser
-
-We will construct our cat counting parser by assembling a sequence of simpler parsers to do specific jobs. This is the basis of the [parser combinator](https://en.wikipedia.org/wiki/Parser_combinator) approach used by Elm parser.
 
 We know we are looking for numbers in our text, and until we find a number we can ignore the preceding text. Elm parser's [chompWhile](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompWhile) will proceed through the input text, character at a time, while a condition is met. In our case, that each character is not a digit and it is not a minus sign. At the point this parser succeeds, the next character to parse should be a minus sign or digit or we've reached the end of the input text.
 
@@ -64,9 +52,9 @@ ignoredText =
     P.chompWhile (\c -> not <| (Char.isDigit c && c /= '-'))
 ```
 
-The example above creates a parser that does not return a value (indicated by the empty tuple `()` for the parser's type). To extract a number we can use Elm's [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int) parser, which will return an integer when parsing succeeds. But we only wish to extract a number if the text following it refers to a cat. Elm parser uses two special _pipe operators_ that allow us to specify a sequence of parsers either choosing to extract what is parsed [(|=)](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) or choosing to ignore it [(|.)](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed).
+The example above creates a parser that does not return a value (indicated by the empty tuple `()` for the parser's type). To extract a number we use Elm's [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int) parser, which will return an integer when parsing succeeds. But we only wish to extract a number if the text following it refers to a cat. Elm parser uses two special _pipe operators_ that allow us to specify a sequence of parsers either choosing to extract what is parsed [(|=)](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) or choosing to ignore it [(|.)](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed).
 
-We can use another built-in parser [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) to look for specific words. These include a _lookahead_ after the keyword to ensure we have reached the end of the word, thus distinguishing `cat` from `catch` etc.
+Using [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) to look for specific words performs a one character _lookahead_ after the keyword to ensure we have reached the end of the word, thus distinguishing `cat` from `catch` etc.
 
 Putting these together with our `ignoredText` parser, we can create our cat parser to extract the value of some numeric text only if it is immediately followed by the word `cat`:
 
@@ -81,7 +69,7 @@ catCounter1 =
         |. ignoredText
 ```
 
-^^^elm m=(parse catCounter1 input1)^^^
+^^^elm m=(parse catCounter1 input1 |> Maybe.withDefault 0)^^^
 
 The example above creates a parser of type `int` so when the parser succeeds, we need to provide an integer value. This is the one captured by the line `|= P.int`. The general rule here when using parser pipes is that the parameters expected by the parser should match the sequence of `|=` pipe operators. In this case, `P.int` returns an integer directly, so we can use `P.succeed identity` to provide the value (remembering it is the equivalent to the function `\n -> n`).
 
@@ -95,7 +83,7 @@ input2 =
     "Looking out of the window I could see 1 cat and 2 dogs playing catch in the garden."
 ```
 
-^^^elm m=(parse catCounter1 input2)^^^
+^^^elm m=(parse catCounter1 input2 |> Maybe.withDefault 0)^^^
 
 The problem is that we are looking for numbers followed by the word `cats`, but we could also legitimately have the word `cat`. This is easily solved with the option [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) that allows us to consider alternatives in our parsing sequence:
 
@@ -109,7 +97,7 @@ catCounter2 =
         |. P.oneOf [ P.keyword "cats", P.keyword "cat" ]
 ```
 
-^^^elm m=(parse catCounter2 input2)^^^
+^^^elm m=(parse catCounter2 input2 |> Maybe.withDefault 0)^^^
 
 Let's try it with another sentence:
 
@@ -119,21 +107,21 @@ input3 =
     "Looking out of the window I could see 2 dogs and 1 cat playing catch in the garden."
 ```
 
-^^^elm m=(parse catCounter2 input3)^^^
+^^^elm m=(parse catCounter2 input3 |> Maybe.withDefault 0)^^^
 
-Here we have another problem. Our parser finds the first digit `2`, sees the word following is not `cat` or `cats` so fails. What we would like it to do is to resume parsing from this point looking again for a number followed by `cat` or `cats`. To do this, we can change our approach slightly and introduce a new parsing concept – the loop.
+Here we have another problem. Our parser finds the first digit `2`, sees the word following is not `cat` or `cats` so fails. What we would like it to do is not to fail but instead resume parsing from this point looking again for a number followed by `cat` or `cats`. To do this, we can change our approach slightly and introduce a new parsing concept – the loop.
 
 Firstly, rather than use [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword), let's make a more general parser that can capture any word and return the text of that word:
 
 ```elm {l}
 word : Parser String
 word =
-    P.getChompedString <|
-        P.succeed ()
-            |. P.chompWhile Char.isAlpha
+    P.succeed ()
+        |. P.chompWhile Char.isAlpha
+        |> P.getChompedString
 ```
 
-Again, we use [chompWhile](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompWhile), but this time rather than ignoring the chomped text, we return it with [getChompedString](https://package.elm-lang.org/packages/elm/parser/latest/Parser#getChompedString). This allows us to accumulate all the chomped characters in a single string that we can process with another parser.
+Again, we use [chompWhile](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompWhile) but this time, rather than ignoring the chomped text, we return it with [getChompedString](https://package.elm-lang.org/packages/elm/parser/latest/Parser#getChompedString). This allows us to accumulate all the chomped characters in a single string that we can process with another parser.
 
 We can modify our cat counter so that it looks for a number and then any word following it. Rather than assume the number will be an integer, we can use Elm parser's [number](https://package.elm-lang.org/packages/elm/parser/latest/Parser#number) parser that will handle a wider range of numeric representations. When that number is a decimal, we will round up to the nearest whole cat. We can also account for negative numbers by considering the possibility of a `-` preceding the number, in which case we negate the parsed number.
 
@@ -197,7 +185,7 @@ allCatsHelp numCats =
         ]
 ```
 
-^^^elm m=(parse allCats input3)^^^
+^^^elm m=(parse allCats input3 |> Maybe.withDefault 0)^^^
 
 One further advantage of this more flexible parser is that we can accumulate the cat counts in longer passages of text where we might have multiple mentions of cats.
 
@@ -211,7 +199,7 @@ They had made a bit of mess so I worked doggedly to create 1 catalogue of all br
 """
 ```
 
-^^^elm m=(parse allCats input4)^^^
+^^^elm m=(parse allCats input4 |> Maybe.withDefault 0)^^^
 
 ## Parsing into a Record
 
