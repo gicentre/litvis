@@ -10,8 +10,15 @@ elm:
 
 ```elm {l=hidden}
 import Parser as P exposing ((|.), (|=), Parser)
-import Set exposing (Set)
 ```
+
+_This is one of a series of 'data' tutorials for use with litvis._
+
+1.  [Parsing structured text](assemblyParsing.md)
+1.  [Parsing unstructured text](unstructuredText.md)
+1.  **Parsing CSV**
+
+---
 
 # Using Elm Parser to import CSV files
 
