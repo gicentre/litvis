@@ -280,7 +280,7 @@ escapableToken =
             ]
 ```
 
-Our final modification is to replace our old `token` parser with this new `escabableToken` parser in our top-level parser:
+Our final modification is to replace our old `token` parser with this new `escapableToken` parser in our top-level parser:
 
 ```elm {l}
 csv : Parser (List String)
