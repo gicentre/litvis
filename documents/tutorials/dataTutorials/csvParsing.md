@@ -45,6 +45,7 @@ Note some of the complications that can arise in a CSV file.
 - There may be blank lines in our input (first and last in this example), which we should ignore.
 - The first non-blank line is a _header_ that should contain the same number of comma separated values as in subsequent lines, but the values themselves may be of a different form to the data values in later lines.
 - While commas are used to separate values, the values themselves may contain commas which do not act as separators if they are _escaped_ within a string enclosed by quotation marks.
+- A special symbol such as a comma or quote can be _escaped_ by preceding it with a `\` symbol. Escaped symbols should be treated like normal text, including an escaped `\` itself.
 - There may be consecutive commas indicating an empty value between them.
 - A line that starts with a comma indicates a empty first value. Likewise a line that ends with a comma indicates an empty final value.
 
@@ -135,7 +136,7 @@ The parser above works well for our simple CSV input. But there are several case
 
 ### Quotation-enclosed tokens
 
-Not all commas in an input string need act as separators. When enclosed in quotation marks we would like to treat any commas within as normal text rather than a separator.
+Not all commas in an input string need act as separators. When enclosed in double quotation marks we would like to treat any commas within as normal text rather than a separator.
 
 ```elm {l}
 input2 : String
@@ -150,18 +151,18 @@ sparrow,2,small
 
 ^^^elm r=(parse tokens input2)^^^
 
-The original parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text. We can amend our parser so it considers such escaped tokens as well as standard ones:
+The original parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text. We can amend our parser so it considers such quoted tokens as well as standard ones:
 
 ```elm {l}
-escapedToken : Parser String
-escapedToken =
+quotedToken : Parser String
+quotedToken =
     P.succeed identity
         |. P.symbol "\""
         |= (P.chompUntil "\"" |> P.getChompedString)
         |. P.symbol "\""
 ```
 
-As with our earlier parser, the order in which we consider the alternative parsers is important. We need to test for an escaped token before a normal one to avoid considering the enclosing quotes as token text. The general guideline here when ordering `oneOf` parsers, is to order them from most specific to most general.
+As with our earlier parser, the order in which we consider the alternative parsers is important. We need to test for an quoted token before a normal one to avoid considering the enclosing quotes as token text. The general guideline here when ordering `oneOf` parsers, is to order them from most specific to most general.
 
 ```elm {l}
 tokens2 : Parser (List String)
@@ -174,7 +175,7 @@ tokens2 =
                 , P.succeed (values |> P.Loop)
                     |. P.symbol ","
                 , P.succeed (\v -> v :: values |> P.Loop)
-                    |= escapedToken
+                    |= quotedToken
                 , P.succeed (\v -> v :: values |> P.Loop)
                     |= token
                 ]
@@ -209,6 +210,72 @@ We can overcome this by keeping track of whether we have just previously identif
 The approach we adopt here is to store not only the list of parsed values, but also whether the immediately previous item in the loop was a separator. We can do this by storing an list containing a single empty string following a separator or start of line and an empty list otherwise. We can add this item to our stored list of tokens whenever we come across a separator or end of line.
 
 ```elm {l}
+tokens3 : Parser (List String)
+tokens3 =
+    let
+        tokensHelp ( prev, values ) =
+            P.oneOf
+                [ P.succeed (prev ++ values |> List.reverse |> P.Done)
+                    |. P.end
+                , P.succeed (( [ "" ], prev ++ values ) |> P.Loop)
+                    |. P.symbol ","
+                , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
+                    |= quotedToken
+                , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
+                    |= token
+                ]
+    in
+    P.loop ( [ "" ], [] ) tokensHelp
+```
+
+^^^elm r=(parse tokens3 input3)^^^
+
+This illustrates one of the benefits of parsing that goes beyond simple regular expression parsing. Here we are keeping track of a persistent state between sequential parses and act dependent on that state.
+
+### Escaped Symbols
+
+CSV files most common escape symbols by placing them in a quoted token as we have dealt with above. However, we might also wish to account for individually escaped symbols that are preceded by a '\'. For example we should expect the `This\, with commas\, is a sentence.` to be considered a single token: `This, with commas, is a sentence.`
+
+Special symbols that we should be able to escape in this way include commas, double quotation marks, and the backslash symbol.
+
+We can account for escaped symbols by modifying our `token` function to look for the special escape symbol as well as separators. Token chomping can proceed as normal until we reach either a comma or a `\` (noting that we have to represent a single `\` in our Elm code with `\\`; in other words we are escaping the symbol in our code, not just the parsed input).
+
+```elm {l}
+toEscOrSep : Parser String
+toEscOrSep =
+    P.chompWhile (\c -> c /= ',' && c /= '\\')
+        |> P.getChompedString
+```
+
+If we find a `\`, we need to be able to read in the next character as if it was normal text, so let's create a simple one-character parser that returns that character as a string:
+
+```elm {l}
+character : Char -> Parser String
+character chr =
+    P.chompIf ((==) chr) |> P.getChompedString
+```
+
+Thus we have two components to our token reading: the text up to the escape character (or comma separator if no escape), and the text following the escape character. That latter block of text may itself include an escape character, so we could recursively call the same parser to process that part of the text. This leads us to a new approach to parser construction – recursively calling a parser from within itself.
+
+In Elm, we cannot define a value in terms of itself (we would infinitely recurse), so instead we use parser's [lazy](https://package.elm-lang.org/packages/elm/parser/latest/Parser#lazy) function that will only call a function if and when needed. This allows us to specify our modified token parser that says (a) Find all text until an escape or comma is found; then (b) if we have an escape symbol followed by one of our special characters, call the modified token parser to find the remaining text. If we don't have an escape symbol we must have found a divider so return an empty string. Finally concatenate the parsed text of (a) and (b).
+
+```elm {l}
+escapableToken : Parser String
+escapableToken =
+    P.succeed (\s1 s2 -> s1 ++ s2)
+        |= toEscOrSep
+        |= P.oneOf
+            [ P.succeed (++)
+                |. P.symbol "\\"
+                |= P.oneOf [ character ',', character '\\', character '"' ]
+                |= P.lazy (\_ -> escapableToken)
+            , P.succeed identity |> P.getChompedString
+            ]
+```
+
+Our final modification is to replace our old `token` parser with this new `escabableToken` parser in our top-level parser:
+
+```elm {l}
 csv : Parser (List String)
 csv =
     let
@@ -219,21 +286,32 @@ csv =
                 , P.succeed (( [ "" ], prev ++ values ) |> P.Loop)
                     |. P.symbol ","
                 , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
-                    |= escapedToken
+                    |= quotedToken
                 , P.succeed (\v -> ( [], v :: values ) |> P.Loop)
-                    |= token
+                    |= escapableToken
                 ]
     in
     P.loop ( [ "" ], [] ) tokensHelp
 ```
 
-^^^elm r=(parse csv input3)^^^
+```elm {l}
+input4 : String
+input4 =
+    """animal,legs,size
+"cat, domestic",4,medium
+cat\\, \\"wild\\",4,large
+dog,4,large
+sparrow,2,small
+slow-worm,,small
+,,
+"""
+```
 
-This illustrates one of the benefits of parsing that goes beyond simple regular expression parsing. Here we are keeping track of a persistent state between sequential parses and act dependent on that state.
+^^^elm r=(parse csv input4)^^^
 
 ## Testing
 
-To check our CSV parser works with more complex input, let's create a function to convert parsed CSV into a markdown table:
+To check our CSV parser works with more realistic input, let's create a function to convert parsed CSV into a markdown table:
 
 ```elm {l}
 toMarkdown : Table -> List String
