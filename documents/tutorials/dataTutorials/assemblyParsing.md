@@ -42,14 +42,16 @@ The Elm language, which is used by Litvis, comes with a useful [parser package](
 
 ## A Simple Assembly Language
 
-Imagine we have some text representing commands in a [simple assembly language](https://adventofcode.com/2016/day/12). The assembly language instruction set comprises four commands:
+Imagine we have some text representing commands in a [simple assembly language](https://adventofcode.com/2016/day/12). Suppose this assembly language instruction set comprises four commands:
 
-- `cpy` _val_ _reg_: Copy the given value to the given register
-- `inc` _reg_: Increment the given register by 1
-- `dec` _reg_: Decrement the given register by 1
-- `jnz` _val_ _n_: Jump to the instruction address _n_ places from this one if _val_ is not zero.
+| Instruction       | Description                                                                   |
+| :---------------- | :---------------------------------------------------------------------------- |
+| `cpy` _val_ _reg_ | Copy the given value to the given register                                    |
+| `inc` _reg_       | Increment the given register by 1                                             |
+| `dec` _reg_       | Decrement the given register by 1                                             |
+| `jnz` _val_ _n_   | Jump to the instruction address _n_ places from this one if _val_ is not zero |
 
-_reg_ is one of four registers `a`, `b`, `c` or `d`.
+_reg_ can be one of four registers `a`, `b`, `c` or `d`.
 _val_ can be either an integer or a register holding a val.
 
 For example, the following assembly language program adds 5 and 6, storing the result in register `c`:
@@ -66,7 +68,7 @@ jnz d -2
 
 Our task is to parse the text of such a program and represent the commands, registers and values in such a way that we would be able to run any valid assembly language program. This is a task well suited to using a parser because the [grammar](https://en.wikipedia.org/wiki/Chomsky_hierarchy) is well defined making it easy to specify the parsing rules.
 
-Before we consider the parsing itself, let's choose how to represent the language.
+Before we consider the parsing itself, let's choose how to represent the language in Elm.
 
 Each register label (`a`,`b`,`c` and `d`) can be represented as a string:
 
@@ -95,7 +97,7 @@ type Instruction
 
 ## Setting up the parser infrastructure
 
-Elm's parser library contains a set of functions that may be similarly named to other functions (e.g. [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map), [andThen](https://package.elm-lang.org/packages/elm/parser/latest/Parser#andThen)), so we specify in the `import` line at the top of the litvis document a `P` prefix to preserve the namespace while keeping code short. In common with other packages we expose the core [Parser](https://package.elm-lang.org/packages/elm/parser/latest/Parser#Parser) type so we can name it directly in type signatures. The package also includes two unique pipe symbols which shouldn't clash with anything else so we can also import those without a namespace prefix.
+As with other packages, we need to import the Parser package into our litvis document with an `import` statement. To avoid name clashes with existing functions we can add a `P` prefix to the import and we expose the core [Parser](https://package.elm-lang.org/packages/elm/parser/latest/Parser#Parser) type so we can name it directly in type signatures. The package also includes two unique pipe symbols which shouldn't clash with anything else so we can also import those without a namespace prefix. This leads to the following import line which is likely to be common to any litvis document that uses Elm's parser.
 
 ```elm
 import Parser as P exposing ((|.), (|=), Parser)
@@ -103,7 +105,7 @@ import Parser as P exposing ((|.), (|=), Parser)
 
 When we run a parser against some input text it will generate a [Result](https://package.elm-lang.org/packages/elm/core/latest/Result). A successful parse will store the results wrapped in [Ok](https://package.elm-lang.org/packages/elm/core/latest/Result#Result) or if there has been a problem parsing, in [Err](https://package.elm-lang.org/packages/elm/core/latest/Result#Result). Acknowledging that error handling is one of the strengths of the Elm parser, for now we will largely ignore any errors and just extract assembly instructions (hopefully) identified by the parser.
 
-Let's put the top-level function in place so we can see what we're aiming for before we get into the details of the parsing. The function [runs](https://package.elm-lang.org/packages/elm/parser/latest/Parser#run) the provided parser (first parameter) on a line of input text (second parameter) and if successful, should report the value it represents. We can keep this function generic by using a type variable (`a`) so it works with any parser. If we were interested in providing explanatory error messages we could add code to respond to a possible error result instead of [converting the result to a maybe](https://package.elm-lang.org/packages/elm/core/latest/Result#toMaybe).
+Let's put the top-level function in place so we can see what we're aiming for before we get into the details of the parsing. The function [runs](https://package.elm-lang.org/packages/elm/parser/latest/Parser#run) the provided parser (first parameter) on a line of input text (second parameter) and if successful, should report the value it represents. We can keep this function generic by using a type variable (`a`) so it works with any parser. If we were interested in providing explanatory error messages we could add code to respond to a possible error result instead of [converting the result to a Maybe](https://package.elm-lang.org/packages/elm/core/latest/Result#toMaybe).
 
 ```elm {l}
 parse : Parser a -> String -> Maybe a
@@ -134,7 +136,7 @@ constant =
         |= num
 ```
 
-The function `num` is itself another parser which we can define for extracting any integer from some input text. Here we are doing something a little more sophisticated in order to account for the possibility that a number my be preceded by a minus sign. [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) allows us to provide alternative parsers, any one of which can succeed for the parser as a whole to succeed. [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int) can handle positive numeric values converting them into integers and [symbol](https://package.elm-lang.org/packages/elm/parser/latest/Parser#symbol) will only succeed if a given symbol is found. If a `-` is found, we then expect it to be followed by an integer, which we negate before returning it.
+The function `num` is itself another parser which we can define for extracting any integer from some input text. Here we are doing something a little more sophisticated so that if a number is preceded by a minus sign, it is still interpreted correctly. [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) allows us to provide alternative parsers, any one of which can succeed for the parser as a whole to succeed. [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int) can handle positive numeric values converting them into integers and [symbol](https://package.elm-lang.org/packages/elm/parser/latest/Parser#symbol) will only succeed if a given symbol is found. If a `-` is found, we then expect it to be followed by an integer, which we negate before returning it.
 
 ```elm {l}
 num : Parser Int
@@ -150,7 +152,7 @@ num =
 
 Notice the use of the pipe symbols `|=` and `|.` that allow us to specify parsing operation in sequence. `|.` means parse something but don't store the result whereas `|=` mean parse something and provide the result to the [succeed](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) function.
 
-We can assemble the register and constant parsers into a higher order value parser that can handle both. Again we use [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) as value may be either a constant or a register. Our `reg` parser generates a string on succeeding, so we additionally [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map) it to a `Register` value.
+We can assemble the register and constant parsers into a higher order `value` parser that can handle both. Again we use [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) as value may be either a constant or a register. Our `reg` parser generates a string on succeeding, so we additionally [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map) it to a `Register` value.
 
 ```elm {l}
 value : Parser Value
@@ -161,9 +163,9 @@ value =
         ]
 ```
 
-Now that we have the ability to parse any value, we can write four parsers for the four instruction types that simply implement the grammar defined in the instruction set. These use two additional parsers from the Elm package – [spaces](https://package.elm-lang.org/packages/elm/parser/latest/Parser#spaces) for handling zero or more spaces between parsed items and [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) for identifying given words. This allows us to be accommodating in the spacing used in our input. Note the use of the two pipes `|.` and `|=` to determine whether or not a parser's results should be passed as a parameter to the `succeed` function.
+Now that we have the ability to parse any value, we can write four parsers for the four instruction types that simply implement the grammar defined in the instruction set. These use two additional parsers from the Elm package – [spaces](https://package.elm-lang.org/packages/elm/parser/latest/Parser#spaces) for handling zero or more spaces between parsed items and [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) for identifying given words. As a result we are more accommodating in the spacing used in our input (any amount of whitespace could be used to separate an instruction from its parameters). Note the use of the two pipes `|.` and `|=` to determine whether or not a parser's results should be passed as a parameter to the `succeed` function.
 
-At this higher level we have a nice compact and explanatory description of our assembly language grammar.
+At this higher level we have a compact and explanatory description of our assembly language grammar.
 
 ```elm {l}
 copy : Parser Instruction
@@ -236,11 +238,11 @@ testParser =
         |> List.filterMap (parse instruction)
 ```
 
-## A Working Assembly Language Interpreter
+## Working with parsed input: An assembly language interpreter
 
-Parsing is typically just the first stage in a pipeline of operations we perform on input data. So for completeness, now that we have a parser that should be able to handle any input that conforms to our assembly language, let's create the ability to actually run assembly language programs.
+Parsing is typically just the first stage in a pipeline of operations we perform on input data. So for completeness, now that we have a parser that should be able to handle any input that conforms to our assembly language, let's create the ability to run assembly language programs.
 
-To run a program we need to be able to store the program itself, the four register values and the current line in the program we are executing. We can keep these all together in an [elm record](https://elm-lang.org/docs/records):
+To run a program we need to be able to store the program itself, the values stored in the four registers and the current line in the program we are executing. We can keep these all together in an [elm record](https://elm-lang.org/docs/records):
 
 ```elm {l}
 type alias Computer =
@@ -297,7 +299,7 @@ run comp =
             comp
 ```
 
-The final step is to parse our input using our instruction parser and place them in the computer record before running it. For our example input that adds two numbers together and stores the result in register `c`, we simply extract that value from the computer:
+The final step is to parse the input text using our instruction parser and place the parsed instructions in the computer record before running it. For our example input that adds two numbers together and stores the result in register `c`, we can then extract that register c's contents from the computer:
 
 ```elm {l r}
 testProg : Maybe Int
