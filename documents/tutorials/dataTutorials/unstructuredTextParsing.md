@@ -22,6 +22,12 @@ _This is one of a series of 'data' tutorials for use with litvis._
 
 # Using Elm Parser to Process Unstructured Text
 
+New Elm parser functions introduced:
+
+- chomping characters with [chompWhile](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompWhile)
+- built-in parsers [number](https://package.elm-lang.org/packages/elm/parser/latest/Parser#number)
+- repeating parsing with [loop](https://package.elm-lang.org/packages/elm/parser/latest/Parser#loop), [Step](https://package.elm-lang.org/packages/elm/parser/latest/Parser#Step) and [end](https://package.elm-lang.org/packages/elm/parser/latest/Parser#end)
+
 The [previous chapter](assemblyParsing.md) in this tutorial considered how to combine parsers to parse some structured input. In this chapter we will consider how to adapt the approach for less structured input.
 
 Suppose we wished to count the number of cats mentioned in some text:

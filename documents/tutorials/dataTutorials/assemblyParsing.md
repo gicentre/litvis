@@ -23,6 +23,15 @@ _This is one of a series of 'data' tutorials for use with litvis._
 
 # Using Elm Parser to Process Structured Text
 
+New Elm parser functions introduced:
+
+- combining and [running](https://package.elm-lang.org/packages/elm/parser/latest/Parser#run) parsers
+- sequential parser pipelines with [succeed](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed), [|.](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) and [|=](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed)
+- chomping characters with [chompIf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompIf) and [getChompedString](https://package.elm-lang.org/packages/elm/parser/latest/Parser#getChompedString)
+- built-in parsers [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int), [symbol](https://package.elm-lang.org/packages/elm/parser/latest/Parser#symbol), [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) and [spaces](https://package.elm-lang.org/packages/elm/parser/latest/Parser#spaces)
+- parsing alternatives with [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf)
+- converting parsers with [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map)
+
 ## Why use a parser?
 
 We often need to import data from some external source from which we identify individual elements and perform some action in response to each. Parsers allow us to work through some input extracting the content we need and discarding the rest.

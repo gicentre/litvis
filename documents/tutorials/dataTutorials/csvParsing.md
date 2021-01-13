@@ -22,6 +22,13 @@ _This is one of a series of 'data' tutorials for use with litvis._
 
 # Using Elm Parser to import CSV files
 
+New Elm parser functions introduced:
+
+- chomping characters with [chompUntil](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntil) and [chompUntilEndOr](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntilEndOr)
+- recursive parsing with [lazy](https://package.elm-lang.org/packages/elm/parser/latest/Parser#lazy)
+
+The previous chapters in this tutorial considered how we can parse [structured](assemblyParsing.md) and [unstructured](unstructuredTextParsing.md) text. In this tutorial we will combine both approaches, using the parsing of CSV text as an example.
+
 Comma-separated value (CSV) files can be quite hard to parse robustly. Let's consider how we might use the [Elm parser](https://package.elm-lang.org/packages/elm/parser/latest) to do this. Our goal is to parse an input file such as
 
 ```elm {l}
