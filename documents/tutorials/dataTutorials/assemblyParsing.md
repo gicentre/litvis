@@ -1,6 +1,9 @@
 ---
 id: litvis
 
+narrative-schemas:
+  - ../schemas/tutorial.yml
+
 elm:
   dependencies:
     elm/parser: latest
@@ -18,10 +21,13 @@ _This is one of a series of 'data' tutorials for use with litvis._
 1.  **Parsing structured text**
 1.  [Parsing unstructured text](unstructuredText.md)
 1.  [Parsing CSV](csvParsing.md)
+1.  [Parsing datalog](datalogParsing.md)
 
 ---
 
 # Using Elm Parser to Process Structured Text
+
+{(infobox|}
 
 New Elm parser functions introduced:
 
@@ -31,6 +37,8 @@ New Elm parser functions introduced:
 - built-in parsers [int](https://package.elm-lang.org/packages/elm/parser/latest/Parser#int), [symbol](https://package.elm-lang.org/packages/elm/parser/latest/Parser#symbol), [keyword](https://package.elm-lang.org/packages/elm/parser/latest/Parser#keyword) and [spaces](https://package.elm-lang.org/packages/elm/parser/latest/Parser#spaces)
 - parsing alternatives with [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf)
 - converting parsers with [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map)
+
+{|infobox)}
 
 ## Why use a parser?
 

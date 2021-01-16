@@ -1,6 +1,9 @@
 ---
 id: litvis
 
+narrative-schemas:
+  - ../schemas/tutorial.yml
+
 elm:
   dependencies:
     elm/parser: latest
@@ -17,15 +20,20 @@ _This is one of a series of 'data' tutorials for use with litvis._
 1.  [Parsing structured text](assemblyParsing.md)
 1.  [Parsing unstructured text](unstructuredText.md)
 1.  **Parsing CSV**
+1.  [Parsing datalog](datalogParsing.md)
 
 ---
 
 # Using Elm Parser to import CSV files
 
+{(infobox|}
+
 New Elm parser functions introduced:
 
 - chomping characters with [chompUntil](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntil) and [chompUntilEndOr](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntilEndOr)
 - recursive parsing with [lazy](https://package.elm-lang.org/packages/elm/parser/latest/Parser#lazy)
+
+{|infobox)}
 
 The previous chapters in this tutorial considered how we can parse [structured](assemblyParsing.md) and [unstructured](unstructuredTextParsing.md) text. In this tutorial we will combine both approaches, using the parsing of CSV text as an example.
 
