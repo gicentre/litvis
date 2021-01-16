@@ -2,6 +2,14 @@ labels:
   - name: question
     paired:
       htmlTemplate: <div class="question">{{children}}</div>
+      
+  - name: todo
+    paired:
+      htmlTemplate: <span class="todo">{{children}}</span>
+
+  - name: infobox
+    paired:
+      htmlTemplate: <div class="infobox">{{children}}</div>
 
 rules:
   - description: Question content cannot be blank
@@ -19,4 +27,17 @@ styling:
       padding: 8px;
       padding-bottom:0;
       margin-bottom: 1em;
+    }
+    
+    .todo {
+      font-style: italic;
+      background: yellow;
+    }
+
+    .infobox {
+      background: #eee;
+      margin-left: 2em;
+      margin-bottom:1em;
+      padding: 1em;
+      padding-bottom: 0.5em;
     }
