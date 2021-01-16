@@ -10,4 +10,4 @@ This folder contains tutorials on creating litvis documents. Although all docume
 
 - 'geo' tutorials show how geospatial data may be [specified](geoTutorials/geoFormats.md), [generated](geoTutorials/geoGenerating.md) and [imported](geoTutorials/geoImporting.md) in litvis documents.
 
-- data tutorials show how the Elm parser may be used for more complex data parsing tasks such as parsing [sructured](dataTutorials/assemblyParsing.md) and [unstructured](dataTutorials/unstructuredTextParsing.md) data, [CSV import](dataTutorials/csvParsing.md) and [datalog parsing](dataTutorials/datalogParsing.md).
+- data tutorials show how the Elm parser may be used for more complex data parsing tasks such as parsing [structured](dataTutorials/assemblyParsing.md) and [unstructured](dataTutorials/unstructuredTextParsing.md) data, [CSV import](dataTutorials/csvParsing.md) and [datalog parsing](dataTutorials/datalogParsing.md).
