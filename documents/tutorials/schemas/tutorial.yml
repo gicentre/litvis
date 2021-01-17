@@ -11,6 +11,10 @@ labels:
     paired:
       htmlTemplate: <div class="infobox">{{children}}</div>
 
+  - name: fixed
+    paired:
+      htmlTemplate: <div class="fixed">{{children}}</div>
+
 rules:
   - description: Question content cannot be blank
     selector:
@@ -40,4 +44,10 @@ styling:
       margin-bottom:1em;
       padding: 1em;
       padding-bottom: 0.5em;
+    }
+
+    .fixed {
+      font-family: monospace;
+      font-weight: bold;
+      line-height: 1.1em;
     }
