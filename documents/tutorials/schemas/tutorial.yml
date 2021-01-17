@@ -2,7 +2,7 @@ labels:
   - name: question
     paired:
       htmlTemplate: <div class="question">{{children}}</div>
-      
+
   - name: todo
     paired:
       htmlTemplate: <span class="todo">{{children}}</span>
@@ -28,7 +28,7 @@ styling:
       padding-bottom:0;
       margin-bottom: 1em;
     }
-    
+
     .todo {
       font-style: italic;
       background: yellow;
