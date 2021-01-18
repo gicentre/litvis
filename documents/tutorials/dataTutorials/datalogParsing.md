@@ -12,6 +12,7 @@ elm:
 @import "../css/tutorial.less"
 
 ```elm {l=hidden}
+import Dict exposing (Dict)
 import Parser as P exposing ((|.), (|=), Parser)
 import Set exposing (Set)
 ```
@@ -225,9 +226,9 @@ strConstant =
 quotedConstant : Parser Constant
 quotedConstant =
     P.succeed ()
-        |. P.symbol "\""
-        |. P.chompUntil "\""
-        |. P.symbol "\""
+        |. P.token "\""
+        |. P.chompWhile ((/=) '"')
+        |. P.token "\""
         |> P.getChompedString
         |> P.map (String.slice 1 -1 >> Str)
 ```
