@@ -30,7 +30,6 @@ _This is one of a series of 'data' tutorials for use with litvis._
 
 New Elm parser functions introduced:
 
-- chomping characters with [chompUntil](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntil) and [chompUntilEndOr](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompUntilEndOr)
 - recursive parsing with [lazy](https://package.elm-lang.org/packages/elm/parser/latest/Parser#lazy)
 
 {|infobox)}
@@ -112,13 +111,13 @@ sparrow,2,small
 
 We need to create a parser that will split a line into the strings separated by commas. We might ordinarily do this with [String.split](https://package.elm-lang.org/packages/elm/core/latest/String#split), but because we want to integrate this with other parsers, let's create a simple parser to do the same.
 
-We can create a parser to keep chomping characters until a comma is found or the end of a line is reached:
+We can create a parser to keep chomping non-comma text:
 
 ```elm {l}
 token : Parser String
 token =
     P.succeed ()
-        |. P.chompUntilEndOr ","
+        |. P.chompWhile ((/=) ',')
         |> P.getChompedString
 ```
 
@@ -166,15 +165,15 @@ sparrow,2,small
 
 ^^^elm r=(parse tokens input2)^^^
 
-The original parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text. We can amend our parser so it considers such quoted tokens as well as standard ones:
+The original parser incorrectly splits `"cat, domestic"` into two tokens when it should be one. What we need to do is consider quotation-enclosed tokens differently, treating commas within them as text that makes up the token rather than separators between tokens. We can amend our parser so it considers such quoted tokens as well as standard ones:
 
 ```elm {l}
 quotedToken : Parser String
 quotedToken =
     P.succeed identity
-        |. P.symbol "\""
-        |= (P.chompUntil "\"" |> P.getChompedString)
-        |. P.symbol "\""
+        |. P.token "\""
+        |= (P.chompWhile ((/=) '"') |> P.getChompedString)
+        |. P.token "\""
 ```
 
 As with our earlier parser, the order in which we consider the alternative parsers is important. We need to test for an quoted token before a normal one to avoid considering the enclosing quotes as token text. The general guideline here when ordering `oneOf` parsers, is to order them from most specific to most general.
