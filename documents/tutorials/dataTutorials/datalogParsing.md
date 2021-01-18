@@ -345,7 +345,7 @@ A negated version of an atom will be preceded by `not`:
 ```elm {l}
 negatedAtom : Parser NegatableAtom
 negatedAtom =
-    P.succeed (\a -> NotAtom a)
+    P.succeed NotAtom
         |. P.spaces
         |. P.symbol "not"
         |. P.spaces
