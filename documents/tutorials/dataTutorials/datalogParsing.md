@@ -238,12 +238,11 @@ The three constant variants can be combined in a general constant parser.
 ```elm {l}
 constant : Parser Constant
 constant =
-    P.succeed identity
-        |= P.oneOf
-            [ numConstant
-            , strConstant
-            , quotedConstant
-            ]
+    P.oneOf
+        [ numConstant
+        , strConstant
+        , quotedConstant
+        ]
 ```
 
 ### Fact Parsing
