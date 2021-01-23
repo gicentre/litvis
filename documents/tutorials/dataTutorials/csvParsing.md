@@ -116,8 +116,7 @@ We can create a parser to keep chomping non-comma text:
 ```elm {l}
 token : Parser String
 token =
-    P.succeed ()
-        |. P.chompWhile ((/=) ',')
+    P.chompWhile ((/=) ',')
         |> P.getChompedString
 ```
 
@@ -266,7 +265,8 @@ If we find a `\`, we need to be able to read in the next character as if it was 
 ```elm {l}
 character : Char -> Parser String
 character chr =
-    P.chompIf ((==) chr) |> P.getChompedString
+    P.chompIf ((==) chr)
+        |> P.getChompedString
 ```
 
 Thus we have two components to our token reading: the text up to the escape character (or comma separator if no escape), and the text following the escape character. That latter block of text may itself include an escape character, so we could recursively call the same parser to process that part of the text. This leads us to a new approach to parser construction – recursively calling a parser from within itself.
