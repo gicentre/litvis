@@ -203,13 +203,12 @@ Constants can be one of a numeric value, single word starting with a lowercase l
 ```elm {l}
 numConstant : Parser Constant
 numConstant =
-    P.succeed identity
-        |= P.oneOf
-            [ P.int
-            , P.succeed negate
-                |. P.symbol "-"
-                |= P.int
-            ]
+    P.oneOf
+        [ P.int
+        , P.succeed negate
+            |. P.symbol "-"
+            |= P.int
+        ]
         |> P.map Num
 
 
