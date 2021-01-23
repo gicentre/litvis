@@ -125,17 +125,16 @@ parse parser =
 
 Now to the actual parsing of input. With parser combinators the idea is to create a collection of simple parsers that we combine to form higher order parsing functions. So we might start with a parser for identifying any of the four registers.
 
-A _chomper_ will proceed consuming input from left to right, character by character according to the rules we specify. [chompIf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompIf) will consume the next character in the input if the function we provide evaluates to true. In this case the parser will succeed if and only if the character to chomp is one of `a`, `b`, `c` or `d`. And if it does succeed, we return the chomped string (i.e. the one-letter name of the register we have just parsed).
+A _chomper_ will proceed consuming input from left to right, character by character according to the rules we specify. [chompIf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#chompIf) will consume the next character in the input if the function we provide evaluates to true. In this case it will consume some input if and only if the character to chomp is one of `a`, `b`, `c` or `d`, otherwise nothing is consumed from the input pipeline. [getChompedString](https://package.elm-lang.org/packages/elm/parser/latest/Parser#getChompedString) then returns whatever was consumed (i.e. the one-letter name of the register we have just parsed or an empty string if not one of the four registers).
 
 ```elm {l}
 reg : Parser Reg
 reg =
-    P.succeed identity
-        |= P.chompIf (\chr -> chr == 'a' || chr == 'b' || chr == 'c' || chr == 'd')
+    P.chompIf (\chr -> chr == 'a' || chr == 'b' || chr == 'c' || chr == 'd')
         |> P.getChompedString
 ```
 
-We can create another parser for constants (numeric values):
+We can create another parser for constants (numeric values).
 
 ```elm {l}
 constant : Parser Value
@@ -149,16 +148,15 @@ The function `num` is itself another parser which we can define for extracting a
 ```elm {l}
 num : Parser Int
 num =
-    P.succeed identity
-        |= P.oneOf
-            [ P.int
-            , P.succeed negate
-                |. P.symbol "-"
-                |= P.int
-            ]
+    P.oneOf
+        [ P.int
+        , P.succeed negate
+            |. P.symbol "-"
+            |= P.int
+        ]
 ```
 
-Notice the use of the pipe symbols `|=` and `|.` that allow us to specify parsing operation in sequence. `|.` means parse something but don't store the result whereas `|=` mean parse something and provide the result to the [succeed](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) function.
+Notice the use of the pipe symbols `|=` and `|.` that allow us to specify parsing operation in sequence. `|.` means parse something but don't store the result whereas `|=` mean parse something and provide the result to the [succeed](https://package.elm-lang.org/packages/elm/parser/latest/Parser#succeed) function. Here it takes the value provided to it and provides it as a parameter to Elms [negate](https://package.elm-lang.org/packages/elm/core/latest/Basics#negate) function to swap its sign from positive to negative.
 
 We can assemble the register and constant parsers into a higher order `value` parser that can handle both. Again we use [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) as value may be either a constant or a register. Our `reg` parser generates a string on succeeding, so we additionally [map](https://package.elm-lang.org/packages/elm/parser/latest/Parser#map) it to a `Register` value.
 
