@@ -323,7 +323,15 @@ slow-worm,,small
 
 ^^^elm r=(parse csv input4)^^^
 
-## Testing
+## Conclusions
+
+We have taken advantage of the parser combinator approach both to build a parser bottom-up and to incrementally consider increasingly more flexible approaches to CSV parsing. This gives us a manageable approach to coding more complex parsers.
+
+We have made use of one of the principal advantages of Elm Parser over simpler regular expression matching (as used by [regex](https://package.elm-lang.org/packages/elm/regex/latest/)) – the ability to retain some _state_ during the parsing process. This has allowed us, for example, to identify an empty token in some CSV input that has immediately followed a previous empty token.
+
+---
+
+## Appendix: Testing
 
 To check our CSV parser works with more realistic input, let's create a function to convert parsed CSV into a markdown table:
 
