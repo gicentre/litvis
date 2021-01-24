@@ -220,7 +220,7 @@ instruction =
 
 ## Testing the parser
 
-To run our parser on an entire program we split the string into lines and pass each one to our top-level parser. Successfully parsed instructions are stored in the output list of instructions.
+To run the assembly language parser on an entire program we can split an input string into lines and pass each one to our top-level parser. Successfully parsed instructions are stored in the output list of instructions.
 
 ```elm {l}
 input : String
@@ -244,7 +244,15 @@ testParser =
         |> List.filterMap (parse instruction)
 ```
 
-## Working with parsed input: An assembly language interpreter
+## Conclusions
+
+While Elm provides a number of useful functions for processing strings (e.g. [String.split](https://package.elm-lang.org/packages/elm/core/latest/String#split), [String.words](https://package.elm-lang.org/packages/elm/core/latest/String#words), [String.lines](https://package.elm-lang.org/packages/elm/core/latest/String#lines) and [String.toInt](https://package.elm-lang.org/packages/elm/core/latest/String#toInt)), the Elm parser provides us with a more flexible and robust approach. It is especially suited to cases where we have a well-defined _grammar_ that describes the form of the input text we are expecting.
+
+The combinator approach of building parsers by assembling simpler ones allows incremental development and reuse by allowing us to build a parser 'bottom-up'.
+
+---
+
+## Appendix: An assembly language interpreter
 
 Parsing is typically just the first stage in a pipeline of operations we perform on input data. So for completeness, now that we have a parser that should be able to handle any input that conforms to our assembly language, let's create the ability to run assembly language programs.
 
