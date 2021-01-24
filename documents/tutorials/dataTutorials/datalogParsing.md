@@ -415,6 +415,14 @@ parse parser =
     P.run parser >> Result.toMaybe
 ```
 
+## Conclusions
+
+This chapter has considered how we translate a well-specified grammar into a parser that transforms some input text into custom types that represent that grammar. While it does not introduce much new Elm parser functionality, it does provide practice in applying the parser combinator approach and lays the ground for considering one of the main strengths of the Elm Parser approach, that of robust error handling to provide useful feedback on the parsing process.
+
+---
+
+## Appendix: Testing
+
 ### Simple Example
 
 ^^^elm r=(parse program testInput1)^^^
@@ -427,9 +435,7 @@ parse parser =
 
 ^^^elm r=(parse program testInput3)^^^
 
----
-
-## Test Programs
+### Test Programs
 
 ```elm {l}
 testInput1 : String
