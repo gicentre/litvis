@@ -218,7 +218,7 @@ naturalNumber =
         }
 ```
 
-This new natural number parser can substitute previous cases where we used `P.int`.
+This new natural number parser can replace previous cases where we used `P.int`.
 
 ### Handling Negative Numbers
 
@@ -246,7 +246,7 @@ An important, but subtle, point to note when using [oneOf](https://package.elm-l
 
 To avoid the possibility of a partially failed parser causing the entire parser to fail (e.g. `-xxxx` succeeds as far as the `-` but then fails on seeing the first `x`), we first consider one of two possibilities: that the parser detects a natural number or it detects a `-` symbol. In the latter case, we have two further possibilities: that it is able to parse the natural number following the `-`, or that it contains some ignorable text. In that final case, we simply return a value of 0 in order to guarantee the parser will always return a countable number.
 
-This approach that effectively provides a 0 where a number cannot be parsed is appropriate for our task where we are ignoring anything but valid cat counts. In other contexts with stricter grammars, we might wish to fail when a non-parsable number is encountered.
+This approach that effectively provides a default of 0 where a number cannot be parsed is appropriate for our task where we are ignoring anything but valid cat counts. In other contexts with stricter grammars, we might wish to fail when a non-parsable number is encountered.
 
 ```elm {l}
 counter : Parser Int
@@ -345,9 +345,17 @@ allCatsAndDogs =
 
 ^^^elm r=(P.run allCatsAndDogs input4)^^^
 
+## Conclusions
+
+The Elm parser is designed primarily to handle 'strict' grammars where rules are specific about the entirety of input and that any deviation from the grammar is considered a 'failed' parse. However, this tutorial has shown how we can also use it for more unstructured text where there are only small parts of it that we might be interested in.
+
+The combinator approach of building parsers by assembling simpler ones allows incremental development by first considering simple cases and gradually building to consider a greater range of inputs.
+
+Special care should be taken when considering [oneOf](https://package.elm-lang.org/packages/elm/parser/latest/Parser#oneOf) alternatives where failure in one parser might prevent consideration of alternatives. Ideally, the aim is to structure parsing so that 'failed' parsing attempts cannot even start. We did this with the negative number cases by considering the case of text that starts with a `-` separately from numbers that do not. For more complex situations this may not always be possible and the Elm parser provides the [backtrackable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#backtrackable) function to accommodate this possibility. However this can lead to inefficient parsing so should normally be considered a last resort. For more details, see this discussion of [backtrackable semantics](https://github.com/elm/parser/blob/master/semantics.md).
+
 ---
 
-### Tests
+## Appendix: Tests
 
 How robust is our parser?
 
