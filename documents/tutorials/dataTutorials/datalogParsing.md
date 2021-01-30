@@ -34,7 +34,10 @@ _Thanks to [Brian Hicks](https://www.brianthicks.com) for inspiration for this t
 
 New Elm parser functions introduced:
 
-- backtracking after a problem parse with [backtrackable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#backtrackable)
+- extracting words with conditions using [variable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#variable)
+- parsing a sequence of items with [sequence](https://package.elm-lang.org/packages/elm/parser/latest/Parser#sequence)
+- using previously parsed content with [andThen](https://package.elm-lang.org/packages/elm/parser/latest/Parser#andThen)
+- explicitly generating a parser problem with [problem](https://package.elm-lang.org/packages/elm/parser/latest/Parser#problem)
 
 {|infobox)}
 
@@ -44,7 +47,9 @@ Syntactically, it is a subset of the [Prolog](https://en.wikipedia.org/wiki/Prol
 
 ## The datalog grammar
 
-Datalog programs consist just of _facts_ and _rules_. Here are some example facts:
+A datalog program consists of a set of statements that are either _facts_ or _rules_.
+
+Here are some example facts:
 
 ```prolog
 bird("parrot").
@@ -53,7 +58,7 @@ move("bat","fly").
 move("parrot","fly").
 ```
 
-A _fact_ is simply a named _relation_ (`bird` or `legs` or `move` in these examples) followed by a list of zero or more _constants_ (`"parrot"`, `"cat"`, `4`, `"bat"` and `"fly"` in these examples). Semantically, we can choose how we interpret these relations although a fact always holds true. Sensible naming should make it obvious what that truth represents (a parrot is a bird; a cat has four legs; a bat can move by flying; a parrot can move by flying).
+A _fact_ is a named _relation_ (`bird` or `legs` or `move` in these examples) followed by a list of zero or more _constants_ (`"parrot"`, `"cat"`, `4`, `"bat"` and `"fly"` in these examples). Semantically, we can choose how we interpret these relations although a fact always holds true. Sensible naming should make it obvious what that truth represents (a parrot is a bird; a cat has four legs; a bat can move by flying; a parrot can move by flying).
 
 Here is a sample rule:
 
@@ -112,7 +117,7 @@ canTravel(A,B) :- connected(A,B).
 canTravel(A,C) :- connected(A,B), canTravel(B,C).
 ```
 
-would generate the additional inferred facts:
+which would generate the additional inferred facts:
 
 ```prolog
 canTravel("Windermere", "Windermere").
@@ -136,12 +141,9 @@ canTravel("Keswick", "Keswick").
 Let's express the elements of the grammar as Elm types:
 
 ```elm {l}
-type alias Program =
-    { facts : List Fact, rules : List Rule }
-
-
-type alias Fact =
-    ( Relation, List Constant )
+type Statement
+    = Fact ( Relation, List Constant )
+    | Rule ( Atom, List NegatableAtom )
 
 
 type alias Relation =
@@ -151,10 +153,6 @@ type alias Relation =
 type Constant
     = Str String
     | Num Int
-
-
-type alias Rule =
-    ( Atom, List NegatableAtom )
 
 
 type alias Atom =
@@ -171,34 +169,35 @@ type Term
     | Constant Constant
 ```
 
-This would allow us to express our example datalog program with type safety:
+This would allow us to express a datalog program with type safety:
 
 ```elm {l}
-exampleProg : Program
+exampleProg : List Statement
 exampleProg =
-    { facts =
-        [ ( "bird", [ Str "parrot" ] )
-        , ( "legs", [ Str "cat", Num 4 ] )
-        , ( "move", [ Str "bat", Str "fly" ] )
-        , ( "move", [ Str "parrot", Str "fly" ] )
-        ]
-    , rules =
-        [ ( ( "flyingBird", [ Variable "X" ] )
-          , [ Atom ( "bird", [ Variable "X" ] )
-            , Atom ( "move", [ Variable "X", Constant (Str "fly") ] )
-            ]
-          )
-        ]
-    }
+    [ Fact ( "bird", [ Str "parrot" ] )
+    , Fact ( "legs", [ Str "cat", Num 4 ] )
+    , Fact ( "move", [ Str "bat", Str "fly" ] )
+    , Fact ( "move", [ Str "parrot", Str "fly" ] )
+    , Rule
+        ( ( "flyingBird", [ Variable "X" ] )
+        , [ Atom ( "bird", [ Variable "X" ] )
+          , Atom ( "move", [ Variable "X", Constant (Str "fly") ] )
+          ]
+        )
+    ]
 ```
 
-Creating datalog programs this way would be somewhat tedious, which is why we wish to create a parser to convert raw datalog text into its equivalent `Program`.
+Specifying datalog programs explicitly this way would be somewhat tedious, which is why we wish to create a parser to convert raw datalog text into its equivalent `Program`.
 
 ## Building Parsers from Bottom-Up
 
+For more complex grammars like this, it is often easier to build the parsers from 'bottom-up' – that is to consider the parsers that handle the lowest level input (e.g. numbers or strings) first and then the parsers that assemble these low level parsers afterwards.
+
 ### Constants
 
-Constants can be one of a numeric value, single word starting with a lowercase letter, or some quoted text (that may start with an uppercase latter and contain non-alphabetic characters). Parsers for each of these cases can be created in a similar way to those in the earlier tutorials:
+Constants can be one of a numeric value, single word starting with a lowercase letter, or some quoted text (that may start with an uppercase latter and contain non-alphabetic characters).
+
+A numeric constant, that may be positive or negative, can be found in a similar way to previous tutorials, in this case placing it in our `Num` custom type:
 
 ```elm {l}
 numConstant : Parser Constant
@@ -210,18 +209,24 @@ numConstant =
             |= P.int
         ]
         |> P.map Num
+```
 
+For string constants we can use Elm parser's [variable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#variable) that allows us extract a word from input, but impose some conditions on what words are valid. In this case we can specify it must start with a lowercase letter, the rest of the word can be any alphanumeric character or an underscore, but it must not be the word `not` (which we will reserve for negating an atom) before wrapping it in a `Str`
 
+```elm {l}
 strConstant : Parser Constant
 strConstant =
     P.variable
         { start = Char.isLower
         , inner = \c -> Char.isAlphaNum c || c == '_'
-        , reserved = Set.empty
+        , reserved = Set.singleton "not"
         }
         |> P.map Str
+```
 
+A quoted constant can be any text as along as it starts and ends with double quotation marks. We remove the quotation marks themselves with [String.slice](https://package.elm-lang.org/packages/elm/core/latest/String#slice) before returning the constant value:
 
+```elm {l}
 quotedConstant : Parser Constant
 quotedConstant =
     P.succeed ()
@@ -237,65 +242,12 @@ The three constant variants can be combined in a general constant parser.
 ```elm {l}
 constant : Parser Constant
 constant =
-    P.oneOf
-        [ numConstant
-        , strConstant
-        , quotedConstant
-        ]
+    P.oneOf [ numConstant, strConstant, quotedConstant ]
 ```
 
-### Fact Parsing
+### Variables
 
-Let's consider fact parsing first where our grammar tells us we need to handle
-
-```prolog
-<fact> ::=  <relation> "(" <constant-list> ")."
-```
-
-Relation names are simply lower case words and we can use Elm parser's built-in [variable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#variable) parser to identify them.
-
-```elm {l}
-relation : Parser Relation
-relation =
-    P.variable
-        { start = Char.isLower
-        , inner = \c -> Char.isAlphaNum c || c == '_'
-        , reserved = Set.empty
-        }
-```
-
-We can handle lists of constants with Elm parser's built-in [sequence](https://package.elm-lang.org/packages/elm/parser/latest/Parser#sequence) parser.
-
-```elm {l}
-fact : Parser Fact
-fact =
-    P.succeed Tuple.pair
-        |. P.spaces
-        |= relation
-        |. P.spaces
-        |= P.sequence
-            { start = "("
-            , item = constant
-            , separator = ","
-            , end = ")"
-            , spaces = P.spaces
-            , trailing = P.Forbidden
-            }
-        |. P.symbol "."
-        |. P.spaces
-```
-
-### Rule Parsing
-
-The rule grammar is more flexible than for facts as we need to be able to accommodate atoms on both sides of the implies symbol and those atoms can include both constants and variables.
-
-```prolog
-<rule> ::= <atom> ":-" <atom-list> "."
-<atom> ::= <relation> "(" <term-list> ")"
-<term> ::= <constant> | <variable>
-```
-
-Building up our remaining parsers from bottom to top, we need to add one for handling variables:
+Datalog _variables_ can be similarly parsed with [variable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#variable), this time specifying that they must start with an uppercase letter.
 
 ```elm {l}
 variable : Parser Term
@@ -308,7 +260,25 @@ variable =
         |> P.map Variable
 ```
 
-A term can be either a variable or a constant:
+### Relations
+
+Relation names are simply lower case words, so again we can use Elm parser's [variable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#variable) (not to be confused with the concept of the datalog _variable_).
+
+```elm {l}
+relation : Parser Relation
+relation =
+    P.variable
+        { start = Char.isLower
+        , inner = \c -> Char.isAlphaNum c || c == '_'
+        , reserved = Set.singleton "not"
+        }
+```
+
+### Assembling relations of constants and variables
+
+Now that we can identify the lowest level of data with parsers, lets consider how we can group them together.
+
+A relation should be followed by a series of _terms_ (constants and variables) which together form a valid _atom_:
 
 ```elm {l}
 term : Parser Term
@@ -319,7 +289,7 @@ term =
         ]
 ```
 
-An atom is a named relation of terms:
+An atom is a named relation of terms where a list of terms is comma-separated and enclosed in parentheses. We can handle this compactly using the [sequence](https://package.elm-lang.org/packages/elm/parser/latest/Parser#sequence) parser designed for parsing lists of items.
 
 ```elm {l}
 atom : Parser Atom
@@ -338,7 +308,7 @@ atom =
             }
 ```
 
-A negated version of an atom will be preceded by `not`:
+It is possible that in the body of rule, an atom may be negated. A negated version of an atom will be preceded by `not`:
 
 ```elm {l}
 negatedAtom : Parser NegatableAtom
@@ -361,15 +331,62 @@ negatableAtom =
         ]
 ```
 
-And finally a rule pairs an atom with a list of atoms via an implication symbol:
+We now have the parsers necessary to assemble into rule and fact parsers.
+
+### Fact and Rule Parsing
+
+One of the parsing challenges we face when parsing input characters sequentially is that when we identify a relation and list of terms, we don't know whether it will form a fact or rule until we find either a `.` or a `:-` following it. And should it contain any variables, this would be fine if the head of a rule, but would be a problem as a definition of a fact – something we can only establish after we've parsed the atom and the following symbol.
+
+Elm parser does have the ability to make a parser [backtrackable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#backtrackable) which could provide a means to overcome this problem. But where possible it is good practice to avoid backtracking to make the parser as efficient as possible (we only want to parse each character once if we can). Avoiding backtracking also helps when reporting errors, which we will consider in the next chapter.
+
+Let's therefore consider an approach that allows just a single pass through our input. Firstly, we parse the atom we expect at the start of any statement. And then we can decide on whether the atom forms part of a fact or a rule. If it is a fact we need to check that the atom contains only constants. To do this we use the Elm parser function [andThen](https://package.elm-lang.org/packages/elm/parser/latest/Parser#andThen). This function takes some parsed content to generate a new parser allowing us to validate the content even after a succeeding parse.
 
 ```elm {l}
-rule : Parser Rule
-rule =
-    P.succeed Tuple.pair
-        |. P.spaces
+statement : Parser Statement
+statement =
+    P.succeed identity
         |= atom
         |. P.spaces
+        |> P.andThen (\atm -> P.oneOf [ fact atm, rule atm ])
+```
+
+Our fact parser takes a successfully parsed atom and then checks it is followed by a terminating `.` and that the list of terms in the atom are all constants. We can force the parser to fail if it finds anything other than constants in the atom by calling [problem](https://package.elm-lang.org/packages/elm/parser/latest/Parser#problem) with a suitably explanatory error message.
+
+```elm {l}
+fact : Atom -> Parser Statement
+fact ( r, terms ) =
+    let
+        constants =
+            List.filterMap
+                (\t ->
+                    case t of
+                        Constant c ->
+                            Just c
+
+                        _ ->
+                            Nothing
+                )
+                terms
+
+        onlyConstants =
+            if List.length constants == List.length terms then
+                P.succeed (Fact ( r, constants ))
+
+            else
+                P.problem "A fact should only contain constants"
+    in
+    P.succeed identity
+        |. P.symbol "."
+        |. P.spaces
+        |= onlyConstants
+```
+
+Parsing the body of a rule, which should be list of negatable atoms following the `:=` symbol, is simplified by using the [sequence](https://package.elm-lang.org/packages/elm/parser/latest/Parser#sequence) parser. Unlike the fact parsing we will only perform syntactical checking of the rule as terms can be both constants and variables.
+
+```elm {l}
+rule : Atom -> Parser Statement
+rule head =
+    P.succeed (\bdy -> Rule ( head, bdy ))
         |= P.sequence
             { start = ":-"
             , item = negatableAtom
@@ -384,28 +401,22 @@ rule =
 
 ### Top-Level Parsers
 
-Now we have the individual parsers we can assemble them in a top level `Program` parser loop. The loop is terminated when we reach the end of the input and we continue looping if we are able to parse facts or rules.
-
-Unlike earlier examples, whether some input text is a fact or rule is not determinable until after the relation name has been found. One approach, that aids program clarity, is firstly attempt to parse a fact, and if that fails, to _backtrack_ so that an attempt to parse a rule instead can be made. This is simply achieved by providing the relevant parser to the [backtrackable](https://package.elm-lang.org/packages/elm/parser/latest/Parser#backtrackable) function. Backtracking can be a more expensive for large inputs as it can involve parsing portions of input text more than once. However, in the case of our grammar, this is relatively limited so should not slow down execution by any noticeable amount.
+Finally we can create a top-level program parser that simply loops through input parsing statements until the end of input is reached.
 
 ```elm {l}
-program : Parser Program
+program : Parser (List Statement)
 program =
     let
-        programHelp ( facts, rules ) =
+        programHelp statements =
             P.oneOf
-                [ P.succeed (Program facts rules |> P.Done)
+                [ P.succeed (statements |> List.reverse |> P.Done)
                     |. P.end
-                , P.succeed (\f -> ( f :: facts, rules ) |> P.Loop)
-                    |= P.backtrackable fact
-                , P.succeed (\r -> ( facts, r :: rules ) |> P.Loop)
-                    |= rule
+                , P.succeed (\st -> st :: statements |> P.Loop)
+                    |= statement
                 ]
     in
-    P.loop ( [], [] ) programHelp
+    P.loop [] programHelp
 ```
-
-The program parser reverses the list of facts and rules as it parses (we accumulate new items onto the front of the stored lists), but this is not a problem since datalog is independent of declaration order.
 
 And to run our parser, we will for the moment, convert the parsed result into a [Maybe](https://package.elm-lang.org/packages/elm/core/latest/Maybe).
 
@@ -417,7 +428,7 @@ parse parser =
 
 ## Conclusions
 
-This chapter has considered how we translate a well-specified grammar into a parser that transforms some input text into custom types that represent that grammar. While it does not introduce much new Elm parser functionality, it does provide practice in applying the parser combinator approach and lays the ground for considering one of the main strengths of the Elm Parser approach, that of robust error handling to provide useful feedback on the parsing process.
+This chapter has considered how we translate a well-specified grammar into a parser that transforms some input text into custom types that represent that grammar. It introduced an important addition to the approaches we can take to parsing, namely the use of [andThen](https://package.elm-lang.org/packages/elm/parser/latest/Parser#andThen) to validate some parsed content after, rather than during, it has been parsed. The chapter provides practice in applying the parser combinator approach and lays the ground for considering one of the main strengths of the Elm Parser, that of robust error handling to provide useful feedback on the parsing process.
 
 ---
 
@@ -435,7 +446,9 @@ This chapter has considered how we translate a well-specified grammar into a par
 
 ^^^elm r=(parse program testInput3)^^^
 
-### Test Programs
+---
+
+## Appendix: Test Programs
 
 ```elm {l}
 testInput1 : String
