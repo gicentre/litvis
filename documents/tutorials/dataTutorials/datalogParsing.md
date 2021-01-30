@@ -23,6 +23,8 @@ _This is one of a series of 'data' tutorials for use with litvis._
 1.  [Parsing unstructured text](unstructuredText.md)
 1.  [Parsing CSV](csvParsing.md)
 1.  **Parsing datalog**
+1.  [Reporting helpful parsing errors, part 1](datalogErrorReporting1.md)
+1.  [Reporting helpful parsing errors, part 2](datalogErrorReporting2.md)
 
 ---
 
