@@ -24,21 +24,13 @@
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --project .",
     "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
+    "prepare": "husky install",
     "qa": "yarn lint && yarn test --coverage",
     "release": "yarn build-and-qa && lerna publish",
     "test": "jest",
     "test-by-package": "lerna exec jest",
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
     "use-prod-typings": "lerna exec \"replace --quiet src\\/index\\.ts dist/index.d.ts package.json\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "post-commit": "run-if-changed",
-      "post-checkout": "run-if-changed",
-      "post-merge": "run-if-changed",
-      "post-rewrite": "run-if-changed"
-    }
   },
   "lint-staged": {
     "**/*": [
@@ -66,7 +58,7 @@
     "@types/yamljs": "^0.2.31",
     "eslint": "^7.8.1",
     "globby": "^11.0.1",
-    "husky": "^4.2.5",
+    "husky": "^6.0.0",
     "jest": "^26.4.2",
     "lerna": "^4.0.0",
     "lint-staged": "^10.3.0",
