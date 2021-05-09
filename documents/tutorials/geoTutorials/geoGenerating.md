@@ -196,7 +196,7 @@ Note how the small circle is no longer circular when projected onto a plane. We 
 ^^^elm v=(paris "Azimuthal equal area" (projection [ prType azimuthalEqualArea ]))^^^
 
 ^^^elm v=(paris "Stereographic" (projection [ prType stereographic ]))^^^
-^^^elm v=(paris "Gnomonic" (projection [ prType gnomonic, prClipAngle (Just 70) ]))^^^
+^^^elm v=(paris "Gnomonic" (projection [ prType gnomonic, prClipAngle 70 ]))^^^
 
 ^^^elm v=(paris "Mercator" (projection [ prType mercator ]))^^^
 ^^^elm v=(paris "Transverse Mercator" (projection [ prType transverseMercator ]))^^^

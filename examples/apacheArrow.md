@@ -16,7 +16,7 @@ import VegaLite exposing (..)
 
 _Note: This page may take some time to show in preview as it loads large volumes of data._
 
-[Apache Arrow](https://arrow.apache.org) is a compact binary format that can store columnar data. While it's main benefit is for efficient GPU and CPU data processing, some data that you may wish to visualize can be in this format.
+[Apache Arrow](https://arrow.apache.org) is a compact binary format that can store columnar data. While its main benefit is for efficient GPU and CPU data processing, some data that you may wish to visualize can be in this format.
 
 Data in Arrow format can be read simply by specifying [arrow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#arrow) in the format list of [dataFromUrl](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromUrl).
 

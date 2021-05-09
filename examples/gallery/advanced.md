@@ -268,7 +268,7 @@ waterfall =
 
         spec3 =
             asSpec
-                [ enc3 [], textMark [ maDy -8, maFontWeight Bold, maColor "#404040" ] ]
+                [ enc3 [], textMark [ maDy -8, maFontWeight fwBold, maColor "#404040" ] ]
 
         enc4 =
             encoding
@@ -278,7 +278,7 @@ waterfall =
         spec4 =
             asSpec
                 [ enc4 []
-                , textMark [ maDy 8, maBaseline vaTop, maFontWeight Bold, maColor "#404040" ]
+                , textMark [ maDy 8, maBaseline vaTop, maFontWeight fwBold, maColor "#404040" ]
                 ]
 
         enc5 =
@@ -292,7 +292,7 @@ waterfall =
                     ]
 
         spec5 =
-            asSpec [ enc5 [], textMark [ maBaseline vaMiddle, maFontWeight Bold ] ]
+            asSpec [ enc5 [], textMark [ maBaseline vaMiddle, maFontWeight fwBold ] ]
     in
     toVegaLite
         [ width 800

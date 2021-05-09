@@ -303,7 +303,7 @@ airPollution3 =
         , height 300
         , title "Airborne Pollution, Putney High Street Facade\nAll Sundays between 2013 and 2017"
             [ tiAnchor anStart
-            , tiFontWeight Normal
+            , tiFontWeight fwNormal
             , tiSubtitle "Ride London Sundays 2013-2016"
             , tiSubtitleColor "#b00"
             ]
