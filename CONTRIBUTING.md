@@ -139,111 +139,70 @@ MacOS related:
 
 ### Upgrading Vega and Vega-Lite
 
-[Vega](https://github.com/vega/vega) and [Vega-Lite](`https://github.com/vega/vega-lite`) are not direct dependencies of `gicentre/litvis`. They are introduced downstream inside NPM package [`mume-with-litvis`](https://www.npmjs.com/package/mume-with-litvis), which in turn is a dependency of Atom and VSCode plugins.
+[Vega](https://github.com/vega/vega) and [Vega-Lite](`https://github.com/vega/vega-lite`) are not direct dependencies of `gicentre/litvis`.
+They are introduced downstream inside NPM package [`mume-with-litvis`](https://www.npmjs.com/package/mume-with-litvis), which in turn is a dependency of Atom and VSCode extensions.
 
-Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following steps:
+Vega, Vega-Lite and their auxiliary libraries are listed in `mume-with-litvis` → `package.json`.
+The versions are specified with `^`, which means that the latest available patches or semver minor features will be picked automatically on extension install (or reinstall).
+
+To upgrade _development_ versions of vega libraries in `mume-with-litvis`, you need to remove them from `yarn.lock` and reinstall dependencies (`yarn install`).
+
+If you need to upgrade major versions, e.g. `vega-lite@X.Y.Z` to `vega-lite@[X+1].0.0`, new extension releases are necessary.
+Please follow the steps below.
 
 #### 1. Produce a new version of `mume-with-litvis`
 
 1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/mume-with-litvis.git>.
 
-1.  Run `npm install`.
+1.  Update versions for `vega`, `vega-lite`, `vega-embed`, `vega-loader`, `apache-arrow` or `vega-loader-arrow` in `package.json`.
 
-1.  Navigate to the latest pre-compiled versions of the libraries available via the CDN:
+1.  Run `yarn install`.
 
-    - <https://www.jsdelivr.com/package/npm/vega>
-    - <https://www.jsdelivr.com/package/npm/vega-lite>
-    - <https://www.jsdelivr.com/package/npm/vega-embed>
-    - <https://www.jsdelivr.com/package/npm/apache-arrow>
-    - <https://www.jsdelivr.com/package/npm/vega-loader-arrow>
+1.  Find `dependentLibraryConfigs` in `src/markdown-engine.ts` and upgrade versions accordingly.
+    Note that you might also need to update `buildPathForWebview` if it has changed.
 
-    These pages are usually updated within a few hours after the official release.
+1.  In the unlikely case of breaking changes that affect the lifecycle of vega-based visualizations, consider updating additional files in `src` folder.
+    This may be necessary in a small subset of cases, and only when the major versions are bumped.
 
-1.  Replace the following local files with the corresponding CDN downloads:
+1.  Update `CHANGELOG.md` file by adding a new `## Unreleased (minor|patch)` section ([example](https://github.com/gicentre/mume-with-litvis/commit/eebd2cf0d7f3fabfd161c9fcb135089dcef833da)).
 
-    - `dependencies/vega/vega.min.js`
-    - `dependencies/vega-lite/vega-lite.min.js`
-    - `dependencies/vega-embed/vega-embed.min.js`
-    - `dependencies/apache-arrow/apache-arrow.min.js`
-    - `dependencies/vega-loader-arrow/vega-loader-arrow.min.js`
+1.  Commit the changes.
 
-    Opening minified JavaScripts in the browser and pasting their contents to the git repo may result in broken text encoding. Using the command line is safer:
+1.  Update `CHANGELOG.md` again by replacing `## Unreleased (...)` with a new expected version number.
+    Stage this file.
 
-    ```sh
-    brew install http
-
-    cd mume-with-litvis
-    ```
-
-    ```sh
-    NAME=vega
-    VERSION=5.20.2
-    BUILD_PATH=
-    ```
-
-    ```sh
-    NAME=vega-lite
-    VERSION=5.1.0
-    BUILD_PATH=
-    ```
-
-    ```sh
-    NAME=vega-embed
-    VERSION=6.17.0
-    BUILD_PATH=
-    ```
-
-    ```sh
-    NAME=apache-arrow
-    VERSION=4.0.0
-    BUILD_PATH=Arrow.es2015.min.js
-    ```
-
-    ```sh
-    NAME=vega-loader-arrow
-    VERSION=0.0.10
-    BUILD_PATH=
-    ```
-
-    ```sh
-    http "https://cdn.jsdelivr.net/npm/${NAME}@${VERSION}/${BUILD_PATH:-build/${NAME}.min.js}" > "dependencies/${NAME}/${NAME}.min.js"
-    ```
-
-1.  Update `dependencies/README.md` with the picked library versions. This change is needed for documentation purposes only.
-
-1.  Find `dependentLibraryMaterials` in `src/markdown-engine.ts` and upgrade library versions accordingly.
-
-1.  In the unlikely case of breaking changes that affect the lifecycle of vega-based visualizations, consider updating additional files in `src` folder. This may be necessary in a small subset of cases, and only when the major versions are bumped.
-
-1.  Commit the changes (see [example](https://github.com/gicentre/mume-with-litvis/commit/493b4e9b753528cbd013c2ba22727f363c4a78a5)).
-
-1.  Open `package.json` and bump NPM version (see [example](https://github.com/gicentre/mume-with-litvis/commit/493b4e9b753528cbd013c2ba22727f363c4a78a5)). If updates in Vega, Vega Lite and Vega Embed only carry bug fixes, you may want to modify the third number instead of the second one, which stands for new features.
-
-1.  Run `npm publish`. This will build `mume-with-litvis` from its source and publish the new version on NPM. 2FA authentication token should be asked as part of this. Beware that publishing may [fail on a slow internet connection](https://github.com/npm/npm/issues/19425#issuecomment-381315731) due to the size of `mume-with-litvis` combined with the expiration of 2FA tokens.
+1.  Run `yarn publish --minor` or `yarn publish --patch`.
+    This will build `mume-with-litvis` from its source, change version in `package.json`, publish the new version on NPM, commit to `main` and add git tag (`v*`).
+    2FA authentication token should be asked as part of this.
+    Beware that publishing may [fail on a slow internet connection](https://github.com/npm/npm/issues/19425#issuecomment-381315731) due to the size of `mume-with-litvis` combined with the expiration of 2FA tokens.
 
 1.  Open <https://www.npmjs.com/package/mume-with-litvis> and verify that the package version has been updated.
 
 1.  Commit your change in `package.json` and push both commits to the `main` branch on github.
 
-You may also want to cherry-pick the first commit to `mume` in order to keep the fork in sync with its origin. Example pull request: [shd101wyy/mume#79](https://github.com/shd101wyy/mume/pull/79).
+You may also want to cherry-pick the first commit to `mume` in order to keep the fork in sync with its origin.
+Example pull request: [shd101wyy/mume#79](https://github.com/shd101wyy/mume/pull/79).
 
 #### 2. Produce a new version of the Atom package
 
 1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/markdown-preview-enhanced-with-litvis.git>.
 
-1.  Run `npm install`.
+1.  Run `yarn install`.
 
-1.  Run `npm install mume-with-litvis@latest` to update the version of this dependency.
+1.  Run `yarn install mume-with-litvis@latest` to update the version of this dependency.
 
 1.  Open `CHANGELOG.md` and document upcoming changes.
 
 1.  Commit (see [example](https://github.com/gicentre/markdown-preview-enhanced-with-litvis/commit/b6564fdc7e9559654c93cb09f67c2d51d0dbcf90)) and push.
 
-1.  Run `apm publish patch` or `apm publish minor` depending on the nature of the upstream changes. This should automatically bump the version in `package.json` and push a new commit to GitHub, which constitutes the release (see [example](https://github.com/gicentre/markdown-preview-enhanced-with-litvis/commit/75dac081b7955028071c5ff79ccaa6791dd5b707)). You will be asked to authenticate at APM if needed.
+1.  Run `apm publish patch` or `apm publish minor` depending on the nature of the upstream changes.
+    This should automatically bump the version in `package.json` and push a new commit to GitHub, which constitutes the release (see [example](https://github.com/gicentre/markdown-preview-enhanced-with-litvis/commit/75dac081b7955028071c5ff79ccaa6791dd5b707)).
+    You will be asked to authenticate at APM if needed.
 
 1.  Push the `main` branch.
 
-The new package version should now show up in Atom and it should be possible to upgrade. If the new version ends up broken, you can rollback by running `apm install markdown-preview-enhanced@another-version`.
+The new package version should now show up in Atom and it should be possible to upgrade.
+If the new version ends up broken, you can rollback by running `apm install markdown-preview-enhanced@another-version`.
 
 #### 3. Produce a new version of the VSCode extension
 
@@ -255,14 +214,15 @@ The new package version should now show up in Atom and it should be possible to 
 
 1.  Check out the latest commit on the `main` branch of <https://github.com/gicentre/vscode-markdown-preview-enhanced-with-litvis.git>.
 
-1.  Run `npm install`.
+1.  Run `yarn install`.
 
-1.  Run `npm install mume-with-litvis@latest` to update the version of this dependency.
+1.  Run `yarn install mume-with-litvis@latest` to update the version of this dependency.
 
 1.  Open `CHANGELOG.md` and document upcoming changes.
 
 1.  Commit (see [example](https://github.com/gicentre/markdown-preview-enhanced-with-litvis/commit/3cd86e1499b8abc45ff806741798c038e098e05d)) and push.
 
-1.  Run `vsce publish patch` or `vsce publish minor` depending on the nature of the upstream changes. You will be asked to authenticate at Visual Studio Marketplace if needed.
+1.  Run `vsce publish patch` or `vsce publish minor` depending on the nature of the upstream changes.
+    You will be asked to authenticate at Visual Studio Marketplace if needed.
 
 1.  Push the `main` branch.
