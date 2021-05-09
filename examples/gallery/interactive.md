@@ -14,7 +14,7 @@ Examples that use data from external sources tend to use files from the Vega-Lit
 ```elm {l}
 vegaPath : String
 vegaPath =
-    "https://cdn.jsdelivr.net/npm/vega-datasets@2.1/data/"
+    "https://cdn.jsdelivr.net/npm/vega-datasets@2/data/"
 
 
 giCentrePath : String
@@ -128,15 +128,16 @@ hyperScatter =
 You can make any chart zoomable by binding its positional scales to an interval selection. Additionally, this example sets an initial zoomed-in view by setting the positional x and y scales to be a small part of their respective data domains.
 _Drag to pan. Zoom in or out with mouse-wheel/zoom gesture._
 
-```elm {v l interactive highlight=[7,8,17,24]}
+```elm {v l interactive highlight=[7-9,18,25]}
 zoomScatter : Spec
 zoomScatter =
     let
         data =
             dataFromUrl (vegaPath ++ "cars.json") []
 
-        sel =
-            selection << select "myGrid" seInterval [ seBindScales ]
+        ps =
+            params
+                << param "zoomer" [ paSelect seInterval [], paBindScales ]
 
         enc =
             encoding
@@ -156,7 +157,7 @@ zoomScatter =
                     ]
                 << size [ mName "Cylinders", mQuant ]
     in
-    toVegaLite [ data, sel [], enc [], circle [] ]
+    toVegaLite [ data, ps [], enc [], circle [] ]
 ```
 
 ---
@@ -172,23 +173,23 @@ intervalHighlight =
         data =
             dataFromUrl (vegaPath ++ "cars.json") []
 
-        sel =
-            selection
-                << select "myBrush" seInterval []
+        ps =
+            params
+                << param "myBrush" [ paSelect seInterval [] ]
 
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << color
-                    [ mSelectionCondition (selectionName "myBrush")
+                    [ mCondition (prParam "myBrush")
                         -- Encoding when selected:
                         [ mName "Cylinders", mOrdinal ]
                         -- Encoding when not selected:
                         [ mStr "grey" ]
                     ]
     in
-    toVegaLite [ width 400, height 400, data, sel [], enc [], point [] ]
+    toVegaLite [ width 400, height 400, ps [], data, enc [], point [] ]
 ```
 
 ---
@@ -204,33 +205,32 @@ hoverHighlight =
         data =
             dataFromUrl (vegaPath ++ "cars.json") []
 
-        sel =
-            selection
-                << select "myPaintbrush"
-                    seMulti
-                    [ seOn "mouseover", seNearest True, seEmpty ]
+        ps =
+            params
+                << param "myPaintbrush"
+                    [ paSelect sePoint [ seOn "mouseover", seNearest True ] ]
 
         enc =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
                 << fillOpacity
-                    [ mSelectionCondition (selectionName "myPaintbrush")
+                    [ mCondition (prParamEmpty "myPaintbrush")
                         [ mNum 1 ]
                         [ mNum 0.3 ]
                     ]
                 << color
-                    [ mSelectionCondition (selectionName "myPaintbrush")
+                    [ mCondition (prParamEmpty "myPaintbrush")
                         [ mStr "rgb(230,110,90)" ]
                         [ mStr "rgb(80,80,80)" ]
                     ]
                 << size
-                    [ mSelectionCondition (selectionName "myPaintbrush")
+                    [ mCondition (prParamEmpty "myPaintbrush")
                         [ mNum 200 ]
                         [ mNum 50 ]
                     ]
     in
-    toVegaLite [ width 400, height 400, data, sel [], enc [], point [ maFilled True ] ]
+    toVegaLite [ width 400, height 400, ps [], data, enc [], point [ maFilled True ] ]
 ```
 
 ---
@@ -250,44 +250,42 @@ sliderSelection =
             transform
                 << calculateAs "year(datum.Year)" "Year"
 
-        transSelection =
-            transform
-                << filter (fiSelection "CylYr")
-
-        sel =
-            selection
-                << select "CylYr"
-                    seSingle
-                    [ seFields [ "Cylinders", "Year" ]
-                    , seBind
-                        [ iRange "Cylinders" [ inName "Cylinders ", inMin 3, inMax 8, inStep 1 ]
-                        , iRange "Year" [ inName "Year ", inMin 1970, inMax 1981, inStep 1 ]
+        ps =
+            params
+                << param "CylYr"
+                    [ paSelect sePoint [ seToggle tpFalse, seFields [ "Cylinders", "Year" ] ]
+                    , paValues (dataObjects [ [ ( "Cylinders", num 4 ), ( "Year", num 1977 ) ] ])
+                    , paBindings
+                        [ ( "Cylinders", ipRange [ inName "Cylinders", inMin 3, inMax 8, inStep 1 ] )
+                        , ( "Year", ipRange [ inName "Year", inMin 1969, inMax 1981, inStep 1 ] )
                         ]
-                    , seInit [ ( "Cylinders", num 4 ), ( "Year", num 1970 ) ]
-                    , seEmpty
                     ]
 
-        enc =
+        encPos =
             encoding
                 << position X [ pName "Horsepower", pQuant ]
                 << position Y [ pName "Miles_per_Gallon", pQuant ]
-                << color
-                    [ mSelectionCondition (selectionName "CylYr")
-                        [ mName "Origin" ]
-                        [ mStr "black" ]
-                    ]
-                << opacity
-                    [ mSelectionCondition (selectionName "CylYr")
-                        [ mNum 0.9 ]
-                        [ mNum 0.1 ]
-                    ]
-                << size
-                    [ mSelectionCondition (selectionName "CylYr")
-                        [ mNum 100 ]
-                        [ mNum 50 ]
-                    ]
+
+        enc1 =
+            encoding
+                << color [ mCondition (prParam "CylYr") [ mName "Origin" ] [ mStr "grey" ] ]
+
+        spec1 =
+            asSpec [ ps [], enc1 [], circle [] ]
+
+        trans2 =
+            transform
+                << filter (fiSelection "CylYr")
+
+        enc2 =
+            encoding
+                << color [ mName "Origin" ]
+                << size [ mNum 100 ]
+
+        spec2 =
+            asSpec [ trans2 [], enc2 [], circle [] ]
     in
-    toVegaLite [ width 400, height 400, data, trans [], enc [], sel [], circle [] ]
+    toVegaLite [ width 400, height 400, data, trans [], encPos [], layer [ spec1, spec2 ] ]
 ```
 
 ---
@@ -296,42 +294,41 @@ sliderSelection =
 
 Move pointer over bars to highlight and click a bar to select. Shift-click allows you to select multiple bars.
 
-```elm {v l interactive highlight=[9-12,19-22,24-31,35]}
+```elm {v l interactive}
 hoverAndHighlight : Spec
 hoverAndHighlight =
     let
+        cfg =
+            configure
+                << configuration (coScale [ sacoBandPaddingInner 0.2 ])
+
         data =
             dataFromColumns []
                 << dataColumn "a" (strs [ "A", "B", "C", "D", "E", "F", "G", "H", "I" ])
                 << dataColumn "b" (nums [ 28, 55, 43, 91, 81, 53, 19, 87, 52 ])
 
-        sel =
-            selection
-                << select "highlight" seSingle [ seOn "mouseover", seEmpty ]
-                << select "select" seMulti []
+        ps =
+            params
+                << param "highlight" [ paSelect sePoint [ seOn "mouseover" ] ]
+                << param "select" [ paSelect sePoint [] ]
 
         enc =
             encoding
-                << position X [ pName "a", pOrdinal, pAxis [ axTitle "", axLabelAngle 0 ] ]
-                << position Y [ pName "b", pQuant, pTitle "" ]
-                << fillOpacity
-                    [ mSelectionCondition (selectionName "select")
-                        [ mNum 1 ]
-                        [ mNum 0.3 ]
-                    ]
+                << position X [ pName "a", pOrdinal ]
+                << position Y [ pName "b", pQuant ]
+                << fillOpacity [ mCondition (prParam "select") [ mNum 1 ] [ mNum 0.3 ] ]
                 << strokeWidth
-                    [ mDataCondition
-                        [ ( and (selected "select") (expr "length(data('select_store')) > 0")
-                          , [ mNum 2 ]
-                          )
-                        , ( selected "highlight", [ mNum 1 ] )
+                    [ mConditions
+                        [ ( prParamEmpty "select", [ mNum 2 ] )
+                        , ( prParamEmpty "highlight", [ mNum 1 ] )
                         ]
                         [ mNum 0 ]
                     ]
     in
     toVegaLite
-        [ data []
-        , sel []
+        [ cfg []
+        , data []
+        , ps []
         , enc []
         , bar [ maFill "#4C78A8", maStroke "black", maCursor cuPointer ]
         ]
@@ -343,16 +340,16 @@ hoverAndHighlight =
 
 Aggregate operations such as counts and averages are subject to any data filtering transformations. If the filtering is dependent on a selection, we can create dynamic positioning of marks. Here the average of a selection is represented by a horizontal rule that responds to a dynamic selection. _Drag over bars to update selection average._
 
-```elm {v l interactive highlight=[7-9,13,27-29]}
+```elm {v l interactive}
 dynamicAverage : Spec
 dynamicAverage =
     let
         data =
             dataFromUrl (vegaPath ++ "seattle-weather.csv") []
 
-        sel =
-            selection
-                << select "myBrush" seInterval [ seEncodings [ chX ] ]
+        ps =
+            params
+                << param "myBrush" [ paSelect seInterval [ seEncodings [ chX ] ] ]
 
         encPosition =
             encoding
@@ -361,14 +358,10 @@ dynamicAverage =
         enc1 =
             encoding
                 << position X [ pName "date", pOrdinal, pTimeUnit month ]
-                << opacity
-                    [ mSelectionCondition (selectionName "myBrush")
-                        [ mNum 1 ]
-                        [ mNum 0.7 ]
-                    ]
+                << opacity [ mCondition (prParam "myBrush") [ mNum 1 ] [ mNum 0.7 ] ]
 
         spec1 =
-            asSpec [ sel [], enc1 [], bar [] ]
+            asSpec [ ps [], enc1 [], bar [] ]
 
         trans =
             transform
@@ -386,7 +379,7 @@ dynamicAverage =
 
 For continuous marks like [area](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#area), [line](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#line) and [trail](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#area) we can highlight parts of it by layering a filtered subset on top of the original data. In the example below we select an interval, but only in the X position channel, allowing a time period to be highlighted (_drag a rectangle to see the effect_).
 
-```elm {v l interactive highlight=[7-9,11-13,24,25,27,28]}
+```elm {v l interactive}
 timeBrush : Spec
 timeBrush =
     let
@@ -397,9 +390,9 @@ timeBrush =
             transform
                 << filter (fiSelection "myBrush")
 
-        sel =
-            selection
-                << select "myBrush" seInterval [ seEncodings [ chX ] ]
+        ps =
+            params
+                << param "myBrush" [ paSelect seInterval [ seEncodings [ chX ] ] ]
 
         enc =
             encoding
@@ -411,7 +404,7 @@ timeBrush =
                 << position Y [ pName "count", pAggregate opSum ]
 
         specBackground =
-            asSpec [ sel [], area [ maOpacity 0.2 ] ]
+            asSpec [ ps [], area [ maOpacity 0.2 ] ]
 
         specHighlight =
             asSpec [ trans [], area [ maOpacity 1 ] ]
@@ -432,6 +425,13 @@ interactiveLegend =
         data =
             dataFromUrl (giCentrePath ++ "westMidlands/westMidsCrimesAggregated.tsv") []
 
+        ps =
+            params
+                << param "mySelection"
+                    [ paSelect sePoint [ seOn "click", seFields [ "crimeType" ] ]
+                    , paBindLegend "dblclick"
+                    ]
+
         cScale =
             categoricalDomainMap
                 [ ( "Anti-social behaviour", "rgb(59,118,175)" )
@@ -442,30 +442,14 @@ interactiveLegend =
                 , ( "Vehicle crime", "rgb(213,126,190)" )
                 ]
 
-        encHighlight =
+        enc =
             encoding
                 << position X [ pName "month", pTemporal, pTitle "" ]
                 << position Y [ pName "reportedCrimes", pQuant, pTitle "Reported crimes" ]
-                << color
-                    [ mSelectionCondition (selectionName "mySelection")
-                        [ mName "crimeType", mScale cScale ]
-                        [ mStr "black" ]
-                    ]
-                << opacity
-                    [ mSelectionCondition (selectionName "mySelection")
-                        [ mNum 1 ]
-                        [ mNum 0.1 ]
-                    ]
-
-        sel =
-            selection
-                << select "mySelection"
-                    seMulti
-                    [ seOn "click"
-                    , seBindLegend [ blField "crimeType", blEvent "dblclick" ]
-                    ]
+                << color [ mCondition (prParam "mySelection") [ mName "crimeType", mScale cScale ] [ mStr "black" ] ]
+                << opacity [ mCondition (prParam "mySelection") [ mNum 1 ] [ mNum 0.1 ] ]
     in
-    toVegaLite [ width 540, data, sel [], encHighlight [], circle [] ]
+    toVegaLite [ width 540, ps [], data, enc [], circle [] ]
 ```
 
 ---
@@ -485,47 +469,33 @@ interactiveHighlight =
         data =
             dataFromUrl (vegaPath ++ "stocks.csv") [ parse [ ( "date", foDate "" ) ] ]
 
+        ps =
+            params
+                << param "myHover"
+                    [ paSelect sePoint [ seOn "mouseover", seFields [ "symbol" ] ]
+                    , paValues (dataObjects [ [ ( "symbol", str "AAPL" ) ] ])
+                    ]
+
         trans =
             transform
                 << filter (fiExpr "datum.symbol !== 'IBM'")
 
         enc =
             encoding
-                << color
-                    [ mSelectionCondition (selectionName "myHover")
-                        [ mName "symbol", mLegend [] ]
-                        [ mStr "grey" ]
-                    ]
-                << opacity
-                    [ mSelectionCondition (selectionName "myHover")
-                        [ mNum 1 ]
-                        [ mNum 0.2 ]
-                    ]
+                << color [ mCondition (prParamEmpty "myHover") [ mName "symbol", mLegend [] ] [ mStr "grey" ] ]
+                << opacity [ mCondition (prParamEmpty "myHover") [ mNum 1 ] [ mNum 0.2 ] ]
 
         enc1 =
             encoding
                 << position X [ pName "date", pTemporal, pTitle "" ]
                 << position Y [ pName "price", pQuant, pTitle "Price" ]
 
-        sel1 =
-            selection
-                << select "myHover"
-                    seSingle
-                    [ seOn "mouseover"
-                    , seEmpty
-                    , seFields [ "symbol" ]
-                    , seInit [ ( "symbol", str "AAPL" ) ]
-                    ]
-
         spec1 =
             asSpec
                 [ enc1 []
                 , layer
-                    [ asSpec
-                        [ description "Transparent layer to make it easier to trigger selection"
-                        , sel1 []
-                        , line [ maStrokeWidth 8, maStroke "transparent" ]
-                        ]
+                    [ -- Transparent layer to make it easier to trigger selection"
+                      asSpec [ ps [], line [ maStrokeWidth 8, maStroke "transparent" ] ]
                     , asSpec [ line [] ]
                     ]
                 ]
@@ -548,7 +518,7 @@ interactiveHighlight =
                     ]
                 ]
     in
-    toVegaLite [ cfg [], width 600, data, trans [], enc [], layer [ spec1, spec2 ] ]
+    toVegaLite [ width 540, cfg [], data, trans [], enc [], layer [ spec1, spec2 ] ]
 ```
 
 ---
@@ -562,38 +532,39 @@ dynamicAnnotation : Spec
 dynamicAnnotation =
     let
         data =
-            dataFromUrl (vegaPath ++ "stocks.csv") []
+            dataFromUrl (vegaPath ++ "stocks.csv") [ parse [ ( "date", foDate "" ) ] ]
+
+        ps =
+            params
+                << param "label"
+                    [ paSelect sePoint
+                        [ seNearest True, seOn "mouseover", seEncodings [ chX ] ]
+                    ]
 
         enc1 =
             encoding
-                << position X [ pName "date", pTemporal, pTitle "" ]
-                << position Y [ pName "price", pQuant, pAxis [ axFormat "$.0f", axTitle "" ] ]
-                << color [ mName "symbol", mTitle "Tech Company" ]
+                << position X [ pName "date", pTemporal ]
+                << position Y [ pName "price", pQuant ]
+                << color [ mName "symbol" ]
 
         spec1 =
             asSpec
                 [ enc1 []
                 , layer
                     [ asSpec [ line [] ]
-                    , asSpec [ sel1_2 [], enc1_2 [], point [] ]
+                    , asSpec [ ps [], enc1_2 [], point [] ]
                     ]
                 ]
 
         enc1_2 =
             encoding
-                << opacity [ mSelectionCondition (expr "myTooltip") [ mNum 1 ] [ mNum 0 ] ]
-
-        sel1_2 =
-            selection
-                << select "myTooltip"
-                    seSingle
-                    [ seNearest True, seOn "mouseover", seEncodings [ chX ], seEmpty ]
+                << opacity [ mCondition (prParamEmpty "label") [ mNum 1 ] [ mNum 0 ] ]
 
         spec2 =
             asSpec [ trans2 [], layer [ spec2_1, spec2_2 ] ]
 
         trans2 =
-            transform << filter (fiSelection "myTooltip")
+            transform << filter (fiSelectionEmpty "label")
 
         spec2_1 =
             asSpec [ enc2_1 [], rule [ maColor "gray" ] ]
@@ -608,10 +579,10 @@ dynamicAnnotation =
             encoding
                 << position X [ pName "date", pTemporal ]
                 << position Y [ pName "price", pQuant ]
-                << text [ tName "price" ]
+                << text [ tName "price", tQuant ]
                 << color [ mName "symbol" ]
     in
-    toVegaLite [ width 600, height 350, data, layer [ spec1, spec2 ] ]
+    toVegaLite [ width 540, height 300, data, layer [ spec1, spec2 ] ]
 ```
 
 Instead of labelling the vertical rule directly we can add a tooltip associated with the selection indicated by the rule.
@@ -620,10 +591,7 @@ Instead of labelling the vertical rule directly we can add a tooltip associated 
 dynamicTooltips : Spec
 dynamicTooltips =
     let
-        desc =
-            description "Displays tooltips for all stock prices of the hovered time"
-
-        stockData =
+        data =
             dataFromUrl (vegaPath ++ "stocks.csv") [ parse [ ( "date", foDate "" ) ] ]
 
         enc =
@@ -632,7 +600,7 @@ dynamicTooltips =
 
         transSelFilter =
             transform
-                << filter (fiSelection "hover")
+                << filter (fiSelectionEmpty "hover")
 
         enc1 =
             encoding
@@ -648,15 +616,15 @@ dynamicTooltips =
                     ]
                 ]
 
-        sel =
-            selection
-                << select "hover"
-                    seSingle
-                    [ seFields [ "date" ]
-                    , seEmpty
-                    , seOn "mouseover"
-                    , seClear "mouseout"
-                    , seNearest True
+        ps =
+            params
+                << param "hover"
+                    [ paSelect sePoint
+                        [ seFields [ "date" ]
+                        , seOn "mouseover"
+                        , seClear "mouseout"
+                        , seNearest True
+                        ]
                     ]
 
         transPivot =
@@ -665,13 +633,19 @@ dynamicTooltips =
 
         enc2 =
             encoding
-                << opacity [ mSelectionCondition (expr "hover") [ mNum 0.3 ] [ mNum 0 ] ]
-                << tooltips [ [ tName "AAPL" ], [ tName "AMZN" ], [ tName "GOOG" ], [ tName "IBM" ], [ tName "MSFT" ] ]
+                << opacity [ mCondition (prParamEmpty "hover") [ mNum 0.3 ] [ mNum 0 ] ]
+                << tooltips
+                    [ [ tName "AAPL", tQuant ]
+                    , [ tName "AMZN", tQuant ]
+                    , [ tName "GOOG", tQuant ]
+                    , [ tName "IBM", tQuant ]
+                    , [ tName "MSFT", tQuant ]
+                    ]
 
         spec2 =
-            asSpec [ sel [], transPivot [], enc2 [], rule [] ]
+            asSpec [ ps [], transPivot [], enc2 [], rule [] ]
     in
-    toVegaLite [ width 600, height 300, stockData, enc [], layer [ spec1, spec2 ] ]
+    toVegaLite [ width 540, height 300, data, enc [], layer [ spec1, spec2 ] ]
 ```
 
 ---
@@ -684,17 +658,14 @@ Instead of simply reporting the data under the current selection, we can use the
 dynamicRescaling : Spec
 dynamicRescaling =
     let
-        stockData =
-            dataFromUrl (vegaPath ++ "stocks.csv") [ csv, parse [ ( "date", foDate "" ) ] ]
+        data =
+            dataFromUrl (vegaPath ++ "stocks.csv") [ parse [ ( "date", foDate "" ) ] ]
 
-        sel =
-            selection
-                << select "index"
-                    seSingle
-                    [ seOn "mouseover"
-                    , seEncodings [ chX ]
-                    , seNearest True
-                    , seInit [ ( "x", dt [ dtYear 2005, dtMonthNum Jan, dtDate 1 ] ) ]
+        ps =
+            params
+                << param "index"
+                    [ paSelect sePoint [ seToggle tpFalse, seOn "mouseover", seEncodings [ chX ], seNearest True ]
+                    , paValues (dataObjects [ [ ( "x", dt [ dtYear 2005, dtMonthNum Jan, dtDate 1 ] ) ] ])
                     ]
 
         trans =
@@ -708,16 +679,12 @@ dynamicRescaling =
                 << position X [ pName "date", pTemporal, pAxis [] ]
 
         pointSpec =
-            asSpec [ sel [], pointEnc [], point [ maOpacity 0 ] ]
+            asSpec [ ps [], pointEnc [], point [ maOpacity 0 ] ]
 
         lineEnc =
             encoding
                 << position X [ pName "date", pTemporal, pAxis [] ]
-                << position Y
-                    [ pName "indexed_price"
-                    , pQuant
-                    , pAxis [ axTitle "Change relative to selected date", axFormat "%" ]
-                    ]
+                << position Y [ pName "indexed_price", pQuant, pAxis [ axFormat "%" ] ]
                 << color [ mName "symbol" ]
 
         lineSpec =
@@ -735,7 +702,7 @@ dynamicRescaling =
         textEnc =
             encoding
                 << position Y [ pNum 310 ]
-                << text [ tName "date", tTemporal, tTimeUnit yearMonth ]
+                << text [ tName "date", tTimeUnit yearMonth ]
 
         labelledRuleSpec =
             asSpec
@@ -747,7 +714,7 @@ dynamicRescaling =
                     ]
                 ]
     in
-    toVegaLite [ width 650, height 300, stockData, layer [ pointSpec, lineSpec, labelledRuleSpec ] ]
+    toVegaLite [ width 650, height 300, data, layer [ pointSpec, lineSpec, labelledRuleSpec ] ]
 ```
 
 ---
@@ -769,43 +736,39 @@ multiSeriesTooltip =
 
         enc =
             encoding
-                << position X [ pName "date", pTemporal, pTimeUnit yearMonthDate, pTitle "" ]
+                << position X [ pName "date", pTimeUnit yearMonthDate, pAxis [ axTitle "" ] ]
                 << tooltips
                     [ [ tName "date", tTimeUnit yearMonthDate ]
-                    , [ tName "temp_max" ]
-                    , [ tName "temp_min" ]
+                    , [ tName "temp_max", tQuant ]
+                    , [ tName "temp_min", tQuant ]
                     ]
 
         enc1 =
             encoding
-                << position Y [ pName "temp_max", pQuant, pTitle "temperature" ]
+                << position Y [ pName "temp_max", pQuant ]
 
         spec1 =
-            asSpec [ enc1 [], line [ maColor "orange", maStrokeWidth 1 ] ]
+            asSpec [ line [ maColor "orange" ], enc1 [] ]
 
         enc2 =
             encoding
                 << position Y [ pName "temp_min", pQuant ]
 
         spec2 =
-            asSpec [ enc2 [], line [ maColor "red", maStrokeWidth 1 ] ]
+            asSpec [ line [ maColor "red" ], enc2 [] ]
 
-        sel =
-            selection
-                << select "hover" seSingle [ seOn "mouseover", seEmpty ]
+        ps =
+            params
+                << param "hover" [ paSelect sePoint [ seToggle tpFalse, seOn "mouseover" ] ]
 
         enc3 =
             encoding
-                << color
-                    [ mSelectionCondition (VegaLite.not (selectionName "hover"))
-                        [ mStr "transparent" ]
-                        []
-                    ]
+                << color [ mCondition (prParamEmpty "hover") [] [ mStr "transparent" ] ]
 
         spec3 =
-            asSpec [ sel [], enc3 [], rule [] ]
+            asSpec [ ps [], enc3 [], rule [] ]
     in
-    toVegaLite [ width 600, cfg [], data, enc [], layer [ spec1, spec2, spec3 ] ]
+    toVegaLite [ width 540, cfg [], data, enc [], layer [ spec1, spec2, spec3 ] ]
 ```
 
 ---
@@ -818,27 +781,41 @@ Moving the mouse over an airport shows its direct connections.
 connections : Spec
 connections =
     let
+        dataBoundaries =
+            dataFromUrl (vegaPath ++ "us-10m.json") [ topojsonFeature "states" ]
+
+        dataAirports =
+            dataFromUrl (vegaPath ++ "airports.csv") []
+
+        dataFlights =
+            dataFromUrl (vegaPath ++ "flights-airport.csv") []
+
         cfg =
             configure
                 << configuration (coView [ vicoStroke Nothing ])
 
-        airportData =
-            dataFromUrl (vegaPath ++ "airports.csv") []
-
-        flightData =
-            dataFromUrl (vegaPath ++ "flights-airport.csv") []
+        ps =
+            params
+                << param "mySelection"
+                    [ paSelect sePoint
+                        [ seOn "mouseover"
+                        , seNearest True
+                        , seToggle tpFalse
+                        , seFields [ "origin" ]
+                        ]
+                    ]
 
         backdropSpec =
             asSpec
-                [ dataFromUrl (vegaPath ++ "us-10m.json") [ topojsonFeature "states" ]
+                [ dataBoundaries
                 , geoshape [ maFill "#ddd", maStroke "#fff" ]
                 ]
 
         lineTrans =
             transform
-                << filter (fiSelection "mySelection")
-                << lookup "origin" airportData "iata" (luAs "o")
-                << lookup "destination" airportData "iata" (luAs "d")
+                << filter (fiSelectionEmpty "mySelection")
+                << lookup "origin" dataAirports "iata" (luAs "o")
+                << lookup "destination" dataAirports "iata" (luAs "d")
 
         lineEnc =
             encoding
@@ -848,12 +825,20 @@ connections =
                 << position Latitude2 [ pName "d.latitude" ]
 
         lineSpec =
-            asSpec [ flightData, lineTrans [], lineEnc [], rule [ maColor "black", maOpacity 0.35 ] ]
+            asSpec
+                [ dataFlights
+                , lineTrans []
+                , lineEnc []
+                , rule [ maColor "black", maOpacity 0.35 ]
+                ]
 
         airportTrans =
             transform
                 << aggregate [ opAs opCount "" "routes" ] [ "origin" ]
-                << lookup "origin" airportData "iata" (luFields [ "state", "latitude", "longitude" ])
+                << lookup "origin"
+                    dataAirports
+                    "iata"
+                    (luFields [ "state", "latitude", "longitude" ])
                 << filter (fiExpr "datum.state !== 'PR' && datum.state !== 'VI'")
 
         airportEnc =
@@ -861,19 +846,15 @@ connections =
                 << position Longitude [ pName "longitude" ]
                 << position Latitude [ pName "latitude" ]
                 << size [ mName "routes", mQuant, mScale [ scRange (raNums [ 0, 1000 ]) ], mLegend [] ]
-                << order [ oName "routes", oQuant, oSort [ soDescending ] ]
-
-        sel =
-            selection
-                << select "mySelection" seSingle [ seOn "mouseover", seNearest True, seEmpty, seFields [ "origin" ] ]
+                << order [ oName "routes", oSort [ soDescending ] ]
 
         airportSpec =
-            asSpec [ flightData, airportTrans [], sel [], airportEnc [], circle [] ]
+            asSpec [ dataFlights, airportTrans [], ps [], airportEnc [], circle [] ]
     in
     toVegaLite
         [ cfg []
-        , width 700
-        , height 400
+        , width 900
+        , height 500
         , projection [ prType albersUsa ]
         , layer [ backdropSpec, lineSpec, airportSpec ]
         ]
