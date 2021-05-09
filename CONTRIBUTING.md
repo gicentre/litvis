@@ -177,31 +177,31 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
     ```sh
     NAME=vega
-    VERSION=5.19.1
+    VERSION=5.20.2
     BUILD_PATH=
     ```
 
     ```sh
     NAME=vega-lite
-    VERSION=4.17.0
+    VERSION=5.1.0
     BUILD_PATH=
     ```
 
     ```sh
     NAME=vega-embed
-    VERSION=6.15.0
+    VERSION=6.17.0
     BUILD_PATH=
     ```
 
     ```sh
     NAME=apache-arrow
-    VERSION=2.0.0
-    BUILD_PATH=Arrow.es5.min.js
+    VERSION=4.0.0
+    BUILD_PATH=Arrow.es2015.min.js
     ```
 
     ```sh
     NAME=vega-loader-arrow
-    VERSION=0.0.9
+    VERSION=0.0.10
     BUILD_PATH=
     ```
 
@@ -215,9 +215,9 @@ Upgrading Vega and Vega-Lite (as well as Vega Embed) consists of the following s
 
 1.  In the unlikely case of breaking changes that affect the lifecycle of vega-based visualizations, consider updating additional files in `src` folder. This may be necessary in a small subset of cases, and only when the major versions are bumped.
 
-1.  Commit the changes (see [example](https://github.com/gicentre/mume-with-litvis/commit/12ce00beb40873e7ab4f154ed63977dd70bb78b3)).
+1.  Commit the changes (see [example](https://github.com/gicentre/mume-with-litvis/commit/493b4e9b753528cbd013c2ba22727f363c4a78a5)).
 
-1.  Open `package.json` and bump NPM version (see [example](https://github.com/gicentre/mume-with-litvis/commit/7882ee1e90b94953fd681bc91d04e5cedbb53812)). If updates in Vega, Vega Lite and Vega Embed only carry bug fixes, you may want to modify the third number instead of the second one, which stands for new features.
+1.  Open `package.json` and bump NPM version (see [example](https://github.com/gicentre/mume-with-litvis/commit/493b4e9b753528cbd013c2ba22727f363c4a78a5)). If updates in Vega, Vega Lite and Vega Embed only carry bug fixes, you may want to modify the third number instead of the second one, which stands for new features.
 
 1.  Run `npm publish`. This will build `mume-with-litvis` from its source and publish the new version on NPM. 2FA authentication token should be asked as part of this. Beware that publishing may [fail on a slow internet connection](https://github.com/npm/npm/issues/19425#issuecomment-381315731) due to the size of `mume-with-litvis` combined with the expiration of 2FA tokens.
 
