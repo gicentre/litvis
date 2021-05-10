@@ -240,9 +240,9 @@ waterfall =
                 << position Y [ pName "previous_sum", pQuant, pTitle "Amount" ]
                 << position Y2 [ pName "sum" ]
                 << color
-                    [ mDataCondition
-                        [ ( expr "datum.label === 'Begin' || datum.label === 'End'", [ mStr "#f7e0b6" ] )
-                        , ( expr "datum.sum < datum.previous_sum", [ mStr "#f78a64" ] )
+                    [ mConditions
+                        [ ( prTest (expr "datum.label === 'Begin' || datum.label === 'End'"), [ mStr "#f7e0b6" ] )
+                        , ( prTest (expr "datum.sum < datum.previous_sum"), [ mStr "#f78a64" ] )
                         ]
                         [ mStr "#93c4aa" ]
                     ]
@@ -286,8 +286,8 @@ waterfall =
                 << position Y [ pName "center", pQuant ]
                 << text [ tName "text_amount" ]
                 << color
-                    [ mDataCondition
-                        [ ( expr "datum.label === 'Begin' || datum.label === 'End'", [ mStr "#725a30" ] ) ]
+                    [ mCondition (prTest (expr "datum.label === 'Begin' || datum.label === 'End'"))
+                        [ mStr "#725a30" ]
                         [ mStr "white" ]
                     ]
 
