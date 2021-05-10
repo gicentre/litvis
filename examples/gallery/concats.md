@@ -174,21 +174,24 @@ splom =
         data =
             dataFromUrl (path ++ "penguins.json") []
 
-        sel =
-            selection
-                << select "myBrush"
-                    seInterval
-                    [ seOn "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
-                    , seTranslate "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
-                    , seZoom "wheel![event.shiftKey]"
-                    , seResolve seUnion
+        ps =
+            params
+                << param "brush"
+                    [ paSelect
+                        seInterval
+                        [ seOn "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
+                        , seTranslate "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
+                        , seZoom "wheel![event.shiftKey]"
+                        , seResolve seUnion
+                        ]
                     ]
-                << select "grid"
-                    seInterval
-                    [ seBindScales
-                    , seTranslate "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!"
-                    , seZoom "wheel![event.shiftKey]"
-                    , seResolve seGlobal
+                << param "zoom"
+                    [ paSelect seInterval
+                        [ seTranslate "[mousedown[!event.shiftKey], window:mouseup] > window:mousemove!"
+                        , seZoom "wheel![event.shiftKey]"
+                        , seResolve seGlobal
+                        ]
+                    , paBindScales
                     ]
 
         enc =
@@ -196,12 +199,12 @@ splom =
                 << position X [ pRepeat arColumn, pQuant, pScale [ scZero False ] ]
                 << position Y [ pRepeat arRow, pQuant, pScale [ scZero False ] ]
                 << color
-                    [ mSelectionCondition (selectionName "myBrush")
+                    [ mCondition (prParam "brush")
                         [ mName "Species" ]
                         [ mStr "black" ]
                     ]
                 << opacity
-                    [ mSelectionCondition (selectionName "myBrush")
+                    [ mCondition (prParam "brush")
                         [ mNum 0.8 ]
                         [ mNum 0.1 ]
                     ]
@@ -212,7 +215,7 @@ splom =
             [ rowFields [ "Beak Length (mm)", "Beak Depth (mm)", "Flipper Length (mm)" ]
             , columnFields [ "Flipper Length (mm)", "Beak Depth (mm)", "Beak Length (mm)" ]
             ]
-        , specification (asSpec [ sel [], enc [], circle [] ])
+        , specification (asSpec [ ps [], enc [], circle [] ])
         ]
 ```
 
