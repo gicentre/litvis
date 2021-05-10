@@ -246,7 +246,7 @@ categoricalScatter =
 
 Sometimes showing absent values explicitly can be useful. In this example, by encoding a circle of null values with a grey colour we see the distribution of both absent IMDB and Rotten Tomatoes values. Data that have missing values for both variables are shown in the bottom left corner, but note it is not possible to visually assess how many fall into this category.
 
-By default, null values are not shown, so we explicitly include them with a [configuration](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#configuration) setting [`maRemoveInvalid False`](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#coRemoveInvalid). We use [mDataCondition](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#mDataCondition) to encode points with colour conditionally depending on whether ratings are null.
+By default, null values are not shown, so we explicitly include them with a [configuration](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#configuration) setting [`maRemoveInvalid False`](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#coRemoveInvalid). We use [mCondition](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#mCondition) to encode points with colour conditionally depending on whether ratings are null.
 
 ```elm {v l}
 scatterWithNulls : Spec
@@ -264,12 +264,9 @@ scatterWithNulls =
                 << position X [ pName "IMDB Rating", pQuant ]
                 << position Y [ pName "Rotten Tomatoes Rating", pQuant ]
                 << color
-                    [ mDataCondition
+                    [ mCondition (prTest (expr "datum['IMDB Rating'] === null || datum['Rotten Tomatoes Rating'] === null"))
                         -- If either rating is null encode with grey
-                        [ ( expr "datum['IMDB Rating'] === null || datum['Rotten Tomatoes Rating'] === null"
-                          , [ mStr "#ddd" ]
-                          )
-                        ]
+                        [ mStr "#ddd" ]
                         -- otherwise encode in blue
                         [ mStr "rgb(76,120,168)" ]
                     ]
