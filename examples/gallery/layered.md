@@ -65,8 +65,8 @@ candlestick =
             encoding
                 << position X [ pName "date", pTemporal, pTitle "" ]
                 << color
-                    [ mDataCondition
-                        [ ( expr "datum.open < datum.close", [ mStr "orange" ] ) ]
+                    [ mCondition (prTest (expr "datum.open < datum.close"))
+                        [ mStr "orange" ]
                         [ mStr "steelBlue" ]
                     ]
 
