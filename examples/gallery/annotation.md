@@ -147,7 +147,8 @@ conditionalLabel =
             encoding
                 << text [ tName "count", tQuant ]
                 << color
-                    [ mDataCondition [ ( expr "datum.count > 10", [ mStr "white" ] ) ]
+                    [ mCondition (prTest (expr "datum.count > 10"))
+                        [ mStr "white" ]
                         [ mStr "black" ]
                     ]
 
