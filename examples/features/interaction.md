@@ -19,22 +19,22 @@ interactive =
         data =
             dataFromUrl "https://gicentre.github.io/data/bicycleHiresLondon.csv" []
 
-        sel =
-            selection
-                << select "myBrush" seInterval []
+        ps =
+            params
+                << param "myBrush" [ paSelect seInterval [] ]
 
         encScatter =
             encoding
                 << position X [ pName "NumberOfHires", pQuant ]
                 << position Y [ pName "AvHireTime", pQuant ]
                 << color
-                    [ mSelectionCondition (selectionName "myBrush")
+                    [ mCondition (prParam "myBrush")
                         [ mStr "rgb(76,120,168)" ]
                         [ mStr "lightgrey" ]
                     ]
 
         specScatter =
-            asSpec [ width 300, height 150, sel [], encScatter [], circle [] ]
+            asSpec [ width 300, height 150, ps [], encScatter [], circle [] ]
 
         trans =
             transform
