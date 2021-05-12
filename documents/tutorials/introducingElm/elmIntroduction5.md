@@ -152,7 +152,7 @@ While Vega-Lite provides a great deal of flexibility in specifying visualization
 
 ### Generating Data Inline
 
-Rather than link to externally generated data sources, it is sometimes useful to use Elm to create data programmatically, especially if those data have some predictable structure or generatable content. [dataFromColumns](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromColumns), [dataFromRows](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromRows), [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn) and [dataRow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataRow) are useful elm-vega functions for doing this (see also the use of [dataFromJson](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) in the [Geospatial file format tutorial](../geoTutorials/geoFormats.md)).
+Rather than link to externally generated data sources, it is sometimes useful to use Elm to create data programmatically, especially if those data have some predictable structure or auto-generated content. [dataFromColumns](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromColumns), [dataFromRows](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromRows), [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn) and [dataRow](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataRow) are useful elm-vega functions for doing this (see also the use of [dataFromJson](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) in the [Geospatial file format tutorial](../geoTutorials/geoFormats.md)).
 
 In the example below we use Elm's [List.range](https://package.elm-lang.org/packages/elm/core/latest/List#range) function to generate a list of integers from 1 to 800, the [List.map](https://package.elm-lang.org/packages/elm/core/latest/List#map) function to turn each of those integers into a floating point number and an anonymous function to generate a list of the cosines of each of those values. We then create two 'columns' of data for use in the visualization specification. When specifying a data column (with [dataColumn](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataColumn)) have to state the type of data, which in this case is a list of numbers indicated by [nums](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#nums).
 
@@ -249,32 +249,32 @@ This tabular structure is convenient when working with spreadsheets, or when dis
 
 Instead it is much more reliable to express the data table in [_tidy_ format](https://vita.had.co.nz/papers/tidy-data.pdf). That is, in such a way that the order of values in a table is independent of their meaning and that columns of data represent _variables_ and rows of data _observations_. In our medals example, we could restructure the data as follows:
 
-| row | column | categoy | value |
-| --- | ------ | ------- | ----- |
-| 1   | 1      | 1       | 30    |
-| 1   | 1      | 2       | 15    |
-| 1   | 1      | 3       | 12    |
-| 1   | 2      | 1       | 25    |
-| 1   | 2      | 2       | 30    |
-| 1   | 2      | 3       | 25    |
-| 1   | 3      | 1       | 10    |
-| 1   | 3      | 2       | 28    |
-| 1   | 3      | 3       | 11    |
-| 1   | 4      | 1       | 18    |
-| 1   | 4      | 2       | 24    |
-| 1   | 4      | 3       | 16    |
-| 2   | 1      | 1       | 8     |
-| 2   | 1      | 2       | 8     |
-| 2   | 1      | 3       | 29    |
-| 2   | 2      | 1       | 11    |
-| 2   | 2      | 2       | 24    |
-| 2   | 2      | 3       | 12    |
-| 2   | 3      | 1       | 26    |
-| 2   | 3      | 2       | 32    |
-| 2   | 3      | 3       | 9     |
-| 2   | 4      | 1       | 8     |
-| 2   | 4      | 2       | 18    |
-| 2   | 4      | 3       | 28    |
+| row | column | category | value |
+| --- | ------ | -------- | ----- |
+| 1   | 1      | 1        | 30    |
+| 1   | 1      | 2        | 15    |
+| 1   | 1      | 3        | 12    |
+| 1   | 2      | 1        | 25    |
+| 1   | 2      | 2        | 30    |
+| 1   | 2      | 3        | 25    |
+| 1   | 3      | 1        | 10    |
+| 1   | 3      | 2        | 28    |
+| 1   | 3      | 3        | 11    |
+| 1   | 4      | 1        | 18    |
+| 1   | 4      | 2        | 24    |
+| 1   | 4      | 3        | 16    |
+| 2   | 1      | 1        | 8     |
+| 2   | 1      | 2        | 8     |
+| 2   | 1      | 3        | 29    |
+| 2   | 2      | 1        | 11    |
+| 2   | 2      | 2        | 24    |
+| 2   | 2      | 3        | 12    |
+| 2   | 3      | 1        | 26    |
+| 2   | 3      | 2        | 32    |
+| 2   | 3      | 3        | 9     |
+| 2   | 4      | 1        | 8     |
+| 2   | 4      | 2        | 18    |
+| 2   | 4      | 3        | 28    |
 
 Here, the row and column positions are encoded explicitly so that even if we changed the order of rows or columns, the meaning of the data would not change (if this were a medal table, the values in `column` might be four country names rather than numbers 1 to 4 and the values in `row` might be the years 2012 and 2016 rather than 1 and 2).
 

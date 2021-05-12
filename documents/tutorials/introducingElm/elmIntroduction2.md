@@ -277,7 +277,7 @@ answer =
     combined 10
 ```
 
-Alternatively we can use functional compositon to create a single new function that combines the two others:
+Alternatively we can use functional composition to create a single new function that combines the two others:
 
 ```elm {l raw siding}
 combined : Float -> Float
