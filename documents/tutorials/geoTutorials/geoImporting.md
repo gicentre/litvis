@@ -144,7 +144,7 @@ shp2json -n boroughs.shp \
   > londonBoroughs.json
 ```
 
-## 6. Render in elm-vaga
+## 6. Render in elm-vegalite
 
 Using the final output file after conversion (here, `londonBoroughs.json`), we can render all features with some simple elm-vegalite:
 
