@@ -132,14 +132,12 @@ gridMapSpec w op =
                 << position Y [ pName "gridN", pQuant, pAxis [] ]
                 << color [ mName "NPU", mScale npuColours, mLegend [] ]
 
-        gridSel =
-            selection
-                << select "userOpacity"
-                    seSingle
-                    [ seFields [ "opacity" ]
-                    , seInit [ ( "opacity", num 70 ) ]
-                    , seBind [ iRange "opacity" [ inName "Opacity ", inMin 0, inMax 100, inStep 10 ] ]
-                    , seEmpty
+        ps =
+            params
+                << param "userOpacity"
+                    [ paValue (num 70)
+                    , paSelect sePoint [ seFields [ "opacity" ] ]
+                    , paBind (ipRange [ inName "Opacity ", inMin 10, inMax 100, inStep 10 ])
                     ]
     in
     case op of
@@ -157,9 +155,9 @@ gridMapSpec w op =
             asSpec
                 [ width w
                 , height (w / 2.36)
+                , ps []
                 , gridData
                 , gridTrans []
-                , gridSel []
                 , (gridEnc
                     << opacity
                         [ mName "opacity"
