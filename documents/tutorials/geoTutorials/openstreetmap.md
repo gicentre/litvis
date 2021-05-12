@@ -84,7 +84,7 @@ This should create three new files representing the point data (e.g. addresses, 
 
 ## 3. Clipping and filtering feature layers with MapShaper
 
-OpenStreepMap files contain many layers of data and many attributes, most of which we will not need for typical visualization applications. We will use the excellent online [mapshaper](https://mapshaper.org) from [Matthew Bloch](https://github.com/mbloch/mapshaper) to perform some spatial and attribute filtering and to convert the selected data into topoJSON format ready for use with Vega-Lite (see also the useful [mapshaper command reference](https://github.com/mbloch/mapshaper/wiki/Command-Reference)).
+OpenStreetMap files contain many layers of data and many attributes, most of which we will not need for typical visualization applications. We will use the excellent online [mapshaper](https://mapshaper.org) from [Matthew Bloch](https://github.com/mbloch/mapshaper) to perform some spatial and attribute filtering and to convert the selected data into topoJSON format ready for use with Vega-Lite (see also the useful [mapshaper command reference](https://github.com/mbloch/mapshaper/wiki/Command-Reference)).
 
 As a first step, let's extract the building outlines from the OSM `polyMap.geojson` file:
 
@@ -110,7 +110,7 @@ Next we will select just the features of interest for use with Vega-Lite. In thi
 
 The `o` (output) command saves the current file and in this case we add the `drop-table` option to remove all the attributes associated with each geometric feature as we will be simply displaying the building outlines.
 
-We will convert two more layers to display as a map – the parks of Paris and the river Seine. Parks are identified in the _leisure_ label of an OpenStreepMap polygons layer and rivers identified via the _waterway_ label of lines layer, so we perform a similar process as we applied to buildings for each of them:
+We will convert two more layers to display as a map – the parks of Paris and the river Seine. Parks are identified in the _leisure_ label of an OpenStreetMap polygons layer and rivers identified via the _waterway_ label of lines layer, so we perform a similar process as we applied to buildings for each of them:
 
 Parks:
 
