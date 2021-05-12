@@ -550,9 +550,9 @@ I had started out with the idea of including the "cluster distribution" as a vie
 crossfilter : Spec
 crossfilter =
     let
-        sel =
-            selection
-                << select "brush" seInterval [ seEncodings [ chX ] ]
+        ps =
+            params
+                << param "brush" [ paSelect seInterval [ seEncodings [ chX ] ] ]
 
         enc =
             encoding
@@ -564,7 +564,7 @@ crossfilter =
                 << filter (fiSelection "brush")
 
         lyr1 =
-            asSpec [ sel [], bar [], enc [] ]
+            asSpec [ ps [], bar [], enc [] ]
 
         lyr2 =
             asSpec [ trans [], enc [], bar [ maColor "goldenrod" ] ]
