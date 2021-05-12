@@ -316,6 +316,17 @@ interactiveMap =
             configure
                 << configuration (coView [ vicoStroke Nothing ])
 
+        ps =
+            params
+                << param "mySelection"
+                    [ paSelect sePoint
+                        [ seOn "mouseover"
+                        , seNearest True
+                        , seToggle tpFalse
+                        , seFields [ "origin" ]
+                        ]
+                    ]
+
         dataAirports =
             dataFromUrl (path ++ "airports.csv") []
 
@@ -330,7 +341,7 @@ interactiveMap =
 
         lineTrans =
             transform
-                << filter (fiSelection "mySelection")
+                << filter (fiSelectionEmpty "mySelection")
                 << lookup "origin" dataAirports "iata" (luAs "o")
                 << lookup "destination" dataAirports "iata" (luAs "d")
 
@@ -362,12 +373,8 @@ interactiveMap =
                 << size [ mName "routes", mQuant, mScale [ scRange (raNums [ 0, 1000 ]) ], mLegend [] ]
                 << order [ oName "routes", oQuant, oSort [ soDescending ] ]
 
-        sel =
-            selection
-                << select "mySelection" seSingle [ seOn "mouseover", seNearest True, seEmpty, seFields [ "origin" ] ]
-
         airportSpec =
-            asSpec [ dataFlights, airportTrans [], sel [], circle [], airportEnc [] ]
+            asSpec [ dataFlights, airportTrans [], ps [], circle [], airportEnc [] ]
     in
     toVegaLite
         [ cfg []
