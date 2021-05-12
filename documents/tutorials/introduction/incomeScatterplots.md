@@ -93,6 +93,10 @@ Labels look too crowded towards the top of the scatterplot, so for now let's mak
 scatter : Spec
 scatter =
     let
+        ps =
+            params
+                << param "view" [ paSelect seInterval [], paBindScales ]
+
         lineSpec =
             asSpec
                 [ enc []
@@ -103,10 +107,7 @@ scatter =
                 ]
 
         labelSpec =
-            asSpec [ labelEnc [], sel [], textMark [] ]
-
-        sel =
-            selection << select "view" seInterval [ seBindScales ]
+            asSpec [ ps [], labelEnc [], textMark [] ]
     in
     toVegaLite [ cfg [], data, layer [ lineSpec, labelSpec ] ]
 ```
