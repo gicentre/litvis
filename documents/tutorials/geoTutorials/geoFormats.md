@@ -510,7 +510,7 @@ geo =
 
 ## 6. Creating JSON files programmatically
 
-In all the examples above the topoJSON and geoJSON has been read from external files. This is likely the most common use-case, but sometimes it can be useful to generate the content programatically. This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function. Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
+In all the examples above the topoJSON and geoJSON has been read from external files. This is likely the most common use-case, but sometimes it can be useful to generate the content programmatically. This can be achieved using elm-vegalite's [dataFromJson](http://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#dataFromJson) and supplying it with a `geometry` function. Here, for example, is a simple rectangular feature (equivalent to `geoJson1.json` above) generated programmatically:
 
 ```elm {s l}
 geo : Spec
