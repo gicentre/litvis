@@ -83,7 +83,7 @@ This should generate a page where we can explore connected scatterplot designs, 
 
 ![scatterplot output](images/scatterplots.png)
 
-Note in passing that the final scatterplot allows interactive zooming (try dragging and 'mousewheel zooming' over final scatterplot). To enable interaction with a visualization that specifies it (here with the line `selection << select "view" Interval [ BindScales ]`), simply add an `interaction` keyword at the start of the code block:
+Note in passing that the final scatterplot allows interactive zooming (try dragging and 'mousewheel zooming' over final scatterplot). To enable interaction with a visualization that specifies it (here with the line `[ paSelect seInterval [], paBindScales ]`), simply add an `interaction` keyword at the start of the code block:
 
 ````markdown
 ```elm {v interactive}
