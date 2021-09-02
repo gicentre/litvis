@@ -15,7 +15,7 @@
     "block-info": "^0.4.0",
     "data-with-position": "^0.4.1",
     "fs-extra": "^9.0.1",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "is-whitespace-character": "^1.0.4",
     "kind-of": "^6.0.3",
     "literate-elm": "^0.8.1",
