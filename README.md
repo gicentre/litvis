@@ -24,9 +24,9 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
     npm install --global prettier prettier-plugin-elm
     ```
 
-    _If you cannot install with npm because of 'EACCES write permission errors', see [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions) on how to prevent them._
+    _Mac users: If you cannot install with npm because of 'EACCES write permission errors', follow [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions), choosing the **Manually changing npm's default directory** option._
 
-1.  Install either the [VS Code](https://code.visualstudio.com) or [Atom](https://atom.io) editor.
+1.  Install either the [VS Code](https://code.visualstudio.com) (recommended) or the [Atom](https://atom.io) editor.
 
 1.  Depending on which editor you wish to use, install the litvis extensions:
 
@@ -63,7 +63,7 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
     - Under `Preferences->Settings`, change the following from their default settings:
       - `Text Editor -> Formatting`: ensure `Format On Save` is ticked
       - `Extensions -> Markdown Preview Enhanced with litvis`: ensure `Live Update` is _not_ ticked.
-      - `Extensions -> Prettier` and ensure `Prettier: Resolve Global Modules` is ticked.
+      - `Extensions -> Prettier` and add the location of Prettier to `Prettier: Path`. On a Mac, this is likely to be `/Users/MyUsername/.npm-global/lib/node_modules/prettier`; on Windows it is likely to be `c:\Users\MyUsername\AppData\Roaming\npm\node_modules\prettier` if you followed the default instructions above.
 
     **If using Atom:**
 
