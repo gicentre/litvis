@@ -78,7 +78,7 @@ VSCode is a general, but powerful editor that may be customised with 'extensions
 - **Navigate to `Extensions -> Markdown Preview Enhanced with litvis` and ensure `Live Update` is _not_ ticked.** This will speed up Litvis so that the preview is only updated when you save modifications to your document.
   ![VSCode settings](images/vsCodeSettings2.jpg)
 
-- **Finally navigate to `Extensions -> Prettier` and ensure `Prettier: Resolve Global Modules` is ticked.** This will ensure formatting is applied to your Elm code.
+- **Finally navigate to `Extensions -> Prettier -> Prettier: Path` and enter the location where you installed prettier.** On a Mac, this is likely to be `/Users/MyUsername/.npm-global/lib/node_modules/prettier`; on Windows it is likely to be `c:\Users\MyUsername\AppData\Roaming\npm\node_modules\prettier` if you followed the default instructions above (replacing `MyUsername` with your own). If you are not sure where you installed prettier you can open a terminal and type `where prettier`. Note though that on a Mac, this will report a path ending in `bin/prettier` but you need to supply that path followed by`lib/node_modules/prettier` in VSCode. This will ensure formatting is applied to your Elm code.
   ![VSCode settings](images/vsCodeSettings3.jpg)
 
 - **You can now close the `Settings` tab.**
