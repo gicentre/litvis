@@ -96,6 +96,7 @@ export const loadLitvisNarrative = async (
       }
     }
   }
+
   return {
     documents,
   };

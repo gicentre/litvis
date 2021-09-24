@@ -27,6 +27,7 @@ export const extractArrayOfEntities = (
       getPosition(listOfEntitiesWithPosition),
       `narrative-schema:${entityName}`,
     );
+
     return [];
   }
 

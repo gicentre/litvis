@@ -13,6 +13,7 @@ const stringifyArray = (value: any[]) => {
     }
   });
   parts.push("]");
+
   return parts.join("");
 };
 
@@ -42,5 +43,6 @@ export const stringifyBlockAttributes = (
     parts.unshift("{");
     parts.push("}");
   }
+
   return parts.join("");
 };

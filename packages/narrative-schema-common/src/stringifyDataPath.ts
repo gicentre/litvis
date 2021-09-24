@@ -10,5 +10,6 @@ export const stringifyDataPath = (dataPath: Array<string | number>) => {
   if (result[0] === ".") {
     result.shift();
   }
+
   return result.join("");
 };

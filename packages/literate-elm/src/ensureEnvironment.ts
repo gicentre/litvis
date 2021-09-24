@@ -111,6 +111,7 @@ export const ensureEnvironment = async (
     if (metadata.expiresAt && metadata.expiresAt < now) {
       throw new Error("Expired");
     }
+
     return {
       metadata,
       spec,
@@ -166,6 +167,7 @@ export const ensureEnvironment = async (
       workingSubdirectory,
       "utf8",
     );
+
     return {
       spec,
       workingDirectory,

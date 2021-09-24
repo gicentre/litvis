@@ -24,5 +24,6 @@ export const parseDocument = async (vFile: VFile): Promise<LitvisDocument> => {
   const result = vFile as LitvisDocument;
   result.data.root = engine.parse(vFile) as Parent;
   await engine.run(result.data.root, vFile);
+
   return result;
 };

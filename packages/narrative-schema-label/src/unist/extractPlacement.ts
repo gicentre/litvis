@@ -11,6 +11,7 @@ export const extractPlacement = () => (ast, vFile: VFile) => {
     (labelNode, parents: Parent[]) => {
       if (labelNode.data.errorType) {
         labelNode.data.placement = "na";
+
         return;
       }
       const parent = parents[parents.length - 1];

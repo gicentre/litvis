@@ -64,6 +64,7 @@ export const useNarrativeSchemaLabel = (md: MarkdownIt) => {
 
   md.renderer.rules["litvis:narrative-schema-label"] = (tokens, idx) => {
     const token = tokens[idx];
+
     return `<span data-role="litvis:narrative-schema-label"><code>${escapeString(
       token.meta.openTag + token.content + token.meta.closeTag,
     )}</code></span>`;

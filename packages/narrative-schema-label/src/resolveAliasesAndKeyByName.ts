@@ -23,6 +23,7 @@ export const resolveAliasesAndKeyByName = (
           getPosition(labelDefinition.dataWithPosition),
           "narrative-schema:label",
         );
+
         return;
       }
 
@@ -51,5 +52,6 @@ export const resolveAliasesAndKeyByName = (
       "narrative-schema:label",
     );
   });
+
   return result;
 };

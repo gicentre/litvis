@@ -7,5 +7,6 @@ export const listNarrativeFiles = (narrative: LitvisNarrative): VFile[] => {
   if (narrative.composedNarrativeSchema) {
     result.push(...narrative.composedNarrativeSchema.components);
   }
+
   return result;
 };

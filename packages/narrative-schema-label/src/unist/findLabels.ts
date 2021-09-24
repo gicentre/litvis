@@ -10,6 +10,7 @@ const locator = (value, fromIndex) => {
   if (indexOfStart > -1 && indexOfStartClosing > -1) {
     return Math.min(indexOfStart, indexOfStartClosing);
   }
+
   return Math.max(indexOfStart, indexOfStartClosing);
 };
 

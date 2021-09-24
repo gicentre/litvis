@@ -63,5 +63,6 @@ export const runElm = async (
     outputName: outputSymbolName,
     projectDir: projectDirectory,
   });
+
   return result;
 };

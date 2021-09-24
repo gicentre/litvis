@@ -25,6 +25,7 @@ export const extractElmEnvironmentSpec = async (
               "litvis:elm-dependencies",
             );
           }
+
           return;
         }
         dependencies[packageName] = packageVersion;

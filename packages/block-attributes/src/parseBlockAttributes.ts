@@ -18,6 +18,7 @@ const normalizeValue = (value: string): boolean | number | string => {
     // number
     return parseFloat(value as any);
   }
+
   return value;
 };
 
@@ -38,6 +39,7 @@ const extractStringWithBrackets = (text, start): Node | void => {
       break;
     }
   }
+
   return [text.substring(start, end), end, NodeType.STRING_WITH_BRACKETS];
 };
 
@@ -63,6 +65,7 @@ const extractStringInQuotes = (text, start): Node | void => {
     chars.push(text[end]);
     end += 1;
   }
+
   return [chars.join(""), end, NodeType.STRING_IN_QUOTES];
 };
 
@@ -89,6 +92,7 @@ const extractWord = (text: string, start: number): Node | void => {
   if (i === start) {
     return;
   }
+
   return [text.substring(start, i), i, NodeType.WORD];
 };
 
@@ -120,6 +124,7 @@ const extractArray = (text, start): Node | void => {
       i += 1;
     }
   }
+
   return [result, i, NodeType.ARRAY];
 };
 
@@ -188,5 +193,6 @@ export const parseBlockAttributes = (text?: string): BlockAttributes => {
       i += 1;
     }
   }
+
   return output;
 };

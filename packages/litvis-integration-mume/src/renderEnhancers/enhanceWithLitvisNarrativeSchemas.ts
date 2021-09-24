@@ -26,6 +26,7 @@ export const enhanceWithLitvisNarrativeSchemas = async (
           $tag.text(
             `\n/* narrative schema: ${cssChunk.comment} */\n${cssChunk.content}`,
           );
+
           return $tag;
         },
       ),
@@ -61,6 +62,7 @@ export const enhanceWithLitvisNarrativeSchemas = async (
         $el,
         "This label was not detected correctly by litivs-integration-mume. Please report a bug at https://github.com/gicentre/litvis.",
       );
+
       return;
     }
 
@@ -69,6 +71,7 @@ export const enhanceWithLitvisNarrativeSchemas = async (
         $el,
         labelNodeInAst.data.errorCaption || "Syntax error",
       );
+
       return;
     }
 

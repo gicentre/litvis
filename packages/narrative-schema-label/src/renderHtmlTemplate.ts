@@ -53,5 +53,6 @@ export const renderHtmlTemplate = (
       );
     }
   }
+
   return html;
 };

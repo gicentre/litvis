@@ -17,6 +17,7 @@ const processChunksOutsideQuotedStrings = (
       insideString = true;
     }
   });
+
   return outputChunks.join('"');
 };
 
@@ -101,6 +102,7 @@ export const parse = (text: string): unknown => {
         } else if (subChunk === "False") {
           return "false";
         }
+
         return subChunk
           .replace(/\<function\>/g, '"<function>"')
           .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")

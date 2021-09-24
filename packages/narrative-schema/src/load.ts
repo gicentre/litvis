@@ -31,6 +31,7 @@ const resolveNarrativeSchemaPath = async (
   ) {
     result += ".yml";
   }
+
   return result;
 };
 
@@ -167,5 +168,6 @@ export const load = async (
       [],
     );
   }
+
   return result;
 };

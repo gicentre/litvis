@@ -19,6 +19,7 @@ const visitCodeBlock = (ast, vFile) => {
       );
       if (attributeDerivatives) {
         codeBlockNode.data.litvisAttributeDerivatives = attributeDerivatives;
+
         return;
       }
       // if ((codeBlockNode.lang || "").trim().length !== 3) {
@@ -45,6 +46,7 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
         );
         if (attributeDerivatives) {
           tripleHatReferenceNode.data.litvisAttributeDerivatives = attributeDerivatives;
+
           return;
         }
         vFile.message(
@@ -52,6 +54,7 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
           tripleHatReferenceNode,
           "litvis:triple-hat-reference-syntax",
         );
+
         return;
       }
       vFile.message(

@@ -41,11 +41,13 @@ export const extractFollows = (
           "litvis:frontmatter-follows",
         );
       }
+
       return {
         value: normalizedValue,
         position,
       };
     }
   }
+
   return {};
 };

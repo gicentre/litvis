@@ -24,6 +24,7 @@ export const reportUnusedDataKeys = (
         i,
       ]);
     }
+
     return;
   }
 
@@ -38,6 +39,7 @@ export const reportUnusedDataKeys = (
         );
       }
     }
+
     return;
   }
 

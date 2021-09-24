@@ -18,6 +18,7 @@ export const compose = async (
     rules = composeEntityDefinitions(narrativeSchema, "rules", rules);
     styling = composeEntityDefinitions(narrativeSchema, "styling", styling);
   }
+
   return {
     components: narrativeSchemas,
     labels,

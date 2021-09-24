@@ -58,6 +58,7 @@ const wrappedScalar = (Constructor, kind: DataKind, value, position) => {
   const v = new Constructor(value);
   v[positionKey] = position;
   v[kindKey] = kind;
+
   return v;
 };
 
@@ -149,6 +150,7 @@ visitorByNodeKind[Kind.SCALAR] = (node: YAMLScalar, input) => {
   } else if (node.valueObject === null || node.value === null) {
     return wrappedNull(position);
   }
+
   return wrappedScalar(String, "string", node.value, position);
 };
 

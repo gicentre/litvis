@@ -9,6 +9,7 @@ import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";
 export const extractDerivatives = () => (ast, vFile: VFile) => {
   const idPrefix = getLabelIdPrefix(vFile);
   let idIndex = 0;
+
   return visit<LabelNode>(ast, "narrativeSchemaLabel", (labelNode) => {
     const parsedInfo = parseBlockInfo(labelNode.data.info);
     const labelName = parsedInfo.language;
@@ -31,6 +32,7 @@ export const extractDerivatives = () => (ast, vFile: VFile) => {
         "blank",
         `Label cannot be blank.`,
       );
+
       return;
     }
     if (labelType === "invalid") {
@@ -40,6 +42,7 @@ export const extractDerivatives = () => (ast, vFile: VFile) => {
         "invalid",
         `Label ${labelName} is neither single nor paired, please change the endings.`,
       );
+
       return;
     }
 
@@ -50,6 +53,7 @@ export const extractDerivatives = () => (ast, vFile: VFile) => {
         "closingWithAttributes",
         `A closing paired label cannot have attributes.`,
       );
+
       return;
     }
   });

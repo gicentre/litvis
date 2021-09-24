@@ -18,6 +18,7 @@ export const getValue = (dataWithPosition: DataWithPosition): any => {
         result[key] = getValue(dataWithPosition[key]);
       }
     }
+
     return result;
   } else {
     return value;

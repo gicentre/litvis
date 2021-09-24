@@ -224,6 +224,7 @@ export const processElmContexts = async (
       } catch (e) {
         // no need for action - just preventing .fail() from throwing further
       }
+
       return;
     }
 
@@ -287,6 +288,7 @@ export const processElmContexts = async (
             name: contextName,
             status: "failed",
           };
+
           return processedContext;
         } else {
           if (literateElmProgramResult.debugLog.length) {
@@ -324,6 +326,7 @@ export const processElmContexts = async (
                   "litvis:expression-value",
                 );
               }
+
               return evaluatedExpression;
             },
           );
@@ -333,6 +336,7 @@ export const processElmContexts = async (
             evaluatedOutputExpressions,
             debugLog: literateElmProgramResult.debugLog,
           };
+
           return processedContext;
         }
       },

@@ -1,4 +1,4 @@
-import * as moduleIndex from "./index";
+import * as moduleIndex from ".";
 
 describe("module", () => {
   it("findIntroducedSymbols()", () => {

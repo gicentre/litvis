@@ -20,6 +20,7 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
       frontmatterNode,
       "litvis:frontmatter-format",
     );
+
     return;
   }
 
@@ -43,6 +44,7 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
       frontmatterNode,
       "litvis:frontmatter-parse",
     );
+
     return;
   }
 
