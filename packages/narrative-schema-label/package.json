@@ -16,7 +16,7 @@
     "cheerio": "1.0.0-rc.3",
     "data-with-position": "^0.4.1",
     "handlebars": "^4.7.7",
-    "html-entities": "^1.4.0",
+    "html-entities": "^2.3.2",
     "lodash": "^4.17.21",
     "lru-cache": "^6.0.0",
     "narrative-schema-common": "^0.2.1",
