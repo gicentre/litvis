@@ -15,7 +15,7 @@ export const normalizeBlockAttributes = (
   const result = { ...attributes };
 
   for (const key in attributes) {
-    if (attributes.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(attributes, key)) {
       const normalizedKey = snakeCase(key);
       if (normalizedKey !== key) {
         result[normalizedKey] = result[key];

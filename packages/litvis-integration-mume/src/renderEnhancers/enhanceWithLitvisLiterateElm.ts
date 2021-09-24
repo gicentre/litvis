@@ -108,7 +108,7 @@ export const enhanceWithLitvisLiterateElm = async (
   $: CheerioStatic,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
-  parseMD,
+  parseMd,
 ): Promise<void> => {
   // search for all elm code blocks and surround them
   // with output items if they reference expressions to output
@@ -148,7 +148,7 @@ export const enhanceWithLitvisLiterateElm = async (
         case "l":
           currentArrayOf$outputItems = arrayOf$outputItemsAfterCodeBlock;
           break;
-        default:
+        default: {
           const expressions =
             derivativesWithResolvedExpressions.outputExpressionsByFormat[
               outputFormat
@@ -162,6 +162,7 @@ export const enhanceWithLitvisLiterateElm = async (
               ),
             );
           }
+        }
       }
     });
 
@@ -191,7 +192,7 @@ export const enhanceWithLitvisLiterateElm = async (
       switch (outputFormat) {
         case "l":
           break;
-        default:
+        default: {
           const expressions =
             derivatives.outputExpressionsByFormat[outputFormat];
           if (expressions) {
@@ -203,6 +204,7 @@ export const enhanceWithLitvisLiterateElm = async (
               ),
             );
           }
+        }
       }
     });
     $el.replaceWith(generate$output(arrayOf$outputItems));
@@ -291,11 +293,11 @@ export const enhanceWithLitvisLiterateElm = async (
             JSON.stringify(evaluatedOutputExpression.data.value, null, 2),
           );
           break;
-        case "m":
+        case "m": {
           const rawMarkdown = flattenJsonToRawMarkdown(
             evaluatedOutputExpression.data.value,
           );
-          const { html } = await parseMD(
+          const { html } = await parseMd(
             rawMarkdown.length ? rawMarkdown : " ", // parseMD accepts non-empty strings only
             {
               useRelativeFilePath: true,
@@ -306,6 +308,7 @@ export const enhanceWithLitvisLiterateElm = async (
           $result = $(html);
           $result.filter("h1,h2,h3,h4,h5,h6").removeClass("mume-header");
           break;
+        }
         case "v": {
           const vegaOrVegaLiteJson = evaluatedOutputExpression.data.value;
           const language =

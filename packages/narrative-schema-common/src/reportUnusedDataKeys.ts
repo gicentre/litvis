@@ -30,7 +30,7 @@ export const reportUnusedDataKeys = (
 
   if (kindOfUsedData === "object") {
     for (const key in dataWithPosition) {
-      if (dataWithPosition.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(dataWithPosition, key)) {
         reportUnusedDataKeys(
           narrativeSchema,
           dataWithPosition[key],

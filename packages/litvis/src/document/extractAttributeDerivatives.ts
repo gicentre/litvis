@@ -29,6 +29,7 @@ const visitCodeBlock = (ast, vFile) => {
       //     "litvis:code-block-syntax",
       //   );
       // }
+
       return;
     }
   });

@@ -12,17 +12,17 @@ import {
   unlock,
 } from "./auxFiles";
 
-const GARBAGE_COLLECTION_INTERVAL = 1000 * 60 * 5;
-const MAX_PROGRAM_COUNT = 500;
-const MAX_PROGRAM_LIFETIME = 1000 * 60 * 60 * 24 * 10;
+const garbageCollectionInterval = 1000 * 60 * 5;
+const maxProgramCount = 500;
+const maxProgramLifetime = 1000 * 60 * 60 * 24 * 10;
 
-// const GARBAGE_COLLECTION_INTERVAL = 1000 * 5;
-// const MAX_PROGRAM_COUNT = 20;
-// const MAX_PROGRAM_LIFETIME = 1000 * 60;
+// const garbageCollectionInterval = 1000 * 5;
+// const maxProgramCount = 20;
+// const maxProgramLifetime = 1000 * 60;
 
 export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
   const gcFilePath = `${literateElmDirectory}/gc`;
-  if (await hasBeenTouchedWithin(gcFilePath, GARBAGE_COLLECTION_INTERVAL)) {
+  if (await hasBeenTouchedWithin(gcFilePath, garbageCollectionInterval)) {
     return;
   }
   if (await isLocked(literateElmDirectory)) {
@@ -71,12 +71,12 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
     "desc",
   );
 
-  const programLifetimeThreshold = +new Date() - MAX_PROGRAM_LIFETIME;
+  const programLifetimeThreshold = +new Date() - maxProgramLifetime;
   const fileGroupInfosToRemove: any[] = [];
   const fileGroupInfosToRetain: any[] = [];
   sortedFileGroupInfos.forEach((fileGroupInfo, index) => {
     if (
-      index >= MAX_PROGRAM_COUNT ||
+      index >= maxProgramCount ||
       fileGroupInfo.lastTouchedAt < programLifetimeThreshold
     ) {
       fileGroupInfosToRemove.push(fileGroupInfo);

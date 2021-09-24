@@ -16,12 +16,11 @@ import {
   EnvironmentSpec,
 } from "./types";
 
-const CACHE_SHAPE_VERSION = "v1";
-const CACHE_DIRECTORY_SALT = "v0.19";
-const DEFAULT_TIMEOUT = 30000;
-const PROJECT_EXPIRY_WITH_ERRORS = 1000 * 60;
-const PROJECT_EXPIRY_WITH_NO_ELM_FOUND = 1000 * 5;
-// const PROJECT_EXPIRY_WITH_LATEST = 1000 * 60 * 60 * 24 * 7;
+const cacheShapeVersion = "v1";
+const cacheDirectorySalt = "v0.19";
+const defaultTimeout = 30000;
+const projectExpiryWithErrors = 1000 * 60;
+const projectExpiryWithNoElmFound = 1000 * 5;
 
 const prepareElmApplication = async (
   directory: string,
@@ -32,7 +31,7 @@ const prepareElmApplication = async (
   await initializeElmProject(directory);
   let userRequestsJsonPackage = false;
   for (const packageName in dependencies) {
-    if (dependencies.hasOwnProperty(packageName)) {
+    if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
       const packageVersion = dependencies[packageName];
       await installElmPackage(directory, packageName, packageVersion);
       if (packageName === "elm/json") {
@@ -57,13 +56,13 @@ const resolvePathToMetadata = (workingDirectory: string) => {
 export const ensureEnvironment = async (
   spec: EnvironmentSpec,
   literateElmDirectory: string,
-  timeout: number = DEFAULT_TIMEOUT,
+  timeout: number = defaultTimeout,
 ): Promise<Environment> => {
   const now = +new Date();
 
   const currentCacheDirectory = resolve(
     literateElmDirectory,
-    CACHE_SHAPE_VERSION,
+    cacheShapeVersion,
   );
 
   try {
@@ -76,7 +75,7 @@ export const ensureEnvironment = async (
 
   const specDirectory = resolve(
     currentCacheDirectory,
-    `spec${hash({ spec, CACHE_DIRECTORY_SALT })}`,
+    `spec${hash({ spec, CACHE_DIRECTORY_SALT: cacheDirectorySalt })}`,
   );
   try {
     await ensureDir(specDirectory);
@@ -148,9 +147,7 @@ export const ensureEnvironment = async (
         createdAt: now,
         expiresAt:
           now +
-          (isElmFound
-            ? PROJECT_EXPIRY_WITH_ERRORS
-            : PROJECT_EXPIRY_WITH_NO_ELM_FOUND),
+          (isElmFound ? projectExpiryWithErrors : projectExpiryWithNoElmFound),
         errorMessage: isElmFound
           ? e.message
           : 'I am having trouble finding Elm on your machine. Is it installed? Check by opening a terminal window and typing "elm --version" (without quotation marks). If you have recently installed Elm, try restarting your machine.',

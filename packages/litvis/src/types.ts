@@ -68,7 +68,7 @@ export type ProcessedLitvisContext =
   | SucceededLitvisContext
   | FailedLitvisContext;
 
-export interface CodeBlock extends Node {
+export interface CodeBlock extends Parent {
   lang?: string;
   value: string;
   data: {
@@ -84,7 +84,7 @@ export interface LitvisCodeBlock extends CodeBlock {
   };
 }
 
-export interface TripleHatReferenceNode extends Node {
+export interface TripleHatReferenceNode extends Parent {
   type: "tripleHatReference";
   data: {
     info?: string;

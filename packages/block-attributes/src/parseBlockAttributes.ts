@@ -1,11 +1,6 @@
 import { BlockAttributes } from "./types";
 
-enum NodeType {
-  STRING_IN_QUOTES,
-  STRING_WITH_BRACKETS,
-  WORD,
-  ARRAY,
-}
+type NodeType = "stringInQuotes" | "stringWithBrackets" | "word" | "array";
 type Node = [any, number, NodeType];
 
 const normalizeValue = (value: string): boolean | number | string => {
@@ -40,7 +35,7 @@ const extractStringWithBrackets = (text, start): Node | void => {
     }
   }
 
-  return [text.substring(start, end), end, NodeType.STRING_WITH_BRACKETS];
+  return [text.substring(start, end), end, "stringWithBrackets"];
 };
 
 const extractStringInQuotes = (text, start): Node | void => {
@@ -66,7 +61,7 @@ const extractStringInQuotes = (text, start): Node | void => {
     end += 1;
   }
 
-  return [chars.join(""), end, NodeType.STRING_IN_QUOTES];
+  return [chars.join(""), end, "stringInQuotes"];
 };
 
 const wordCharRegExp = /^[^,;=\s]$/;
@@ -93,7 +88,7 @@ const extractWord = (text: string, start: number): Node | void => {
     return;
   }
 
-  return [text.substring(start, i), i, NodeType.WORD];
+  return [text.substring(start, i), i, "word"];
 };
 
 const extractArray = (text, start): Node | void => {
@@ -116,8 +111,7 @@ const extractArray = (text, start): Node | void => {
       extractWord(text, i);
     if (node) {
       const [rawValue, subEnd, nodeType] = node;
-      const value =
-        nodeType === NodeType.WORD ? normalizeValue(rawValue) : rawValue;
+      const value = nodeType === "word" ? normalizeValue(rawValue) : rawValue;
       i = subEnd;
       result.push(value);
     } else {
@@ -125,7 +119,7 @@ const extractArray = (text, start): Node | void => {
     }
   }
 
-  return [result, i, NodeType.ARRAY];
+  return [result, i, "array"];
 };
 
 /**
@@ -152,12 +146,11 @@ export const parseBlockAttributes = (text?: string): BlockAttributes => {
       const keyIsPending = typeof pendingKey === "string";
       const [rawValue, subEnd, nodeType] = node;
       const value =
-        nodeType === NodeType.WORD && keyIsPending
+        nodeType === "word" && keyIsPending
           ? normalizeValue(rawValue)
           : rawValue;
       i = subEnd;
       if (keyIsPending) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         output[pendingKey!] = value;
         pendingKey = undefined;
       } else if (textToParse[i] === "=") {

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Node, Parent } from "unist";
+import { Parent } from "unist";
 import visit from "unist-util-visit";
 
 import { resolveExpressions } from "../attributeDerivatives";
@@ -43,7 +43,7 @@ const visitCodeBlock = (ast, vFile) => {
           case "l":
             nodes = nodesAfter;
             break;
-          default:
+          default: {
             const expressions =
               derivatives.outputExpressionsByFormat[outputFormat] || [];
             nodes.push(
@@ -58,9 +58,10 @@ const visitCodeBlock = (ast, vFile) => {
                 },
               })),
             );
+          }
         }
       });
-      const resultingNodes: Node[] = [];
+      const resultingNodes: Parent[] = [];
       if (nodesBefore.length) {
         resultingNodes.push({
           type: "outputExpressionGroup",
@@ -102,7 +103,7 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
               "litvis:triple-hat-reference-use",
             );
             break;
-          default:
+          default: {
             const expressions =
               derivatives.outputExpressionsByFormat[outputFormat];
             if (_.isArray(expressions)) {
@@ -125,6 +126,7 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
                 "litvis:triple-hat-reference-use",
               );
             }
+          }
         }
         tripleHatReferenceNode.children = nodes;
       });

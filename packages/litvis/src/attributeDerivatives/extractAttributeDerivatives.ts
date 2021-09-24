@@ -59,7 +59,7 @@ export const extractAttributeDerivatives = (
 
   let isLitVis = false;
   for (const key in attributesWithMixIns) {
-    if (attributesWithMixIns.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(attributesWithMixIns, key)) {
       const value = attributesWithMixIns[key];
       switch (key) {
         case "l":

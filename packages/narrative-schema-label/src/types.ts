@@ -11,12 +11,13 @@ export type LabelKind = "single" | "paired" | "invalid";
 
 export type LabelPlacement = "inline" | "block" | "na";
 
-export enum LabelFence {
-  START = "{(",
-  END = ")}",
-  START_CLOSING = "{|",
-  END_OPENING = "|}",
-}
+export const LabelFence = {
+  START: "{(",
+  END: ")}",
+  START_CLOSING: "{|",
+  END_OPENING: "|}",
+} as const;
+
 export type LabelErrorType =
   | "blank"
   | "brokenNesting"

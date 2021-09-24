@@ -52,6 +52,7 @@ export const useNarrativeSchemaLabel = (md: MarkdownIt) => {
           closeTag: state.src.slice(endPos, endPos + closeTagLength),
         };
         state.pos += content.length + openTagLength + openTagLength;
+
         // no need to derive label attributes in markdown-it
         // as they are extracted in unist by litvis module;
         // the only thing necessary is to derive label id in enhancer and match it

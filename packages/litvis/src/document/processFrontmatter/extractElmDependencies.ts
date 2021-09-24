@@ -39,7 +39,12 @@ export const extractElmDependencies = (
     );
   } else {
     for (const packageName in dependenciesWithPosition) {
-      if (dependenciesWithPosition.hasOwnProperty(packageName)) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          dependenciesWithPosition,
+          packageName,
+        )
+      ) {
         const packagePosition = getPosition(
           dependenciesWithPosition[packageName],
         );

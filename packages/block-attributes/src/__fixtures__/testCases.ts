@@ -206,7 +206,7 @@ export const sharedTestCases: Array<{
     raw: "cmd .class1 hide .class2",
     stringified: 'cmd=true hide=true class="class1 class2"',
   },
-  /* eslint-disable @typescript-eslint/camelcase */
+  /* eslint-disable @typescript-eslint/naming-convention */
   {
     // normalization
     attributes: { hello_world: "test" },
@@ -220,5 +220,5 @@ export const sharedTestCases: Array<{
     attributes: { HelloWorld: "test" },
     normalizedAttributes: { hello_world: "test" },
   },
-  /* eslint-enable @typescript-eslint/camelcase */
+  /* eslint-enable @typescript-eslint/naming-convention */
 ];

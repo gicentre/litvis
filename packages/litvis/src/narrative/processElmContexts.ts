@@ -209,7 +209,6 @@ export const processElmContexts = async (
     }
 
     const literateElmEnvironment = await ensureEnvironment(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       narrative.elmEnvironmentSpecForLastFile!,
       cache.literateElmDirectory,
     );
@@ -255,6 +254,7 @@ export const processElmContexts = async (
       switch (message.severity) {
         case "info": {
           document.info(message.text, message.position, "literate-elm:compile");
+          break;
         }
         case "warning": {
           document.message(
@@ -262,6 +262,7 @@ export const processElmContexts = async (
             message.position,
             "literate-elm:compile",
           );
+          break;
         }
         default: {
           try {

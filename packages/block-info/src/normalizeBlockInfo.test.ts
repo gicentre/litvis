@@ -2,8 +2,8 @@ import { normalizeBlockInfo } from "./normalizeBlockInfo";
 import { BlockInfo } from "./types";
 
 const testCases: Array<{
-  infos: object[];
-  normalizedInfo: object;
+  infos: Array<Record<string, unknown>>;
+  normalizedInfo: Record<string, unknown>;
 }> = [
   {
     infos: [{}],
@@ -27,7 +27,7 @@ describe("normalize()", () => {
   testCases.map(({ infos, normalizedInfo }) => {
     infos.map((info) => {
       it(`works for ${JSON.stringify(info)}`, () => {
-        const result: object = normalizeBlockInfo(info as BlockInfo);
+        const result = normalizeBlockInfo(info as unknown as BlockInfo);
         expect(result).toEqual(normalizedInfo);
       });
     });
