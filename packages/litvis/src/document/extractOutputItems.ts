@@ -53,7 +53,7 @@ const visitCodeBlock = (ast, vFile) => {
                 value: expression,
                 data: {
                   text: expression,
-                  outputFormat: (outputFormat as any) as OutputFormat,
+                  outputFormat: outputFormat as any as OutputFormat,
                   contextName: derivatives.contextName,
                 },
               })),
@@ -113,7 +113,7 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
                   value: expression,
                   data: {
                     text: expression,
-                    outputFormat: (outputFormat as any) as OutputFormat,
+                    outputFormat: outputFormat as any as OutputFormat,
                     contextName: derivatives.contextName,
                   },
                 })),

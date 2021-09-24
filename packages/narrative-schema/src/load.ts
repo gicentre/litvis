@@ -83,9 +83,11 @@ export const load = async (
       );
 
       // TODO Improve type casting
-      narrativeSchema = (fileInMemory
-        ? vfile(fileInMemory)
-        : await readVFile(resolvedPath, "utf8")) as NarrativeSchema;
+      narrativeSchema = (
+        fileInMemory
+          ? vfile(fileInMemory)
+          : await readVFile(resolvedPath, "utf8")
+      ) as NarrativeSchema;
       narrativeSchema.data = {
         labels: [],
         rules: [],
