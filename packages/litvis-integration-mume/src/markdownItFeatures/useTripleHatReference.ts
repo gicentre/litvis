@@ -62,6 +62,7 @@ export const useTripleHatReference = (md: MarkdownIt) => {
         };
 
         state.pos += content.length + openTag.length + closeTag.length;
+
         return true;
       } else {
         return false;

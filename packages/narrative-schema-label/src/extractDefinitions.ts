@@ -133,6 +133,7 @@ const extractDataFromLabel = (
   if (!labelData || !labelData.name) {
     return null;
   }
+
   return labelData;
 };
 

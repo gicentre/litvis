@@ -105,6 +105,7 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
           relativePathsToRemove.push(relativeSpecDirectory);
         }
         removedRelativeSpecDirectories.push(relativeSpecDirectory);
+
         return;
       }
 
@@ -123,6 +124,7 @@ export const collectGarbageIfNeeded = async (literateElmDirectory: string) => {
           relativePathsToRemove.push(relativeWorkingDirectory);
         }
         removedRelativeWorkingDirectories.push(relativeWorkingDirectory);
+
         return;
       }
 

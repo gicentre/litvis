@@ -6,6 +6,7 @@ const normalizeLanguage = (language?: string): string => {
   if (typeof language === "string") {
     return language.trim().toLowerCase();
   }
+
   return "";
 };
 
@@ -21,5 +22,6 @@ export const normalizeBlockInfo = (blockInfo: BlockInfo): BlockInfo => {
       attributes: normalizedAttributes,
     };
   }
+
   return blockInfo;
 };

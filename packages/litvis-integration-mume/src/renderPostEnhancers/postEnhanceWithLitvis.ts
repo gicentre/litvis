@@ -23,6 +23,7 @@ const findOrFilter = ($: CheerioStatic, func, selector: any): Cheerio => {
       (i, element) => $(element).text().trim() === selector.trimmedContent,
     );
   }
+
   return $result;
 };
 
@@ -37,6 +38,7 @@ const ruleIsNotFollowed = (position?: Position): Error => {
   if (position) {
     (result as any).position = position;
   }
+
   return result;
 };
 
@@ -62,6 +64,7 @@ const elementPosition = ($el: Cheerio): Position | undefined => {
       },
     };
   }
+
   return undefined;
 };
 

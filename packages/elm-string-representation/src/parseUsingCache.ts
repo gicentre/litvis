@@ -34,5 +34,6 @@ export const parseUsingCache = (text: string): unknown => {
   if (valueInCache instanceof Error) {
     throw valueInCache;
   }
+
   return valueInCache;
 };

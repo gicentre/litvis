@@ -16,6 +16,7 @@ export const resolveExpressions = (
 ) => {
   const introducedSymbols = findIntroducedSymbols(code);
   const introducedNames = introducedSymbols.map((s) => s.name);
+
   return produce(derivatives, (draft: AttributeDerivatives) => {
     draft.outputFormats.forEach((referenceFormat) => {
       if (

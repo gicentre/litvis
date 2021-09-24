@@ -28,6 +28,7 @@ export const visitAndExtractHtml = (
         "missingDefinition",
         `Label ${labelName} cannot be used because it does not exist in the linked narrative schemas or is not valid.`,
       );
+
       return;
     }
 
@@ -39,6 +40,7 @@ export const visitAndExtractHtml = (
           "kindMisuse",
           `Label ${labelName} cannot be used as single (no-paired), according to the linked narrative schemas.`,
         );
+
         return;
       }
       try {
@@ -57,6 +59,7 @@ export const visitAndExtractHtml = (
           `Label ${labelName} cannot be converted to html. Is htmlTemplate correct?`,
         );
       }
+
       return;
     }
 
@@ -67,6 +70,7 @@ export const visitAndExtractHtml = (
         "kindMisuse",
         `Label ${labelName} cannot be used as paired, according to the linked narrative schemas.`,
       );
+
       return;
     }
 

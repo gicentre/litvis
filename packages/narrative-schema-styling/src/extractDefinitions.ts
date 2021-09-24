@@ -28,6 +28,7 @@ export const extractDefinitions = (
       getPosition(stylingDataWithPosition),
       "narrative-schema:styling",
     );
+
     return [];
   }
 
@@ -59,5 +60,6 @@ export const extractDefinitions = (
       },
     ];
   }
+
   return [];
 };

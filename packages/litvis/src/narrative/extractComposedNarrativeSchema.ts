@@ -18,6 +18,7 @@ export const extractComposedNarrativeSchema = async (
         getPosition(narrativeSchemasWithPosition),
         "litvis:narrative-schemas",
       );
+
       return;
     }
   });

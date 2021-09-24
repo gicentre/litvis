@@ -16,6 +16,7 @@ export const deriveLabelType = (start: string, end: string): LabelType => {
   if (start === LabelFence.START_CLOSING && end === LabelFence.END) {
     return "paired_closing";
   }
+
   return "invalid";
 };
 

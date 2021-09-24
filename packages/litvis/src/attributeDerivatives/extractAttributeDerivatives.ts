@@ -101,5 +101,6 @@ export const extractAttributeDerivatives = (
   if (isLitVis) {
     return result;
   }
+
   return null;
 };

@@ -114,6 +114,7 @@ const extractSelectorData = (
   if (selectorIsBroken) {
     throw new Error("data is broken");
   }
+
   return dataToReturn;
 };
 
@@ -287,12 +288,14 @@ const extractDataFromRule = (
       getPosition(ruleDataWithPosition),
       "narrative-schema:rule",
     );
+
     return null;
   }
 
   if (ruleIsBroken) {
     return null;
   }
+
   return ruleData;
 };
 

@@ -7,6 +7,7 @@ const TRIPLE_HAT = "^^^";
 
 const locator = (value, fromIndex) => {
   const index = value.indexOf(TRIPLE_HAT, fromIndex);
+
   return index;
 };
 

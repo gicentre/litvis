@@ -17,5 +17,6 @@ export const loadAndProcessLitvisNarrative = async (
   await extractComposedNarrativeSchema(narrative);
   await processElmContexts(narrative, cache);
   await applySchemaToLabels(narrative);
+
   return narrative;
 };

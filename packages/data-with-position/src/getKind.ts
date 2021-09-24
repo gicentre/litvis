@@ -5,5 +5,6 @@ export const getKind = (dataWithPosition?: DataWithPosition): DataKind => {
   if (!dataWithPosition) {
     return "undefined";
   }
+
   return dataWithPosition[kindKey];
 };

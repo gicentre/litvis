@@ -167,6 +167,7 @@ const runChunkifiedProgram = async (
       _.findLast(linesInStderr, (line) => {
         try {
           parsedErrorOutput = JSON.parse(line);
+
           return true;
         } catch {
           return false;
@@ -247,15 +248,19 @@ const getErrorMessageText = (error): string => {
           if (chunk.string === "^".repeat(chunk.string.length)) {
             return "__REMOVED_UNDERNLINE__";
           }
+
           return chunk.string;
         }
+
         return chunk;
       })
       .join("");
+
     return text
       .replace(/\s*__REMOVED_UNDERNLINE__\s*/g, "\n")
       .replace(/\n\d+\|/g, "\n"); // remove line numbers in listings
   }
+
   return `${error.overview || error}`;
 };
 
@@ -334,6 +339,7 @@ const convertErrorsToMessages = (
       });
     }
   });
+
   return result;
 };
 
@@ -375,6 +381,7 @@ export const runProgram = async (program: Program): Promise<ProgramResult> => {
         } catch (e) {
           value = e;
         }
+
         return {
           node: expressionNode,
           value,
@@ -382,6 +389,7 @@ export const runProgram = async (program: Program): Promise<ProgramResult> => {
         };
       },
     );
+
     return {
       program,
       status: "succeeded",
