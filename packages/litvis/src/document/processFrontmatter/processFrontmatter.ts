@@ -32,7 +32,8 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
   let dataWithPosition: DataWithPosition;
   try {
     const valueWithOffset =
-      "\n".repeat(frontmatterNode.position.start.line) + frontmatterNode.value;
+      "\n".repeat(frontmatterNode.position.start.line) +
+      frontmatterNode["value"];
     dataWithPosition = fromYaml(valueWithOffset);
     if (!frontmatterNode.data) {
       frontmatterNode.data = {};
