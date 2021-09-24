@@ -4,7 +4,7 @@ import { VFile } from "vfile";
 import { LabelErrorType, LabelFence, LabelNode, LabelType } from "./types";
 
 export const getLabelIdPrefix = (vFile: VFile) =>
-  hash(vFile.path).substring(0, 8);
+  hash(vFile.path ?? null).substring(0, 8);
 
 export const deriveLabelType = (start: string, end: string): LabelType => {
   if (start === LabelFence.START && end === LabelFence.END) {
