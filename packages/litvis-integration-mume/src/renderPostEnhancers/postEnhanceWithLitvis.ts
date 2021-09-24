@@ -1,12 +1,10 @@
 import cheerio from "cheerio";
-import { Html5Entities } from "html-entities";
+import { decode } from "html-entities";
 import { listNarrativeFiles, LitvisDocument, LitvisNarrative } from "litvis";
 import _ from "lodash";
 import { EntityDefinitionWithOrigin } from "narrative-schema-common";
 import { Position } from "unist";
 import { VFile } from "vfile";
-
-const unescapeString = new Html5Entities().decode;
 
 const findOrFilter = ($: CheerioStatic, func, selector: any): Cheerio => {
   const cheerioSelectorParts: string[] = [];
@@ -84,7 +82,7 @@ export const postEnhanceWithLitvis = (
     // inline labels
     .replace(
       /<litvis-narrative-schema-label>(.*)<\/litvis-narrative-schema-label>/g,
-      (outer, inner) => unescapeString(inner),
+      (outer, inner) => decode(inner),
     );
 
   // apply rules

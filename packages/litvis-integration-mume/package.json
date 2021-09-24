@@ -19,7 +19,7 @@
     "block-info": "^0.4.0",
     "cheerio": "1.0.0-rc.3",
     "elm-string-representation": "^1.2.1",
-    "html-entities": "^1.4.0",
+    "html-entities": "^2.3.2",
     "litvis": "^0.9.4",
     "lodash": "^4.17.21",
     "lru-cache": "^6.0.0",

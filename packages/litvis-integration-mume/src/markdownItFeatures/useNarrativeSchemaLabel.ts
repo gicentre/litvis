@@ -1,8 +1,6 @@
-import { Html5Entities } from "html-entities";
+import { encode } from "html-entities";
 import MarkdownIt from "markdown-it";
 import { LabelFence } from "narrative-schema-label";
-
-const escapeString = new Html5Entities().encode;
 
 const openTagLength = 2;
 const closeTagLength = 2;
@@ -66,7 +64,7 @@ export const useNarrativeSchemaLabel = (md: MarkdownIt) => {
   md.renderer.rules["litvis:narrative-schema-label"] = (tokens, idx) => {
     const token = tokens[idx];
 
-    return `<span data-role="litvis:narrative-schema-label"><code>${escapeString(
+    return `<span data-role="litvis:narrative-schema-label"><code>${encode(
       token.meta.openTag + token.content + token.meta.closeTag,
     )}</code></span>`;
   };

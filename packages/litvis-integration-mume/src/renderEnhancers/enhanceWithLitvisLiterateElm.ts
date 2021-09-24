@@ -1,6 +1,6 @@
 import { BlockInfo } from "block-info";
 import cheerio from "cheerio";
-import { Html5Entities } from "html-entities";
+import { encode } from "html-entities";
 import {
   AttributeDerivatives,
   EvaluatedOutputExpression,
@@ -14,8 +14,6 @@ import _ from "lodash";
 import hash from "object-hash";
 
 import { LitvisEnhancerCache } from "../types";
-
-const escapeString = new Html5Entities().encode;
 
 const flattenJsonToRawMarkdown = (data: unknown): string => {
   if (data instanceof Array) {
@@ -41,17 +39,13 @@ const generateArrayOf$outputItems = (
 ) => {
   return outputExpressions.map((outputExpression) => {
     const $outputItem = cheerio(
-      `<span data-role="litvisOutputItem" data-context-name="${escapeString(
+      `<span data-role="litvisOutputItem" data-context-name="${encode(
         derivatives.contextName,
-      )}" data-expression="${escapeString(
-        outputExpression,
-      )}" data-interactive="${
+      )}" data-expression="${encode(outputExpression)}" data-interactive="${
         derivatives.interactive
-      }" data-output-format="${escapeString(
+      }" data-output-format="${encode(outputFormat)}"><code>${encode(
         outputFormat,
-      )}"><code>${escapeString(outputFormat)}=${escapeString(
-        outputExpression,
-      )}</code></span>`,
+      )}=${encode(outputExpression)}</code></span>`,
     );
 
     return $outputItem;

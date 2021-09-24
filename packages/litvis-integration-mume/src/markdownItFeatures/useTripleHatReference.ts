@@ -1,8 +1,6 @@
 import { parseBlockInfo } from "block-info";
-import { Html5Entities } from "html-entities";
+import { encode } from "html-entities";
 import MarkdownIt from "markdown-it";
-
-const escapeString = new Html5Entities().encode;
 
 const delimiters = [["^^^", "^^^"]];
 
@@ -74,11 +72,9 @@ export const useTripleHatReference = (md: MarkdownIt) => {
     const token: any = tokens[idx];
     const parsedInfo = parseBlockInfo(token.content);
 
-    return `<span data-role="litvis:triple-hat-reference" data-info="${escapeString(
+    return `<span data-role="litvis:triple-hat-reference" data-info="${encode(
       token.content,
-    )}" data-parsedInfo="${escapeString(
-      JSON.stringify(parsedInfo),
-    )}"><code>${escapeString(
+    )}" data-parsedInfo="${encode(JSON.stringify(parsedInfo))}"><code>${encode(
       token.meta.openTag + token.content + token.meta.closeTag,
     )}</code></span>`;
   };
