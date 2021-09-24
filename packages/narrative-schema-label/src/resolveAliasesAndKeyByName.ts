@@ -7,6 +7,7 @@ export const resolveAliasesAndKeyByName = (
   const result: { [name: string]: EntityDefinitionWithOrigin } = {};
 
   let remainingDefinitions = labelDefinitions;
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const newRemainingDefinitions: EntityDefinitionWithOrigin[] = [];
 

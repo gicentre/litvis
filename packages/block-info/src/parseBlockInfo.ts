@@ -9,7 +9,7 @@ export const parseBlockInfo = (raw = ""): BlockInfo => {
   const trimmedParams = raw.trim();
   const match =
     trimmedParams.indexOf("{") !== -1
-      ? trimmedParams.match(/^([^\s\{]*)\s*\{(.*?)\}/)
+      ? trimmedParams.match(/^([^\s{]*)\s*\{(.*?)\}/)
       : trimmedParams.match(/^([^\s]+)\s+(.+?)$/);
 
   if (match) {

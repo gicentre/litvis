@@ -27,7 +27,7 @@ export const stringifyBlockAttributes = (
 ): string => {
   const parts: string[] = [];
   for (const key in attributes) {
-    if (attributes.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(attributes, key)) {
       parts.push(" ");
       parts.push(`${key}=`);
       const value = attributes[key];

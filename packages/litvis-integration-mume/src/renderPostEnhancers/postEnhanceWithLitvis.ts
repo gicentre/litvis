@@ -84,7 +84,7 @@ export const postEnhanceWithLitvis = (
     // inline labels
     .replace(
       /<litvis-narrative-schema-label>(.*)<\/litvis-narrative-schema-label>/g,
-      (__, inner) => unescapeString(inner),
+      (outer, inner) => unescapeString(inner),
     );
 
   // apply rules

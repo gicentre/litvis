@@ -7,7 +7,7 @@ import vfile, { VFile } from "vfile";
 import { parseDocument } from "../document/parseDocument";
 import { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
-const MAX_CHAIN_LENGTH = 20;
+const maxChainLength = 20;
 
 export const loadLitvisNarrative = async (
   filePath: string,
@@ -19,9 +19,9 @@ export const loadLitvisNarrative = async (
   let currentFilePath = filePath;
   try {
     do {
-      if (documents.length === MAX_CHAIN_LENGTH) {
+      if (documents.length === maxChainLength) {
         documents[documents.length - 1].fail(
-          `Too many documents to follow. Please reorganise your narrative by chaining maximum ${MAX_CHAIN_LENGTH} documents.`,
+          `Too many documents to follow. Please reorganise your narrative by chaining maximum ${maxChainLength} documents.`,
           documents[documents.length - 1].data.litvisFollowsPosition,
           "litvis:cross-document",
         );

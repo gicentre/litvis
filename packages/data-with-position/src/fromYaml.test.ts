@@ -18,6 +18,7 @@ _.forEach(yamlPaths, (yamlPath) => {
   const fixtureName = path.basename(yamlPath, ".yaml");
   describe(`fromYaml() for fixture ${fixtureName}`, () => {
     const configPath = yamlPath.replace(/\.yaml$/, ".config");
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const config = require(configPath).config as FromYamlTestCaseConfig;
 
     const dataWithPosition = fromYaml(fs.readFileSync(yamlPath, "utf-8"));
@@ -52,10 +53,11 @@ _.forEach(yamlPaths, (yamlPath) => {
           expect(Object.keys(node)).toEqual(nodeDefinition.expectedObjectKeys);
           let count = 0;
           for (const key in node) {
-            if (node.hasOwnProperty(key)) {
-              expect(node[key]).toBeDefined();
-              count += 1;
+            if (!Object.prototype.hasOwnProperty.call(node, key)) {
+              return;
             }
+            expect(node[key]).toBeDefined();
+            count += 1;
           }
           expect(count).toEqual(nodeDefinition.expectedObjectKeys!.length);
         });

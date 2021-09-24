@@ -16,28 +16,25 @@ import {
   ProgramResultStatus,
 } from "./types";
 
-enum ChunkType {
-  AUXILIARY,
-  CODE_NODE,
-  EXPRESSION_TEXT,
-}
+type ChunkType = "auxiliary" | "codeNode" | "expressionText";
 
 interface AbstractChunk {
   text: string;
   offsetY?: number;
+  type: ChunkType;
 }
 
 interface AuxiliaryChunk extends AbstractChunk {
-  type: ChunkType.AUXILIARY;
+  type: "auxiliary";
 }
 
 interface CodeNodeChunk extends AbstractChunk {
-  type: ChunkType.CODE_NODE;
+  type: "codeNode";
   ref: CodeNode;
 }
 
 interface ExpressionTextChunk extends AbstractChunk {
-  type: ChunkType.EXPRESSION_TEXT;
+  type: "expressionText";
   ref: ExpressionNode[];
 }
 
@@ -56,7 +53,7 @@ interface CachedProgramResult {
   debugLog?: string[];
 }
 
-const PROGRAM_TIMEOUT = 20000;
+const programTimeout = 20000;
 
 const outputSymbolName = "literateElmOutputSymbol";
 
@@ -65,7 +62,7 @@ const chunkifyProgram = (program: Program): ChunkifiedProgram => {
 
   _.forEach(program.codeNodes, (codeNode, i) => {
     chunks.push({
-      type: ChunkType.CODE_NODE,
+      type: "codeNode",
       ref: codeNode,
       text: `-------- literate-elm code ${i}\n${codeNode.text}`,
     });
@@ -78,7 +75,7 @@ const chunkifyProgram = (program: Program): ChunkifiedProgram => {
   const orderedExpressionTexts = _.sortBy(_.keys(expressionNodesGroupedByText));
 
   chunks.push({
-    type: ChunkType.AUXILIARY,
+    type: "auxiliary",
     text: `-------- literate-elm output
 ${outputSymbolName} : String
 ${outputSymbolName} =
@@ -88,7 +85,7 @@ ${outputSymbolName} =
   });
   _.forEach(orderedExpressionTexts, (text, i) => {
     chunks.push({
-      type: ChunkType.EXPRESSION_TEXT,
+      type: "expressionText",
       ref: expressionNodesGroupedByText[text],
       text: `-------- literate-elm output expression ${text}
         ${i > 0 ? "," : " "} ("${text.replace(
@@ -99,7 +96,7 @@ ${outputSymbolName} =
   });
 
   chunks.push({
-    type: ChunkType.AUXILIARY,
+    type: "auxiliary",
     text: `-------- literate-elm output end\n            ]\n`,
   });
 
@@ -109,14 +106,14 @@ ${outputSymbolName} =
   );
   if (!containsJsonEncodeImport) {
     chunks.unshift({
-      type: ChunkType.AUXILIARY,
+      type: "auxiliary",
       text: `import Json.Encode`,
     });
   }
 
   const programName = `Program${hash(chunks.map((chunk) => chunk.text))}`;
   chunks.unshift({
-    type: ChunkType.AUXILIARY,
+    type: "auxiliary",
     text: `module ${programName} exposing (..)`,
   });
 
@@ -279,7 +276,7 @@ const convertErrorsToMessages = (
             _.get(error, ["region", "start", "line"], 0),
         ) - 1
       ];
-    if (currentChunk && currentChunk.type === ChunkType.CODE_NODE) {
+    if (currentChunk && currentChunk.type === "codeNode") {
       const position = {
         start: {
           line:
@@ -311,10 +308,7 @@ const convertErrorsToMessages = (
         fileIndex: currentChunk.ref.fileIndex || 0,
         node: currentChunk.ref,
       });
-    } else if (
-      currentChunk &&
-      currentChunk.type === ChunkType.EXPRESSION_TEXT
-    ) {
+    } else if (currentChunk && currentChunk.type === "expressionText") {
       const messageText = getErrorMessageText(error);
       const expressionNodes = currentChunk.ref;
       _.forEach(expressionNodes, (expressionNode) => {
@@ -354,7 +348,7 @@ export const runProgram = async (program: Program): Promise<ProgramResult> => {
 
   let cachedResult: CachedProgramResult;
   try {
-    await auxFiles.ensureUnlocked(programBasePath, PROGRAM_TIMEOUT);
+    await auxFiles.ensureUnlocked(programBasePath, programTimeout);
     cachedResult = (await readJson(programResultPath)) as CachedProgramResult;
   } catch (e) {
     await auxFiles.lock(programBasePath);

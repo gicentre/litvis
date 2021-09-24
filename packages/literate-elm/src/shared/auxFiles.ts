@@ -1,8 +1,8 @@
 import fs from "fs-extra";
 import sleep from "sleep-promise";
 
-const CHECK_INTERVAL = 100;
-const DEFAULT_LOCK_TIMEOUT = 5000;
+const checkInterval = 100;
+const defaultLockTimeout = 5000;
 
 export const touch = async (path: string) => {
   await fs.writeFile(`${path}.touchfile`, "");
@@ -29,14 +29,14 @@ export const isLocked = async (path: string): Promise<boolean> => {
 
 export const ensureUnlocked = async (
   path: string,
-  timeout: number = DEFAULT_LOCK_TIMEOUT,
+  timeout: number = defaultLockTimeout,
 ) => {
   const timeToGiveUp = +new Date() + timeout;
   do {
     if (!(await isLocked(path))) {
       return;
     }
-    sleep(CHECK_INTERVAL);
+    sleep(checkInterval);
   } while (+new Date() < timeToGiveUp);
   throw new Error("Unlock failed");
 };

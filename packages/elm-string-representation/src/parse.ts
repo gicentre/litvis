@@ -26,7 +26,7 @@ const processChunksOutsideQuotedStrings = (
  * Does not mutate the original object.
  * @param obj
  */
-const recursivelyConvertApplicableObjectsToArrays = (obj: object) => {
+const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
   if (obj === null || typeof obj !== "object") {
     return obj;
   }
@@ -36,7 +36,7 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: object) => {
   const changedChildren = {};
   for (const key in obj) {
     // istanbul ignore next
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       const newChild = recursivelyConvertApplicableObjectsToArrays(obj[key]);
       if (newChild !== obj[key]) {
         childrenHaveChanged = true;
@@ -54,7 +54,7 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: object) => {
   let nextExpectedKey = 0;
   for (const key in resultingObject) {
     // istanbul ignore next
-    if (resultingObject.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(resultingObject, key)) {
       // stop object scanning if the given key does not belong to a numeric sequence
       if (parseInt(key, 10) !== nextExpectedKey) {
         return resultingObject;
@@ -104,7 +104,7 @@ export const parse = (text: string): unknown => {
         }
 
         return subChunk
-          .replace(/\<function\>/g, '"<function>"')
+          .replace(/<function>/g, '"<function>"')
           .replace(/([^$a-zA-Z_0-9])True([^$a-zA-Z_0-9])/g, "$1true$2")
           .replace(/([^$a-zA-Z_0-9])False([^$a-zA-Z_0-9])/g, "$1false$2")
           .replace(/(,|{) = /g, '$1 "": ')

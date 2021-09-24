@@ -5,7 +5,7 @@ import { load } from "cheerio";
 import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
 import { LabelType } from "./types";
 
-const FAKE_CHILDREN_CONTENTS = "__FAKE_CHILDREN__";
+const fakeChildrenContent = "__FAKE_CHILDREN__";
 
 export const renderHtmlTemplate = (
   htmlTemplate,
@@ -16,7 +16,7 @@ export const renderHtmlTemplate = (
 ) => {
   const rawRenderedTemplate = getCompiledHandlebarsTemplate(htmlTemplate)({
     ...labelAttributes,
-    children: FAKE_CHILDREN_CONTENTS,
+    children: fakeChildrenContent,
   });
   const $ = load(rawRenderedTemplate);
   $("*").attr("ns-role", "label-child");
@@ -34,7 +34,7 @@ export const renderHtmlTemplate = (
   // );
   const rawHtml = $.html();
 
-  const positionOfFakeChildren = rawHtml.indexOf(FAKE_CHILDREN_CONTENTS);
+  const positionOfFakeChildren = rawHtml.indexOf(fakeChildrenContent);
   let html;
   if (labelType === "single") {
     if (positionOfFakeChildren !== -1) {
@@ -49,7 +49,7 @@ export const renderHtmlTemplate = (
       html = rawHtml.substr(0, positionOfFakeChildren);
     } else {
       html = rawHtml.substr(
-        positionOfFakeChildren + FAKE_CHILDREN_CONTENTS.length,
+        positionOfFakeChildren + fakeChildrenContent.length,
       );
     }
   }

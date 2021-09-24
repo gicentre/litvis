@@ -14,7 +14,7 @@ export const getValue = (dataWithPosition: DataWithPosition): any => {
     const result = {};
     for (const key in dataWithPosition) {
       // istanbul ignore next
-      if (dataWithPosition.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(dataWithPosition, key)) {
         result[key] = getValue(dataWithPosition[key]);
       }
     }

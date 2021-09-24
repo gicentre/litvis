@@ -9,9 +9,9 @@ export const enhanceWithLitvis = async (
   processedNarrative: LitvisNarrative,
   $: CheerioStatic,
   cache: LitvisEnhancerCache,
-  parseMD: any,
+  parseMd: any,
 ): Promise<void> => {
   await enhanceWithLitvisNarrativeSchemas($, processedNarrative, cache);
-  await enhanceWithLitvisLiterateElm($, processedNarrative, cache, parseMD);
+  await enhanceWithLitvisLiterateElm($, processedNarrative, cache, parseMd);
   await enhanceWithLitvisVegaBlockKeywords($, processedNarrative, cache);
 };

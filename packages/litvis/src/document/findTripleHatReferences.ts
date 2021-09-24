@@ -2,11 +2,11 @@
 
 import whitespace from "is-whitespace-character";
 
-const HAT = "^";
-const TRIPLE_HAT = "^^^";
+const singleHat = "^";
+const tripleHat = "^^^";
 
 const locator = (value, fromIndex) => {
-  const index = value.indexOf(TRIPLE_HAT, fromIndex);
+  const index = value.indexOf(tripleHat, fromIndex);
 
   return index;
 };
@@ -19,10 +19,10 @@ export function findTripleHatReferences() {
   function inlineTokenizer(eat, value, silent) {
     if (
       !this.options.gfm ||
-      value.charAt(0) !== HAT ||
-      value.charAt(1) !== HAT ||
-      value.charAt(2) !== HAT ||
-      value.startsWith(HAT.repeat(6)) ||
+      value.charAt(0) !== singleHat ||
+      value.charAt(1) !== singleHat ||
+      value.charAt(2) !== singleHat ||
+      value.startsWith(singleHat.repeat(6)) ||
       whitespace(value.charAt(3))
     ) {
       return;
@@ -43,9 +43,9 @@ export function findTripleHatReferences() {
       character = value.charAt(index);
 
       if (
-        character === HAT &&
-        previous === HAT &&
-        preceding === HAT &&
+        character === singleHat &&
+        previous === singleHat &&
+        preceding === singleHat &&
         (!prePreceding || !whitespace(prePreceding))
       ) {
         /* istanbul ignore if - never used (yet) */
@@ -53,7 +53,7 @@ export function findTripleHatReferences() {
           return true;
         }
 
-        return eat(TRIPLE_HAT + subvalue + TRIPLE_HAT)({
+        return eat(tripleHat + subvalue + tripleHat)({
           type: "tripleHatReference",
           data: {
             info: subvalue,
@@ -83,7 +83,7 @@ export function findTripleHatReferences() {
   if (Compiler) {
     const visitors = Compiler.prototype.visitors;
     visitors.tripleHatReference = function (node) {
-      return `${TRIPLE_HAT}${this.all(node).join("")}${TRIPLE_HAT}`;
+      return `${tripleHat}${this.all(node).join("")}${tripleHat}`;
     };
   }
 }

@@ -83,8 +83,8 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
             resultText = dataParseError.message;
           } else {
             resultText = JSON.stringify(data, null, 2);
-            break;
           }
+          break;
         case "v": {
           $result = $(`<pre data-role="codeBlock" />`);
           resultNormalizedInfo = {
