@@ -20,11 +20,11 @@
   "dependencies": {
     "@kachkaev/run-elm": "^3.0.0-litvis-patch.3",
     "elm-string-representation": "^1.2.1",
-    "execa": "^4.0.3",
-    "fs-extra": "^9.0.1",
-    "globby": "^11.0.1",
-    "lodash": "^4.17.20",
-    "object-hash": "^2.0.3",
+    "execa": "^4.1.0",
+    "fs-extra": "^9.1.0",
+    "globby": "^11.0.4",
+    "lodash": "^4.17.21",
+    "object-hash": "^2.2.0",
     "sleep-promise": "^8.0.1"
   }
 }

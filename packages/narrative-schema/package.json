@@ -12,14 +12,14 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "data-with-position": "^0.4.1",
-    "jsonschema": "^1.2.6",
-    "lodash": "^4.17.20",
+    "jsonschema": "^1.4.0",
+    "lodash": "^4.17.21",
     "narrative-schema-common": "^0.2.1",
     "narrative-schema-label": "^0.4.2",
     "narrative-schema-rule": "^0.2.2",
     "narrative-schema-styling": "^0.2.2",
     "pseudo-yaml-ast": "^1.0.10",
     "to-vfile": "^6.1.0",
-    "vfile": "^4.2.0"
+    "vfile": "^4.2.1"
   }
 }

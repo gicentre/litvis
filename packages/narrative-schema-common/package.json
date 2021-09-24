@@ -13,6 +13,6 @@
   "dependencies": {
     "data-with-position": "^0.4.1",
     "kind-of": "^6.0.3",
-    "vfile": "^4.2.0"
+    "vfile": "^4.2.1"
   }
 }
