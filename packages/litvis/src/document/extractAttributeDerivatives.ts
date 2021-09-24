@@ -10,7 +10,7 @@ const visitCodeBlock = (ast, vFile) => {
       codeBlockNode.data = {};
     }
     const parsedInfo = parseBlockInfo(
-      `${codeBlockNode.lang || ""} ${codeBlockNode.meta || ""}`,
+      `${codeBlockNode.lang || ""} ${codeBlockNode["meta"] || ""}`,
     );
     const normalizedLanguage = (parsedInfo.language || "").trim().toLowerCase();
     if (normalizedLanguage === "elm") {

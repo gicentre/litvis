@@ -16,7 +16,6 @@ export const extractDerivatives = () => (ast, vFile: VFile) => {
     const labelType = labelNode.data.labelType;
     const labelAttributes = parsedInfo.attributes;
 
-    labelNode.labelName = labelName;
     labelNode.data.labelName = labelName;
     labelNode.data.labelAttributes = labelAttributes;
 
