@@ -25,6 +25,6 @@
     "globby": "^11.0.4",
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
-    "sleep-promise": "^8.0.1"
+    "sleep-promise": "^9.1.0"
   }
 }
