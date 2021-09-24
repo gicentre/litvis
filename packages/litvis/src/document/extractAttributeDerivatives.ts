@@ -45,7 +45,8 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
           parsedInfo.attributes,
         );
         if (attributeDerivatives) {
-          tripleHatReferenceNode.data.litvisAttributeDerivatives = attributeDerivatives;
+          tripleHatReferenceNode.data.litvisAttributeDerivatives =
+            attributeDerivatives;
 
           return;
         }

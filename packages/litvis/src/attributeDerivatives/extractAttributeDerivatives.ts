@@ -26,7 +26,7 @@ const addOutputExpressions = (
     expressionsToAdd.push(normalizeExpression(value));
   }
   if (expressionsToAdd.length || value === true) {
-    derivatives.outputFormats.push((type as any) as BlockOutputFormat);
+    derivatives.outputFormats.push(type as any as BlockOutputFormat);
   }
   if (expressionsToAdd.length) {
     derivatives.outputExpressionsByFormat[type] = expressionsToAdd;

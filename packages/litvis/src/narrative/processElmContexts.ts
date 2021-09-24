@@ -228,15 +228,14 @@ export const processElmContexts = async (
       return;
     }
 
-    const literateElmProgramPromises: Array<
-      Promise<ProgramResult>
-    > = literateElmJobs.map(({ codeNodes, expressionNodes }) =>
-      runProgram({
-        environment: literateElmEnvironment,
-        codeNodes,
-        expressionNodes,
-      }),
-    );
+    const literateElmProgramPromises: Array<Promise<ProgramResult>> =
+      literateElmJobs.map(({ codeNodes, expressionNodes }) =>
+        runProgram({
+          environment: literateElmEnvironment,
+          codeNodes,
+          expressionNodes,
+        }),
+      );
 
     const literateElmProgramResults = await Promise.all(
       literateElmProgramPromises,
@@ -305,7 +304,8 @@ export const processElmContexts = async (
             (wrappedOutputExpression, i) => {
               const evaluatedExpressionInProgram =
                 literateElmProgramResult.evaluatedExpressions[i];
-              const evaluatedExpression = wrappedOutputExpression.subject as EvaluatedOutputExpression;
+              const evaluatedExpression =
+                wrappedOutputExpression.subject as EvaluatedOutputExpression;
               const document =
                 narrative.documents[
                   evaluatedExpressionInProgram.node.fileIndex || 0

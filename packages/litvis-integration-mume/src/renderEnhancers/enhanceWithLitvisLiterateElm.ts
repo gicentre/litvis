@@ -234,9 +234,9 @@ export const enhanceWithLitvisLiterateElm = async (
       contextName,
       outputFormat,
       expressionText,
-      path:
-        processedNarrative.documents[processedNarrative.documents.length - 1]
-          .path,
+      path: processedNarrative.documents[
+        processedNarrative.documents.length - 1
+      ].path,
     });
     const context = contextsByMumeContextName[
       contextName
@@ -252,12 +252,11 @@ export const enhanceWithLitvisLiterateElm = async (
         );
       }
       // TODO: find() is expensive, consider optimizing by indexing
-      const evaluatedOutputExpression:
-        | EvaluatedOutputExpression
-        | undefined = _.find(
-        context.evaluatedOutputExpressions,
-        (oe) => oe.data.text === expressionText,
-      );
+      const evaluatedOutputExpression: EvaluatedOutputExpression | undefined =
+        _.find(
+          context.evaluatedOutputExpressions,
+          (oe) => oe.data.text === expressionText,
+        );
       if (!evaluatedOutputExpression) {
         throw new Error(`Could not find expression ${expressionText}`);
       }

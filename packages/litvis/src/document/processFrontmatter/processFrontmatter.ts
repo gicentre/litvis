@@ -50,17 +50,13 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
 
   lintElm(dataWithPosition, document);
 
-  const {
-    value: litvisFollows,
-    position: litvisFollowsPosition,
-  } = extractFollows(dataWithPosition, document);
+  const { value: litvisFollows, position: litvisFollowsPosition } =
+    extractFollows(dataWithPosition, document);
   document.data.litvisFollowsPath = litvisFollows;
   document.data.litvisFollowsPosition = litvisFollowsPosition;
 
-  const {
-    versions: elmDependencyVersions,
-    positions: elmDependencyPositions,
-  } = extractElmDependencies(dataWithPosition, document);
+  const { versions: elmDependencyVersions, positions: elmDependencyPositions } =
+    extractElmDependencies(dataWithPosition, document);
   document.data.litvisElmDependencyVersions = elmDependencyVersions;
   document.data.litvisElmDependencyPositions = elmDependencyPositions;
 
@@ -71,10 +67,10 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
   document.data.litvisElmSourceDirectoryPaths = elmSourceDirectoryPaths;
   document.data.litvisElmSourceDirectoryPositions = elmSourceDirectoryPositions;
 
-  const {
-    pathsWithPosition: narrativeSchemasWithPosition,
-  } = extractNarrativeSchemas(dataWithPosition, document);
-  document.data.litvisNarrativeSchemasWithPosition = narrativeSchemasWithPosition;
+  const { pathsWithPosition: narrativeSchemasWithPosition } =
+    extractNarrativeSchemas(dataWithPosition, document);
+  document.data.litvisNarrativeSchemasWithPosition =
+    narrativeSchemasWithPosition;
 };
 
 export const processFrontmatter = () => {
