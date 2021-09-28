@@ -18,7 +18,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@kachkaev/run-elm": "^3.0.0-litvis-patch.3",
+    "@kachkaev/run-elm": "3.0.0-node-12-litvis-patch.0",
     "elm-string-representation": "^1.2.1",
     "execa": "^5.1.1",
     "fs-extra": "^10.0.0",
