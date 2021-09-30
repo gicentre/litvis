@@ -1,6 +1,6 @@
 {
   "name": "block-attributes",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Parses and stringifies code block attributes in markdown files",
   "keywords": [],
   "repository": {

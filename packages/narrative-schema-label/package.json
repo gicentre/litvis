@@ -1,6 +1,6 @@
 {
   "name": "narrative-schema-label",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Narrative schema label parsing and printing",
   "keywords": [],
   "repository": {
@@ -11,15 +11,15 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "block-attributes": "^0.4.0",
-    "block-info": "^0.4.0",
+    "block-attributes": "^0.5.0",
+    "block-info": "^0.5.0",
     "cheerio": "1.0.0-rc.3",
-    "data-with-position": "^0.4.1",
+    "data-with-position": "^0.5.0",
     "handlebars": "^4.7.7",
     "html-entities": "^2.3.2",
     "lodash": "^4.17.21",
     "lru-cache": "^6.0.0",
-    "narrative-schema-common": "^0.2.1",
+    "narrative-schema-common": "^0.3.0",
     "object-hash": "^2.2.0",
     "unist-util-visit": "^2.0.3",
     "unist-util-visit-parents": "^3.1.1",

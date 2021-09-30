@@ -1,6 +1,6 @@
 {
   "name": "narrative-schema-common",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Common resources for narrative schemas",
   "keywords": [],
   "repository": {
@@ -11,7 +11,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "data-with-position": "^0.4.1",
+    "data-with-position": "^0.5.0",
     "kind-of": "^6.0.3",
     "vfile": "^4.2.1"
   }

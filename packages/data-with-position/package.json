@@ -1,6 +1,6 @@
 {
   "name": "data-with-position",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Pseudo AST that contains data with its positions attached.",
   "keywords": [
     "ast",
