@@ -40,7 +40,6 @@
     ]
   },
   "devDependencies": {
-    "@hkdobrev/run-if-changed": "^0.3.1",
     "@kachkaev/eslint-config-base": "^0.2.3",
     "@types/cheerio": "0.22.21",
     "@types/eslint": "^7.28.0",
@@ -72,8 +71,5 @@
     "ts-jest": "^27.0.5",
     "typescript": "^4.4.3",
     "yarn-deduplicate": "^3.1.0"
-  },
-  "run-if-changed": {
-    "yarn.lock": "yarn install --prefer-offline --pure-lockfile"
   }
 }
