@@ -1,5 +1,9 @@
 ---
 id: "litvis"
+
+narrative-schemas:
+  - ../schemas/tutorial.yml
+
 elm:
   dependencies:
     gicentre/elm-vegalite: latest
@@ -126,14 +130,24 @@ Let's first consider the [geoJson](http://geojson.org) file format which is comm
   "geometry": {
     "type": "Polygon",
     "coordinates": [
-      [ [-3, 52], [4, 52], [4, 45], [-3, 45], [-3, 52] ]
+       [ [-3,52], [4,52], [4,45], [-3,45], [-3,52] ]
     ]
-  }
+  },
+  "properties": null
 }
 ```
 
-Again, we see the 5 coordinate pairs representing the points along the region's boundary including a duplicated first and last point to close the region. GeoJSON files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features.
-But for the moment let's just stick with the simple polygon.
+Again, we see the 5 coordinate pairs in clockwise order representing the points along the region's boundary including a duplicated first and last point to close the region. GeoJSON files can represent a range of geometry types such as individual points, lines, complex polygons with holes and islands as well as collections of these features. But for the moment let's just stick with the simple polygon.
+
+{(infobox|}
+
+**Winding order conventions (and lack thereof)**
+
+In order to distinguish geometry that encloses regions from that which defines holes inside regions, a [winding order](https://observablehq.com/@d3/winding-order) convention is adopted. The clockwise or 'right-hand rule' convention says that coordinate sequences that traverse a shape in clockwise order represent solid polygons (the feature is on your right as you walk around it clockwise) and anticlockwise sequences represent interior holes (the feature is still on your right as you walk clockwise around a hole inside a polygon).
+
+The clockwise winding order is most commonly used packages that render geospatial data and is the assumed convention in topoJSON files (see below). Unfortunately, the [geoJSON specification](https://datatracker.ietf.org/doc/html/rfc7946#section-3.1.6) assumes a _counterclockwise_ convention (exterior boundaries in anticlockwise order, and holes in clockwise order). However, for consistency here, we will adopt the clockwise winding order, even if not strictly compliant with the GeoJSON specification.
+
+{|infobox)}
 
 To display the file, simply load it as any normal data file and encode it with the `geoshape` function.
 
@@ -163,15 +177,15 @@ As we shall see, larger geo data are more efficiently stored not as geoJSON, but
 
 ```Javascript
 {
-  "type": "topology",
+  "type":"Topology",
   "objects": {
     "myRegion": {
       "type": "Polygon",
       "arcs": [ [0] ]
     }
   },
-  "arcs": [
-    [ [-3, 52], [4, 52], [4, 45], [-3, 45], [-3, 52] ]
+  "arcs":[
+    [ [-3,52], [4,52], [4,45], [-3,45], [-3,52] ]
   ]
 }
 ```
