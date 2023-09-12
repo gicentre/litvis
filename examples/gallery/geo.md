@@ -306,7 +306,7 @@ multiStage =
 
 Flights to/from airport nearest to mouse position.
 
-Note the use of [lookup](#https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#lookup) to give separate names to the origin longitude/latitude (`"o"`) and destination longitude/latitude (`"d"`). The individual fields that have been renamed can be referenced with dot notation (`o.longitude`, `o.latitude`, `d.longitude` and `d.latitude`).
+Note the use of [lookup](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#lookup) to give separate names to the origin longitude/latitude (`"o"`) and destination longitude/latitude (`"d"`). The individual fields that have been renamed can be referenced with dot notation (`o.longitude`, `o.latitude`, `d.longitude` and `d.latitude`).
 
 ```elm {v l interactive}
 interactiveMap : Spec
