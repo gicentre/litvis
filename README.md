@@ -21,10 +21,12 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
 1.  Open a terminal window and install [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
 
     ```sh
-    npm install --global prettier prettier-plugin-elm
+    npm install --global prettier@2 prettier-plugin-elm
     ```
 
     _Mac users: If you cannot install with npm because of 'EACCES write permission errors', follow [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions), choosing the **Manually changing npm's default directory** option._
+
+    _Prettier v3 does has [dropped support for plugin search](https://github.com/prettier/prettier/pull/14759) so we need to install `prettier@2` globally. If you want to use Prettier v3, you need to install it locally and [mention](https://prettier.io/docs/en/plugins.html) `prettier-plugin-elm` in the config file._
 
 1.  Install either the [VS Code](https://code.visualstudio.com) (recommended) or the [Atom](https://atom.io) editor.
 
