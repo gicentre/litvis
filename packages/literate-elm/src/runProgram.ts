@@ -89,9 +89,9 @@ ${outputSymbolName} =
       ref: expressionNodesGroupedByText[text],
       text: `-------- literate-elm output expression ${text}
         ${i > 0 ? "," : " "} ("${text.replace(
-        /"/g,
-        '\\"',
-      )}", Json.Encode.string <| Debug.toString <| ${text})`,
+          /"/g,
+          '\\"',
+        )}", Json.Encode.string <| Debug.toString <| ${text})`,
     });
   });
 

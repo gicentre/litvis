@@ -16,6 +16,9 @@ lerna-debug.log
 node_modules
 yarn-error.log
 
+# misc
+.DS_Store
+
 
 ## shared between linters
 CNAME
