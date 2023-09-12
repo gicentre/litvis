@@ -1,4 +1,4 @@
-name: Check codebase
+name: CI
 
 on:
   push:
@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 20
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
@@ -36,22 +36,18 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node: [12, 14, 16]
+        node: [18, 20]
         exclude:
           - os: macos-latest
-            node: 12
-          - os: macos-latest
-            node: 16
+            node: 18
           - os: windows-latest
-            node: 12
-          - os: windows-latest
-            node: 16
+            node: 18
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
