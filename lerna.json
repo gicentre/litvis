@@ -1,6 +1,5 @@
 {
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "publish": {
       "ignoreChanges": ["*.md", "jest.config.js", "*.test.ts"]
