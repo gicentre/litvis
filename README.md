@@ -18,21 +18,17 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
 
 1.  Install _Elm_ from the [official Elm install page](https://guide.elm-lang.org/install/elm.html) (there's no need to follow the _"after installation is complete..."_ tests).
 
-1.  Open a terminal window and install [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following command:
+1.  Create a _project folder_ to contain your litvis work. Open a terminal window and `cd` to that project folder. Install [Prettier](https://prettier.io/) and [Prettier Elm plugin](https://github.com/gicentre/prettier-plugin-elm) with the following commands:
 
-    ```sh
-    npm install --global prettier@2 prettier-plugin-elm
+    ```txt
+    npm init --yes
+    npm install prettier prettier-plugin-elm
+    echo "{ \"plugins\": [\"prettier-plugin-elm\"] }" > .prettierrc.json
     ```
 
-    _Mac users: If you cannot install with npm because of 'EACCES write permission errors', follow [these instructions](https://docs.npmjs.com/getting-started/fixing-npm-permissions), choosing the **Manually changing npm's default directory** option._
+1.  If you don't have it already, install the [VS Code](https://code.visualstudio.com) editor.
 
-    _Prettier v3 does has [dropped support for plugin search](https://github.com/prettier/prettier/pull/14759) so we need to install `prettier@2` globally. If you want to use Prettier v3, you need to install it locally and [mention](https://prettier.io/docs/en/plugins.html) `prettier-plugin-elm` in the config file._
-
-1.  Install either the [VS Code](https://code.visualstudio.com) (recommended) or the [Atom](https://atom.io) editor.
-
-1.  Depending on which editor you wish to use, install the litvis extensions:
-
-    **If using VS Code:**
+1.  Install the litvis extensions:
 
     - Select `View → Extensions`
 
@@ -42,35 +38,15 @@ Litvis documents can be viewed and created in either the _VS Code_ (recommended)
 
     - Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
 
-    **If using Atom:**
-
-    - Select `Atom → Preferences → Install` (or `File → Settings → Install` on Windows)
-
-    - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
-
-    - Search for `prettier-atom` and install _(auto-formats code)_.
-
-    - Search for `language-elm` and install _(syntax highlighting of Elm code)_.
-
-    - Search for `language-markdown` and install _(markdown syntax highlighting)_.
-
-    - When you create your first document in Atom, you may be asked to install further dependencies such as `linter`, `linter-ui-default` and `busy-signal`. Install these and any other dependencies if requested.
 
 1.  Configuring Your Editor
 
     To make using litvis as smooth as possible, we recommend the following editor configuration options:
 
-    **If using VS Code:**
-
     - Under `Preferences->Settings`, change the following from their default settings:
       - `Text Editor -> Formatting`: ensure `Format On Save` is ticked
       - `Extensions -> Markdown Preview Enhanced with litvis`: ensure `Live Update` is _not_ ticked.
-      - `Extensions -> Prettier` and add the location of Prettier to `Prettier: Path`. On a Mac, this is likely to be `/Users/MyUsername/.npm-global/lib/node_modules/prettier`; on Windows it is likely to be `c:\Users\MyUsername\AppData\Roaming\npm\node_modules\prettier` if you followed the default instructions above.
-
-    **If using Atom:**
-
-    - `Settings->Packages` (Windows) or `Atom->Preferences->Packages` (MacOS) or `Edit->Preferences->Packages` (Linux), scroll down to _Prettier-atom_, click `Settings` and make sure `Format files on Save` is ticked.
-    - In `Packages` (as above) scroll down to _Markdown-Preview-Enhanced-with-litvis_, click `Settings` and ensure `live Update` and ensure it is _not_ ticked.
+    
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 
