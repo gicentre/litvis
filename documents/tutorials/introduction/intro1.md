@@ -16,13 +16,22 @@ narrative-schemas:
 
 # Writing your first litvis documents
 
-At its simplest, a litvis document is just text written using the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. Markdown has the advantage that it uses easy to remember text formatting instructions that are directly readable even before they are formatted. For example, have a look at this document in either the [VS Code](https://code.visualstudio.com) or [Atom](https://atom.io) editor making sure to select the preview panel to see the formatted output.
+At its simplest, a litvis document is just text written using the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) format. Markdown has the advantage that it uses easy to remember text formatting instructions that are directly readable even before they are formatted. For example, have a look at this document in the [VS Code](https://code.visualstudio.com) editor making sure to select the preview panel to see the formatted output.
 
 But litvis is more than a markdown editor for text. You can also write, edit and debug code for creating visualizations; render those visualization directly in your litvis document; arrange alternative visualization designs in _branches_; and validate the text in your litvis documents with _narrative schemas_. We will look at each of these in turn.
 
 ## Providing a visualization specification
 
-Let's start with a simple litvis document that displays a bar chart.
+Let's start with a simple litvis document that displays a bar chart. 
+
+First open the _folder_ in VSCode that corresponds to your litvis project folder. If this is the first time you have opened that folder in VSCode you will probably see a dialogue similar to the following:
+
+  ![VSCode Security dialogue](images/vsCodeSecurity.png)
+
+  You should **click the `Yes, I trust the authors` button** to start your VSCode project.
+
+
+
 Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the following into it.
 
 ````markdown
@@ -59,7 +68,7 @@ helloLitvis =
 ```
 ````
 
-If you open the preview pane (in VSCode, `Ctrl-k` or `Cmd-k` followed by `v` or in Atom, select `Packages->Markdown Preview Enhanced with litvis->Toggle` or the keyboard shortcut `Shift-Ctrl-M`), you should see output similar to the following:
+If you open the preview pane (in VSCode, `Ctrl-k` or `Cmd-k` followed by `v`), you should see output similar to the following:
 
 ![helloLitvis](images/hello1.png)
 

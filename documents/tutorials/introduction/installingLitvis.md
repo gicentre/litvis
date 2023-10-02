@@ -16,7 +16,7 @@ narrative-schemas:
 
 # Installing Litvis with VSCode
 
-## Step 1: Installing Node.js
+## Step 1: Install Node.js
 
 _You can skip this step if you already have Node.js and npm working on your system._
 
@@ -24,30 +24,28 @@ _You can skip this step if you already have Node.js and npm working on your syst
 
 - **Download and install the 'LTS' (Long Term Support) version of Node from [nodejs.org/en/](https://nodejs.org/en/), accepting the default values during installation.**
 
-On Macs and Linux machines, but not Windows, you need to ensure that when packages are installed with _npm_ (see next step), they are installed in a folder on your machine that has write-access. The following assumes that the shell used in a terminal window is _zsh_ (the default for MacOS Catalina and Big Sur). If your shell is _bash_, simply replace the name `.zshrc` below with `.profile`. If you are not sure what shell your terminal window uses, you can type `echo $SHELL` in the terminal window to find out.
 
-- **_(MacOS / Linux only)_ : Open a terminal window (`applications->utilities->terminal`) and type:**
-
-  - **`mkdir ~/.npm-global`**
-  - **`npm config set prefix '~/.npm-global'`**
-  - **In your preferred text editor†, open or create the file `~/.zshrc` and add the following line:**
-    - **`export PATH=~/.npm-global/bin:$PATH`**
-  - **After saving and closing the file, type the following in the terminal window:**
-    - **`source ~/.zshrc`**
-
-  _† If you are not sure what text editor to use, try the command-line editor 'nano' from within the terminal window by typing `nano ~/.profile` and when you've added the content, type `ctrl-x` followed by `Y` and then the return key._
-
-## Step 2: Installing Elm
+## Step 2: Install Elm
 
 Litvis uses the programming language _Elm_ to specify visualizations and process data. To install Elm, click the relevant installation for your computer from the [official Elm install page](https://guide.elm-lang.org/install/elm.html) (there's no need to follow the _"after installation is complete..."_ tests).
 
-## Step 3: Installing Prettier
+## Step 3: Set up your datavis project folder
 
-Litvis uses _Prettier_ to format code nicely in the editor. This can be installed on your system using _npm_:
+All your datavis work with Litvis should be in a 'project'. The instructions below assume that the project folder will be `Documents/datavis`, but it can be anywhere on your computer.
 
-- **Open a command window (type `cmd` in the search field of the task bar in Windows, or `applications->utilities->terminal` on a Mac)**
-- **In the command window / terminal, type:**
-  **`npm install --global prettier prettier-plugin-elm`**
+- **Open a command window (type `cmd` in the search field of the task bar in Windows, or `applications->utilities->terminal` on a Mac). In this command window / terminal, enter the following (you can copy and paste the block of lines into the terminal window):**
+
+```txt
+cd Documents
+mkdir datavis
+cd datavis
+npm init --yes
+npm install prettier prettier-plugin-elm
+echo "{ \"plugins\": [\"prettier-plugin-elm\"] }" > .prettierrc.json
+```
+
+If you ever need to set up new litvis projects, create an appropriate folder on your computer, open up a terminal, change to that folder (using `cd`) and issue the last three lines as above (from `npm init --yes` onwards).
+
 - **Close the command window / terminal by typing `exit`**
 
 ## Step 4: Installing the VSCode Editor
@@ -62,7 +60,7 @@ VSCode is a general, but powerful editor that may be customised with 'extensions
 
 - **Start the VSCode editor.**
 - **In VSCode, press the _extensions button_ on the left that looks like a stack of four squares.** This should open up a panel allowing you to install various VSCode extensions.
-- **Enter 'litvis' in the extensions search field and click the green 'install' button under _Markdown Preview Enhanced with litvis_.** This will allow you to display formatted litvis documents in VSCode.
+- **Enter 'litvis' in the extensions search field and click the 'install' button under _Markdown Preview Enhanced with litvis_.** This will allow you to display formatted litvis documents in VSCode.
 - **Enter 'prettier' in the search field and click the 'install' button under _Prettier - Code formatter_.** This will help you format litvis documents as you edit them.
 - **Enter 'elm tooling' in the search field and click the install button under _Elm tooling_ taking care to select the correct extension that looks like a blue spanner.** This provides supporting functionality when working with the Elm programming language, used extensively with litvis.
 
@@ -78,10 +76,8 @@ VSCode is a general, but powerful editor that may be customised with 'extensions
 - **Navigate to `Extensions -> Markdown Preview Enhanced with litvis` and ensure `Live Update` is _not_ ticked.** This will speed up Litvis so that the preview is only updated when you save modifications to your document.
   ![VSCode settings](images/vsCodeSettings2.jpg)
 
-- **Finally navigate to `Extensions -> Prettier -> Prettier: Path` and enter the location where you installed prettier.** On a Mac, this is likely to be `/Users/MyUsername/.npm-global/lib/node_modules/prettier`; on Windows it is likely to be `c:\Users\MyUsername\AppData\Roaming\npm\node_modules\prettier` if you followed the default instructions above (replacing `MyUsername` with your own). If you are not sure where you installed prettier you can open a terminal and type `where prettier`. Note though that on a Mac, this will report a path ending in `bin/prettier` but you need to supply that path followed by`lib/node_modules/prettier` in VSCode. This will ensure formatting is applied to your Elm code.
-  ![VSCode settings](images/vsCodeSettings3.jpg)
-
 - **You can now close the `Settings` tab.**
+
 
 ## Step 7: Check Litvis now works in VSCode
 
