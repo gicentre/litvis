@@ -34,16 +34,16 @@ All your datavis work with Litvis should be in a 'project'. The instructions bel
 
 - **Open a command window (type `cmd` in the search field of the task bar in Windows, or `applications->utilities->terminal` on a Mac). In this command window / terminal, enter the following (you can copy and paste the block of lines into the terminal window):**
 
-```txt
-cd Documents
-mkdir datavis
-cd datavis
-npm init --yes
-npm install prettier prettier-plugin-elm
-echo "{ \"plugins\": [\"prettier-plugin-elm\"] }" > .prettierrc.json
-```
+  ```txt
+  cd Documents
+  mkdir datavis
+  cd datavis
+  npm init --yes
+  npm install prettier prettier-plugin-elm
+  echo "{ \"plugins\": [\"prettier-plugin-elm\"] }" > .prettierrc.json
+  ```
 
-If you ever need to set up new litvis projects, create an appropriate folder on your computer, open up a terminal, change to that folder (using `cd`) and issue the last three lines as above (from `npm init --yes` onwards).
+  If you ever need to set up new litvis projects, create an appropriate folder on your computer, open up a terminal, change to that folder (using `cd`) and issue the last three lines as above (from `npm init --yes` onwards).
 
 - **Close the command window / terminal by typing `exit`**
 
