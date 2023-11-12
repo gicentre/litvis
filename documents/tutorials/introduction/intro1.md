@@ -22,15 +22,13 @@ But litvis is more than a markdown editor for text. You can also write, edit and
 
 ## Providing a visualization specification
 
-Let's start with a simple litvis document that displays a bar chart. 
+Let's start with a simple litvis document that displays a bar chart.
 
 First open the _folder_ in VSCode that corresponds to your litvis project folder. If this is the first time you have opened that folder in VSCode you will probably see a dialogue similar to the following:
 
-  ![VSCode Security dialogue](images/vsCodeSecurity.png)
+![VSCode Security dialogue](images/vsCodeSecurity.png)
 
-  You should **click the `Yes, I trust the authors` button** to start your VSCode project.
-
-
+You should **click the `Yes, I trust the authors` button** to start your VSCode project.
 
 Create a new document called [`helloLitvis.md`](helloLitvisV1.md) and copy the following into it.
 

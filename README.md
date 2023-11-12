@@ -38,7 +38,6 @@ Litvis documents can be viewed and created in the _VS Code_ editor:
 
     - Search for `elm tooling` and install _(syntax highlighting of Elm code)_.
 
-
 1.  Configuring Your Editor
 
     To make using litvis as smooth as possible, we recommend the following editor configuration options:
@@ -46,7 +45,6 @@ Litvis documents can be viewed and created in the _VS Code_ editor:
     - Under `Preferences->Settings`, change the following from their default settings:
       - `Text Editor -> Formatting`: ensure `Format On Save` is ticked
       - `Extensions -> Markdown Preview Enhanced with litvis`: ensure `Live Update` is _not_ ticked.
-    
 
 You should now be good to go! Get started by [writing your first litvis document](documents/tutorials/introduction/intro1.md) and looking at these [tutorials](documents/tutorials/README.md).
 

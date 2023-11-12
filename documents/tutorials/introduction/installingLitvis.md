@@ -24,7 +24,6 @@ _You can skip this step if you already have Node.js and npm working on your syst
 
 - **Download and install the 'LTS' (Long Term Support) version of Node from [nodejs.org/en/](https://nodejs.org/en/), accepting the default values during installation.**
 
-
 ## Step 2: Install Elm
 
 Litvis uses the programming language _Elm_ to specify visualizations and process data. To install Elm, click the relevant installation for your computer from the [official Elm install page](https://guide.elm-lang.org/install/elm.html) (there's no need to follow the _"after installation is complete..."_ tests).
@@ -77,7 +76,6 @@ VSCode is a general, but powerful editor that may be customised with 'extensions
   ![VSCode settings](images/vsCodeSettings2.jpg)
 
 - **You can now close the `Settings` tab.**
-
 
 ## Step 7: Check Litvis now works in VSCode
 
