@@ -83,6 +83,8 @@ formattedOutput6 =
 
 Output in each column should be identical except for '`r` output' which should have text encased in quotation marks and no formatting:
 
+<!-- markdownlint-disable descriptive-link-text -->
+
 | Markdown                                                                                          | `r` output                   | `m` output                   | `markdown` output                   |
 | ------------------------------------------------------------------------------------------------- | ---------------------------- | ---------------------------- | ----------------------------------- |
 | Some text                                                                                         | ^^^elm r=stringOutput^^^     | ^^^elm m=stringOutput^^^     | ^^^elm markdown=stringOutput^^^     |
@@ -92,6 +94,8 @@ Output in each column should be identical except for '`r` output' which should h
 | Some code `x + y*3 - z/4.5` in a sentence.                                                        | ^^^elm r=formattedOutput4^^^ | ^^^elm m=formattedOutput4^^^ | ^^^elm markdown=formattedOutput4^^^ |
 | Embedded <b>bold</b> and <i>italic</i> html.                                                      | ^^^elm r=formattedOutput5^^^ | ^^^elm m=formattedOutput5^^^ | ^^^elm markdown=formattedOutput5^^^ |
 | Some escaped \*, \\, and \_ characters.                                                           | ^^^elm r=formattedOutput6^^^ | ^^^elm m=formattedOutput6^^^ | ^^^elm markdown=formattedOutput6^^^ |
+
+<!-- markdownlint-enable descriptive-link-text -->
 
 > Note in the last row above, there should only be a single `\` in the output, but because we need to represent it with a double `\\` to escape it in markdown, and in Elm we also need to escape the `\` with a `\\`, the code requires `\\\\` characters.
 

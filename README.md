@@ -29,7 +29,6 @@ Litvis documents can be viewed and created in the _VS Code_ editor:
 1.  If you don't have it already, install the [VS Code](https://code.visualstudio.com) editor.
 
 1.  Install the litvis extensions:
-
     - Select `View → Extensions`
 
     - Search for `markdown-preview-enhanced-with-litvis` and then click `install` next to the returned result _(main litvis functionality)_.
@@ -41,7 +40,6 @@ Litvis documents can be viewed and created in the _VS Code_ editor:
 1.  Configuring Your Editor
 
     To make using litvis as smooth as possible, we recommend the following editor configuration options:
-
     - Under `Preferences->Settings`, change the following from their default settings:
       - `Text Editor -> Formatting`: ensure `Format On Save` is ticked
       - `Extensions -> Markdown Preview Enhanced with litvis`: ensure `Live Update` is _not_ ticked.
