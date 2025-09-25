@@ -36,12 +36,12 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        node: [18, 20]
+        node: [20, 22]
         exclude:
           - os: macos-latest
-            node: 18
+            node: 20
           - os: windows-latest
-            node: 18
+            node: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
