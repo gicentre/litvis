@@ -2,7 +2,6 @@
 *.*
 LICENSE
 !*.js
-!*.json
 !*.ts
 !*.tsx
 
