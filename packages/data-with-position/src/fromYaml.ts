@@ -17,7 +17,7 @@ import { DataKind, DataWithPosition, Position } from "./types";
 const isBetween = (start: number, pos: number, end: number) =>
   pos <= end && pos >= start;
 
-const calculatePosition = (input: string, { start, end }) => {
+const calculatePosition = (input: string, { start, end }: { start: number, end: number }) => {
   const lines = input.split(/\n/);
 
   const position: Position = {
@@ -36,7 +36,7 @@ const calculatePosition = (input: string, { start, end }) => {
   for (const i of lines.keys()) {
     const line = lines[i];
     const ls = sum;
-    const le = sum + line.length;
+    const le = sum + (line?.length ?? 0);
 
     if (position.start.line === -1 && isBetween(ls, start, le)) {
       position.start.line = i + 1;
@@ -54,7 +54,7 @@ const calculatePosition = (input: string, { start, end }) => {
   return position;
 };
 
-const wrappedScalar = (Constructor, kind: DataKind, value, position) => {
+const wrappedScalar = (Constructor: any, kind: DataKind, value: any, position: Position) => {
   const v = new Constructor(value);
   v[positionKey] = position;
   v[kindKey] = kind;
@@ -63,7 +63,7 @@ const wrappedScalar = (Constructor, kind: DataKind, value, position) => {
 };
 
 const returnNull = () => null;
-const wrappedNull = (position) => ({
+const wrappedNull = (position: Position) => ({
   [positionKey]: position,
   [kindKey]: "null",
   valueOf: returnNull as any,
@@ -79,8 +79,8 @@ const visitorByNodeKind: Record<
   ) => void
 > = {};
 
-const walk = (nodes: YAMLNode[], input, ctx = {}) => {
-  const onNode = (node: YAMLNode, ctx2, fallback) => {
+const walk = (nodes: YAMLNode[], input: string, ctx: unknown[] | Record<string, unknown> | undefined = {}) => {
+  const onNode = (node: YAMLNode, ctx2: unknown[] | Record<string, unknown> | undefined, fallback: any) => {
     const visitor = node
       ? visitorByNodeKind[node.kind]
       : visitorByNodeKind[Kind.SCALAR];
