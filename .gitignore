@@ -8,7 +8,6 @@ coverage
 dist
 lerna-debug.log
 node_modules
-yarn-error.log
 .vscode/settings.json
 
 # misc

@@ -17,7 +17,6 @@ coverage
 dist
 lerna-debug.log
 node_modules
-yarn-error.log
 
 # misc
 .DS_Store

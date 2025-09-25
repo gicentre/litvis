@@ -1,32 +1,27 @@
 {
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
   "scripts": {
-    "build": "yarn use-prod-typings && yarn clean:coverage && yarn clean:dist && lerna exec \"tsc --project .\"",
-    "build-and-qa": "yarn build && yarn qa",
-    "build:watch": "yarn use-dev-typings && yarn clean:dist && lerna exec --parallel \"tsc --project . --watch\"",
-    "clean": "yarn clean:dist && rimraf packages/*/coverage packages/*/yarn-error.log yarn-error.log lerna-debug.log",
+    "build": "pnpm use-prod-typings && pnpm clean:coverage && pnpm clean:dist && lerna exec \"tsc --project .\"",
+    "build-and-qa": "pnpm build && pnpm qa",
+    "build:watch": "pnpm use-dev-typings && pnpm clean:dist && lerna exec --parallel \"tsc --project . --watch\"",
+    "clean": "pnpm clean:dist && rimraf packages/*/coverage packages/*/pnpm-error.log pnpm-error.log lerna-debug.log",
     "clean:coverage": "rimraf coverage packages/*/coverage",
-    "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
-    "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
+    "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/pnpm-error.log pnpm-error.log lerna-debug.log",
+    "clean:full": "pnpm clean && rimraf packages/*/node_modules node_modules",
     "fix": "npm-run-all --continue-on-error fix:*",
     "fix:eslint": "eslint --fix \"**/*\"",
     "fix:markdownlint": "markdownlint --fix \"**/*\"",
+    "fix:pnpm-dedupe": "pnpm dedupe",
     "fix:prettier": "prettier --write .",
-    "fix:yarn-deduplicate": "yarn install && yarn-deduplicate --strategy=fewer && yarn install",
     "lint": "npm-run-all --continue-on-error lint:*",
     "lint:eslint": "eslint \"**/*\" --report-unused-disable-directives",
     "lint:markdownlint": "markdownlint \"**/*\"",
     "lint:prettier": "prettier --check .",
+    "lint:pnpm-dedupe": "pnpm dedupe --check",
     "lint:tsc": "tsc --project .",
-    "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "prepare": "husky install",
-    "qa": "yarn lint && yarn test --coverage",
-    "release": "yarn build-and-qa && lerna publish",
+    "qa": "pnpm lint && pnpm test --coverage",
+    "release": "pnpm build-and-qa && lerna publish",
     "test": "jest",
     "test-by-package": "lerna exec jest",
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
@@ -69,8 +64,7 @@
     "rimraf": "3.0.2",
     "suppress-exit-code": "1.0.0",
     "ts-jest": "29.1.1",
-    "typescript": "4.4.3",
-    "yarn-deduplicate": "3.1.0"
+    "typescript": "4.4.3"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "pnpm@10.17.1"
 }
