@@ -26,3 +26,4 @@ node_modules
 CNAME
 LICENSE
 packages/data-with-position/src/__fixtures__/fromYaml
+pnpm-lock.yaml
