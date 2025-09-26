@@ -11,11 +11,13 @@ export const getValue = (dataWithPosition: DataWithPosition): any => {
 
   const value = dataWithPosition.valueOf();
   if (value instanceof Object) {
-    const result = {};
-    for (const key in dataWithPosition) {
+    const result: Record<string, unknown> = {};
+    for (const [key, dataWithPositionValue] of Object.entries(
+      dataWithPosition,
+    )) {
       // istanbul ignore next
       if (Object.prototype.hasOwnProperty.call(dataWithPosition, key)) {
-        result[key] = getValue(dataWithPosition[key]);
+        result[key] = getValue(dataWithPositionValue);
       }
     }
 

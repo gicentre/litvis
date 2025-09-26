@@ -21,13 +21,11 @@ export const findIntroducedSymbols = (code: string): ElmSymbol[] => {
     if (insideMultiLineString) {
       return;
     }
-    const match = line.match(/^([_a-zA-Z][_a-zA-Z0-9]{0,})\s*:\s*(.*)\s*$/);
-    if (match) {
-      const typeWithTrimmedComment = match[2].split("--")[0].trim();
-      result.push({
-        name: match[1],
-        type: typeWithTrimmedComment,
-      });
+    const [, name, type] =
+      line.match(/^([_a-zA-Z][_a-zA-Z0-9]{0,})\s*:\s*(.*)\s*$/) ?? [];
+    if (name && type) {
+      const typeWithTrimmedComment = type.split("--")[0]?.trim() ?? "";
+      result.push({ name, type: typeWithTrimmedComment });
     }
   });
 

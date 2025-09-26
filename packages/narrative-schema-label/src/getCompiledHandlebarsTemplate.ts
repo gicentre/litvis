@@ -1,21 +1,25 @@
 import { compile } from "handlebars";
 import LRU from "lru-cache";
 
-const cache = new LRU(1000);
+const cache = new LRU<string, HandlebarsTemplateDelegate<any> | Error>(1000);
 
 export const getCompiledHandlebarsTemplate = (htmlTemplate: string) => {
-  if (!cache[htmlTemplate]) {
+  if (!cache.get(htmlTemplate)) {
     try {
-      cache[htmlTemplate] = compile(htmlTemplate);
-      cache[htmlTemplate]();
-    } catch (e) {
-      cache[htmlTemplate] = e;
+      const compiledTemplate = compile(htmlTemplate);
+      compiledTemplate({});
+      cache.set(htmlTemplate, compiledTemplate);
+    } catch (error) {
+      cache.set(
+        htmlTemplate,
+        error instanceof Error ? error : new Error(String(error)),
+      );
     }
   }
 
-  if (cache[htmlTemplate] instanceof Error) {
-    throw cache[htmlTemplate];
+  if (cache.get(htmlTemplate) instanceof Error) {
+    throw cache.get(htmlTemplate);
   } else {
-    return cache[htmlTemplate];
+    return cache.get(htmlTemplate);
   }
 };

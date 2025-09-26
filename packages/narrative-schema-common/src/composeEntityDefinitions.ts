@@ -1,8 +1,12 @@
-import { EntityDefinitionWithOrigin, NarrativeSchema } from "./types";
+import {
+  EntityDefinitionWithOrigin,
+  NarrativeSchema,
+  NarrativeSchemaData,
+} from "./types";
 
 export const composeEntityDefinitions = (
   narrativeSchema: NarrativeSchema,
-  entityKey: string,
+  entityKey: keyof NarrativeSchemaData,
   alreadyLoadedEntitiesWithOrigin: EntityDefinitionWithOrigin[],
 ): EntityDefinitionWithOrigin[] => {
   return [

@@ -86,7 +86,7 @@ ${outputSymbolName} =
   _.forEach(orderedExpressionTexts, (text, i) => {
     chunks.push({
       type: "expressionText",
-      ref: expressionNodesGroupedByText[text],
+      ref: expressionNodesGroupedByText[text] ?? [],
       text: `-------- literate-elm output expression ${text}
         ${i > 0 ? "," : " "} ("${text.replace(
           /"/g,
@@ -148,7 +148,7 @@ const runChunkifiedProgram = async (
   );
   const codeToRun = chunkifiedProgram.chunks.map(({ text }) => text).join("\n");
   try {
-    let runElmResult;
+    let runElmResult: any;
     await writeFile(programPath, codeToRun, "utf8");
     try {
       runElmResult = await runElm(
@@ -156,10 +156,12 @@ const runChunkifiedProgram = async (
         programPath,
         outputSymbolName,
       );
-    } catch (e) {
-      const linesInStderr = (e.message || "").split("\n");
+    } catch (error) {
+      const linesInStderr = (
+        error instanceof Error ? error.message : String(error) || ""
+      ).split("\n");
 
-      let parsedErrorOutput;
+      let parsedErrorOutput: any;
 
       _.findLast(linesInStderr, (line) => {
         try {
@@ -182,7 +184,7 @@ const runChunkifiedProgram = async (
           errors: [parsedErrorOutput],
         };
       } else {
-        throw e;
+        throw error;
       }
     }
 
@@ -192,20 +194,22 @@ const runChunkifiedProgram = async (
       evaluatedExpressionTextMap: JSON.parse(runElmResult.output || "{}"),
       debugLog: runElmResult.debugLog,
     };
-  } catch (e) {
+  } catch (error) {
     // some messages need to be patched to avoid confusing output
-    const message = (e.message || "")
+    const errorMessage = (
+      error instanceof Error ? error.message : String(error) || ""
+    )
       .replace(/^Compilation failed\n/, "")
       .replace(/\n{2,}/, "\n");
-    const indexOfFirstNewline = message.indexOf("\n");
+    const indexOfFirstNewline = errorMessage.indexOf("\n");
 
     const overview =
       indexOfFirstNewline !== -1
-        ? message.substring(0, indexOfFirstNewline)
-        : message;
+        ? errorMessage.substring(0, indexOfFirstNewline)
+        : errorMessage;
     const details =
       indexOfFirstNewline !== -1
-        ? message.substring(indexOfFirstNewline + 1)
+        ? errorMessage.substring(indexOfFirstNewline + 1)
         : "";
 
     return {
@@ -228,7 +232,7 @@ const runChunkifiedProgram = async (
   }
 };
 
-const getErrorMessageText = (error): string => {
+const getErrorMessageText = (error: any): string => {
   if (error.title === "UNKNOWN IMPORT") {
     // Unknown imports form a special case. It is not reasonable to suggest looking into elm.json and source-directories
     // as this is causing confusion in the literate-elm environment.
@@ -239,7 +243,7 @@ const getErrorMessageText = (error): string => {
   }
   if (_.isArray(error.message)) {
     const text = error.message
-      .map((chunk) => {
+      .map((chunk: any) => {
         if (chunk.string) {
           // remove underlines with ^^^^
           if (chunk.string === "^".repeat(chunk.string.length)) {

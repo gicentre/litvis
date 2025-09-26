@@ -1,7 +1,9 @@
+// @ts-expect-error -- no types available for this package
 import executeRunElm from "@kachkaev/run-elm";
 import execa from "execa";
 import { readFile, writeFile } from "fs-extra";
 import { resolve } from "path";
+import { JsonObject } from "type-fest";
 
 export const initializeElmProject = async (projectDirectory: string) => {
   const childProcess = execa("elm", ["init"], {
@@ -14,14 +16,17 @@ export const initializeElmProject = async (projectDirectory: string) => {
   await childProcess;
 };
 
-export const patchElmJson = async (projectPath, callback) => {
+export const patchElmJson = async (
+  projectPath: string,
+  callback: (elmJson: Readonly<JsonObject>) => JsonObject,
+) => {
   const pathToElmJson = resolve(projectPath, "elm.json");
   const packageContents = await JSON.parse(
     await readFile(pathToElmJson, "utf8"),
   );
   await writeFile(
     pathToElmJson,
-    JSON.stringify(callback(packageContents) || packageContents),
+    JSON.stringify(callback?.(packageContents) ?? packageContents),
     "utf8",
   );
 };

@@ -17,7 +17,10 @@ import { DataKind, DataWithPosition, Position } from "./types";
 const isBetween = (start: number, pos: number, end: number) =>
   pos <= end && pos >= start;
 
-const calculatePosition = (input: string, { start, end }: { start: number, end: number }) => {
+const calculatePosition = (
+  input: string,
+  { start, end }: { start: number; end: number },
+) => {
   const lines = input.split(/\n/);
 
   const position: Position = {
@@ -54,7 +57,12 @@ const calculatePosition = (input: string, { start, end }: { start: number, end: 
   return position;
 };
 
-const wrappedScalar = (Constructor: any, kind: DataKind, value: any, position: Position) => {
+const wrappedScalar = (
+  Constructor: any,
+  kind: DataKind,
+  value: any,
+  position: Position,
+) => {
   const v = new Constructor(value);
   v[positionKey] = position;
   v[kindKey] = kind;
@@ -79,8 +87,16 @@ const visitorByNodeKind: Record<
   ) => void
 > = {};
 
-const walk = (nodes: YAMLNode[], input: string, ctx: unknown[] | Record<string, unknown> | undefined = {}) => {
-  const onNode = (node: YAMLNode, ctx2: unknown[] | Record<string, unknown> | undefined, fallback: any) => {
+const walk = (
+  nodes: YAMLNode[],
+  input: string,
+  ctx: unknown[] | Record<string, unknown> | undefined = {},
+) => {
+  const onNode = (
+    node: YAMLNode,
+    ctx2: unknown[] | Record<string, unknown> | undefined,
+    fallback: any,
+  ) => {
     const visitor = node
       ? visitorByNodeKind[node.kind]
       : visitorByNodeKind[Kind.SCALAR];
@@ -99,7 +115,8 @@ const walk = (nodes: YAMLNode[], input: string, ctx: unknown[] | Record<string, 
   return Array.isArray(ctx) ? walkArr() : walkObj();
 };
 
-visitorByNodeKind[Kind.MAP] = (node: YamlMap, input, ctx) => {
+// @ts-expect-error -- types of yaml-ast-parser are not compatible with exactOptionalPropertyTypes
+visitorByNodeKind[Kind.MAP] = (node: YamlMap, input) => {
   return Object.assign(walk(node.mappings, input), {
     [positionKey]: calculatePosition(input, {
       start: node.startPosition,
@@ -109,10 +126,12 @@ visitorByNodeKind[Kind.MAP] = (node: YamlMap, input, ctx) => {
   });
 };
 
+// @ts-expect-error -- types of yaml-ast-parser are not compatible with exactOptionalPropertyTypes
 visitorByNodeKind[Kind.MAPPING] = (node: YAMLMapping, input, ctx) => {
   const value = walk([node.value], input);
 
   if (node.value === null) {
+    // @ts-expect-error -- TODO: consider refactoring to avoid potential edge cases
     return Object.assign(ctx, {
       [node.key.value]: wrappedNull(
         calculatePosition(input, {
@@ -123,16 +142,19 @@ visitorByNodeKind[Kind.MAPPING] = (node: YAMLMapping, input, ctx) => {
     });
   }
 
+  // @ts-expect-error -- TODO: consider refactoring to avoid potential edge cases
   value[positionKey] = calculatePosition(input, {
     start: node.startPosition,
     end: node.endPosition,
   });
 
+  // @ts-expect-error -- TODO: consider refactoring to avoid potential edge cases
   return Object.assign(ctx, {
     [node.key.value]: value,
   });
 };
 
+// @ts-expect-error -- types of yaml-ast-parser are not compatible with exactOptionalPropertyTypes
 visitorByNodeKind[Kind.SCALAR] = (node: YAMLScalar, input) => {
   if (!node) {
     return;
@@ -154,13 +176,16 @@ visitorByNodeKind[Kind.SCALAR] = (node: YAMLScalar, input) => {
   return wrappedScalar(String, "string", node.value, position);
 };
 
+// @ts-expect-error -- types of yaml-ast-parser are not compatible with exactOptionalPropertyTypes
 visitorByNodeKind[Kind.SEQ] = (node: YAMLSequence, input) => {
   const items = walk(node.items, input, []);
 
+  // @ts-expect-error -- TODO: consider refactoring to avoid potential edge cases
   items[positionKey] = calculatePosition(input, {
     start: node.startPosition,
     end: node.endPosition,
   });
+  // @ts-expect-error -- TODO: consider refactoring to avoid potential edge cases
   items[kindKey] = "array";
 
   return items;
