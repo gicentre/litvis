@@ -36,6 +36,9 @@
   },
   "devDependencies": {
     "@kachkaev/eslint-config-base": "0.2.3",
+    "@tsconfig/node22": "22.0.2",
+    "@tsconfig/recommended": "1.0.10",
+    "@tsconfig/strictest": "2.0.6",
     "@types/cheerio": "0.22.21",
     "@types/eslint": "7.28.0",
     "@types/fs-extra": "9.0.13",
@@ -64,6 +67,7 @@
     "rimraf": "3.0.2",
     "suppress-exit-code": "1.0.0",
     "ts-jest": "29.1.1",
+    "type-fest": "5.0.1",
     "typescript": "5.9.2"
   },
   "packageManager": "pnpm@10.17.1"

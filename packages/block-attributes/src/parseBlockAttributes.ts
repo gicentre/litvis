@@ -17,7 +17,10 @@ const normalizeValue = (value: string): boolean | number | string => {
   return value;
 };
 
-const extractStringWithBrackets = (text, start): Node | void => {
+const extractStringWithBrackets = (
+  text: string,
+  start: number,
+): Node | void => {
   if (text[start] !== "(") {
     return;
   }
@@ -38,8 +41,8 @@ const extractStringWithBrackets = (text, start): Node | void => {
   return [text.substring(start, end), end, "stringWithBrackets"];
 };
 
-const extractStringInQuotes = (text, start): Node | void => {
-  const quote = text[start];
+const extractStringInQuotes = (text: string, start: number): Node | void => {
+  const quote = text[start] ?? "";
   if (!"'\"`".includes(quote)) {
     return;
   }
@@ -48,7 +51,7 @@ const extractStringInQuotes = (text, start): Node | void => {
   while (end < text.length) {
     if (text[end] === "\\") {
       if (end + 1 < text.length) {
-        chars.push(text[end + 1]);
+        chars.push(text[end + 1]!);
       }
       end += 2;
       continue;
@@ -57,7 +60,7 @@ const extractStringInQuotes = (text, start): Node | void => {
       end += 1;
       break;
     }
-    chars.push(text[end]);
+    chars.push(text[end]!);
     end += 1;
   }
 
@@ -70,7 +73,7 @@ const extractWord = (text: string, start: number): Node | void => {
   let i = start;
   let bracketDepth = 0;
   while (i < text.length) {
-    const char = text[i];
+    const char = text[i] ?? "";
     if (!wordCharRegExp.test(char)) {
       break;
     }
@@ -91,7 +94,7 @@ const extractWord = (text: string, start: number): Node | void => {
   return [text.substring(start, i), i, "word"];
 };
 
-const extractArray = (text, start): Node | void => {
+const extractArray = (text: string, start: number): Node | void => {
   if (text[start] !== "[") {
     return;
   }

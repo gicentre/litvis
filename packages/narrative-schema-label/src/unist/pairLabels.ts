@@ -1,15 +1,15 @@
-import { Parent } from "unist";
+import { Node, Parent } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 
 import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
-export const pairLabels = () => (ast, vFile: VFile) => {
+export const pairLabels = () => (ast: Node, vFile: VFile) => {
   return visit<LabelNode>(
     ast,
     "narrativeSchemaLabel",
-    (labelNode, index, parent: Parent) => {
+    (labelNode, index, parent: Parent | undefined) => {
       if (
         labelNode.data.errorType ||
         labelNode.data.labelType !== "paired_opening"
@@ -17,9 +17,9 @@ export const pairLabels = () => (ast, vFile: VFile) => {
         return;
       }
       const nestedOpenLabelNodes: any[] = [];
-      for (let i = index + 1; i < parent.children.length; i += 1) {
-        const possibleMatch = parent.children[i] as LabelNode;
-        if (possibleMatch.type !== "narrativeSchemaLabel") {
+      for (let i = index + 1; i < (parent?.children.length ?? 0); i += 1) {
+        const possibleMatch = parent?.children[i] as LabelNode | undefined;
+        if (possibleMatch?.type !== "narrativeSchemaLabel") {
           continue;
         }
         if (
@@ -28,8 +28,12 @@ export const pairLabels = () => (ast, vFile: VFile) => {
           !possibleMatch.data.errorType &&
           !possibleMatch.data.pairedId
         ) {
-          possibleMatch.data.pairedId = labelNode.data.id;
-          labelNode.data.pairedId = possibleMatch.data.id;
+          if (labelNode.data.id) {
+            possibleMatch.data.pairedId = labelNode.data.id;
+          }
+          if (possibleMatch.data.id) {
+            labelNode.data.pairedId = possibleMatch.data.id;
+          }
           break;
         }
 

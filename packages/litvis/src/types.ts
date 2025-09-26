@@ -71,6 +71,7 @@ export type ProcessedLitvisContext =
 export interface CodeBlock extends Parent {
   lang?: string;
   value: string;
+  meta?: string;
   data: {
     info?: string;
     litvisAttributeDerivatives?: AttributeDerivatives;

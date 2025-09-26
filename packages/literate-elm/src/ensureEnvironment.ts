@@ -30,13 +30,10 @@ const prepareElmApplication = async (
   // install dependencies
   await initializeElmProject(directory);
   let userRequestsJsonPackage = false;
-  for (const packageName in dependencies) {
-    if (Object.prototype.hasOwnProperty.call(dependencies, packageName)) {
-      const packageVersion = dependencies[packageName];
-      await installElmPackage(directory, packageName, packageVersion);
-      if (packageName === "elm/json") {
-        userRequestsJsonPackage = true;
-      }
+  for (const [packageName, packageVersion] of Object.entries(dependencies)) {
+    await installElmPackage(directory, packageName, packageVersion);
+    if (packageName === "elm/json") {
+      userRequestsJsonPackage = true;
     }
   }
   if (!userRequestsJsonPackage) {
@@ -45,7 +42,10 @@ const prepareElmApplication = async (
 
   // add sourceDirectories to elm.json
   await patchElmJson(directory, (elmJson) => {
-    elmJson["source-directories"] = [...sourceDirectories, "."];
+    return {
+      ...elmJson,
+      "source-directories": [...sourceDirectories, "."],
+    };
   });
 };
 
@@ -137,11 +137,14 @@ export const ensureEnvironment = async (
         status: "ready",
         createdAt: now,
       };
-    } catch (e) {
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
       await touch(resolve(workingDirectory, "ProgramFORGC"));
       const isElmFound =
-        `${e.message}`.indexOf("ENOENT") === -1 &&
-        `${e.message}`.indexOf("No elm global binary available") === -1;
+        `${errorMessage}`.indexOf("ENOENT") === -1 &&
+        `${errorMessage}`.indexOf("No elm global binary available") === -1;
       metadata = {
         status: "error",
         createdAt: now,
@@ -149,7 +152,7 @@ export const ensureEnvironment = async (
           now +
           (isElmFound ? projectExpiryWithErrors : projectExpiryWithNoElmFound),
         errorMessage: isElmFound
-          ? e.message
+          ? errorMessage
           : 'I am having trouble finding Elm on your machine. Is it installed? Check by opening a terminal window and typing "elm --version" (without quotation marks). If you have recently installed Elm, try restarting your machine.',
       };
     }
@@ -170,14 +173,14 @@ export const ensureEnvironment = async (
       workingDirectory,
       metadata,
     };
-  } catch (e) {
+  } catch (error) {
     return {
       spec,
       workingDirectory: specDirectory,
       metadata: {
         createdAt: now,
         status: "error",
-        errorMessage: e.message,
+        errorMessage: error instanceof Error ? error.message : String(error),
       },
     };
   } finally {

@@ -24,7 +24,6 @@ const processChunksOutsideQuotedStrings = (
 /**
  * Scans through the object and replaces children like {"0": ..., "1": ..., "2": ...} into arrays.
  * Does not mutate the original object.
- * @param obj
  */
 const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
   if (obj === null || typeof obj !== "object") {
@@ -33,15 +32,13 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
 
   // apply the same function recursively for each key
   let childrenHaveChanged = false;
-  const changedChildren = {};
-  for (const key in obj) {
+  const changedChildren: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
     // istanbul ignore next
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const newChild = recursivelyConvertApplicableObjectsToArrays(obj[key]);
-      if (newChild !== obj[key]) {
-        childrenHaveChanged = true;
-        changedChildren[key] = newChild;
-      }
+    const newChild = recursivelyConvertApplicableObjectsToArrays(value);
+    if (newChild !== value) {
+      childrenHaveChanged = true;
+      changedChildren[key] = newChild;
     }
   }
 
@@ -60,7 +57,7 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
         return resultingObject;
       }
       nextExpectedKey += 1;
-      arrayValues.push(resultingObject[key]);
+      arrayValues.push(resultingObject[key as keyof typeof resultingObject]);
     }
   }
 

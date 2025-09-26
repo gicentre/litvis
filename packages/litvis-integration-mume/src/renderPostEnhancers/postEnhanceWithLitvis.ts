@@ -6,7 +6,11 @@ import { EntityDefinitionWithOrigin } from "narrative-schema-common";
 import { Position } from "unist";
 import { VFile } from "vfile";
 
-const findOrFilter = ($: CheerioStatic, func, selector: any): Cheerio => {
+const findOrFilter = (
+  $: CheerioStatic,
+  func: (selector: string) => Cheerio,
+  selector: any,
+): Cheerio => {
   const cheerioSelectorParts: string[] = [];
   if (selector) {
     cheerioSelectorParts.push(`[ns-role="label"]`);
@@ -31,10 +35,14 @@ const find = ($: CheerioStatic, $where: Cheerio, selector: any): Cheerio => {
 const filter = ($: CheerioStatic, $what: Cheerio, selector: any): Cheerio => {
   return findOrFilter($, $what.filter.bind($what), selector);
 };
-const ruleIsNotFollowed = (position?: Position): Error => {
-  const result = new Error("rule is not followed");
+const ruleIsNotFollowed = (
+  position?: Position,
+): Error & { position?: Position } => {
+  const result = new Error("rule is not followed") as Error & {
+    position?: Position;
+  };
   if (position) {
-    (result as any).position = position;
+    result.position = position;
   }
 
   return result;
@@ -161,16 +169,19 @@ export const postEnhanceWithLitvis = (
               throw ruleIsNotFollowed(elementPosition($el));
             }
           });
-        } catch (e) {
-          if (e.message === "rule is not followed") {
+        } catch (error) {
+          if (
+            error instanceof Error &&
+            error.message === "rule is not followed"
+          ) {
             lastFile.message(
               ruleData.description,
-              e.position,
+              (error as Error & { position?: Position }).position,
               "narrative-schema:rule-validation",
             );
           } else {
             // eslint-disable-next-line no-console
-            console.error(e);
+            console.error(error);
           }
         }
       },

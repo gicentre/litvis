@@ -119,8 +119,8 @@ const extractSelectorData = (
 };
 
 const extractDataFromRule = (
-  narrativeSchema,
-  ruleDataWithPosition,
+  narrativeSchema: NarrativeSchema,
+  ruleDataWithPosition: DataWithPosition,
   ruleDataPath: Array<number | string>,
 ) => {
   const ruleData: any = {};

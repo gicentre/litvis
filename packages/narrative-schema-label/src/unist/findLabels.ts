@@ -1,7 +1,7 @@
 import { LabelFence } from "../types";
 import { deriveLabelType } from "../utils";
 
-const locator = (value, fromIndex) => {
+const locator = (value: string, fromIndex: number) => {
   const indexOfStart = value.indexOf(LabelFence.START, fromIndex);
   const indexOfStartClosing = value.indexOf(
     LabelFence.START_CLOSING,
@@ -19,7 +19,7 @@ const locator = (value, fromIndex) => {
 // eslint-disable-next-line func-style
 export function findLabels() {
   // eslint-disable-next-line func-style
-  function inlineTokenizer(eat, value, silent) {
+  function inlineTokenizer(eat: any, value: string, silent: boolean) {
     if (
       !value.startsWith(LabelFence.START) &&
       !value.startsWith(LabelFence.START_CLOSING)
@@ -62,6 +62,7 @@ export function findLabels() {
   }
   (inlineTokenizer as any).locator = locator;
 
+  // @ts-expect-error -- TODO: investigate
   const Parser = this.Parser;
 
   // Inject inlineTokenizer

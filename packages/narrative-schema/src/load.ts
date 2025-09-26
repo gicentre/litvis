@@ -22,9 +22,9 @@ import { traceParents } from "./traceParents";
 
 const resolveNarrativeSchemaPath = async (
   path: string,
-  file: VFile,
+  file: VFile | NarrativeSchema | undefined,
 ): Promise<string> => {
-  let result = resolve(file.dirname || "", path);
+  let result = resolve(file?.dirname || "", path);
   if (
     !_.endsWith(result.toLowerCase(), ".yml") &&
     !_.endsWith(result.toLowerCase(), ".yaml")
@@ -94,7 +94,7 @@ export const load = async (
         styling: [],
       };
     } catch (e) {
-      parents[0].message(
+      parents[0]?.message(
         `Unable to load narrative schema dependency ${pathWithPosition}${traceParents(
           parents,
         )}. Does file ${resolvedPath} exist?`,

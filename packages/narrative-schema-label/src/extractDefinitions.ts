@@ -15,9 +15,9 @@ import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
 import { isValidLabelName } from "./utils";
 
 const extractDataFromLabel = (
-  narrativeSchema,
-  labelDataWithPosition,
-  labelDataPath,
+  narrativeSchema: NarrativeSchema,
+  labelDataWithPosition: DataWithPosition,
+  labelDataPath: Array<number | string>,
 ) => {
   let labelData: any = {};
 

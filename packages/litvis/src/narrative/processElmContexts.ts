@@ -123,13 +123,13 @@ export const processElmContexts = async (
         let currentContextName = contextName;
         do {
           context.wrappedCodeBlocks.unshift(
-            wrappedCodeBlocksInAllDocuments[currentIndex],
+            wrappedCodeBlocksInAllDocuments[currentIndex]!,
           );
           if (currentIndex === 0) {
             break;
           }
           const follows =
-            wrappedCodeBlocksInAllDocuments[currentIndex].subject.data
+            wrappedCodeBlocksInAllDocuments[currentIndex]!.subject.data
               .litvisAttributeDerivatives.follows;
           if (follows) {
             currentIndex = _.findLastIndex(
@@ -142,7 +142,7 @@ export const processElmContexts = async (
             );
             if (currentIndex !== -1) {
               currentContextName =
-                wrappedCodeBlocksInAllDocuments[currentIndex].subject.data
+                wrappedCodeBlocksInAllDocuments[currentIndex]!.subject.data
                   .litvisAttributeDerivatives.contextName;
             }
           } else {
@@ -249,8 +249,8 @@ export const processElmContexts = async (
       (message) => `${JSON.stringify(message.position)}|${message.text}`,
     );
     _.forEach(messagesGroupedByPositionAndText, (messageGroup) => {
-      const message = messageGroup[0];
-      const document = narrative.documents[message.fileIndex];
+      const message = messageGroup[0]!;
+      const document = narrative.documents[message.fileIndex]!;
       switch (message.severity) {
         case "info": {
           document.info(message.text, message.position, "literate-elm:compile");
@@ -281,7 +281,7 @@ export const processElmContexts = async (
     const processedContexts: ProcessedLitvisContext[] = _.map(
       literateElmJobs,
       ({ contextName }, index) => {
-        const literateElmProgramResult = literateElmProgramResults[index];
+        const literateElmProgramResult = literateElmProgramResults[index]!;
         const context = foundContextsByName[contextName];
         if (literateElmProgramResult.status === "failed") {
           const processedContext: FailedLitvisContext = {
@@ -301,16 +301,16 @@ export const processElmContexts = async (
             );
           }
           const evaluatedOutputExpressions: EvaluatedOutputExpression[] = _.map(
-            context.wrappedOutputExpressions,
+            context!.wrappedOutputExpressions,
             (wrappedOutputExpression, i) => {
               const evaluatedExpressionInProgram =
-                literateElmProgramResult.evaluatedExpressions[i];
+                literateElmProgramResult.evaluatedExpressions[i]!;
               const evaluatedExpression =
                 wrappedOutputExpression.subject as EvaluatedOutputExpression;
               const document =
                 narrative.documents[
                   evaluatedExpressionInProgram.node.fileIndex || 0
-                ];
+                ]!;
 
               evaluatedExpression.data.value =
                 evaluatedExpressionInProgram.value;
@@ -345,7 +345,7 @@ export const processElmContexts = async (
     narrative.contexts = processedContexts;
   } catch (error) {
     try {
-      lastDocument.fail(error.message);
+      lastDocument.fail(error instanceof Error ? error.message : String(error));
     } catch {
       // no need for action - just preventing .fail() from throwing further
     }
