@@ -26,7 +26,7 @@ const processChunksOutsideQuotedStrings = (
  * Does not mutate the original object.
  */
 const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
-  if (obj === null || typeof obj !== "object") {  
+  if (obj === null || typeof obj !== "object") {
     return obj;
   }
 
@@ -36,7 +36,9 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
   for (const key in obj) {
     // istanbul ignore next
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const newChild = recursivelyConvertApplicableObjectsToArrays(obj[key as keyof typeof obj]);
+      const newChild = recursivelyConvertApplicableObjectsToArrays(
+        obj[key as keyof typeof obj],
+      );
       if (newChild !== obj[key as keyof typeof obj]) {
         childrenHaveChanged = true;
         changedChildren[key] = newChild;

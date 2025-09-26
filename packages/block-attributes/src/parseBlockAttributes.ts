@@ -17,7 +17,10 @@ const normalizeValue = (value: string): boolean | number | string => {
   return value;
 };
 
-const extractStringWithBrackets = (text: string, start: number): Node | void => {
+const extractStringWithBrackets = (
+  text: string,
+  start: number,
+): Node | void => {
   if (text[start] !== "(") {
     return;
   }
@@ -27,7 +30,7 @@ const extractStringWithBrackets = (text: string, start: number): Node | void => 
     if (text[end] === "(") {
       bracketDepth += 1;
     } else if (text[end] === ")") {
-      bracketDepth -= 1;  
+      bracketDepth -= 1;
     }
     end += 1;
     if (bracketDepth === 0) {
