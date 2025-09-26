@@ -41,25 +41,28 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
 
     const text = $container.text();
     const spec = text.trim();
-    let data;
-    let dataParseError;
+    let data: any;
+    let dataParseError: unknown;
     try {
       if (spec[0] !== "{") {
         data = YAML.parse(spec);
       } else {
         data = JSON.parse(spec);
       }
-    } catch (e) {
-      dataParseError = e;
+    } catch (error) {
+      dataParseError = error;
     }
 
     // const arrayOf$results = [];
     derivatives.outputFormats.forEach((outputFormat) => {
-      if (derivatives.outputExpressionsByFormat[outputFormat]) {
+      if (
+        outputFormat !== "l" &&
+        derivatives.outputExpressionsByFormat[outputFormat]
+      ) {
         return;
       }
-      let $result;
-      let resultNormalizedInfo;
+      let $result: Cheerio | undefined;
+      let resultNormalizedInfo: (BlockInfo & { style?: string }) | undefined;
       let resultText;
       switch (outputFormat) {
         case "r":
@@ -80,7 +83,7 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
           };
 
           if (dataParseError) {
-            resultText = dataParseError.message;
+            resultText = (dataParseError as Error).message;
           } else {
             resultText = JSON.stringify(data, null, 2);
           }
@@ -90,7 +93,7 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
           resultNormalizedInfo = {
             language: normalizedInfo.language,
             attributes: {
-              interactive: normalizedInfo.attributes.interactive,
+              interactive: normalizedInfo.attributes["interactive"],
               style: "display: inline-block",
             },
           };
@@ -98,7 +101,7 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
           break;
         }
       }
-      if (!$result) {
+      if (!$result || typeof resultText !== "string" || !resultNormalizedInfo) {
         return;
       }
       // const stringifiedNormalizedInfo = JSON.stringify(resultNormalizedInfo);

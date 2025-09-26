@@ -9,10 +9,10 @@ export const useTripleHatReference = (md: MarkdownIt) => {
     "escape",
     "litvis:triple-hat-reference",
     (state, silent) => {
-      let openTag: string | null = null;
-      let closeTag: string | null = null;
+      let openTag: string | undefined;
+      let closeTag: string | undefined;
       for (const tagPair of delimiters) {
-        if (state.src.startsWith(tagPair[0], state.pos)) {
+        if (state.src.startsWith(tagPair[0]!, state.pos)) {
           [openTag, closeTag] = tagPair;
           break;
         }
@@ -22,7 +22,7 @@ export const useTripleHatReference = (md: MarkdownIt) => {
         return false; // not triple hat reference
       }
 
-      let content: string | null = null;
+      let content: string | undefined;
       let end = -1;
 
       let i = state.pos + openTag.length;
