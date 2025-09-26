@@ -31,5 +31,10 @@
     "unist-util-select": "^3.0.4",
     "vfile": "^4.2.1",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "4.17.20",
+    "@types/markdown-it": "14.1.2",
+    "type-fest": "5.0.1"
   }
 }

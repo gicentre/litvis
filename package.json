@@ -1,32 +1,27 @@
 {
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
   "scripts": {
-    "build": "yarn use-prod-typings && yarn clean:coverage && yarn clean:dist && lerna exec \"tsc --project .\"",
-    "build-and-qa": "yarn build && yarn qa",
-    "build:watch": "yarn use-dev-typings && yarn clean:dist && lerna exec --parallel \"tsc --project . --watch\"",
-    "clean": "yarn clean:dist && rimraf packages/*/coverage packages/*/yarn-error.log yarn-error.log lerna-debug.log",
+    "build": "pnpm use-prod-typings && pnpm clean:coverage && pnpm clean:dist && lerna exec \"tsc --project .\"",
+    "build-and-qa": "pnpm build && pnpm qa",
+    "build:watch": "pnpm use-dev-typings && pnpm clean:dist && lerna exec --parallel \"tsc --project . --watch\"",
+    "clean": "pnpm clean:dist && rimraf packages/*/coverage lerna-debug.log",
     "clean:coverage": "rimraf coverage packages/*/coverage",
-    "clean:dist": "rimraf packages/*/coverage packages/*/dist packages/*/yarn-error.log yarn-error.log lerna-debug.log",
-    "clean:full": "yarn clean && rimraf packages/*/node_modules node_modules",
+    "clean:dist": "rimraf packages/*/coverage packages/*/dist lerna-debug.log",
+    "clean:full": "pnpm clean && rimraf packages/*/node_modules node_modules",
     "fix": "npm-run-all --continue-on-error fix:*",
     "fix:eslint": "eslint --fix \"**/*\"",
     "fix:markdownlint": "markdownlint --fix \"**/*\"",
+    "fix:pnpm-dedupe": "pnpm dedupe",
     "fix:prettier": "prettier --write .",
-    "fix:yarn-deduplicate": "yarn install && yarn-deduplicate --strategy=fewer && yarn install",
     "lint": "npm-run-all --continue-on-error lint:*",
     "lint:eslint": "eslint \"**/*\" --report-unused-disable-directives",
     "lint:markdownlint": "markdownlint \"**/*\"",
+    "lint:pnpm-dedupe": "pnpm dedupe --check",
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --project .",
-    "lint:yarn-deduplicate": "yarn-deduplicate --fail --list --strategy=fewer",
     "prepare": "husky",
-    "qa": "yarn lint && yarn test --coverage",
-    "release": "yarn build-and-qa && lerna publish",
+    "qa": "pnpm lint && pnpm test --coverage",
+    "release": "pnpm build-and-qa && lerna publish",
     "test": "jest",
     "test-by-package": "lerna exec jest",
     "use-dev-typings": "lerna exec \"replace --quiet dist\\/index\\.d\\.ts src/index.ts package.json\"",
@@ -48,11 +43,8 @@
     "@types/eslint": "7.28.0",
     "@types/fs-extra": "9.0.13",
     "@types/jest": "29.5.4",
-    "@types/kind-of": "6.0.0",
-    "@types/lodash": "4.14.173",
     "@types/lodash.snakecase": "4.1.6",
     "@types/lru-cache": "5.1.1",
-    "@types/markdown-it": "12.2.1",
     "@types/node": "14.17.18",
     "@types/object-hash": "2.2.1",
     "@types/unist": "2.0.6",
@@ -62,7 +54,7 @@
     "husky": "9.1.7",
     "jest": "29.7.0",
     "lerna": "7.2.0",
-    "lint-staged": "11.1.2",
+    "lint-staged": "16.2.1",
     "markdownlint-cli": "0.45.0",
     "npm-run-all": "4.1.5",
     "prettier": "3.6.2",
@@ -70,11 +62,10 @@
     "prettier-plugin-packagejson": "2.5.19",
     "replace": "1.2.2",
     "rimraf": "3.0.2",
-    "suppress-exit-code": "1.0.0",
+    "suppress-exit-code": "3.2.0",
     "ts-jest": "29.1.1",
     "type-fest": "5.0.1",
-    "typescript": "5.9.2",
-    "yarn-deduplicate": "3.1.0"
+    "typescript": "5.9.2"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "pnpm@10.17.1"
 }

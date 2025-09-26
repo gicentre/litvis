@@ -14,7 +14,6 @@ coverage
 dist
 lerna-debug.log
 node_modules
-yarn-error.log
 
 # misc
 .DS_Store
@@ -24,3 +23,4 @@ yarn-error.log
 CNAME
 LICENSE
 packages/data-with-position/src/__fixtures__/fromYaml
+pnpm-lock.yaml

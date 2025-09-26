@@ -1,6 +1,6 @@
 import { parseBlockInfo } from "block-info";
 import { encode } from "html-entities";
-import MarkdownIt from "markdown-it";
+import type MarkdownIt from "markdown-it";
 
 const delimiters = [["^^^", "^^^"]];
 

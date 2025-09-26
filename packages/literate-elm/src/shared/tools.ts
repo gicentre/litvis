@@ -3,7 +3,7 @@ import executeRunElm from "@kachkaev/run-elm";
 import execa from "execa";
 import { readFile, writeFile } from "fs-extra";
 import { resolve } from "path";
-import { JsonObject } from "type-fest";
+import type { JsonObject } from "type-fest";
 
 export const initializeElmProject = async (projectDirectory: string) => {
   const childProcess = execa("elm", ["init"], {

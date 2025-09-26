@@ -1,4 +1,4 @@
-import MarkdownIt from "markdown-it";
+import type MarkdownIt from "markdown-it";
 
 import { useNarrativeSchemaLabel } from "./useNarrativeSchemaLabel";
 import { useTripleHatReference } from "./useTripleHatReference";

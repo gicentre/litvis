@@ -1,5 +1,5 @@
 import { encode } from "html-entities";
-import MarkdownIt from "markdown-it";
+import type MarkdownIt from "markdown-it";
 import { LabelFence } from "narrative-schema-label";
 
 const openTagLength = 2;
