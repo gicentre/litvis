@@ -12,7 +12,10 @@ export const extractElmDependencies = (
   versions: { [packageName: string]: string | false };
   positions: { [packageName: string]: Position };
 } => {
-  const result = {
+  const result: {
+    versions: { [packageName: string]: string | false };
+    positions: { [packageName: string]: Position };
+  } = {
     versions: {},
     positions: {},
   };

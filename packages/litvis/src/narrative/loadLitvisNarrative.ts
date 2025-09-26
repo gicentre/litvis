@@ -1,6 +1,7 @@
 import { stat, Stats } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
+// @ts-expect-error -- package without typings
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
 
@@ -20,17 +21,17 @@ export const loadLitvisNarrative = async (
   try {
     do {
       if (documents.length === maxChainLength) {
-        documents[documents.length - 1].fail(
+        documents[documents.length - 1]?.fail(
           `Too many documents to follow. Please reorganise your narrative by chaining maximum ${maxChainLength} documents.`,
-          documents[documents.length - 1].data.litvisFollowsPosition,
+          documents[documents.length - 1]?.data.litvisFollowsPosition,
           "litvis:cross-document",
         );
         break;
       }
-      const fileInMemory = _.find(
-        filesInMemory,
-        (f: LitvisDocument) => f.path === currentFilePath,
+      const fileInMemory = filesInMemory.find(
+        (f) => f.path === currentFilePath,
       );
+
       const rawDocument: VFile = fileInMemory
         ? vfile(fileInMemory)
         : await readVFile(currentFilePath, "utf8");
@@ -62,7 +63,7 @@ export const loadLitvisNarrative = async (
           );
         }
         if (currentFilePath === document.path) {
-          documents[documents.length - 1].fail(
+          documents[documents.length - 1]?.fail(
             `Litvis document cannot follow itself.`,
             document.data.litvisFollowsPosition,
             "litvis:cross-document",
@@ -75,22 +76,28 @@ export const loadLitvisNarrative = async (
         if (sameFileInChain) {
           const fileNames = _.reverse(_.map(documents, (f) => f.path));
           fileNames.push(currentFilePath);
-          documents[documents.length - 1].fail(
+          documents[documents.length - 1]?.fail(
             `Documents are not allowed to follow each other in a cycle ${fileNames.join(
               " → ",
             )} .`,
-            documents[documents.length - 1].data.litvisFollowsPosition,
+            documents[documents.length - 1]?.data.litvisFollowsPosition,
             "litvis:cross-document",
           );
         }
       }
     } while (currentFilePath);
-  } catch (e) {
+  } catch (error) {
     // FIXME: add a single vfile to the list of returned files
     // if the first file does not exist
-    if (!e.location /* not a VFileMessage */) {
+    if (
+      error &&
+      typeof error === "object" &&
+      !("location" in error) /* not a VFileMessage */
+    ) {
       try {
-        documents[documents.length - 1].fail(e.message);
+        documents[documents.length - 1]?.fail(
+          error instanceof Error ? error.message : String(error),
+        );
       } catch (e2) {
         // this try/catch is just needed to block throwing in .fail()
       }

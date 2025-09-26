@@ -1,23 +1,25 @@
 // inspired by https://github.com/zestedesavoir/zmarkdown/blob/master/packages/remark-kbd/src/index.js
 
+// @ts-expect-error -- package is missing typings
 import whitespace from "is-whitespace-character";
+import { Processor } from "unified";
+import { Node } from "unist";
 
 const singleHat = "^";
 const tripleHat = "^^^";
 
-const locator = (value, fromIndex) => {
+const locator = (value: string, fromIndex: number) => {
   const index = value.indexOf(tripleHat, fromIndex);
 
   return index;
 };
 
-// Usage of "this" requires suppressing func-style eslint rule
-
-// eslint-disable-next-line func-style
-export function findTripleHatReferences() {
+// eslint-disable-next-line func-style -- Usage of "this" requires suppressing func-style eslint rule
+export function findTripleHatReferences(this: Processor) {
   // eslint-disable-next-line func-style
-  function inlineTokenizer(eat, value, silent) {
+  function inlineTokenizer(eat: any, value: string, silent: boolean) {
     if (
+      // @ts-expect-error -- TODO: investigate
       !this.options.gfm ||
       value.charAt(0) !== singleHat ||
       value.charAt(1) !== singleHat ||
@@ -82,7 +84,7 @@ export function findTripleHatReferences() {
   // Stringify
   if (Compiler) {
     const visitors = Compiler.prototype.visitors;
-    visitors.tripleHatReference = function (node) {
+    visitors.tripleHatReference = function (node: Node) {
       return `${tripleHat}${this.all(node).join("")}${tripleHat}`;
     };
   }
