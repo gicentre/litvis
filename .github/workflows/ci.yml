@@ -46,9 +46,9 @@ jobs:
           - os: windows-latest
             node: 20
           - os: macos-latest
-            node: 24
+            node: 22
           - os: windows-latest
-            node: 24
+            node: 22
     steps:
       - name: Check out repository
         uses: actions/checkout@v5

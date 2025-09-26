@@ -16,7 +16,7 @@ Before getting started, please make sure you have the latest `node` and `pnpm` i
 
 ```sh
 node --version
-## ≥ 18.20
+## ≥ 22.20
 
 pnpm --version
 ## ≥ 10
