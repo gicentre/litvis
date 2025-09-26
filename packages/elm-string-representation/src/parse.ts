@@ -33,16 +33,12 @@ const recursivelyConvertApplicableObjectsToArrays = (obj: unknown) => {
   // apply the same function recursively for each key
   let childrenHaveChanged = false;
   const changedChildren: Record<string, unknown> = {};
-  for (const key in obj) {
+  for (const [key, value] of Object.entries(obj)) {
     // istanbul ignore next
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      const newChild = recursivelyConvertApplicableObjectsToArrays(
-        obj[key as keyof typeof obj],
-      );
-      if (newChild !== obj[key as keyof typeof obj]) {
-        childrenHaveChanged = true;
-        changedChildren[key] = newChild;
-      }
+    const newChild = recursivelyConvertApplicableObjectsToArrays(value);
+    if (newChild !== value) {
+      childrenHaveChanged = true;
+      changedChildren[key] = newChild;
     }
   }
 

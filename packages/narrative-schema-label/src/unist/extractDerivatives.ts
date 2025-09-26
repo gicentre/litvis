@@ -1,12 +1,13 @@
 import { parseBlockInfo } from "block-info";
 import _ from "lodash";
+import { Node } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 
 import { LabelNode } from "../types";
 import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";
 
-export const extractDerivatives = () => (ast, vFile: VFile) => {
+export const extractDerivatives = () => (ast: Node, vFile: VFile) => {
   const idPrefix = getLabelIdPrefix(vFile);
   let idIndex = 0;
 

@@ -1,4 +1,5 @@
 import { stat } from "fs-extra";
+import { Dependencies } from "literate-elm";
 import _ from "lodash";
 import { resolve } from "path";
 
@@ -8,7 +9,7 @@ export const extractElmEnvironmentSpec = async (
   narrative: LitvisNarrative,
 ): Promise<void> => {
   // resolve litvisElmDependencies and litvisElmSourceDirectories
-  const dependencies = {};
+  const dependencies: Dependencies = {};
   const sourceDirectories: string[] = [];
   const checkDirectoryPromises: Array<Promise<void>> = [];
   _.forEach(narrative.documents, (document) => {
@@ -40,7 +41,7 @@ export const extractElmEnvironmentSpec = async (
       (dir: string, index: number) => {
         const position =
           document.data.litvisElmSourceDirectoryPositions?.[index];
-        const resolvedDir = resolvedDirsInThisFile[index];
+        const resolvedDir = resolvedDirsInThisFile[index] as string;
         if (_.indexOf(resolvedDirsInThisFile, resolvedDir) < index) {
           document.info(
             `‘elm.source-directories[${index}]:’ directory ${dir} is already mentioned above.`,

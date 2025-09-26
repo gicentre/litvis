@@ -3,23 +3,31 @@ import LRU from "lru-cache";
 
 const cache = new LRU<string, HandlebarsTemplateDelegate<any> | Error>(1000);
 
-export const getCompiledHandlebarsTemplate = (htmlTemplate: string) => {
-  if (!cache.get(htmlTemplate)) {
+export const getCompiledHandlebarsTemplate = (
+  htmlTemplate: string,
+): HandlebarsTemplateDelegate<any> => {
+  const cachedTemplate = cache.get(htmlTemplate);
+
+  if (!cachedTemplate) {
     try {
       const compiledTemplate = compile(htmlTemplate);
       compiledTemplate({});
       cache.set(htmlTemplate, compiledTemplate);
+
+      return compiledTemplate;
     } catch (error) {
       cache.set(
         htmlTemplate,
         error instanceof Error ? error : new Error(String(error)),
       );
+
+      throw error;
     }
   }
 
-  if (cache.get(htmlTemplate) instanceof Error) {
-    throw cache.get(htmlTemplate);
+  if (cachedTemplate instanceof Error) {
+    throw cachedTemplate;
   } else {
-    return cache.get(htmlTemplate);
+    return cachedTemplate;
   }
 };

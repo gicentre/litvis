@@ -8,7 +8,7 @@ import { LabelType } from "./types";
 const fakeChildrenContent = "__FAKE_CHILDREN__";
 
 export const renderHtmlTemplate = (
-  htmlTemplate,
+  htmlTemplate: string,
   labelName: string,
   labelType: LabelType,
   labelAttributes: BlockAttributes,
