@@ -42,7 +42,7 @@ jobs:
         node: [20, 22, 24]
         exclude:
           - os: macos-latest
-            node: 22
+            node: 20
           - os: windows-latest
             node: 20
           - os: macos-latest

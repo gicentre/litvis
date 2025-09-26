@@ -26,5 +26,8 @@
     "lodash": "^4.17.21",
     "object-hash": "^2.2.0",
     "sleep-promise": "^9.1.0"
+  },
+  "devDependencies": {
+    "type-fest": "5.0.1"
   }
 }

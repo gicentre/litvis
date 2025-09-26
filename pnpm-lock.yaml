@@ -161,6 +161,10 @@ importers:
       sleep-promise:
         specifier: ^9.1.0
         version: 9.1.0
+    devDependencies:
+      type-fest:
+        specifier: 5.0.1
+        version: 5.0.1
 
   packages/litvis:
     dependencies:
@@ -272,6 +276,10 @@ importers:
       yamljs:
         specifier: ^0.3.0
         version: 0.3.0
+    devDependencies:
+      type-fest:
+        specifier: 5.0.1
+        version: 5.0.1
 
   packages/narrative-schema:
     dependencies:

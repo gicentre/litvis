@@ -31,5 +31,8 @@
     "unist-util-select": "^3.0.4",
     "vfile": "^4.2.1",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "type-fest": "5.0.1"
   }
 }

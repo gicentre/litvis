@@ -16,7 +16,6 @@ export const applySchemaToLabels = async (
   // extract label html
   const labelPlugin = doApplySchemaToLabels(narrative.composedNarrativeSchema);
   for (const file of narrative.documents) {
-    // @ts-expect-error -- TODO: investigate type mismatch
     const engine = unified().use(labelPlugin);
     await engine.run(file.data.root, file);
   }
