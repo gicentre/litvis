@@ -16,5 +16,6 @@
     // https://github.com/microsoft/TypeScript/issues/26238
     "noErrorTruncation": true
   },
+  "include": ["declarations/**/*.d.ts", "packages/**/*.ts"],
   "exclude": ["**/dist/**", "**/*.js"]
 }

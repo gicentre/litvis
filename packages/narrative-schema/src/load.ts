@@ -15,7 +15,6 @@ import { extractDefinitions as extractLabelDefinitions } from "narrative-schema-
 import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-rule";
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
 import { resolve } from "path";
-// @ts-expect-error -- package without typings
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
 

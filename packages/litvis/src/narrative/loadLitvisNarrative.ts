@@ -1,7 +1,6 @@
 import { stat, Stats } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
-// @ts-expect-error -- package without typings
 import { read as readVFile } from "to-vfile";
 import vfile, { VFile } from "vfile";
 
