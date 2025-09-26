@@ -17,7 +17,7 @@ export const extractDerivatives = () => (ast: Node, vFile: VFile) => {
     const labelType = labelNode.data.labelType;
     const labelAttributes = parsedInfo.attributes;
 
-    labelNode.data.labelName = labelName;
+    labelNode.data.labelName = labelName ?? "";
     labelNode.data.labelAttributes = labelAttributes;
 
     // id helps litvis-integration-mume match labels in uniast

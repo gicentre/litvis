@@ -3,7 +3,7 @@ import { BlockAttributes, parseBlockAttributes } from "block-attributes";
 import { BlockInfo } from "./types";
 
 export const parseBlockInfo = (raw = ""): BlockInfo => {
-  let language = "";
+  let language: string | undefined;
   let attributesAsString: string;
   let attributes: BlockAttributes;
   const trimmedParams = raw.trim();
@@ -12,7 +12,7 @@ export const parseBlockInfo = (raw = ""): BlockInfo => {
       ? (trimmedParams.match(/^([^\s{]*)\s*\{(.*?)\}/) ?? [])
       : (trimmedParams.match(/^([^\s]+)\s+(.+?)$/) ?? []);
 
-  if (match1 && match2) {
+  if (typeof match1 === "string" && typeof match2 === "string") {
     if (match1.length) {
       language = match1;
     }
