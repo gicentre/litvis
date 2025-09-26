@@ -1,5 +1,7 @@
 import { DataWithPosition, fromYaml } from "data-with-position";
-import { Node } from "unist";
+import { TomlNode, YamlNode } from "remark-frontmatter";
+import { Attacher } from "unified";
+import { Node, Parent } from "unist";
 
 import { LitvisDocument } from "../../types";
 import { extractElmDependencies } from "./extractElmDependencies";
@@ -8,8 +10,11 @@ import { extractFollows } from "./extractFollows";
 import { extractNarrativeSchemas } from "./extractNarrativeSchemas";
 import { lintElm } from "./lintElm";
 
-const visitFrontmatter = (mdAst, document: LitvisDocument) => {
-  const frontmatterNode: Node = mdAst.children[0];
+const visitFrontmatter = (mdAst: Node, document: LitvisDocument) => {
+  const frontmatterNode = (mdAst as Parent)?.children[0] as
+    | YamlNode
+    | TomlNode
+    | undefined;
   if (!frontmatterNode) {
     return;
   }
@@ -38,10 +43,10 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
     if (!frontmatterNode.data) {
       frontmatterNode.data = {};
     }
-    frontmatterNode.data.dataWithPosition = dataWithPosition;
-  } catch (e) {
+    frontmatterNode.data["dataWithPosition"] = dataWithPosition;
+  } catch (error) {
     document.message(
-      `Frontmatter is ignored because yaml could not be parsed: ${e.message}`,
+      `Frontmatter is ignored because yaml could not be parsed: ${error instanceof Error ? error.message : String(error)}`,
       frontmatterNode,
       "litvis:frontmatter-parse",
     );
@@ -53,8 +58,12 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
 
   const { value: litvisFollows, position: litvisFollowsPosition } =
     extractFollows(dataWithPosition, document);
-  document.data.litvisFollowsPath = litvisFollows;
-  document.data.litvisFollowsPosition = litvisFollowsPosition;
+  if (litvisFollows) {
+    document.data.litvisFollowsPath = litvisFollows;
+  }
+  if (litvisFollowsPosition) {
+    document.data.litvisFollowsPosition = litvisFollowsPosition;
+  }
 
   const { versions: elmDependencyVersions, positions: elmDependencyPositions } =
     extractElmDependencies(dataWithPosition, document);
@@ -74,10 +83,11 @@ const visitFrontmatter = (mdAst, document: LitvisDocument) => {
     narrativeSchemasWithPosition;
 };
 
-export const processFrontmatter = () => {
+// @ts-expect-error -- TODO: investigate type mismatch
+export const processFrontmatter: Attacher = () => {
   return function transformer(ast, vFile, next) {
     // try {
-    visitFrontmatter(ast, vFile);
+    visitFrontmatter(ast as Parent, vFile as LitvisDocument);
     // } catch (e) {
     //   console.log(e.stack);
     //   throw e;

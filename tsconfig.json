@@ -1,17 +1,20 @@
 {
+  "extends": [
+    "@tsconfig/recommended",
+    "@tsconfig/strictest",
+    "@tsconfig/node22"
+  ],
   "compilerOptions": {
     "declaration": true,
-    "esModuleInterop": true,
-    "lib": ["es2017", "dom"],
-    "module": "commonjs",
-    "noImplicitAny": false,
-    "noUnusedLocals": true,
-    "isolatedModules": true,
-    "preserveWatchOutput": true,
     "sourceMap": true,
-    "strictNullChecks": true,
-    "target": "es6",
-    "noEmit": true
+    "noEmit": true,
+
+    // Options handled by ESLint
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    // https://github.com/microsoft/TypeScript/issues/26238
+    "noErrorTruncation": true
   },
-  "exclude": ["**/dist/**"]
+  "exclude": ["**/dist/**", "**/*.js"]
 }

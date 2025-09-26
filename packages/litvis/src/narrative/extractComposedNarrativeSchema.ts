@@ -24,8 +24,8 @@ export const extractComposedNarrativeSchema = async (
   });
 
   narrative.composedNarrativeSchema = await loadAndCompose<LitvisDocument>(
-    narrative.documents[0].data.litvisNarrativeSchemasWithPosition,
-    narrative.documents[0],
+    narrative.documents[0]!.data.litvisNarrativeSchemasWithPosition,
+    narrative.documents[0]!,
     filesInMemory,
   );
 };

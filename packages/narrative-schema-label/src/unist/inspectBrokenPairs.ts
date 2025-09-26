@@ -1,10 +1,11 @@
+import { Node } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 
 import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
-export const inspectBrokenPairs = () => (ast, vFile: VFile) => {
+export const inspectBrokenPairs = () => (ast: Node, vFile: VFile) => {
   return visit<LabelNode>(
     ast,
     "narrativeSchemaLabel",

@@ -1,10 +1,13 @@
 import { parseBlockInfo } from "block-info";
+import { Attacher } from "unified";
+import { Node } from "unist";
 import visit from "unist-util-visit";
+import { VFile } from "vfile";
 
 import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";
-import { CodeBlock, LitvisDocument } from "../types";
+import { CodeBlock } from "../types";
 
-const visitCodeBlock = (ast, vFile) => {
+const visitCodeBlock = (ast: Node, vFile: VFile) => {
   return visit<CodeBlock>(ast, "code", (codeBlockNode) => {
     if (!codeBlockNode.data) {
       codeBlockNode.data = {};
@@ -35,7 +38,7 @@ const visitCodeBlock = (ast, vFile) => {
   });
 };
 
-const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
+const visitTripleHatReference = (ast: Node, vFile: VFile) => {
   return visit<CodeBlock>(
     ast,
     "tripleHatReference",
@@ -68,7 +71,8 @@ const visitTripleHatReference = (ast, vFile: LitvisDocument) => {
   );
 };
 
-export const extractAttributeDerivatives = () => {
+// @ts-expect-error -- TODO: investigate type mismatch
+export const extractAttributeDerivatives: Attacher = () => {
   return function transformer(ast, vFile, next) {
     visitCodeBlock(ast, vFile);
     visitTripleHatReference(ast, vFile);

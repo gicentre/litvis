@@ -4,12 +4,13 @@ import { LitvisEnhancerCache } from "../types";
 import { enhanceWithLitvisLiterateElm } from "./enhanceWithLitvisLiterateElm";
 import { enhanceWithLitvisNarrativeSchemas } from "./enhanceWithLitvisNarrativeSchemas";
 import { enhanceWithLitvisVegaBlockKeywords } from "./enhanceWithLitvisVegaBlockKeywords";
+import { ParseMd } from "./helpers";
 
 export const enhanceWithLitvis = async (
   processedNarrative: LitvisNarrative,
   $: CheerioStatic,
   cache: LitvisEnhancerCache,
-  parseMd: any,
+  parseMd: ParseMd,
 ): Promise<void> => {
   await enhanceWithLitvisNarrativeSchemas($, processedNarrative, cache);
   await enhanceWithLitvisLiterateElm($, processedNarrative, cache, parseMd);

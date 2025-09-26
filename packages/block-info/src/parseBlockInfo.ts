@@ -3,20 +3,20 @@ import { BlockAttributes, parseBlockAttributes } from "block-attributes";
 import { BlockInfo } from "./types";
 
 export const parseBlockInfo = (raw = ""): BlockInfo => {
-  let language;
+  let language: string | undefined;
   let attributesAsString: string;
   let attributes: BlockAttributes;
   const trimmedParams = raw.trim();
-  const match =
+  const [, match1, match2] =
     trimmedParams.indexOf("{") !== -1
-      ? trimmedParams.match(/^([^\s{]*)\s*\{(.*?)\}/)
-      : trimmedParams.match(/^([^\s]+)\s+(.+?)$/);
+      ? (trimmedParams.match(/^([^\s{]*)\s*\{(.*?)\}/) ?? [])
+      : (trimmedParams.match(/^([^\s]+)\s+(.+?)$/) ?? []);
 
-  if (match) {
-    if (match[1].length) {
-      language = match[1];
+  if (typeof match1 === "string" && typeof match2 === "string") {
+    if (match1.length) {
+      language = match1;
     }
-    attributesAsString = match[2];
+    attributesAsString = match2;
   } else {
     language = trimmedParams;
     attributesAsString = "";

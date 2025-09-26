@@ -1,4 +1,4 @@
-import { getPosition, getValue } from "data-with-position";
+import { DataWithPosition, getPosition, getValue } from "data-with-position";
 import kindOf from "kind-of";
 import _ from "lodash";
 
@@ -6,7 +6,10 @@ import { LitvisDocument } from "../../types";
 
 const supportedProperties = ["dependencies", "source-directories"];
 
-export const lintElm = (dataWithPosition, document: LitvisDocument): void => {
+export const lintElm = (
+  dataWithPosition: DataWithPosition,
+  document: LitvisDocument,
+): void => {
   if (!_.isUndefined(dataWithPosition.elm)) {
     const elm = getValue(dataWithPosition.elm);
     if (_.isNull(elm)) {

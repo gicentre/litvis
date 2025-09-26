@@ -7,13 +7,13 @@ export const extractArrayOfEntities = (
   narrativeSchema: NarrativeSchema,
   dataWithPosition: DataWithPosition,
   dataKeyForEntityArray: string,
-  entityName,
+  entityName: "label" | "rule" | "styling",
   extractData: (
-    narrativeSchema,
+    narrativeSchema: NarrativeSchema,
     entityDataWithPosition: DataWithPosition,
     entityDataPath: Array<string | number>,
   ) => any | null,
-  shapeOfExpectedData,
+  shapeOfExpectedData: Record<string, unknown>,
 ): EntityDefinition[] => {
   const listOfEntitiesWithPosition = dataWithPosition[dataKeyForEntityArray];
   const kindOfListOfEntities = getKind(listOfEntitiesWithPosition);

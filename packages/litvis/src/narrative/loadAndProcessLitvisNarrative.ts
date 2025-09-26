@@ -8,7 +8,7 @@ import { loadLitvisNarrative } from "./loadLitvisNarrative";
 import { processElmContexts } from "./processElmContexts";
 
 export const loadAndProcessLitvisNarrative = async (
-  filePath,
+  filePath: string,
   filesInMemory: VFile[] = [],
   cache: Cache,
 ): Promise<LitvisNarrative> => {

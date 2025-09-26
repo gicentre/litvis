@@ -4,7 +4,7 @@ import _ from "lodash";
 import { LitvisDocument } from "../../types";
 
 export const extractNarrativeSchemas = (
-  dataWithPosition,
+  dataWithPosition: DataWithPosition,
   document: LitvisDocument,
 ): {
   pathsWithPosition?: DataWithPosition;

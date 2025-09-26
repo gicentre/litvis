@@ -6,7 +6,7 @@ import { selectAll } from "unist-util-select";
 
 import { LitvisEnhancerCache } from "../types";
 
-const markLabelAsErroneous = ($el: Cheerio, message) => {
+const markLabelAsErroneous = ($el: Cheerio, message: string) => {
   $el.children().attr("style", "background: #fdd");
   $el.attr("title", message);
 };
@@ -46,7 +46,7 @@ export const enhanceWithLitvisNarrativeSchemas = async (
   );
 
   const labelIdPrefix = getLabelIdPrefix(
-    processedNarrative.documents[processedNarrative.documents.length - 1],
+    processedNarrative.documents[processedNarrative.documents.length - 1]!,
   );
   let labelIdIndex = 0;
 

@@ -1,4 +1,5 @@
 import { EntityDefinition } from "narrative-schema-common";
+import { Node } from "unist";
 import visit from "unist-util-visit";
 import { VFile } from "vfile";
 
@@ -7,7 +8,7 @@ import { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export const visitAndExtractHtml = (
-  ast,
+  ast: Node,
   vFile: VFile,
   labelDefinitionsByName: { [name: string]: EntityDefinition },
 ) => {
