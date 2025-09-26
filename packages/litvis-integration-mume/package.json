@@ -33,6 +33,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@types/lodash": "4.17.20",
+    "@types/markdown-it": "14.1.2",
     "type-fest": "5.0.1"
   }
 }

@@ -19,5 +19,11 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "yaml-ast-parser": "^0.0.43"
+  },
+  "devDependencies": {
+    "@types/kind-of": "6.0.0",
+    "@types/lodash": "4.17.20",
+    "kind-of": "6.0.3",
+    "lodash": "4.17.21"
   }
 }

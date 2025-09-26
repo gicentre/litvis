@@ -28,6 +28,7 @@
     "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
+    "@types/lodash": "4.17.20",
     "type-fest": "5.0.1"
   }
 }

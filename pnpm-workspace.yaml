@@ -1,2 +1,9 @@
+nodeLinker: isolated
+
+onlyBuiltDependencies:
+  - "@parcel/watcher"
+  - elm-format ## downloads binary
+  - nx
+
 packages:
   - packages/*

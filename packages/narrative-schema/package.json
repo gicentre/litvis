@@ -21,5 +21,8 @@
     "pseudo-yaml-ast": "^1.0.10",
     "to-vfile": "^6.1.0",
     "vfile": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "4.17.20"
   }
 }
