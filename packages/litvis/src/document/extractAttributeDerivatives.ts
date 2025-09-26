@@ -1,10 +1,12 @@
 import { parseBlockInfo } from "block-info";
+import { Node } from "unist";
 import visit from "unist-util-visit";
+import { VFile } from "vfile";
 
 import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";
 import { CodeBlock, LitvisDocument } from "../types";
 
-const visitCodeBlock = (ast, vFile) => {
+const visitCodeBlock = (ast: Node, vFile: VFile) => {
   return visit<CodeBlock>(ast, "code", (codeBlockNode) => {
     if (!codeBlockNode.data) {
       codeBlockNode.data = {};
