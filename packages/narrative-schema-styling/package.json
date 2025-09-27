@@ -21,5 +21,8 @@
     "narrative-schema-common": "^0.3.0",
     "unist-util-visit": "^2.0.3",
     "vfile": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/cheerio": "0.22.21"
   }
 }

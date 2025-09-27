@@ -23,6 +23,7 @@
   "devDependencies": {
     "@types/kind-of": "6.0.3",
     "@types/lodash": "4.17.20",
+    "globby": "14.1.0",
     "kind-of": "6.0.3",
     "lodash": "4.17.21"
   }

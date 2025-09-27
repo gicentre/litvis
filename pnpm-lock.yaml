@@ -29,9 +29,6 @@ importers:
       eslint:
         specifier: 8.57.1
         version: 8.57.1
-      globby:
-        specifier: 14.1.0
-        version: 14.1.0
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -103,6 +100,9 @@ importers:
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
+      globby:
+        specifier: 14.1.0
+        version: 14.1.0
       kind-of:
         specifier: 6.0.3
         version: 6.0.3
@@ -115,6 +115,10 @@ importers:
       lru-cache:
         specifier: ^6.0.0
         version: 6.0.0
+    devDependencies:
+      '@types/lru-cache':
+        specifier: 5.1.1
+        version: 5.1.1
 
   packages/literate-elm:
     dependencies:
@@ -298,6 +302,9 @@ importers:
       '@types/object-hash':
         specifier: 2.2.1
         version: 2.2.1
+      '@types/unist':
+        specifier: 2.0.6
+        version: 2.0.6
       '@types/yamljs':
         specifier: 0.2.34
         version: 0.2.34
@@ -400,6 +407,9 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1
     devDependencies:
+      '@types/cheerio':
+        specifier: 0.22.21
+        version: 0.22.21
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
@@ -449,6 +459,9 @@ importers:
         specifier: ^4.2.1
         version: 4.2.1
     devDependencies:
+      '@types/cheerio':
+        specifier: 0.22.21
+        version: 0.22.21
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
@@ -485,6 +498,10 @@ importers:
       vfile:
         specifier: ^4.2.1
         version: 4.2.1
+    devDependencies:
+      '@types/cheerio':
+        specifier: 0.22.21
+        version: 0.22.21
 
 packages:
 
