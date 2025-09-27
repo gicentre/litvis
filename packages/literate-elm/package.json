@@ -28,7 +28,9 @@
     "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "9.0.13",
     "@types/lodash": "4.17.20",
+    "@types/object-hash": "2.2.1",
     "type-fest": "5.0.1"
   }
 }

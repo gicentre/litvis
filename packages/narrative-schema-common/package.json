@@ -16,6 +16,6 @@
     "vfile": "^4.2.1"
   },
   "devDependencies": {
-    "@types/kind-of": "6.0.0"
+    "@types/kind-of": "6.0.3"
   }
 }
