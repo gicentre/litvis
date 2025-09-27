@@ -32,7 +32,9 @@
     "vfile": "^4.2.1"
   },
   "devDependencies": {
-    "@types/kind-of": "6.0.0",
-    "@types/lodash": "4.17.20"
+    "@types/fs-extra": "9.0.13",
+    "@types/kind-of": "6.0.3",
+    "@types/lodash": "4.17.20",
+    "@types/unist": "2.0.6"
   }
 }

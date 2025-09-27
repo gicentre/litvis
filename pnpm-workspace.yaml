@@ -4,6 +4,7 @@ onlyBuiltDependencies:
   - "@parcel/watcher"
   - elm-format ## downloads binary
   - nx
+  - unrs-resolver ## jest
 
 packages:
   - packages/*

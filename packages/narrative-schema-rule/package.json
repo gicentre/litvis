@@ -24,6 +24,7 @@
     "vfile": "^4.2.1"
   },
   "devDependencies": {
+    "@types/cheerio": "0.22.21",
     "@types/lodash": "4.17.20"
   }
 }

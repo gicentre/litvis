@@ -12,5 +12,8 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "lodash.snakecase": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/lodash.snakecase": "4.1.9"
   }
 }

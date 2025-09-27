@@ -21,8 +21,9 @@
     "yaml-ast-parser": "^0.0.43"
   },
   "devDependencies": {
-    "@types/kind-of": "6.0.0",
+    "@types/kind-of": "6.0.3",
     "@types/lodash": "4.17.20",
+    "globby": "11.1.0",
     "kind-of": "6.0.3",
     "lodash": "4.17.21"
   }
