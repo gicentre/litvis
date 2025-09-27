@@ -1,5 +1,5 @@
 import fs from "fs";
-import { globbySync } from "globby";
+import globby from "globby";
 import kindOf from "kind-of";
 import _ from "lodash";
 import path from "path";
@@ -10,7 +10,7 @@ import { getKind } from "./getKind";
 import { getPosition } from "./getPosition";
 import { getValue } from "./getValue";
 
-const yamlPaths = globbySync(`__fixtures__/fromYaml/*.yaml`, {
+const yamlPaths = globby.sync(`__fixtures__/fromYaml/*.yaml`, {
   cwd: __dirname,
   absolute: true,
 });
