@@ -28,6 +28,7 @@
   "devDependencies": {
     "@types/lodash": "4.17.20",
     "@types/lru-cache": "5.1.1",
-    "@types/object-hash": "2.2.1"
+    "@types/object-hash": "2.2.1",
+    "@types/unist": "2.0.6"
   }
 }

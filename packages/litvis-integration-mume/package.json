@@ -37,6 +37,7 @@
     "@types/lru-cache": "5.1.1",
     "@types/markdown-it": "14.1.2",
     "@types/object-hash": "2.2.1",
+    "@types/yamljs": "0.2.34",
     "type-fest": "5.0.1"
   }
 }

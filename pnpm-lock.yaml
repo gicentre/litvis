@@ -26,12 +26,6 @@ importers:
       '@types/node':
         specifier: 24.5.2
         version: 24.5.2
-      '@types/unist':
-        specifier: 3.0.3
-        version: 3.0.3
-      '@types/yamljs':
-        specifier: 0.2.34
-        version: 0.2.34
       eslint:
         specifier: 8.57.1
         version: 8.57.1
@@ -158,6 +152,9 @@ importers:
       '@types/object-hash':
         specifier: 2.2.1
         version: 2.2.1
+      '@types/unist':
+        specifier: 2.0.6
+        version: 2.0.6
       type-fest:
         specifier: 5.0.1
         version: 5.0.1
@@ -231,6 +228,9 @@ importers:
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
+      '@types/unist':
+        specifier: 2.0.6
+        version: 2.0.6
 
   packages/litvis-integration-mume:
     dependencies:
@@ -295,6 +295,9 @@ importers:
       '@types/object-hash':
         specifier: 2.2.1
         version: 2.2.1
+      '@types/yamljs':
+        specifier: 0.2.34
+        version: 0.2.34
       type-fest:
         specifier: 5.0.1
         version: 5.0.1
@@ -403,6 +406,9 @@ importers:
       '@types/object-hash':
         specifier: 2.2.1
         version: 2.2.1
+      '@types/unist':
+        specifier: 2.0.6
+        version: 2.0.6
 
   packages/narrative-schema-rule:
     dependencies:
@@ -1375,9 +1381,6 @@ packages:
 
   '@types/unist@2.0.6':
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
-
-  '@types/unist@3.0.3':
-    resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
   '@types/yamljs@0.2.34':
     resolution: {integrity: sha512-gJvfRlv9ErxdOv7ux7UsJVePtX54NAvQyd8ncoiFqK8G5aeHIfQfGH2fbruvjAQ9657HwAaO54waS+Dsk2QTUQ==}
@@ -6462,8 +6465,6 @@ snapshots:
   '@types/stack-utils@2.0.3': {}
 
   '@types/unist@2.0.6': {}
-
-  '@types/unist@3.0.3': {}
 
   '@types/yamljs@0.2.34': {}
 
