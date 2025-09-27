@@ -18,7 +18,6 @@ _.forEach(yamlPaths, (yamlPath) => {
   const fixtureName = path.basename(yamlPath, ".yaml");
   describe(`fromYaml() for fixture ${fixtureName}`, () => {
     const configPath = yamlPath.replace(/\.yaml$/, ".config");
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const config = require(configPath).config as FromYamlTestCaseConfig;
 
     const dataWithPosition = fromYaml(fs.readFileSync(yamlPath, "utf-8"));
