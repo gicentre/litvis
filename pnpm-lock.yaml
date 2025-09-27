@@ -283,6 +283,9 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0
     devDependencies:
+      '@types/cheerio':
+        specifier: 0.22.21
+        version: 0.22.21
       '@types/lodash':
         specifier: 4.17.20
         version: 4.17.20
@@ -1306,6 +1309,9 @@ packages:
 
   '@types/babel__traverse@7.28.0':
     resolution: {integrity: sha512-8PvcXf70gTDZBgt9ptxJ8elBeBjcLOAcOtoO/mPJjtji1+CdGbHgm77om1GrsPxsiE+uXIpNSK64UYaIwQXd4Q==}
+
+  '@types/cheerio@0.22.21':
+    resolution: {integrity: sha512-aGI3DfswwqgKPiEOTaiHV2ZPC9KEhprpgEbJnv0fZl3SGX0cGgEva1126dGrMC6AJM6v/aihlUgJn9M5DbDZ/Q==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
@@ -6395,6 +6401,10 @@ snapshots:
   '@types/babel__traverse@7.28.0':
     dependencies:
       '@babel/types': 7.28.4
+
+  '@types/cheerio@0.22.21':
+    dependencies:
+      '@types/node': 24.5.2
 
   '@types/debug@4.1.12':
     dependencies:
