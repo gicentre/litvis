@@ -1,10 +1,10 @@
 import { parseBlockInfo } from "block-info";
 import _ from "lodash";
-import { Node } from "unist";
+import type { Node } from "unist";
 import visit from "unist-util-visit";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LabelNode } from "../types";
+import type { LabelNode } from "../types";
 import { getLabelIdPrefix, markLabelNodeAsErroneous } from "../utils";
 
 export const extractDerivatives = () => (ast: Node, vFile: VFile) => {

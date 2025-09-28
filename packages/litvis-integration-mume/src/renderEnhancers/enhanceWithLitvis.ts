@@ -1,10 +1,10 @@
-import { LitvisNarrative } from "litvis";
+import type { LitvisNarrative } from "litvis";
 
-import { LitvisEnhancerCache } from "../types";
+import type { LitvisEnhancerCache } from "../types";
 import { enhanceWithLitvisLiterateElm } from "./enhanceWithLitvisLiterateElm";
 import { enhanceWithLitvisNarrativeSchemas } from "./enhanceWithLitvisNarrativeSchemas";
 import { enhanceWithLitvisVegaBlockKeywords } from "./enhanceWithLitvisVegaBlockKeywords";
-import { ParseMd } from "./helpers";
+import type { ParseMd } from "./helpers";
 
 export const enhanceWithLitvis = async (
   processedNarrative: LitvisNarrative,

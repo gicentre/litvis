@@ -1,4 +1,4 @@
-import { BlockAttributes } from "./types";
+import type { BlockAttributes } from "./types";
 
 type NodeType = "stringInQuotes" | "stringWithBrackets" | "word" | "array";
 type Node = [any, number, NodeType];

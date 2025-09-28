@@ -1,4 +1,4 @@
-import { DataWithPosition } from "./types";
+import type { DataWithPosition } from "./types";
 
 export const getValue = (dataWithPosition: DataWithPosition): any => {
   if (typeof dataWithPosition === "undefined") {

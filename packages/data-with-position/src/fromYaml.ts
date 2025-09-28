@@ -1,15 +1,14 @@
-import {
-  Kind,
-  load,
+import type {
   YamlMap,
   YAMLMapping,
   YAMLNode,
   YAMLScalar,
   YAMLSequence,
 } from "yaml-ast-parser";
+import { Kind, load } from "yaml-ast-parser";
 
 import { kindKey, positionKey } from "./keys";
-import { DataKind, DataWithPosition, Position } from "./types";
+import type { DataKind, DataWithPosition, Position } from "./types";
 
 // The following code is inspired by
 // https://github.com/yldio/pseudo-yaml-ast

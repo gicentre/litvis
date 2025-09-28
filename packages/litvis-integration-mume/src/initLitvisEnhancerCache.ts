@@ -2,7 +2,7 @@ import { initCache } from "litvis";
 import LRU from "lru-cache";
 import path from "path";
 
-import { LitvisEnhancerCache } from "./types";
+import type { LitvisEnhancerCache } from "./types";
 
 export const initLitvisEnhancerCache = async ({
   mumeWorkingDirectory,

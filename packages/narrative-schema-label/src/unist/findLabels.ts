@@ -16,9 +16,9 @@ const locator = (value: string, fromIndex: number) => {
 
 // Usage of "this" requires suppressing func-style eslint rule
 
-// eslint-disable-next-line func-style
+// eslint-disable-next-line func-style -- needed for usage of "this"
 export function findLabels() {
-  // eslint-disable-next-line func-style
+  // eslint-disable-next-line func-style -- needed for usage of "this"
   function inlineTokenizer(eat: any, value: string, silent: boolean) {
     if (
       !value.startsWith(LabelFence.START) &&

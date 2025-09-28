@@ -1,4 +1,4 @@
-import { BlockAttributes } from "block-attributes";
+import type { BlockAttributes } from "block-attributes";
 
 export interface BlockInfo {
   attributes: BlockAttributes;

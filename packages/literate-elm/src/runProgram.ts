@@ -6,7 +6,7 @@ import { resolve } from "path";
 
 import * as auxFiles from "./shared/auxFiles";
 import { runElm } from "./shared/tools";
-import {
+import type {
   CodeNode,
   EvaluatedExpression,
   ExpressionNode,

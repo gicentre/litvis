@@ -1,5 +1,5 @@
 import { getPosition } from "data-with-position";
-import { EntityDefinitionWithOrigin } from "narrative-schema-common";
+import type { EntityDefinitionWithOrigin } from "narrative-schema-common";
 
 export const resolveAliasesAndKeyByName = (
   labelDefinitions: EntityDefinitionWithOrigin[],
@@ -7,7 +7,7 @@ export const resolveAliasesAndKeyByName = (
   const result: { [name: string]: EntityDefinitionWithOrigin } = {};
 
   let remainingDefinitions = labelDefinitions;
-  // eslint-disable-next-line no-constant-condition
+  // eslint-disable-next-line no-constant-condition -- TODO: consider refactoring or changing this comment
   while (true) {
     const newRemainingDefinitions: EntityDefinitionWithOrigin[] = [];
 

@@ -1,15 +1,10 @@
-import {
-  CodeNode,
-  ensureEnvironment,
-  ExpressionNode,
-  ProgramResult,
-  runProgram,
-} from "literate-elm";
+import type { CodeNode, ExpressionNode, ProgramResult } from "literate-elm";
+import { ensureEnvironment, runProgram } from "literate-elm";
 import _ from "lodash";
-import { Position } from "unist";
+import type { Position } from "unist";
 import visit from "unist-util-visit";
 
-import {
+import type {
   Cache,
   CodeBlock,
   EvaluatedOutputExpression,

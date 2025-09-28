@@ -1,8 +1,8 @@
-import { Node, Parent } from "unist";
+import type { Node, Parent } from "unist";
 import visit from "unist-util-visit-parents";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LabelNode } from "../types";
+import type { LabelNode } from "../types";
 
 export const extractPlacement = () => (ast: Node, vFile: VFile) => {
   return visit<LabelNode>(

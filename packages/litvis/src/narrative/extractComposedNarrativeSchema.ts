@@ -1,9 +1,9 @@
 import { getPosition } from "data-with-position";
 import _ from "lodash";
 import { loadAndCompose } from "narrative-schema";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LitvisDocument, LitvisNarrative } from "../types";
+import type { LitvisDocument, LitvisNarrative } from "../types";
 
 export const extractComposedNarrativeSchema = async (
   narrative: LitvisNarrative,

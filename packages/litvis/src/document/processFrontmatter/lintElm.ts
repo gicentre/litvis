@@ -1,8 +1,9 @@
-import { DataWithPosition, getPosition, getValue } from "data-with-position";
+import type { DataWithPosition } from "data-with-position";
+import { getPosition, getValue } from "data-with-position";
 import kindOf from "kind-of";
 import _ from "lodash";
 
-import { LitvisDocument } from "../../types";
+import type { LitvisDocument } from "../../types";
 
 const supportedProperties = ["dependencies", "source-directories"];
 

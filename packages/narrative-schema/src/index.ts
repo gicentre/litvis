@@ -1,7 +1,6 @@
+export { loadAndCompose } from "./loadAndCompose";
 export type {
+  ComposedNarrativeSchema,
   NarrativeSchema,
   NarrativeSchemaData,
-  ComposedNarrativeSchema,
 } from "narrative-schema-common";
-
-export { loadAndCompose } from "./loadAndCompose";

@@ -1,5 +1,5 @@
-import { DataWithPosition } from "data-with-position";
-import { VFile } from "vfile";
+import type { DataWithPosition } from "data-with-position";
+import type { VFile } from "vfile";
 
 export interface EntityDefinition {
   data: any;

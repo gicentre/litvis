@@ -1,8 +1,9 @@
-import { DataWithPosition, getKind, getPosition } from "data-with-position";
+import type { DataWithPosition } from "data-with-position";
+import { getKind, getPosition } from "data-with-position";
 import kindOf from "kind-of";
 
 import { stringifyDataPath } from "./stringifyDataPath";
-import { NarrativeSchema } from "./types";
+import type { NarrativeSchema } from "./types";
 
 export const reportUnusedDataKeys = (
   narrativeSchema: NarrativeSchema,

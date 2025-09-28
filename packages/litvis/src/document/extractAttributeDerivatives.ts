@@ -1,11 +1,11 @@
 import { parseBlockInfo } from "block-info";
-import { Attacher } from "unified";
-import { Node } from "unist";
+import type { Attacher } from "unified";
+import type { Node } from "unist";
 import visit from "unist-util-visit";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
 import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";
-import { CodeBlock } from "../types";
+import type { CodeBlock } from "../types";
 
 const visitCodeBlock = (ast: Node, vFile: VFile) => {
   return visit<CodeBlock>(ast, "code", (codeBlockNode) => {

@@ -1,9 +1,9 @@
-import {
+import type {
   ComposedNarrativeSchema,
-  composeEntityDefinitions,
   EntityDefinitionWithOrigin,
   NarrativeSchema,
 } from "narrative-schema-common";
+import { composeEntityDefinitions } from "narrative-schema-common";
 import { resolveAliasesAndKeyByName } from "narrative-schema-label";
 
 export const compose = async (

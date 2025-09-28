@@ -1,4 +1,4 @@
-import { BlockAttributes } from "./types";
+import type { BlockAttributes } from "./types";
 
 const stringifyArray = (value: any[]) => {
   const parts = ["["];

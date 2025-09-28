@@ -1,11 +1,13 @@
-import { stat, Stats } from "fs-extra";
+import type { Stats } from "fs-extra";
+import { stat } from "fs-extra";
 import _ from "lodash";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import vfile, { VFile } from "vfile";
+import type { VFile } from "vfile";
+import vfile from "vfile";
 
 import { parseDocument } from "../document/parseDocument";
-import { Cache, LitvisDocument, LitvisNarrative } from "../types";
+import type { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
 const maxChainLength = 20;
 

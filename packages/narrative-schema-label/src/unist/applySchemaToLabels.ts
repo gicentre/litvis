@@ -1,6 +1,6 @@
-import { ComposedNarrativeSchema } from "narrative-schema-common";
-import { Node } from "unist";
-import { VFile } from "vfile";
+import type { ComposedNarrativeSchema } from "narrative-schema-common";
+import type { Node } from "unist";
+import type { VFile } from "vfile";
 
 import { visitAndExtractHtml } from "./visitAndExtractHtml";
 

@@ -1,8 +1,8 @@
-import { DataWithPosition } from "data-with-position";
-import { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
-import { ComposedNarrativeSchema } from "narrative-schema";
-import { Node, Parent, Position } from "unist";
-import { VFile } from "vfile";
+import type { DataWithPosition } from "data-with-position";
+import type { EnvironmentSpec, ProgramResultStatus } from "literate-elm";
+import type { ComposedNarrativeSchema } from "narrative-schema";
+import type { Node, Parent, Position } from "unist";
+import type { VFile } from "vfile";
 
 export type ProcessedLitvisContextStatus = ProgramResultStatus;
 

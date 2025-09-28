@@ -1,10 +1,11 @@
-import { LitvisNarrative } from "litvis";
+import type { LitvisNarrative } from "litvis";
 import _ from "lodash";
-import { getLabelIdPrefix, LabelNode } from "narrative-schema-label";
+import type { LabelNode } from "narrative-schema-label";
+import { getLabelIdPrefix } from "narrative-schema-label";
 import { getCssChunks } from "narrative-schema-styling";
 import { selectAll } from "unist-util-select";
 
-import { LitvisEnhancerCache } from "../types";
+import type { LitvisEnhancerCache } from "../types";
 
 const markLabelAsErroneous = ($el: Cheerio, message: string) => {
   $el.children().attr("style", "background: #fdd");

@@ -1,6 +1,6 @@
-import { BlockAttributes } from "block-attributes";
+import type { BlockAttributes } from "block-attributes";
 
-import {
+import type {
   AttributeDerivatives,
   BlockOutputFormat,
   OutputFormat,

@@ -1,2 +1,2 @@
-export * from "./processUnist";
 export * from "./applySchemaToLabels";
+export * from "./processUnist";

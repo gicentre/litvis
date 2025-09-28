@@ -1,9 +1,10 @@
-import { DataWithPosition, fromYaml } from "data-with-position";
-import { TomlNode, YamlNode } from "remark-frontmatter";
-import { Attacher } from "unified";
-import { Node, Parent } from "unist";
+import type { DataWithPosition } from "data-with-position";
+import { fromYaml } from "data-with-position";
+import type { TomlNode, YamlNode } from "remark-frontmatter";
+import type { Attacher } from "unified";
+import type { Node, Parent } from "unist";
 
-import { LitvisDocument } from "../../types";
+import type { LitvisDocument } from "../../types";
 import { extractElmDependencies } from "./extractElmDependencies";
 import { extractElmSourceDirectories } from "./extractElmSourceDirectories";
 import { extractFollows } from "./extractFollows";

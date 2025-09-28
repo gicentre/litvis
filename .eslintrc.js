@@ -8,15 +8,12 @@ module.exports = {
     "import/no-unresolved": ["error", { ignore: ["^unist$"] }],
 
     // TODO: Triage (new rules were disabled after updating the collection of ESLint rules)
-    "@eslint-community/eslint-comments/require-description": "off",
-    "@typescript-eslint/consistent-type-imports": "off",
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/no-var-requires": "off",
     "id-length": "off",
     "jest/expect-expect": "off",
     "jest/prefer-to-be": "off",
     "no-param-reassign": "off",
-    "simple-import-sort/exports": "off",
     "unicorn/better-regex": "off",
     "unicorn/catch-error-name": "off",
     "unicorn/consistent-function-scoping": "off",

@@ -1,4 +1,4 @@
-import { Position } from "../types";
+import type { Position } from "../types";
 
 export interface FromYamlTestCaseConfig {
   nodesToCheck: Array<{
