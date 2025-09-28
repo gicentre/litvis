@@ -1,3 +1,4 @@
+import type { CheerioAPI } from "cheerio";
 import type { LitvisNarrative } from "litvis";
 
 import type { LitvisEnhancerCache } from "../types";
@@ -8,7 +9,7 @@ import type { ParseMd } from "./helpers";
 
 export const enhanceWithLitvis = async (
   processedNarrative: LitvisNarrative,
-  $: CheerioStatic,
+  $: CheerioAPI,
   cache: LitvisEnhancerCache,
   parseMd: ParseMd,
 ): Promise<void> => {

@@ -17,7 +17,7 @@
   "dependencies": {
     "block-attributes": "^0.5.0",
     "block-info": "^0.5.0",
-    "cheerio": "1.0.0-rc.3",
+    "cheerio": "1.0.0-rc.12",
     "elm-string-representation": "^2.0.0",
     "html-entities": "^2.6.0",
     "litvis": "^0.10.0",
@@ -33,7 +33,6 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "@types/cheerio": "0.22.21",
     "@types/lodash": "4.17.20",
     "@types/markdown-it": "14.1.2",
     "@types/object-hash": "3.0.6",

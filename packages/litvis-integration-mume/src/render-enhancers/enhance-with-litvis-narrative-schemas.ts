@@ -1,3 +1,4 @@
+import type { AnyNode, Cheerio, CheerioAPI } from "cheerio";
 import type { LitvisNarrative } from "litvis";
 import _ from "lodash";
 import type { LabelNode } from "narrative-schema-label";
@@ -7,18 +8,18 @@ import { selectAll } from "unist-util-select";
 
 import type { LitvisEnhancerCache } from "../types";
 
-const markLabelAsErroneous = ($el: Cheerio, message: string) => {
+const markLabelAsErroneous = ($el: Cheerio<AnyNode>, message: string) => {
   $el.children().attr("style", "background: #fdd");
   $el.attr("title", message);
 };
 
 export const enhanceWithLitvisNarrativeSchemas = async (
-  $: CheerioStatic,
+  $: CheerioAPI,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
 ): Promise<void> => {
   // add styling from narrative schema
-  const arrayOf$StyleTags: Cheerio[] = [];
+  const arrayOf$StyleTags: Array<Cheerio<AnyNode>> = [];
   if (processedNarrative.composedNarrativeSchema) {
     arrayOf$StyleTags.push(
       ...getCssChunks(processedNarrative.composedNarrativeSchema).map(
