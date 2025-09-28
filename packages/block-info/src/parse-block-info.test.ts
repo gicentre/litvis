@@ -1,0 +1,35 @@
+import { parseBlockInfo } from "./parse-block-info";
+
+const testCases: Array<{
+  info: Record<string, unknown>;
+  raw: string[];
+}> = [
+  {
+    info: { language: "js", attributes: { cmd: true } },
+    raw: [
+      "js cmd=true",
+      "js {cmd=true}",
+      "js  {  cmd=true  }  ",
+      "js{cmd=True}",
+    ],
+  },
+  {
+    info: { language: "hello", attributes: {} },
+    raw: ["hello", " hello ", "hello {}", "hello {   }"],
+  },
+  {
+    info: { language: undefined, attributes: { just: "attribute" } },
+    raw: [" {just=attribute}"],
+  },
+];
+
+describe("parse()", () => {
+  testCases.map(({ raw, info }) => {
+    raw.map((text) => {
+      it(`works for`, () => {
+        const result = parseBlockInfo(text);
+        expect(result).toEqual(info);
+      });
+    });
+  });
+});

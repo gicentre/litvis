@@ -1,2 +1,2 @@
-export * from "./applySchemaToLabels";
-export * from "./processUnist";
+export * from "./apply-schema-to-labels";
+export * from "./process-unist";

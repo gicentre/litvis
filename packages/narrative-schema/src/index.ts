@@ -1,4 +1,4 @@
-export { loadAndCompose } from "./loadAndCompose";
+export { loadAndCompose } from "./load-and-compose";
 export type {
   ComposedNarrativeSchema,
   NarrativeSchema,
