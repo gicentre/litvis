@@ -1,5 +1,5 @@
-import { BlockAttributes } from "block-attributes";
-import { Node } from "unist";
+import type { BlockAttributes } from "block-attributes";
+import type { Node } from "unist";
 
 export type LabelType =
   | "single"

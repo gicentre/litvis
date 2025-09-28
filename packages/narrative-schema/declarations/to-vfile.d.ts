@@ -1,5 +1,5 @@
 declare module "to-vfile" {
-  import { VFile } from "vfile";
+  import type { VFile } from "vfile";
 
   function read(path: string, encoding: string): Promise<VFile>;
 }

@@ -1,14 +1,10 @@
-import {
-  DataWithPosition,
-  getKind,
-  getPosition,
-  getValue,
-} from "data-with-position";
-import {
+import type { DataWithPosition } from "data-with-position";
+import { getKind, getPosition, getValue } from "data-with-position";
+import type {
   EntityDefinition,
   NarrativeSchema,
-  reportUnusedDataKeys,
 } from "narrative-schema-common";
+import { reportUnusedDataKeys } from "narrative-schema-common";
 
 export const extractDefinitions = (
   dataWithPosition: DataWithPosition,

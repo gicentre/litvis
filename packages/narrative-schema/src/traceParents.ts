@@ -1,5 +1,5 @@
 // import _ from "lodash";
-import { NarrativeSchema, ParentDocument } from "narrative-schema-common";
+import type { NarrativeSchema, ParentDocument } from "narrative-schema-common";
 
 export const traceParents = (
   parents: Array<ParentDocument | NarrativeSchema>,

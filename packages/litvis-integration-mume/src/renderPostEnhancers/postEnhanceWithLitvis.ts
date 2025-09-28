@@ -1,10 +1,11 @@
 import cheerio from "cheerio";
 import { decode } from "html-entities";
-import { listNarrativeFiles, LitvisDocument, LitvisNarrative } from "litvis";
+import type { LitvisDocument, LitvisNarrative } from "litvis";
+import { listNarrativeFiles } from "litvis";
 import _ from "lodash";
-import { EntityDefinitionWithOrigin } from "narrative-schema-common";
-import { Position } from "unist";
-import { VFile } from "vfile";
+import type { EntityDefinitionWithOrigin } from "narrative-schema-common";
+import type { Position } from "unist";
+import type { VFile } from "vfile";
 
 const findOrFilter = (
   $: CheerioStatic,
@@ -180,7 +181,7 @@ export const postEnhanceWithLitvis = (
               "narrative-schema:rule-validation",
             );
           } else {
-            // eslint-disable-next-line no-console
+            // eslint-disable-next-line no-console -- TODO: Add explanation for this rule exception
             console.error(error);
           }
         }

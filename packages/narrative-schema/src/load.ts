@@ -1,22 +1,15 @@
-import {
-  DataWithPosition,
-  fromYaml,
-  getKind,
-  getPosition,
-  getValue,
-} from "data-with-position";
+import type { DataWithPosition } from "data-with-position";
+import { fromYaml, getKind, getPosition, getValue } from "data-with-position";
 import _ from "lodash";
-import {
-  NarrativeSchema,
-  ParentDocument,
-  reportUnusedDataKeys,
-} from "narrative-schema-common";
+import type { NarrativeSchema, ParentDocument } from "narrative-schema-common";
+import { reportUnusedDataKeys } from "narrative-schema-common";
 import { extractDefinitions as extractLabelDefinitions } from "narrative-schema-label";
 import { extractDefinitions as extractRuleDefinitions } from "narrative-schema-rule";
 import { extractDefinitions as extractStylingDefinitions } from "narrative-schema-styling";
 import { resolve } from "path";
 import { read as readVFile } from "to-vfile";
-import vfile, { VFile } from "vfile";
+import type { VFile } from "vfile";
+import vfile from "vfile";
 
 import { traceParents } from "./traceParents";
 

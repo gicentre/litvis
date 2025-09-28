@@ -2,10 +2,10 @@ import { processUnist as extractLabels } from "narrative-schema-label";
 import frontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import unified from "unified";
-import { Parent } from "unist";
-import { VFile } from "vfile";
+import type { Parent } from "unist";
+import type { VFile } from "vfile";
 
-import { LitvisDocument } from "../types";
+import type { LitvisDocument } from "../types";
 import { extractAttributeDerivatives } from "./extractAttributeDerivatives";
 import { extractOutputItems } from "./extractOutputItems";
 import { findTripleHatReferences } from "./findTripleHatReferences";

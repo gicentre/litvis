@@ -1,20 +1,19 @@
-import { BlockInfo } from "block-info";
+import type { BlockInfo } from "block-info";
 import cheerio from "cheerio";
 import { encode } from "html-entities";
-import {
+import type {
   AttributeDerivatives,
   EvaluatedOutputExpression,
-  extractAttributeDerivatives,
   LitvisNarrative,
   OutputFormat,
   ProcessedLitvisContext,
-  resolveExpressions,
 } from "litvis";
+import { extractAttributeDerivatives, resolveExpressions } from "litvis";
 import _ from "lodash";
 import hash from "object-hash";
 
-import { LitvisEnhancerCache } from "../types";
-import { ParseMd } from "./helpers";
+import type { LitvisEnhancerCache } from "../types";
+import type { ParseMd } from "./helpers";
 
 const flattenJsonToRawMarkdown = (data: unknown): string => {
   if (data instanceof Array) {

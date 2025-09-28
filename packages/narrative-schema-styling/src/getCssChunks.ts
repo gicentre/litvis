@@ -1,6 +1,6 @@
-import { ComposedNarrativeSchema } from "narrative-schema-common";
+import type { ComposedNarrativeSchema } from "narrative-schema-common";
 
-import { CssChunk } from "./types";
+import type { CssChunk } from "./types";
 
 export const getCssChunks = (
   composedNarrativeSchema: ComposedNarrativeSchema,

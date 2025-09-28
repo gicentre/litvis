@@ -1,9 +1,9 @@
 import { stat } from "fs-extra";
-import { Dependencies } from "literate-elm";
+import type { Dependencies } from "literate-elm";
 import _ from "lodash";
 import { resolve } from "path";
 
-import { LitvisNarrative } from "../types";
+import type { LitvisNarrative } from "../types";
 
 export const extractElmEnvironmentSpec = async (
   narrative: LitvisNarrative,

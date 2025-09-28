@@ -1,10 +1,10 @@
-import { EntityDefinition } from "narrative-schema-common";
-import { Node } from "unist";
+import type { EntityDefinition } from "narrative-schema-common";
+import type { Node } from "unist";
 import visit from "unist-util-visit";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
 import { renderHtmlTemplate } from "../renderHtmlTemplate";
-import { LabelNode } from "../types";
+import type { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export const visitAndExtractHtml = (

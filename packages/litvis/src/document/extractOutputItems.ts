@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { Attacher } from "unified";
-import { Node, Parent } from "unist";
+import type { Attacher } from "unified";
+import type { Node, Parent } from "unist";
 import visit from "unist-util-visit";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
 import { resolveExpressions } from "../attributeDerivatives";
-import {
+import type {
   AttributeDerivatives,
   CodeBlock,
   OutputExpression,

@@ -2,8 +2,8 @@
 
 // @ts-expect-error -- package is missing typings
 import whitespace from "is-whitespace-character";
-import { Processor } from "unified";
-import { Node } from "unist";
+import type { Processor } from "unified";
+import type { Node } from "unist";
 
 const singleHat = "^";
 const tripleHat = "^^^";
@@ -16,7 +16,7 @@ const locator = (value: string, fromIndex: number) => {
 
 // eslint-disable-next-line func-style -- Usage of "this" requires suppressing func-style eslint rule
 export function findTripleHatReferences(this: Processor) {
-  // eslint-disable-next-line func-style
+  // eslint-disable-next-line func-style -- needed for usage of "this"
   function inlineTokenizer(eat: any, value: string, silent: boolean) {
     if (
       // @ts-expect-error -- TODO: investigate

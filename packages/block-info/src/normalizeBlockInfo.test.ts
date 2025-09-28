@@ -1,5 +1,5 @@
 import { normalizeBlockInfo } from "./normalizeBlockInfo";
-import { BlockInfo } from "./types";
+import type { BlockInfo } from "./types";
 
 const testCases: Array<{
   infos: Array<Record<string, unknown>>;

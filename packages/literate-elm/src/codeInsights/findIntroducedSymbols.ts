@@ -1,4 +1,4 @@
-import { ElmSymbol } from "../types";
+import type { ElmSymbol } from "../types";
 
 /**
  * Extracts Elm symbols introduced in the given code block.

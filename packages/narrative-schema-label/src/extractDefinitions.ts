@@ -1,15 +1,11 @@
-import {
-  DataWithPosition,
-  getKind,
-  getPosition,
-  getValue,
-} from "data-with-position";
+import type { DataWithPosition } from "data-with-position";
+import { getKind, getPosition, getValue } from "data-with-position";
 import _ from "lodash";
-import {
+import type {
   EntityDefinition,
-  extractArrayOfEntities,
   NarrativeSchema,
 } from "narrative-schema-common";
+import { extractArrayOfEntities } from "narrative-schema-common";
 
 import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
 import { isValidLabelName } from "./utils";

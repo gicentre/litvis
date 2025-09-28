@@ -9,7 +9,7 @@ import {
   installElmPackage,
   patchElmJson,
 } from "./shared/tools";
-import {
+import type {
   Dependencies,
   Environment,
   EnvironmentMetadata,

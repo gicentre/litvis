@@ -1,8 +1,9 @@
-import { BlockInfo } from "block-info";
-import { extractAttributeDerivatives, LitvisNarrative } from "litvis";
+import type { BlockInfo } from "block-info";
+import type { LitvisNarrative } from "litvis";
+import { extractAttributeDerivatives } from "litvis";
 import YAML from "yamljs";
 
-import { LitvisEnhancerCache } from "../types";
+import type { LitvisEnhancerCache } from "../types";
 
 /**
  * Search for all vega and vega-lite blocks and

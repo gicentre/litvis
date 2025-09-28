@@ -1,7 +1,7 @@
 import produce from "immer";
 import { findIntroducedSymbols } from "literate-elm";
 
-import { AttributeDerivatives } from "../types";
+import type { AttributeDerivatives } from "../types";
 
 /**
  * Looks through outputExpressionsByFormat and replaces true (i.e. auto)

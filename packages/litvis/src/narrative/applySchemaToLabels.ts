@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { applySchemaToLabels as doApplySchemaToLabels } from "narrative-schema-label";
 import unified from "unified";
-import { Parent } from "unist";
+import type { Parent } from "unist";
 
-import { LitvisNarrative } from "../types";
+import type { LitvisNarrative } from "../types";
 
 export const applySchemaToLabels = async (
   narrative: LitvisNarrative,

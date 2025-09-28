@@ -1,6 +1,6 @@
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LitvisNarrative } from "../types";
+import type { LitvisNarrative } from "../types";
 
 export const listNarrativeFiles = (narrative: LitvisNarrative): VFile[] => {
   const result: VFile[] = [...narrative.documents];

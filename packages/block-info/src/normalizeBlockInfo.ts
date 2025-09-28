@@ -1,6 +1,6 @@
 import { normalizeBlockAttributes } from "block-attributes";
 
-import { BlockInfo } from "./types";
+import type { BlockInfo } from "./types";
 
 const normalizeLanguage = (language?: string): string => {
   if (typeof language === "string") {

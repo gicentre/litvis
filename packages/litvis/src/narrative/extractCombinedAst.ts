@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { LitvisNarrative } from "../types";
+import type { LitvisNarrative } from "../types";
 
 export const extractCombinedAst = async (
   narrative: LitvisNarrative,

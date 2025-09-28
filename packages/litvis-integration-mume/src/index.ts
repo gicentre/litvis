@@ -1,6 +1,6 @@
-export { loadAndProcessLitvisNarrative } from "litvis";
+export * from "./initLitvisEnhancerCache";
+export { useMarkdownItLitvisFeatures } from "./markdownItFeatures";
 export * from "./renderEnhancers";
 export * from "./renderPostEnhancers";
-export { useMarkdownItLitvisFeatures } from "./markdownItFeatures";
-export * from "./initLitvisEnhancerCache";
 export * from "./types";
+export { loadAndProcessLitvisNarrative } from "litvis";

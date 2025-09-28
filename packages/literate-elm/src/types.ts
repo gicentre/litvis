@@ -1,4 +1,4 @@
-import { Position } from "unist";
+import type { Position } from "unist";
 
 export interface ElmSymbol {
   name: string;

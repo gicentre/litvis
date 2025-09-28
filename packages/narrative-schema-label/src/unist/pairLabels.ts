@@ -1,8 +1,8 @@
-import { Node, Parent } from "unist";
+import type { Node, Parent } from "unist";
 import visit from "unist-util-visit";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LabelNode } from "../types";
+import type { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 
 export const pairLabels = () => (ast: Node, vFile: VFile) => {

@@ -1,6 +1,6 @@
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { Cache, LitvisNarrative } from "../types";
+import type { Cache, LitvisNarrative } from "../types";
 import { applySchemaToLabels } from "./applySchemaToLabels";
 import { extractComposedNarrativeSchema } from "./extractComposedNarrativeSchema";
 import { extractElmEnvironmentSpec } from "./extractElmEnvironmentSpec";

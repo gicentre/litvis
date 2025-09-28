@@ -1,7 +1,8 @@
 import hash from "object-hash";
-import { VFile } from "vfile";
+import type { VFile } from "vfile";
 
-import { LabelErrorType, LabelFence, LabelNode, LabelType } from "./types";
+import type { LabelErrorType, LabelNode, LabelType } from "./types";
+import { LabelFence } from "./types";
 
 export const getLabelIdPrefix = (vFile: VFile) =>
   hash(vFile.path ?? null).substring(0, 8);

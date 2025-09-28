@@ -1,5 +1,5 @@
 import { positionKey } from "./keys";
-import { DataWithPosition, Position } from "./types";
+import type { DataWithPosition, Position } from "./types";
 
 interface GetPosition {
   (dataWithPosition: DataWithPosition): Position;
