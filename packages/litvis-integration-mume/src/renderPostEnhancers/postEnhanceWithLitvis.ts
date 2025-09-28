@@ -1,3 +1,4 @@
+import type { AnyNode, Cheerio, CheerioAPI } from "cheerio";
 import cheerio from "cheerio";
 import { decode } from "html-entities";
 import type { LitvisDocument, LitvisNarrative } from "litvis";
@@ -8,10 +9,10 @@ import type { Position } from "unist";
 import type { VFile } from "vfile";
 
 const findOrFilter = (
-  $: CheerioStatic,
-  func: (selector: string) => Cheerio,
+  $: CheerioAPI,
+  func: (selector: string) => Cheerio<AnyNode>,
   selector: any,
-): Cheerio => {
+): Cheerio<AnyNode> => {
   const cheerioSelectorParts: string[] = [];
   if (selector) {
     cheerioSelectorParts.push(`[ns-role="label"]`);
@@ -23,18 +24,34 @@ const findOrFilter = (
   let $result = func(cheerioSelectorParts.join(""));
   if (selector.trimmedContent) {
     $result = $result.filter(
-      (i, element) => $(element).text().trim() === selector.trimmedContent,
+      (i, element) =>
+        $(element as AnyNode)
+          .text()
+          .trim() === selector.trimmedContent,
     );
   }
 
   return $result;
 };
 
-const find = ($: CheerioStatic, $where: Cheerio, selector: any): Cheerio => {
+const find = (
+  $: CheerioAPI,
+  $where: Cheerio<AnyNode>,
+  selector: any,
+): Cheerio<AnyNode> => {
   return findOrFilter($, $where.find.bind($where), selector);
 };
-const filter = ($: CheerioStatic, $what: Cheerio, selector: any): Cheerio => {
-  return findOrFilter($, $what.filter.bind($what), selector);
+const filter = (
+  $: CheerioAPI,
+  $what: Cheerio<AnyNode>,
+  selector: any,
+): Cheerio<AnyNode> => {
+  return findOrFilter(
+    $,
+    // @ts-expect-error - investigate type mismatch
+    $what.filter.bind($what),
+    selector,
+  );
 };
 const ruleIsNotFollowed = (
   position?: Position,
@@ -49,7 +66,7 @@ const ruleIsNotFollowed = (
   return result;
 };
 
-const elementPosition = ($el: Cheerio): Position | undefined => {
+const elementPosition = ($el: Cheerio<AnyNode>): Position | undefined => {
   const startColumn = parseInt($el.attr("ns-position-start-column") || "0", 10);
   const startLine = parseInt($el.attr("ns-position-start-line") || "0", 10);
   const endColumn = parseInt($el.attr("ns-position-end-column") || "0", 10);
@@ -122,7 +139,7 @@ export const postEnhanceWithLitvis = (
 
           // single-element rules
           $selection.each((i, el) => {
-            const $el = $(el);
+            const $el = $(el as AnyNode);
             // children.minimumTrimmedTextLength
             if (
               ruleData.children &&

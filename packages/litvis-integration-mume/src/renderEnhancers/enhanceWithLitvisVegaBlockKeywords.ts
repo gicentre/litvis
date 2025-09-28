@@ -1,4 +1,5 @@
 import type { BlockInfo } from "block-info";
+import type { AnyNode, Cheerio, CheerioAPI } from "cheerio";
 import type { LitvisNarrative } from "litvis";
 import { extractAttributeDerivatives } from "litvis";
 import YAML from "yamljs";
@@ -13,7 +14,7 @@ import type { LitvisEnhancerCache } from "../types";
  * @param cache
  */
 export const enhanceWithLitvisVegaBlockKeywords = async (
-  $: CheerioStatic,
+  $: CheerioAPI,
   processedNarrative: LitvisNarrative,
   cache: LitvisEnhancerCache,
 ): Promise<void> => {
@@ -23,11 +24,13 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
       return;
     }
 
-    const info: BlockInfo = $container.data("parsedInfo");
+    const info: BlockInfo = $container.data("parsedInfo") as BlockInfo;
     if (!info) {
       return;
     }
-    const normalizedInfo: BlockInfo = $container.data("normalizedInfo");
+    const normalizedInfo: BlockInfo = $container.data(
+      "normalizedInfo",
+    ) as BlockInfo;
     if (
       normalizedInfo.language !== "vega" &&
       normalizedInfo.language !== "vega-lite"
@@ -62,7 +65,7 @@ export const enhanceWithLitvisVegaBlockKeywords = async (
       ) {
         return;
       }
-      let $result: Cheerio | undefined;
+      let $result: Cheerio<AnyNode> | undefined;
       let resultNormalizedInfo: (BlockInfo & { style?: string }) | undefined;
       let resultText;
       switch (outputFormat) {
