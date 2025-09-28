@@ -11,7 +11,7 @@ import { read as readVFile } from "to-vfile";
 import type { VFile } from "vfile";
 import vfile from "vfile";
 
-import { traceParents } from "./traceParents";
+import { traceParents } from "./trace-parents";
 
 const resolveNarrativeSchemaPath = async (
   path: string,

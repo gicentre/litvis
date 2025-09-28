@@ -10,7 +10,7 @@ import {
   lock,
   touch,
   unlock,
-} from "./auxFiles";
+} from "./aux-files";
 
 const garbageCollectionInterval = 1000 * 60 * 5;
 const maxProgramCount = 500;
