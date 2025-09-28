@@ -1,5 +1,5 @@
 import { testCases } from "./parse.test";
-import { parseUsingCache } from "./parseUsingCache";
+import { parseUsingCache } from "./parse-using-cache";
 
 describe("parse()", () => {
   testCases.map(({ input: arrayOfInputs, output: expectedOutput, error }) => {

@@ -1,1 +1,1 @@
-export * from "./processFrontmatter";
+export * from "./process-frontmatter";

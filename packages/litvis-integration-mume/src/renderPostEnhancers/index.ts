@@ -1,1 +1,1 @@
-export * from "./postEnhanceWithLitvis";
+export * from "./post-enhance-with-litvis";

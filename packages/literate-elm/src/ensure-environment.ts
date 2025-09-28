@@ -2,7 +2,7 @@ import { ensureDir, pathExists, readFile, writeFile } from "fs-extra";
 import hash from "object-hash";
 import { resolve } from "path";
 
-import { ensureUnlocked, lock, touch, unlock } from "./shared/auxFiles";
+import { ensureUnlocked, lock, touch, unlock } from "./shared/aux-files";
 import { collectGarbageIfNeeded } from "./shared/gc";
 import {
   initializeElmProject,

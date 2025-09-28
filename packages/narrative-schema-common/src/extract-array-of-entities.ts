@@ -1,7 +1,7 @@
 import type { DataWithPosition } from "data-with-position";
 import { getKind, getPosition } from "data-with-position";
 
-import { reportUnusedDataKeys } from "./reportUnusedDataKeys";
+import { reportUnusedDataKeys } from "./report-unused-data-keys";
 import type { EntityDefinition, NarrativeSchema } from "./types";
 
 export const extractArrayOfEntities = (

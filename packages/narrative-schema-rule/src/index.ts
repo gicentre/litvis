@@ -1,1 +1,1 @@
-export * from "./extractDefinitions";
+export * from "./extract-definitions";

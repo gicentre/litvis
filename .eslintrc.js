@@ -19,7 +19,6 @@ module.exports = {
     "unicorn/consistent-function-scoping": "off",
     "unicorn/error-message": "off",
     "unicorn/explicit-length-check": "off",
-    "unicorn/filename-case": "off",
     "unicorn/import-style": "off",
     "unicorn/no-array-callback-reference": "off",
     "unicorn/no-array-for-each": "off",

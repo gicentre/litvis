@@ -1,1 +1,1 @@
-export * from "./enhanceWithLitvis";
+export * from "./enhance-with-litvis";

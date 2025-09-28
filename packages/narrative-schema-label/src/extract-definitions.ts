@@ -7,7 +7,7 @@ import type {
 } from "narrative-schema-common";
 import { extractArrayOfEntities } from "narrative-schema-common";
 
-import { getCompiledHandlebarsTemplate } from "./getCompiledHandlebarsTemplate";
+import { getCompiledHandlebarsTemplate } from "./get-compiled-handlebars-template";
 import { isValidLabelName } from "./utils";
 
 const extractDataFromLabel = (

@@ -1,5 +1,5 @@
-import { sharedTestCases } from "./__fixtures__/testCases";
-import { parseBlockAttributes } from "./parseBlockAttributes";
+import { sharedTestCases } from "./__fixtures__/test-cases";
+import { parseBlockAttributes } from "./parse-block-attributes";
 
 describe("parseBlockAttributes()", () => {
   sharedTestCases.map(({ raw, attributes }) => {

@@ -1,4 +1,4 @@
-export * from "./initLitvisEnhancerCache";
+export * from "./init-litvis-enhancer-cache";
 export { useMarkdownItLitvisFeatures } from "./markdownItFeatures";
 export * from "./renderEnhancers";
 export * from "./renderPostEnhancers";

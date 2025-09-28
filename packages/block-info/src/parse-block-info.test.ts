@@ -1,4 +1,4 @@
-import { parseBlockInfo } from "./parseBlockInfo";
+import { parseBlockInfo } from "./parse-block-info";
 
 const testCases: Array<{
   info: Record<string, unknown>;

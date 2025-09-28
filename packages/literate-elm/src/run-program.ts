@@ -4,7 +4,7 @@ import _ from "lodash";
 import hash from "object-hash";
 import { resolve } from "path";
 
-import * as auxFiles from "./shared/auxFiles";
+import * as auxFiles from "./shared/aux-files";
 import { runElm } from "./shared/tools";
 import type {
   CodeNode,

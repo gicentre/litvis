@@ -6,9 +6,9 @@ import type { Parent } from "unist";
 import type { VFile } from "vfile";
 
 import type { LitvisDocument } from "../types";
-import { extractAttributeDerivatives } from "./extractAttributeDerivatives";
-import { extractOutputItems } from "./extractOutputItems";
-import { findTripleHatReferences } from "./findTripleHatReferences";
+import { extractAttributeDerivatives } from "./extract-attribute-derivatives";
+import { extractOutputItems } from "./extract-output-items";
+import { findTripleHatReferences } from "./find-triple-hat-references";
 import { processFrontmatter } from "./processFrontmatter";
 
 export const engine = unified()

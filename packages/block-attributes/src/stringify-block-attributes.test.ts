@@ -1,5 +1,5 @@
-import { sharedTestCases } from "./__fixtures__/testCases";
-import { stringifyBlockAttributes } from "./stringifyBlockAttributes";
+import { sharedTestCases } from "./__fixtures__/test-cases";
+import { stringifyBlockAttributes } from "./stringify-block-attributes";
 
 describe("stringifyBlockAttributes()", () => {
   sharedTestCases.map(

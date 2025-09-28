@@ -3,7 +3,7 @@ import type { Node } from "unist";
 import visit from "unist-util-visit";
 import type { VFile } from "vfile";
 
-import { renderHtmlTemplate } from "../renderHtmlTemplate";
+import { renderHtmlTemplate } from "../render-html-template";
 import type { LabelNode } from "../types";
 import { markLabelNodeAsErroneous } from "../utils";
 

@@ -1,1 +1,1 @@
-export * from "./findIntroducedSymbols";
+export * from "./find-introduced-symbols";

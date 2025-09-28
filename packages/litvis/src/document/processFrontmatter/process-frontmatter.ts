@@ -5,11 +5,11 @@ import type { Attacher } from "unified";
 import type { Node, Parent } from "unist";
 
 import type { LitvisDocument } from "../../types";
-import { extractElmDependencies } from "./extractElmDependencies";
-import { extractElmSourceDirectories } from "./extractElmSourceDirectories";
-import { extractFollows } from "./extractFollows";
-import { extractNarrativeSchemas } from "./extractNarrativeSchemas";
-import { lintElm } from "./lintElm";
+import { extractElmDependencies } from "./extract-elm-dependencies";
+import { extractElmSourceDirectories } from "./extract-elm-source-directories";
+import { extractFollows } from "./extract-follows";
+import { extractNarrativeSchemas } from "./extract-narrative-schemas";
+import { lintElm } from "./lint-elm";
 
 const visitFrontmatter = (mdAst: Node, document: LitvisDocument) => {
   const frontmatterNode = (mdAst as Parent)?.children[0] as

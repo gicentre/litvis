@@ -6,7 +6,7 @@ import { read as readVFile } from "to-vfile";
 import type { VFile } from "vfile";
 import vfile from "vfile";
 
-import { parseDocument } from "../document/parseDocument";
+import { parseDocument } from "../document/parse-document";
 import type { Cache, LitvisDocument, LitvisNarrative } from "../types";
 
 const maxChainLength = 20;

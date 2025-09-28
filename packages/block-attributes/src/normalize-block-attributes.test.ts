@@ -1,5 +1,5 @@
-import { sharedTestCases } from "./__fixtures__/testCases";
-import { normalizeBlockAttributes } from "./normalizeBlockAttributes";
+import { sharedTestCases } from "./__fixtures__/test-cases";
+import { normalizeBlockAttributes } from "./normalize-block-attributes";
 
 describe("normalizeBlockAttributes()", () => {
   sharedTestCases.map(({ attributes = null, normalizedAttributes = null }) => {

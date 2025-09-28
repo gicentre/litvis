@@ -1,2 +1,2 @@
 export * from "./parse";
-export * from "./parseUsingCache";
+export * from "./parse-using-cache";

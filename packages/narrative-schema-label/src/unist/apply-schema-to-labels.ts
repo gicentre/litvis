@@ -1,7 +1,7 @@
 import type { ComposedNarrativeSchema } from "narrative-schema-common";
 import type { Attacher } from "unified";
 
-import { visitAndExtractHtml } from "./visitAndExtractHtml";
+import { visitAndExtractHtml } from "./visit-and-extract-html";
 
 export const applySchemaToLabels =
   (composedNarrativeSchema: ComposedNarrativeSchema): Attacher =>

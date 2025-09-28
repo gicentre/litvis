@@ -5,10 +5,10 @@ import _ from "lodash";
 import path from "path";
 
 import type { FromYamlTestCaseConfig } from "./__fixtures__/types";
-import { fromYaml } from "./fromYaml";
-import { getKind } from "./getKind";
-import { getPosition } from "./getPosition";
-import { getValue } from "./getValue";
+import { fromYaml } from "./from-yaml";
+import { getKind } from "./get-kind";
+import { getPosition } from "./get-position";
+import { getValue } from "./get-value";
 
 const yamlPaths = globby.sync(`__fixtures__/fromYaml/*.yaml`, {
   cwd: __dirname,
