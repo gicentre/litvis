@@ -1,7 +1,9 @@
 import { compile } from "handlebars";
-import LRU from "lru-cache";
+import { LRUCache } from "lru-cache";
 
-const cache = new LRU<string, HandlebarsTemplateDelegate<any> | Error>(1000);
+const cache = new LRUCache<string, HandlebarsTemplateDelegate<any> | Error>({
+  max: 1000,
+});
 
 export const getCompiledHandlebarsTemplate = (
   htmlTemplate: string,

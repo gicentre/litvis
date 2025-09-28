@@ -18,9 +18,9 @@
     "handlebars": "^4.7.7",
     "html-entities": "^2.3.2",
     "lodash": "^4.17.21",
-    "lru-cache": "^6.0.0",
+    "lru-cache": "^11.2.2",
     "narrative-schema-common": "^0.3.0",
-    "object-hash": "^2.2.0",
+    "object-hash": "^3.0.0",
     "unist-util-visit": "^2.0.3",
     "unist-util-visit-parents": "^3.1.1",
     "vfile": "^4.2.1"
@@ -28,8 +28,8 @@
   "devDependencies": {
     "@types/cheerio": "0.22.21",
     "@types/lodash": "4.17.20",
-    "@types/lru-cache": "5.1.1",
-    "@types/object-hash": "2.2.1",
-    "@types/unist": "2.0.6"
+    "@types/object-hash": "3.0.6",
+    "@types/unist": "2.0.6",
+    "unified": "^9.2.2"
   }
 }

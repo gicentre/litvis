@@ -1,8 +1,8 @@
-import LRU from "lru-cache";
+import { LRUCache } from "lru-cache";
 
 import { parse } from "./parse";
 
-let cache: LRU<string, Error | unknown>;
+let cache: LRUCache<string, any>;
 
 /**
  * Returns Elm's string representation as a JS value.
@@ -19,15 +19,15 @@ let cache: LRU<string, Error | unknown>;
  */
 export const parseUsingCache = (text: string): unknown => {
   if (!cache) {
-    cache = new LRU(100);
+    cache = new LRUCache({ max: 100 });
   }
 
   let valueInCache = cache.get(text);
   if (typeof valueInCache === "undefined") {
     try {
       valueInCache = parse(text);
-    } catch (e) {
-      valueInCache = e;
+    } catch (error) {
+      valueInCache = error;
     }
     cache.set(text, valueInCache);
   }

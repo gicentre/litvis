@@ -24,13 +24,13 @@
     "fs-extra": "^10.0.0",
     "globby": "^11.1.0",
     "lodash": "^4.17.21",
-    "object-hash": "^2.2.0",
+    "object-hash": "^3.0.0",
     "sleep-promise": "^9.1.0"
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
     "@types/lodash": "4.17.20",
-    "@types/object-hash": "2.2.1",
+    "@types/object-hash": "3.0.6",
     "@types/unist": "2.0.6",
     "type-fest": "5.0.1"
   }
