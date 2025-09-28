@@ -4,7 +4,7 @@ import type { Node } from "unist";
 import visit from "unist-util-visit";
 import type { VFile } from "vfile";
 
-import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attributeDerivatives";
+import { extractAttributeDerivatives as doExtractAttributeDerivatives } from "../attribute-derivatives";
 import type { CodeBlock } from "../types";
 
 const visitCodeBlock = (ast: Node, vFile: VFile) => {

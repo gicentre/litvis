@@ -4,7 +4,7 @@ import type { Node, Parent } from "unist";
 import visit from "unist-util-visit";
 import type { VFile } from "vfile";
 
-import { resolveExpressions } from "../attributeDerivatives";
+import { resolveExpressions } from "../attribute-derivatives";
 import type {
   AttributeDerivatives,
   CodeBlock,

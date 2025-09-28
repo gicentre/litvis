@@ -10,7 +10,7 @@ import { getKind } from "./get-kind";
 import { getPosition } from "./get-position";
 import { getValue } from "./get-value";
 
-const yamlPaths = globby.sync(`__fixtures__/fromYaml/*.yaml`, {
+const yamlPaths = globby.sync(`__fixtures__/from-yaml/*.yaml`, {
   cwd: __dirname,
   absolute: true,
 });

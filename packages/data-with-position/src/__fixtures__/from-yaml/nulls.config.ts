@@ -1,4 +1,4 @@
-import { FromYamlTestCaseConfig } from "../types";
+import type { FromYamlTestCaseConfig } from "../types";
 
 export const config: FromYamlTestCaseConfig = {
   nodesToCheck: [

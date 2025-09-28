@@ -29,5 +29,5 @@ node_modules
 ## shared between linters
 CNAME
 LICENSE
-packages/data-with-position/src/__fixtures__/fromYaml
+packages/data-with-position/src/__fixtures__/from-yaml
 pnpm-lock.yaml

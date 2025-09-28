@@ -9,7 +9,7 @@ import type { LitvisDocument } from "../types";
 import { extractAttributeDerivatives } from "./extract-attribute-derivatives";
 import { extractOutputItems } from "./extract-output-items";
 import { findTripleHatReferences } from "./find-triple-hat-references";
-import { processFrontmatter } from "./processFrontmatter";
+import { processFrontmatter } from "./process-frontmatter";
 
 export const engine = unified()
   .use(remarkParse)
