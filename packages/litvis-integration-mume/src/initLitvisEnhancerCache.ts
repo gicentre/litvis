@@ -1,5 +1,5 @@
 import { initCache } from "litvis";
-import LRU from "lru-cache";
+import { LRUCache } from "lru-cache";
 import path from "path";
 
 import type { LitvisEnhancerCache } from "./types";
@@ -13,6 +13,6 @@ export const initLitvisEnhancerCache = async ({
     litvisCache: initCache({
       literateElmDirectory: path.resolve(mumeWorkingDirectory, "literate-elm"),
     }),
-    successfulRenders: new LRU(50),
+    successfulRenders: new LRUCache({ max: 50 }),
   };
 };

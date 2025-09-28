@@ -1,3 +1,5 @@
+linkWorkspacePackages: true
+
 nodeLinker: isolated
 
 onlyBuiltDependencies:
