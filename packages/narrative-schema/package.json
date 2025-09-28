@@ -12,7 +12,7 @@
   "types": "dist/index.d.ts",
   "dependencies": {
     "data-with-position": "^0.5.0",
-    "jsonschema": "^1.4.0",
+    "jsonschema": "^1.5.0",
     "lodash": "^4.17.21",
     "narrative-schema-common": "^0.3.0",
     "narrative-schema-label": "^0.5.0",

@@ -1,4 +1,4 @@
-import produce from "immer";
+import { type Draft, produce } from "immer";
 import { findIntroducedSymbols } from "literate-elm";
 
 import type { AttributeDerivatives } from "../types";
@@ -7,17 +7,15 @@ import type { AttributeDerivatives } from "../types";
  * Looks through outputExpressionsByFormat and replaces true (i.e. auto)
  * with a lists of symbols introduced in the code block.
  * Returns a new object if any changes.
- * @param derivatives
- * @param code
  */
 export const resolveExpressions = (
   derivatives: Readonly<AttributeDerivatives>,
   code: string,
-) => {
+): Readonly<AttributeDerivatives> => {
   const introducedSymbols = findIntroducedSymbols(code);
   const introducedNames = introducedSymbols.map((s) => s.name);
 
-  return produce(derivatives, (draft: AttributeDerivatives) => {
+  return produce(derivatives, (draft: Draft<AttributeDerivatives>) => {
     draft.outputFormats.forEach((referenceFormat) => {
       if (
         referenceFormat !== "l" &&
