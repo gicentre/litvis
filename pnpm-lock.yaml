@@ -107,8 +107,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       lodash:
-        specifier: 4.17.21
-        version: 4.17.21
+        specifier: 4.17.23
+        version: 4.17.23
 
   packages/elm-string-representation:
     dependencies:
@@ -135,7 +135,7 @@ importers:
         version: 11.1.0
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       object-hash:
         specifier: ^3.0.0
         version: 3.0.0
@@ -187,7 +187,7 @@ importers:
         version: link:../literate-elm
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       narrative-schema:
         specifier: ^0.5.0
         version: link:../narrative-schema
@@ -254,7 +254,7 @@ importers:
         version: link:../litvis
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       lru-cache:
         specifier: ^11.2.2
         version: 11.2.2
@@ -315,7 +315,7 @@ importers:
         version: 1.5.0
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       narrative-schema-common:
         specifier: ^0.3.0
         version: link:../narrative-schema-common
@@ -380,7 +380,7 @@ importers:
         version: 2.6.0
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       lru-cache:
         specifier: ^11.2.2
         version: 11.2.2
@@ -438,7 +438,7 @@ importers:
         version: 2.6.0
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       narrative-schema-common:
         specifier: ^0.3.0
         version: link:../narrative-schema-common
@@ -481,7 +481,7 @@ importers:
         version: 2.6.0
       lodash:
         specifier: ^4.17.21
-        version: 4.17.21
+        version: 4.17.23
       narrative-schema-common:
         specifier: ^0.3.0
         version: link:../narrative-schema-common
@@ -3511,8 +3511,8 @@ packages:
   lodash.snakecase@4.1.1:
     resolution: {integrity: sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.17.23:
+    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -4750,10 +4750,12 @@ packages:
   tar@6.2.1:
     resolution: {integrity: sha512-DZ4yORTwrbTj/7MZYq2w+/ZFdI6OZ/f9SFHR+71gIVUZhOQPHzVCLpvRnPgyaMpfWxxk/4ONva3GQSyNIKRv6A==}
     engines: {node: '>=10'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   tar@7.5.1:
     resolution: {integrity: sha512-nlGpxf+hv0v7GkWBK2V9spgactGOp0qvfWRxUMjqHyzrt3SgwE48DIv/FhqPHJYLHpgW1opq3nERbz5Anq7n1g==}
     engines: {node: '>=18'}
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
 
   temp-dir@1.0.0:
     resolution: {integrity: sha512-xZFXEGbG7SNC3itwBzI3RYjq/cEhBkx2hJuKGIUOcEULmkQExXiHat2z/qkISYsuR+IKumhEfKKbV5qXmhICFQ==}
@@ -6960,7 +6962,7 @@ snapshots:
       dom-serializer: 0.1.1
       entities: 1.1.2
       htmlparser2: 3.10.1
-      lodash: 4.17.21
+      lodash: 4.17.23
       parse5: 3.0.3
 
   chownr@2.0.0: {}
@@ -7520,7 +7522,7 @@ snapshots:
 
   eslint-plugin-json@3.1.0:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
       vscode-json-languageservice: 4.2.1
 
   eslint-plugin-simple-import-sort@10.0.0(eslint@8.57.1):
@@ -7538,7 +7540,7 @@ snapshots:
       indent-string: 4.0.0
       is-builtin-module: 3.2.1
       jsesc: 3.1.0
-      lodash: 4.17.21
+      lodash: 4.17.23
       pluralize: 8.0.0
       read-pkg-up: 7.0.1
       regexp-tree: 0.1.27
@@ -7728,7 +7730,7 @@ snapshots:
   find-elm-dependencies@2.0.4:
     dependencies:
       firstline: 1.3.1
-      lodash: 4.17.21
+      lodash: 4.17.23
 
   find-up@2.1.0:
     dependencies:
@@ -8936,7 +8938,7 @@ snapshots:
 
   lodash.snakecase@4.1.1: {}
 
-  lodash@4.17.21: {}
+  lodash@4.17.23: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -9386,7 +9388,7 @@ snapshots:
     dependencies:
       cross-spawn: 6.0.5
       find-elm-dependencies: 2.0.4
-      lodash: 4.17.21
+      lodash: 4.17.23
       temp: 0.9.4
 
   node-gyp@11.4.2:
