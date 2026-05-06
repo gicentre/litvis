@@ -237,7 +237,7 @@ hoverHighlight =
 
 ## Selection with Slider
 
-Input GUI elements such as [sliders](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#iRange) and [checkboxes](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#iCheckbox) can be used to select and filter data.
+Input GUI elements such as [sliders](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#ipRange) and [checkboxes](https://package.elm-lang.org/packages/gicentre/elm-vegalite/latest/VegaLite#ipCheckbox) can be used to select and filter data.
 
 ```elm {v l interactive}
 sliderSelection : Spec
